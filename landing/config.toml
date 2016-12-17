@@ -1,0 +1,16 @@
+baseurl = "http://dev3.devco.net:9292"
+contentdir = "content"
+theme = "hugo-base-theme"
+languageCode = "en-us"
+title = "Choria"
+googleAnalytics = "UA-10152852-12"
+
+[[params.social]]
+    title = "docs"
+    url = "http://docs.choria.io/about/"
+[[params.social]]
+    title = "github"
+    url = "https://github.com/ripienaar/mcollective-choria/"
+[[params.social]]
+    title = "twitter"
+    url = "https://twitter.com/ripienaar"

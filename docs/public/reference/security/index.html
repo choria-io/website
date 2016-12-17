@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="en" class="js csstransforms3d">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta name="generator" content="Hugo 0.17" />
+    <meta name="description" content="Documentation for the Choria Orchestrator">
+<meta name="author" content="R.I.Pienaar &lt;rip@devco.net&gt;">
+
+    <link rel="shortcut icon" href="/images/favicon.png" type="image/x-icon" />
+
+    
+    <title>SSL Security</title>
+    <link href="/css/nucleus.css" rel="stylesheet">
+    <link href="/css/font-awesome.min.css" rel="stylesheet">
+    <link href="/css/hybrid.css" rel="stylesheet">
+    <link href="/css/featherlight.min.css" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css" rel="stylesheet">
+    <link href="/css/horsey.css" rel="stylesheet">
+    <link href="/css/theme.css" rel="stylesheet">
+    <link href="/css/hugo-theme.css" rel="stylesheet">
+    <script src="/js/jquery-2.x.min.js"></script>
+    <style type="text/css">:root #header + #content > #left > #rlblock_left
+    {display:none !important;}</style>
+    
+
+  </head>
+  <body class="" data-url="/reference/security/">
+    <nav id="sidebar">
+  <div id="header-wrapper">
+    <div id="header">
+      <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
+<div style="font-family: 'Raleway', serif; font-size: x-large">CHORIA</div>
+
+    </div>
+    
+</div>
+
+
+  <div class="highlightable">
+    <ul class="topics">
+      
+      
+        
+        
+          
+            
+          
+        
+          
+            
+          
+        
+          
+            
+          
+        
+          
+            
+          
+        
+          
+            
+          
+        
+      
+      
+      
+      
+
+      
+        
+      
+      
+      
+
+      <li class="dd-item  " data-nav-id="/about/">
+        <a href="/about/">
+          <span>
+            
+              <b>1. </b>
+            
+             About Choria
+            
+           </span>
+        </a>
+        
+      </li>
+      
+      
+      
+
+      
+        
+      
+      
+      
+
+      <li class="dd-item  " data-nav-id="/deployment/">
+        <a href="/deployment/">
+          <span>
+            
+              <b>2. </b>
+            
+             Deployment
+            
+           </span>
+        </a>
+        
+        <ul>
+          
+          
+          
+          
+            <li class="dd-item " data-nav-id="/deployment/requirements/">
+              <a href="/deployment/requirements/">
+                <span>Requirements     </i></span>
+              </a>
+            </li>
+          
+          
+          
+            <li class="dd-item " data-nav-id="/deployment/nats/">
+              <a href="/deployment/nats/">
+                <span>NATS Middleware     </i></span>
+              </a>
+            </li>
+          
+          
+          
+            <li class="dd-item " data-nav-id="/deployment/dns/">
+              <a href="/deployment/dns/">
+                <span>DNS Setup     </i></span>
+              </a>
+            </li>
+          
+          
+          
+            <li class="dd-item " data-nav-id="/deployment/mcollective/">
+              <a href="/deployment/mcollective/">
+                <span>MCollective     </i></span>
+              </a>
+            </li>
+          
+          
+          
+            <li class="dd-item " data-nav-id="/deployment/first-user/">
+              <a href="/deployment/first-user/">
+                <span>First User     </i></span>
+              </a>
+            </li>
+          
+          
+          
+            <li class="dd-item " data-nav-id="/deployment/next-steps/">
+              <a href="/deployment/next-steps/">
+                <span>Next Steps     </i></span>
+              </a>
+            </li>
+          
+          
+        </ul>
+        
+      </li>
+      
+      
+      
+
+      
+        
+      
+      
+      
+
+      <li class="dd-item  " data-nav-id="/configuration/">
+        <a href="/configuration/">
+          <span>
+            
+              <b>3. </b>
+            
+             Optional Configuration
+            
+           </span>
+        </a>
+        
+        <ul>
+          
+          
+          
+          
+            <li class="dd-item " data-nav-id="/configuration/puppetdb/">
+              <a href="/configuration/puppetdb/">
+                <span>PuppetDB Discovery     </i></span>
+              </a>
+            </li>
+          
+          
+          
+            <li class="dd-item " data-nav-id="/configuration/aaa/">
+              <a href="/configuration/aaa/">
+                <span>MCollective AAA     </i></span>
+              </a>
+            </li>
+          
+          
+          
+            <li class="dd-item " data-nav-id="/configuration/plugins/">
+              <a href="/configuration/plugins/">
+                <span>Plugin Distribution     </i></span>
+              </a>
+            </li>
+          
+          
+          
+            <li class="dd-item " data-nav-id="/configuration/gems/">
+              <a href="/configuration/gems/">
+                <span>Gem Distribution     </i></span>
+              </a>
+            </li>
+          
+          
+          
+            <li class="dd-item " data-nav-id="/configuration/app_orchestration/">
+              <a href="/configuration/app_orchestration/">
+                <span>Application Orchestrator     </i></span>
+              </a>
+            </li>
+          
+          
+        </ul>
+        
+      </li>
+      
+      
+      
+
+      
+        
+      
+      
+      
+
+      <li class="dd-item  parent" data-nav-id="/reference/">
+        <a href="/reference/">
+          <span>
+            
+              <b>4. </b>
+            
+             Reference
+            
+           </span>
+        </a>
+        
+        <ul>
+          
+          
+          
+          
+            <li class="dd-item " data-nav-id="/reference/nats/">
+              <a href="/reference/nats/">
+                <span>NATS Connector     </i></span>
+              </a>
+            </li>
+          
+          
+          
+            <li class="dd-item active" data-nav-id="/reference/security/">
+              <a href="/reference/security/">
+                <span>SSL Security     </i></span>
+              </a>
+            </li>
+          
+          
+        </ul>
+        
+      </li>
+      
+      
+      
+
+      
+        
+      
+      
+      
+
+      <li class="dd-item  " data-nav-id="/development/">
+        <a href="/development/">
+          <span>
+            
+              <b>5. </b>
+            
+             Development
+            
+           </span>
+        </a>
+        
+        <ul>
+          
+          
+          
+          
+            <li class="dd-item " data-nav-id="/development/rest/">
+              <a href="/development/rest/">
+                <span>REST Server Support     </i></span>
+              </a>
+            </li>
+          
+          
+          
+            <li class="dd-item " data-nav-id="/development/messages/">
+              <a href="/development/messages/">
+                <span>Message Structure     </i></span>
+              </a>
+            </li>
+          
+          
+        </ul>
+        
+      </li>
+      
+      
+    </ul>
+    <hr>
+     
+    <section id="footer">
+      <p>Hosted at <a href="https://github.com/ripienaar/mcollective-choria">GitHub</a> by <a href="https://www.devco.net/">R.I. Pienaar</a></p>
+    </section>
+  </div>
+</nav>
+
+        <section id="body">
+        <div id="overlay"></div>
+
+        <div class="padding highlightable">
+
+            <div id="top-bar">
+              
+              <div id="breadcrumbs" itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb">
+                  <span id="sidebar-toggle-span">
+                      <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                        <i class="fa fa-bars"></i>
+                      </a>
+                  </span>
+                
+                <span id="toc-menu"><a href=""><i class="fa fa-list-alt"></i></a></span>
+                
+                
+                
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                    
+                    
+                <a href="/reference/" itemprop="url"><span itemprop="title">Reference</span></a> <i class="fa fa-angle-right"></i>
+                    
+                  
+                
+                <span itemprop="title"> SSL Security</span>
+              </div>
+              
+                  <div class="progress">
+    <div class="wrapper">
+<nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#client-user-setup">Client / User Setup</a></li>
+<li><a href="#server-setup">Server Setup</a>
+<ul>
+<li><a href="#certificate-whitelist">Certificate Whitelist</a></li>
+</ul></li>
+<li><a href="#manual-client-certificate-requests">Manual Client Certificate Requests</a>
+<ul>
+<li><a href="#special-handling-of-rest-servers-and-other-delegators">Special handling of REST servers and other delegators</a></li>
+</ul></li>
+<li><a href="#message-protocol-details">Message Protocol Details</a></li>
+</ul></li>
+</ul>
+</nav>
+    </div>
+</div>
+
+              
+
+            </div>
+            
+    	        <div id="body-inner">
+                
+                <h1>SSL Security</h1>
+                
+
+
+
+<p>Choria includes a MCollective Security plugin designed to Just Work and be secure by default.</p>
+
+<p>The major goal is that the configuration should be as little as possible work.
+It should be as easy to get a very secure MCollective as it is to get the legacy
+<em>psk</em> one working.  To that goal there is only 1 setting you have to set to enable
+this and yield a secure working collective.</p>
+
+<p>It shares a similar model to the old MCollective SSL security plugin but:</p>
+
+<ul>
+<li>There is no shared private key anywhere</li>
+<li>The plugin has no settings to change for a default secure behaviour.
+ It just works</li>
+<li>Requestor certs are validated against the Puppet CA and only ones signed by
+ it can make requests</li>
+<li>Public key distribution is automatic and does not require configuring</li>
+<li>Only certificate names matching <em>/.mcollective$/</em> can be used, this way
+ someone cannot just steal any signed cert from any node and make requests.
+ This can though optionally be changed with a configuration option.</li>
+<li>It provides crypto validated callerid in the form <em>choria=certname</em> for use
+ in MCollective AAA</li>
+<li>Special support exist for making mature AAA compatible REST services that
+ can make requests on behalf of other callerids</li>
+</ul>
+
+<p>It requires you to have a working Puppet setup with a Master acting as a CA, it
+only supports Puppet 4 AIO. Every MCollective node must already be a Puppet node.</p>
+
+<div class="notices tip" ><p>After installing MCollective Choria this plugin is already completely deployed. This page is for reference only.</p>
+</div>
+
+
+<h2 id="client-user-setup">Client / User Setup</h2>
+
+<p>Clients need their own certificates, you use Puppet to obtain them, this will only work
+with Puppet AIO paths.</p>
+
+<p>A helper exist to do this for you, run it like:</p>
+
+<pre><code>$ mco choria request_cert
+</code></pre>
+
+<p>This will fetch the normal auto detected user certificate, you can supply arguments
+to change the certname.</p>
+
+<p>They then set <em>securityprovider = choria</em> in their client configuration and it will work.</p>
+
+<p>Only certificates matching <em>/.mcollective$/</em> will be usable unless you change defaults
+which is not recommended.</p>
+
+<p>Certificates matching <em>/.privileged.mcollective$/</em> have special meaning and should only
+be approved if you use something like the <a href="../../development/rest">REST</a> features.</p>
+
+<h2 id="server-setup">Server Setup</h2>
+
+<p>On the server you have to set <em>securityprovider = choria</em>, assuming you have a working
+Puppet 4 AIO setup. This plugin itself has no options to change any paths to certificates.</p>
+
+<p>Client certificates are cached in _/etc/puppetlabs/mcollective/choria_security/public<em>certs</em>,
+the directory will be created if it does not exist.  There is no case where the cert
+will be overwritten once cached, changing a cert for user entails you having to remove
+the cert from the servers.</p>
+
+<h3 id="certificate-whitelist">Certificate Whitelist</h3>
+
+<p>The default behaviour should be safe enough, you know exactly what will be allowed
+when you sign a certificate ending in <em>.mcollective</em> but you might want to have a
+whitelist of certificates, this can be controlled with the server config file:</p>
+
+<pre><code>plugin.choria.security.certname_whitelist = bob , /\.mcollective$/
+</code></pre>
+
+<p>This will match a specific certificate name <em>bob</em> and the default.</p>
+
+<h2 id="manual-client-certificate-requests">Manual Client Certificate Requests</h2>
+
+<p>The manual certificate request process can be seen here in case the helper is not working or you
+want to generate them offline and store somewhere.</p>
+
+<pre><code>$ puppet certificate generate ${USER}.mcollective --ca-location remote --ca_server ca.example.net
+</code></pre>
+
+<p>Your CA admins will now have a certificate request that they must sign like normal,
+once signed you do:</p>
+
+<pre><code>$ puppet certificate find ${USER}.mcollective --ca-location remote --ca_server ca.example.net
+$ puppet certificate find ca --ca-location remote --ca_server ca.example.net
+</code></pre>
+
+<h3 id="special-handling-of-rest-servers-and-other-delegators">Special handling of REST servers and other delegators</h3>
+
+<p>The security model of this plugin specifically cater for delegated requests while remaining
+compatible with the MCollective Authentication, Authorization and Auditing features.</p>
+
+<p>See <a href="../../development/rest">REST</a> for details about this scenario.</p>
+
+<h2 id="message-protocol-details">Message Protocol Details</h2>
+
+<p>Developer details of the messaging protocol in <a href="../../development/messages">Message Structure</a></p>
+
+
+      
+      </div>
+    </div>
+
+    <div id="navigation">
+        
+        
+    </div>
+
+    </section>
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="/js/clipboard.min.js"></script>
+    <script src="/js/perfect-scrollbar.min.js"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js"></script>
+    <script src="/js/jquery.sticky-kit.min.js"></script>
+    <script src="/js/featherlight.min.js"></script>
+    <script src="/js/html5shiv-printshiv.min.js"></script>
+    <script src="/js/highlight.pack.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+    <script src="/js/modernizr.custom.71422.js"></script>
+    <script src="/js/learn.js"></script>
+    <script src="/js/hugo-learn.js"></script>
+    
+<script>
+window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+ga('create', 'UA-10152852-12', 'auto');
+ga('send', 'pageview');
+</script>
+<script async src='//www.google-analytics.com/analytics.js'></script>
+
+
+  </body>
+</html>
+

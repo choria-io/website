@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en" class="js csstransforms3d">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta name="generator" content="Hugo 0.17" />
+    <meta name="description" content="Documentation for the Choria Orchestrator">
+<meta name="author" content="R.I.Pienaar &lt;rip@devco.net&gt;">
+
+    <link rel="shortcut icon" href="/images/favicon.png" type="image/x-icon" />
+
+    
+    <title>PuppetDB Discovery</title>
+    <link href="/css/nucleus.css" rel="stylesheet">
+    <link href="/css/font-awesome.min.css" rel="stylesheet">
+    <link href="/css/hybrid.css" rel="stylesheet">
+    <link href="/css/featherlight.min.css" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css" rel="stylesheet">
+    <link href="/css/horsey.css" rel="stylesheet">
+    <link href="/css/theme.css" rel="stylesheet">
+    <link href="/css/hugo-theme.css" rel="stylesheet">
+    <script src="/js/jquery-2.x.min.js"></script>
+    <style type="text/css">:root #header + #content > #left > #rlblock_left
+    {display:none !important;}</style>
+    
+
+  </head>
+  <body class="" data-url="/configuration/puppetdb/">
+    <nav id="sidebar">
+  <div id="header-wrapper">
+    <div id="header">
+      <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
+<div style="font-family: 'Raleway', serif; font-size: x-large">CHORIA</div>
+
+    </div>
+    
+</div>
+
+
+  <div class="highlightable">
+    <ul class="topics">
+      
+      
+        
+        
+          
+            
+          
+        
+          
+            
+          
+        
+          
+            
+          
+        
+          
+            
+          
+        
+          
+            
+          
+        
+      
+      
+      
+      
+
+      
+        
+      
+      
+      
+
+      <li class="dd-item  " data-nav-id="/about/">
+        <a href="/about/">
+          <span>
+            
+              <b>1. </b>
+            
+             About Choria
+            
+           </span>
+        </a>
+        
+      </li>
+      
+      
+      
+
+      
+        
+      
+      
+      
+
+      <li class="dd-item  " data-nav-id="/deployment/">
+        <a href="/deployment/">
+          <span>
+            
+              <b>2. </b>
+            
+             Deployment
+            
+           </span>
+        </a>
+        
+        <ul>
+          
+          
+          
+          
+            <li class="dd-item " data-nav-id="/deployment/requirements/">
+              <a href="/deployment/requirements/">
+                <span>Requirements     </i></span>
+              </a>
+            </li>
+          
+          
+          
+            <li class="dd-item " data-nav-id="/deployment/nats/">
+              <a href="/deployment/nats/">
+                <span>NATS Middleware     </i></span>
+              </a>
+            </li>
+          
+          
+          
+            <li class="dd-item " data-nav-id="/deployment/dns/">
+              <a href="/deployment/dns/">
+                <span>DNS Setup     </i></span>
+              </a>
+            </li>
+          
+          
+          
+            <li class="dd-item " data-nav-id="/deployment/mcollective/">
+              <a href="/deployment/mcollective/">
+                <span>MCollective     </i></span>
+              </a>
+            </li>
+          
+          
+          
+            <li class="dd-item " data-nav-id="/deployment/first-user/">
+              <a href="/deployment/first-user/">
+                <span>First User     </i></span>
+              </a>
+            </li>
+          
+          
+          
+            <li class="dd-item " data-nav-id="/deployment/next-steps/">
+              <a href="/deployment/next-steps/">
+                <span>Next Steps     </i></span>
+              </a>
+            </li>
+          
+          
+        </ul>
+        
+      </li>
+      
+      
+      
+
+      
+        
+      
+      
+      
+
+      <li class="dd-item  parent" data-nav-id="/configuration/">
+        <a href="/configuration/">
+          <span>
+            
+              <b>3. </b>
+            
+             Optional Configuration
+            
+           </span>
+        </a>
+        
+        <ul>
+          
+          
+          
+          
+            <li class="dd-item active" data-nav-id="/configuration/puppetdb/">
+              <a href="/configuration/puppetdb/">
+                <span>PuppetDB Discovery     </i></span>
+              </a>
+            </li>
+          
+          
+          
+            <li class="dd-item " data-nav-id="/configuration/aaa/">
+              <a href="/configuration/aaa/">
+                <span>MCollective AAA     </i></span>
+              </a>
+            </li>
+          
+          
+          
+            <li class="dd-item " data-nav-id="/configuration/plugins/">
+              <a href="/configuration/plugins/">
+                <span>Plugin Distribution     </i></span>
+              </a>
+            </li>
+          
+          
+          
+            <li class="dd-item " data-nav-id="/configuration/gems/">
+              <a href="/configuration/gems/">
+                <span>Gem Distribution     </i></span>
+              </a>
+            </li>
+          
+          
+          
+            <li class="dd-item " data-nav-id="/configuration/app_orchestration/">
+              <a href="/configuration/app_orchestration/">
+                <span>Application Orchestrator     </i></span>
+              </a>
+            </li>
+          
+          
+        </ul>
+        
+      </li>
+      
+      
+      
+
+      
+        
+      
+      
+      
+
+      <li class="dd-item  " data-nav-id="/reference/">
+        <a href="/reference/">
+          <span>
+            
+              <b>4. </b>
+            
+             Reference
+            
+           </span>
+        </a>
+        
+        <ul>
+          
+          
+          
+          
+            <li class="dd-item " data-nav-id="/reference/nats/">
+              <a href="/reference/nats/">
+                <span>NATS Connector     </i></span>
+              </a>
+            </li>
+          
+          
+          
+            <li class="dd-item " data-nav-id="/reference/security/">
+              <a href="/reference/security/">
+                <span>SSL Security     </i></span>
+              </a>
+            </li>
+          
+          
+        </ul>
+        
+      </li>
+      
+      
+      
+
+      
+        
+      
+      
+      
+
+      <li class="dd-item  " data-nav-id="/development/">
+        <a href="/development/">
+          <span>
+            
+              <b>5. </b>
+            
+             Development
+            
+           </span>
+        </a>
+        
+        <ul>
+          
+          
+          
+          
+            <li class="dd-item " data-nav-id="/development/rest/">
+              <a href="/development/rest/">
+                <span>REST Server Support     </i></span>
+              </a>
+            </li>
+          
+          
+          
+            <li class="dd-item " data-nav-id="/development/messages/">
+              <a href="/development/messages/">
+                <span>Message Structure     </i></span>
+              </a>
+            </li>
+          
+          
+        </ul>
+        
+      </li>
+      
+      
+    </ul>
+    <hr>
+     
+    <section id="footer">
+      <p>Hosted at <a href="https://github.com/ripienaar/mcollective-choria">GitHub</a> by <a href="https://www.devco.net/">R.I. Pienaar</a></p>
+    </section>
+  </div>
+</nav>
+
+        <section id="body">
+        <div id="overlay"></div>
+
+        <div class="padding highlightable">
+
+            <div id="top-bar">
+              
+              <div id="breadcrumbs" itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb">
+                  <span id="sidebar-toggle-span">
+                      <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                        <i class="fa fa-bars"></i>
+                      </a>
+                  </span>
+                
+                <span id="toc-menu"><a href=""><i class="fa fa-list-alt"></i></a></span>
+                
+                
+                
+                
+                  
+                
+                  
+                    
+                    
+                <a href="/configuration/" itemprop="url"><span itemprop="title">Optional Configuration</span></a> <i class="fa fa-angle-right"></i>
+                    
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                <span itemprop="title"> PuppetDB Discovery</span>
+              </div>
+              
+                  <div class="progress">
+    <div class="wrapper">
+<nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#requirements">Requirements</a></li>
+<li><a href="#using">Using</a>
+<ul>
+<li><a href="#pql">PQL</a></li>
+</ul></li>
+<li><a href="#configuring-mcollective">Configuring MCollective</a></li>
+<li><a href="#configuring-puppet-optional">Configuring Puppet (optional)</a></li>
+</ul></li>
+</ul>
+</nav>
+    </div>
+</div>
+
+              
+
+            </div>
+            
+    	        <div id="body-inner">
+                
+                <h1>PuppetDB Discovery</h1>
+                
+
+
+
+<p>Choria includes a <a href="https://docs.puppet.com/puppetdb/">PuppetDB</a> based discovery plugin but it&rsquo;s not enabled by default.</p>
+
+<p>This is an advanced PuppetDB plugin that is subcollective aware and supports node, fact, class and agent filters. It uses the new <em>Puppet PQL</em> under the hood and so requires a very recent PuppetDB.</p>
+
+<p>Using it you get a very fast discovery workflow but without the awareness of which nodes are actually up and responding, it&rsquo;s suitable for situations where you have a stable network, or really care to know when known machines are not responding as is common during software deployments. It makes a very comfortable to use default discovery plugin.</p>
+
+<h2 id="requirements">Requirements</h2>
+
+<p>Your MCollective <em>client</em> machine needs to be able to communicate with PuppetDB on its SSL port. The client will use the same certificates that was created using _mco choria request<em>cert</em> so you don&rsquo;t need to do anything with the normal Puppet client-tools config, though you might find setting those up helpful.</p>
+
+<div class="notices warning" ><p>Giving people access to PuppetDB in this manner will allow them to do all kinds of thing with your data as there are no ACL features in PuppetDB, consider carefully who you allow to connect to PuppetDB on any port.</p>
+</div>
+
+
+<h2 id="using">Using</h2>
+
+<p>In general you can just go about using MCollective as normal after configuring it (see below).  All your usual filters like <em>-I</em>, <em>-C</em>, <em>-W</em> etc all work as normal.</p>
+
+<p>Your discovery should take a fraction of a second rather than the usual 2 seconds or more and will reflect what PuppetDB thinks it should be out there.</p>
+
+<h3 id="pql">PQL</h3>
+
+<p>There is an advanced feature that lets you construct complex queries using the <a href="https://docs.puppet.com/puppetdb/latest/api/query/v4/pql.html">PQL language</a> for discovery though.</p>
+
+<pre><code class="language-bash">$ mco find -I &quot;pql:nodes[certname] { certname ~ '^dev' }&quot;
+dev3.example.net
+dev1.example.net
+dev2.example.net
+</code></pre>
+
+<p>You can construct very complex queries that can match even to the level of specific properties of resources and classes:</p>
+
+<pre><code class="language-bash">$ mco find -I &quot;pql:inventory[certname] { resources { type = 'User' and title = 'rip' and parameters.ensure = 'present'}}&quot;
+</code></pre>
+
+<p>PQL queries comes in all forms, there are many examples at the Puppet docs. Though you should note that you must ensure you only ever return the certname as in the above example.</p>
+
+<p>If you configure the Puppet Client Tools (see below) you can test these queries on the CLI:</p>
+
+<pre><code class="language-bash">% puppet query &quot;inventory[certname] { resources { type = 'User' and title = 'rip' and parameters.ensure = 'present'}}&quot;
+[
+  {
+    &quot;certname&quot;: &quot;host1.example.net&quot;
+  }
+]
+</code></pre>
+
+<p>Your queries <strong>MUST</strong> return the data as above - just the certname property.</p>
+
+<h2 id="configuring-mcollective">Configuring MCollective</h2>
+
+<p>You do not have to configure this to be the default discovery method, instead you can use it just when you need or want:</p>
+
+<pre><code class="language-bash">$ mco puppet status --dm=choria
+</code></pre>
+
+<p>By passing <em>&ndash;dm=choria</em> to MCollective commands you enable this discovery method just for the duration of that command.  This is a good way to test the feature before enabling it by default.</p>
+
+<p>You can set this discovery method to be your default by adding the following hiera data:</p>
+
+<pre><code class="language-yaml">mcollective::client_config:
+  default_discovery_method: &quot;choria&quot;
+</code></pre>
+
+<p>By default it will attempt to find PuppetDB on puppet:8081, you can configure this <a href="../../deployment/dns/">using DNS or manually</a>.</p>
+
+<h2 id="configuring-puppet-optional">Configuring Puppet (optional)</h2>
+
+<p>It&rsquo;s convenient to be able to query PuppetDB using the <em>puppet query</em> command especially if you want to use the custom PQL based discovery, create ~/.puppetlabs/client-tools/puppetdb.conf with:</p>
+
+<pre><code class="language-json">{
+  &quot;puppetdb&quot;: {
+    &quot;server_urls&quot;: &quot;https://puppet:8081&quot;,
+    &quot;cacert&quot;: &quot;/home/rip/.puppetlabs/etc/puppet/ssl/certs/ca.pem&quot;,
+    &quot;cert&quot;: &quot;/home/rip/.puppetlabs/etc/puppet/ssl/certs/rip.mcollective.pem&quot;,
+    &quot;key&quot;: &quot;/home/rip/.puppetlabs/etc/puppet/ssl/private_keys/rip.mcollective.pem&quot;
+  }
+}
+</code></pre>
+
+<p>And then install the puppet-client-tools package from the Puppet Labs repos.</p>
+
+
+      
+      </div>
+    </div>
+
+    <div id="navigation">
+        
+        
+    </div>
+
+    </section>
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="/js/clipboard.min.js"></script>
+    <script src="/js/perfect-scrollbar.min.js"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js"></script>
+    <script src="/js/jquery.sticky-kit.min.js"></script>
+    <script src="/js/featherlight.min.js"></script>
+    <script src="/js/html5shiv-printshiv.min.js"></script>
+    <script src="/js/highlight.pack.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+    <script src="/js/modernizr.custom.71422.js"></script>
+    <script src="/js/learn.js"></script>
+    <script src="/js/hugo-learn.js"></script>
+    
+<script>
+window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+ga('create', 'UA-10152852-12', 'auto');
+ga('send', 'pageview');
+</script>
+<script async src='//www.google-analytics.com/analytics.js'></script>
+
+
+  </body>
+</html>
+

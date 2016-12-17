@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>About-rsses on Choria Orchestrator</title>
+    <link>http://docs.choria.io/about/index.xml</link>
+    <description>Recent content in About-rsses on Choria Orchestrator</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <atom:link href="http://docs.choria.io/about/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>About Choria</title>
+      <link>http://docs.choria.io/about/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://docs.choria.io/about/</guid>
+      <description>
+
+&lt;p&gt;Choria is a distribution of plugins and utilities that enhances &lt;a href=&#34;https://docs.puppet.com/mcollective/&#34;&gt;The Marionette Collective&lt;/a&gt; from Puppet Inc with modern abilities and significantly improves the getting started experience.&lt;/p&gt;
+
+&lt;h2 id=&#34;overview&#34;&gt;Overview&lt;/h2&gt;
+
+&lt;p&gt;MCollective is notoriously hard to install, the official installation guide takes you through pages and pages of information and expect you to make very important decisions that affects the security of your platform before you even know the system.&lt;/p&gt;
+
+&lt;p&gt;Choria exists to provide a distribution of plugins designed to be secure by default, easy to install and with no prior knowledge required to get to a point of having a secure production ready deployment of MCollective. Even a clustered setup of MCollective using Choria should take less than 1 hour.&lt;/p&gt;
+
+&lt;p&gt;After installing MCollective using Choria you can be sure that the security decisions taken are robust and the full Authentication, Authorization and Auditing feature set that sets MCollective apart from others have been configured for you.  Choria was written by the original architect of The Marionette Collective and represents current thinking on deployment and security of the system.&lt;/p&gt;
+
+&lt;h2 id=&#34;features&#34;&gt;Features&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;A Security Plugin utilizing the Puppet 4 Certificate Authority system&lt;/li&gt;
+&lt;li&gt;A Discovery plugin for PuppetDB giving you a responsive and predictable interaction mode with support for PQL based infrastructure discovery&lt;/li&gt;
+&lt;li&gt;An Orchestrator for the Puppet Multi Node Applications&lt;/li&gt;
+&lt;li&gt;A Connector using NATS.io middleware&lt;/li&gt;
+&lt;li&gt;Full end to end Authentication, Authorization and Auditing out of the box&lt;/li&gt;
+&lt;li&gt;Common Puppet eco system plugins like Package, Service, Puppet and File Manager deployed and ready to use&lt;/li&gt;
+&lt;li&gt;Operating System support for every OS Puppet 4 AIO supports.&lt;/li&gt;
+&lt;li&gt;Support for SRV records and sane configuration defaults to attain a zero config setup&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;See the &lt;a href=&#34;../deployment&#34;&gt;Deployment Guide&lt;/a&gt; for details on installation.&lt;/p&gt;
+
+&lt;h2 id=&#34;status&#34;&gt;Status&lt;/h2&gt;
+
+&lt;p&gt;All the features of this module work as intended, though bugs are inevitable.  All AIO supported Operating Systems are supported, including Windows, and the project is under active development on &lt;a href=&#34;https://github.com/ripienaar/mcollective-choria&#34;&gt;GitHub&lt;/a&gt;.&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

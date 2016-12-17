@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en" class="js csstransforms3d">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta name="generator" content="Hugo 0.17" />
+    <meta name="description" content="Documentation for the Choria Orchestrator">
+<meta name="author" content="R.I.Pienaar &lt;rip@devco.net&gt;">
+
+    <link rel="shortcut icon" href="/images/favicon.png" type="image/x-icon" />
+
+    
+    <title>REST Server Support</title>
+    <link href="/css/nucleus.css" rel="stylesheet">
+    <link href="/css/font-awesome.min.css" rel="stylesheet">
+    <link href="/css/hybrid.css" rel="stylesheet">
+    <link href="/css/featherlight.min.css" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css" rel="stylesheet">
+    <link href="/css/horsey.css" rel="stylesheet">
+    <link href="/css/theme.css" rel="stylesheet">
+    <link href="/css/hugo-theme.css" rel="stylesheet">
+    <script src="/js/jquery-2.x.min.js"></script>
+    <style type="text/css">:root #header + #content > #left > #rlblock_left
+    {display:none !important;}</style>
+    
+
+  </head>
+  <body class="" data-url="/development/rest/">
+    <nav id="sidebar">
+  <div id="header-wrapper">
+    <div id="header">
+      <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
+<div style="font-family: 'Raleway', serif; font-size: x-large">CHORIA</div>
+
+    </div>
+    
+</div>
+
+
+  <div class="highlightable">
+    <ul class="topics">
+      
+      
+        
+        
+          
+            
+          
+        
+          
+            
+          
+        
+          
+            
+          
+        
+          
+            
+          
+        
+          
+            
+          
+        
+      
+      
+      
+      
+
+      
+        
+      
+      
+      
+
+      <li class="dd-item  " data-nav-id="/about/">
+        <a href="/about/">
+          <span>
+            
+              <b>1. </b>
+            
+             About Choria
+            
+           </span>
+        </a>
+        
+      </li>
+      
+      
+      
+
+      
+        
+      
+      
+      
+
+      <li class="dd-item  " data-nav-id="/deployment/">
+        <a href="/deployment/">
+          <span>
+            
+              <b>2. </b>
+            
+             Deployment
+            
+           </span>
+        </a>
+        
+        <ul>
+          
+          
+          
+          
+            <li class="dd-item " data-nav-id="/deployment/requirements/">
+              <a href="/deployment/requirements/">
+                <span>Requirements     </i></span>
+              </a>
+            </li>
+          
+          
+          
+            <li class="dd-item " data-nav-id="/deployment/nats/">
+              <a href="/deployment/nats/">
+                <span>NATS Middleware     </i></span>
+              </a>
+            </li>
+          
+          
+          
+            <li class="dd-item " data-nav-id="/deployment/dns/">
+              <a href="/deployment/dns/">
+                <span>DNS Setup     </i></span>
+              </a>
+            </li>
+          
+          
+          
+            <li class="dd-item " data-nav-id="/deployment/mcollective/">
+              <a href="/deployment/mcollective/">
+                <span>MCollective     </i></span>
+              </a>
+            </li>
+          
+          
+          
+            <li class="dd-item " data-nav-id="/deployment/first-user/">
+              <a href="/deployment/first-user/">
+                <span>First User     </i></span>
+              </a>
+            </li>
+          
+          
+          
+            <li class="dd-item " data-nav-id="/deployment/next-steps/">
+              <a href="/deployment/next-steps/">
+                <span>Next Steps     </i></span>
+              </a>
+            </li>
+          
+          
+        </ul>
+        
+      </li>
+      
+      
+      
+
+      
+        
+      
+      
+      
+
+      <li class="dd-item  " data-nav-id="/configuration/">
+        <a href="/configuration/">
+          <span>
+            
+              <b>3. </b>
+            
+             Optional Configuration
+            
+           </span>
+        </a>
+        
+        <ul>
+          
+          
+          
+          
+            <li class="dd-item " data-nav-id="/configuration/puppetdb/">
+              <a href="/configuration/puppetdb/">
+                <span>PuppetDB Discovery     </i></span>
+              </a>
+            </li>
+          
+          
+          
+            <li class="dd-item " data-nav-id="/configuration/aaa/">
+              <a href="/configuration/aaa/">
+                <span>MCollective AAA     </i></span>
+              </a>
+            </li>
+          
+          
+          
+            <li class="dd-item " data-nav-id="/configuration/plugins/">
+              <a href="/configuration/plugins/">
+                <span>Plugin Distribution     </i></span>
+              </a>
+            </li>
+          
+          
+          
+            <li class="dd-item " data-nav-id="/configuration/gems/">
+              <a href="/configuration/gems/">
+                <span>Gem Distribution     </i></span>
+              </a>
+            </li>
+          
+          
+          
+            <li class="dd-item " data-nav-id="/configuration/app_orchestration/">
+              <a href="/configuration/app_orchestration/">
+                <span>Application Orchestrator     </i></span>
+              </a>
+            </li>
+          
+          
+        </ul>
+        
+      </li>
+      
+      
+      
+
+      
+        
+      
+      
+      
+
+      <li class="dd-item  " data-nav-id="/reference/">
+        <a href="/reference/">
+          <span>
+            
+              <b>4. </b>
+            
+             Reference
+            
+           </span>
+        </a>
+        
+        <ul>
+          
+          
+          
+          
+            <li class="dd-item " data-nav-id="/reference/nats/">
+              <a href="/reference/nats/">
+                <span>NATS Connector     </i></span>
+              </a>
+            </li>
+          
+          
+          
+            <li class="dd-item " data-nav-id="/reference/security/">
+              <a href="/reference/security/">
+                <span>SSL Security     </i></span>
+              </a>
+            </li>
+          
+          
+        </ul>
+        
+      </li>
+      
+      
+      
+
+      
+        
+      
+      
+      
+
+      <li class="dd-item  parent" data-nav-id="/development/">
+        <a href="/development/">
+          <span>
+            
+              <b>5. </b>
+            
+             Development
+            
+           </span>
+        </a>
+        
+        <ul>
+          
+          
+          
+          
+            <li class="dd-item active" data-nav-id="/development/rest/">
+              <a href="/development/rest/">
+                <span>REST Server Support     </i></span>
+              </a>
+            </li>
+          
+          
+          
+            <li class="dd-item " data-nav-id="/development/messages/">
+              <a href="/development/messages/">
+                <span>Message Structure     </i></span>
+              </a>
+            </li>
+          
+          
+        </ul>
+        
+      </li>
+      
+      
+    </ul>
+    <hr>
+     
+    <section id="footer">
+      <p>Hosted at <a href="https://github.com/ripienaar/mcollective-choria">GitHub</a> by <a href="https://www.devco.net/">R.I. Pienaar</a></p>
+    </section>
+  </div>
+</nav>
+
+        <section id="body">
+        <div id="overlay"></div>
+
+        <div class="padding highlightable">
+
+            <div id="top-bar">
+              
+              <div id="breadcrumbs" itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb">
+                  <span id="sidebar-toggle-span">
+                      <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                        <i class="fa fa-bars"></i>
+                      </a>
+                  </span>
+                
+                <span id="toc-menu"><a href=""><i class="fa fa-list-alt"></i></a></span>
+                
+                
+                
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                    
+                    
+                <a href="/development/" itemprop="url"><span itemprop="title">Development</span></a> <i class="fa fa-angle-right"></i>
+                    
+                  
+                
+                  
+                
+                <span itemprop="title"> REST Server Support</span>
+              </div>
+              
+                  <div class="progress">
+    <div class="wrapper">
+
+    </div>
+</div>
+
+              
+
+            </div>
+            
+    	        <div id="body-inner">
+                
+                <h1>REST Server Support</h1>
+                
+
+<p>In the past several attempts have been made to create REST gateways for MCollective but most of them were not very good.</p>
+
+<ul>
+<li>They did not set callerids thus the AAA model was broken</li>
+<li>They expect REST clients to wait for the duration of the request and so
+ consume many resources internal to them and generally are just a bad fit
+ for REST</li>
+<li>MCollective is not pure JSON</li>
+</ul>
+
+<p>The first requires a cooperative Security Plugin, this plugin is one and lets one build a REST gateway that works with the MCollective AAA design.</p>
+
+<p>The Choria security plugin has specific support for building REST services to interact with MCollective.</p>
+
+<pre><code class="language-text">+---------+                           +-------+                         +---------+
+| Client  |                           | REST  |                         | Server  |
++---------+                           +-------+                         +---------+
+     |                                    |                                  |
+     | Obtain Auth Token                  |                                  |
+     |-----------------------------------&gt;|                                  |
+     |                                    |                                  |
+     |                  Stores Auth Token |                                  |
+     |&lt;-----------------------------------|                                  |
+     |                                    |                                  |
+     | MCollective Request with Token     |                                  |
+     |-----------------------------------&gt;|                                  |
+     |                                    |                                  |
+     |                                    | /---------------\                |
+     |                                    |-| Internal RBAC |                |
+     |                                    | \---------------/                |
+     |                                    |                                  |
+     |                                    |                                  |
+     |                                    | signed with privileged user      |
+     |                                    | cert sets token based callerid   |
+     |                                    |---------------------------------&gt;|
+     |                                    |                                  |
+     |                          RequestID |                                  |
+     |&lt;-----------------------------------|                                  |
+     |                                    |                                  | /-----------------------\
+     |                                    |                                  |-| AAA based on callerid |
+     |                                    |                                  | \-----------------------/
+     |                                    |                                  |
+     |                                    |                           result |
+     |                 /---------------\  |&lt;---------------------------------|
+     |                 | Stores results |-|                           result |
+     |                 |  in a database | |&lt;---------------------------------|
+     |                 \-------------- /  |                           result |
+     |                                    |&lt;---------------------------------|
+     |                                    |                                  |
+     | Request results for RequestID      |                                  |
+     |-----------------------------------&gt;|                                  |
+     |                                    | /------------------\             |
+     |                                    |-|Retrieves from DB |             |
+     |                                    | \------------------/             |
+     |           Result set for RequestID |                                  |
+     |&lt;-----------------------------------|                                  |
+     |                                    |                                  |
+</code></pre>
+
+<p>Here the REST service has it&rsquo;s own token based authentication - perhaps OAth or similar, and would have an internal username schema for it&rsquo;s users.</p>
+
+<p>It would have a MCollective certificate that&rsquo;s considered a Privileged User certificate and so can set the <em>callerid</em> to any value it likes.  To MCollective the <em>callerid</em> would be _choria=uid_set_by<em>rest</em> where AAA can happen.</p>
+
+<p>This way the REST gateway can do it&rsquo;s own RBAC, caching, security model etc and with the model above the clients do not need to wait - results spool back from a database, can be paged and retrieved at any later date</p>
+
+<p>To set this up the REST service would get it&rsquo;s own SSL certs as any other clients and nodes would need to be specifically configured to trust the REST gateway as a <em>Privileged User</em> capable of setting <em>callerid</em> != <em>certname</em></p>
+
+<p>By default any certificate matching <em>/.privileged.mcollective$/</em> will be a privileged user but you can specificy a list like:</p>
+
+<pre><code>plugin.choria.security.privileged_users = rest_gateway_1.mcollective, rest_gateway_2.mcollective
+</code></pre>
+
+<p>MCollective is still not pure JSON but this might change in the near future.</p>
+
+
+      
+      </div>
+    </div>
+
+    <div id="navigation">
+        
+        
+    </div>
+
+    </section>
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="/js/clipboard.min.js"></script>
+    <script src="/js/perfect-scrollbar.min.js"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js"></script>
+    <script src="/js/jquery.sticky-kit.min.js"></script>
+    <script src="/js/featherlight.min.js"></script>
+    <script src="/js/html5shiv-printshiv.min.js"></script>
+    <script src="/js/highlight.pack.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+    <script src="/js/modernizr.custom.71422.js"></script>
+    <script src="/js/learn.js"></script>
+    <script src="/js/hugo-learn.js"></script>
+    
+<script>
+window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+ga('create', 'UA-10152852-12', 'auto');
+ga('send', 'pageview');
+</script>
+<script async src='//www.google-analytics.com/analytics.js'></script>
+
+
+  </body>
+</html>
+

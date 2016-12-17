@@ -1,0 +1,479 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Deployment-rsses on Choria Orchestrator</title>
+    <link>http://docs.choria.io/deployment/index.xml</link>
+    <description>Recent content in Deployment-rsses on Choria Orchestrator</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <atom:link href="http://docs.choria.io/deployment/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Deployment</title>
+      <link>http://docs.choria.io/deployment/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://docs.choria.io/deployment/</guid>
+      <description>
+
+&lt;h1 id=&#34;deployment&#34;&gt;Deployment&lt;/h1&gt;
+
+&lt;p&gt;Choria is designed to install MCollective very easily, the installation is completely driven by Puppet and Hiera and have very few requirements.&lt;/p&gt;
+
+&lt;p&gt;After following this guide you will have a fully functional MCollective set up with TLS encryption, full Authentication, Authorization and Auditing and several useful plugins configured.&lt;/p&gt;
+
+&lt;p&gt;Even if you have to do things like open up Firewall ports it&amp;rsquo;s anticipated that deploying MCollective using Choria should not take longer than 1 hour.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Requirements</title>
+      <link>http://docs.choria.io/deployment/requirements/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://docs.choria.io/deployment/requirements/</guid>
+      <description>
+
+&lt;p&gt;For MCollective to function we need a few infrastructure components, this guide takes you through setting up all of these:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Set up a middleware broker using &lt;a href=&#34;https://nats.io/&#34;&gt;NATS.io&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Configure server locations using DNS or manually if not using defaults&lt;/li&gt;
+&lt;li&gt;Configure MCollective&lt;/li&gt;
+&lt;li&gt;Create your first user&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;requirements&#34;&gt;Requirements&lt;/h2&gt;
+
+&lt;p&gt;There are very few requirements, a typical up to date Puppet installation following official guidelines will do:&lt;/p&gt;
+
+&lt;h3 id=&#34;required&#34;&gt;Required&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;You must use Puppet 4 deployed using the Puppet Inc AIO packages - the one called &lt;em&gt;puppet-agent&lt;/em&gt;.&lt;/li&gt;
+&lt;li&gt;You must be using a Puppet Master based setup, typically using &lt;em&gt;puppetserver&lt;/em&gt;.&lt;/li&gt;
+&lt;li&gt;Your mcollective &lt;em&gt;server.cfg&lt;/em&gt; and &lt;em&gt;client.cfg&lt;/em&gt; should be Factory Default&lt;/li&gt;
+&lt;li&gt;Your SSL certificates should be in the default locations.&lt;/li&gt;
+&lt;li&gt;You need to run middleware, Choria works best with NATS and provides a module to install that for you.&lt;/li&gt;
+&lt;li&gt;Your certnames must match your FQDNs - the default.&lt;/li&gt;
+&lt;li&gt;You need the &lt;a href=&#34;https://forge.puppet.com/ripienaar/mcollective&#34;&gt;ripienaar-mcollective&lt;/a&gt; and &lt;a href=&#34;https://forge.puppet.com/ripienaar/nats&#34;&gt;ripienaar-nats&lt;/a&gt; modules.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&#34;optional&#34;&gt;Optional&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;An optional PuppetDB integration exist to use PuppetDB as the source of truth.  This requires PuppetDB and extra configuration.&lt;/li&gt;
+&lt;li&gt;Puppet Applications are supported and deployment can be done using Choria, it requires specific setup of your &lt;em&gt;puppetserver&lt;/em&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>NATS Middleware</title>
+      <link>http://docs.choria.io/deployment/nats/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://docs.choria.io/deployment/nats/</guid>
+      <description>
+
+&lt;p&gt;Choria uses the excellent &lt;a href=&#34;https://nats.io/&#34;&gt;NATS.io&lt;/a&gt; broker by default.  It&amp;rsquo;s very fast, light weight, has a simple configuration and is easy to monitor.  It&amp;rsquo;s configured to only accept connections from nodes with certificates signed by the Puppet CA.&lt;/p&gt;
+
+&lt;p&gt;One NATS server has been shown to be able to host over 2000 MCollective nodes comfortably using 300MB RAM.&lt;/p&gt;
+
+&lt;h2 id=&#34;prerequisites&#34;&gt;Prerequisites&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Broker nodes must be managed by Puppet and have certs signed by your CA&lt;/li&gt;
+&lt;li&gt;Brokers must run on systemd capable hosts such as CentOS 7&lt;/li&gt;
+&lt;li&gt;You need to get the &lt;a href=&#34;https://forge.puppet.com/ripienaar/nats&#34;&gt;ripienaar-nats&lt;/a&gt; module from the Puppet Forge&lt;/li&gt;
+&lt;li&gt;You need to ensure that port &lt;code&gt;4222&lt;/code&gt; is reachable from all your Puppet nodes on all NATS servers&lt;/li&gt;
+&lt;li&gt;You need to ensure that in a clustered environment port &lt;code&gt;4223&lt;/code&gt; is reachable by the NATS cluster hosts&lt;/li&gt;
+&lt;li&gt;If you wish to use the &lt;em&gt;collectd&lt;/em&gt; integration, port &lt;code&gt;8222&lt;/code&gt; must be reachable from &lt;em&gt;localhost&lt;/em&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;single-or-multiple-nodes&#34;&gt;Single or multiple nodes&lt;/h2&gt;
+
+&lt;p&gt;The decision to run multiple nodes is about availability and scale.  As mentioned NATS can easily handle large numbers of nodes on a single broker, if this is your first deployment there is no reason right now to think about a cluster of brokers.  As you&amp;rsquo;ll see configuring a cluster is very easy and easily done later.&lt;/p&gt;
+
+&lt;p&gt;If you choose to do 1 only keep it simple and install it on your Puppet Master.  This removes the need to configure DNS (the next section) and gets you going ready to explore the possibilities quickly, you can easily later add servers.&lt;/p&gt;
+
+&lt;h2 id=&#34;single-node&#34;&gt;Single node&lt;/h2&gt;
+
+&lt;p&gt;If you just want to run a single NATS server I suggest putting this on the same machine as your Puppet Server which would by default be resolvable as &lt;em&gt;puppet&lt;/em&gt;.  This means you do not need to configure anything in Choria as that&amp;rsquo;s the default it assumes.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-puppet&#34;&gt;node &amp;quot;puppet.example.net&amp;quot; {
+  class{&amp;quot;nats: }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;cluster-of-nats-brokers&#34;&gt;Cluster of NATS Brokers&lt;/h2&gt;
+
+&lt;p&gt;You can create a cluster of brokers, pick 3 or 5 machines and include the module on them all listing the entire cluster certnames. If you do a cluster you must configure Choria via &lt;a href=&#34;http://docs.choria.io/deployment/nats/&#34;&gt;DNS or manually&lt;/a&gt;.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-puppet&#34;&gt;node &amp;quot;nats1.example.net&amp;quot; {
+  class{&amp;quot;nats:
+    routes_password =&amp;gt; &amp;quot;Vrph54FBcIvdM&amp;quot;
+    servers =&amp;gt; [
+      &amp;quot;nats1.example.net&amp;quot;,
+      &amp;quot;nats2.example.net&amp;quot;,
+      &amp;quot;nats3.example.net&amp;quot;,
+      &amp;quot;nats4.example.net&amp;quot;,
+      &amp;quot;nats5.example.net&amp;quot;
+    ],
+  }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;collectd-integration&#34;&gt;Collectd Integration&lt;/h2&gt;
+
+&lt;p&gt;If you use the &lt;em&gt;puppet-collectd&lt;/em&gt; module you can optionally integrate with that:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-puppet&#34;&gt;node &amp;quot;puppet.example.net&amp;quot; {
+  class{&amp;quot;nats:
+    manage_collectd =&amp;gt; true
+  }
+}
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>DNS Setup</title>
+      <link>http://docs.choria.io/deployment/dns/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://docs.choria.io/deployment/dns/</guid>
+      <description>
+
+&lt;p&gt;By default as per Puppet behaviour the Puppet Master, Puppet CA and NATS brokers are all found on the name &lt;em&gt;puppet&lt;/em&gt;.  If you are doing a single node NATS installation on the Puppet Master called &lt;em&gt;puppet&lt;/em&gt; you do not neeed to configure anything and continue to the next page.&lt;/p&gt;
+
+&lt;p&gt;When not using &lt;em&gt;puppet&lt;/em&gt; you can configure these settings manually but we strongly suggest you use SRV records if at all possible.&lt;/p&gt;
+
+&lt;h2 id=&#34;nats-brokers&#34;&gt;NATS Brokers&lt;/h2&gt;
+
+&lt;p&gt;You can configure where your NATS brokers live using these SRV records:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;_x-puppet-mcollective._tcp   IN  SRV 10  0 4222  nats1.example.net.
+_x-puppet-mcollective._tcp   IN  SRV 11  0 4222  nats2.example.net.
+_x-puppet-mcollective._tcp   IN  SRV 12  0 4222  nats3.example.net.
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;This means you have 3 of them and they all listen on port &lt;em&gt;4222&lt;/em&gt;.&lt;/p&gt;
+
+&lt;h2 id=&#34;puppet-and-puppet-ca&#34;&gt;Puppet and Puppet CA&lt;/h2&gt;
+
+&lt;p&gt;If your Puppet CA, PuppetDB and Puppet Server are all on the same host, you can configure that all with a single SRV record that is compatible with Puppet SRV setup.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;_x-puppet._tcp               IN  SRV 10  0 8140  puppet1.example.net.
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;But if you wish to split the CA and DB from the master add these:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;_x-puppet-ca._tcp            IN  SRV 10  0 8140  puppetca1.example.net.
+_x-puppet-db._tcp            IN  SRV 10  0 8081  puppetdb1.example.net.
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;custom-domain&#34;&gt;Custom Domain&lt;/h2&gt;
+
+&lt;p&gt;By default these SRV records will be looked for in your machines &lt;em&gt;domain&lt;/em&gt; fact, but you can customize this by creating data in your &lt;em&gt;Hiera&lt;/em&gt;:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;mcollective_choria::config:
+  srv_domain: &amp;quot;prod.example.net&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;manual-config&#34;&gt;Manual Config&lt;/h2&gt;
+
+&lt;p&gt;If you have to you can configure these locations manually by creating &lt;em&gt;Hiera&lt;/em&gt; data:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;mcollective_choria::config:
+  puppetserver_host: &amp;quot;puppet1.example.net&amp;quot;
+  puppetserver_port: 8140
+  puppetca_host: &amp;quot;ca1.example.net&amp;quot;
+  puppetca_port: 8140
+  puppetdb_host: &amp;quot;pdb1.example.net&amp;quot;
+  puppetdb_port: 8081
+  middleware_hosts:
+    - &amp;quot;nats1.example.net:4222&amp;quot;
+    - &amp;quot;nats2.example.net:4222&amp;quot;
+    - &amp;quot;nats3.example.net:4222&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>MCollective</title>
+      <link>http://docs.choria.io/deployment/mcollective/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://docs.choria.io/deployment/mcollective/</guid>
+      <description>
+
+&lt;p&gt;Configuring MCollective with Choria is generally very simple and involves just including 1 module and setting some Hiera data, it takes care of the entire process for you.&lt;/p&gt;
+
+&lt;p&gt;In MCollective terminology a &lt;em&gt;client&lt;/em&gt; is one you manage your network from - where you run &lt;em&gt;mco&lt;/em&gt; commands - and a &lt;em&gt;server&lt;/em&gt; is a node being managed.&lt;/p&gt;
+
+&lt;h2 id=&#34;every-node&#34;&gt;Every node&lt;/h2&gt;
+
+&lt;p&gt;All nodes should have the &lt;em&gt;ripienaar-mcollective&lt;/em&gt; module on them, by default every node becomes a MCollective Server ready to be managed via MCollective:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-puppet&#34;&gt;node &amp;quot;server1.example.net&amp;quot; {
+  include mcollective
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;client-nodes&#34;&gt;Client nodes&lt;/h2&gt;
+
+&lt;p&gt;On machines where you wish to run &lt;em&gt;mco&lt;/em&gt; commands like your Bastion nodes you have to configure them to be clients, you do this via &lt;em&gt;Hiera&lt;/em&gt;:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;mcollective::client: true
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;If you wish to have Client Only machines, you can disable the server on them:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;mcollective::client: true
+mcollective::server: false
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>First User</title>
+      <link>http://docs.choria.io/deployment/first-user/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://docs.choria.io/deployment/first-user/</guid>
+      <description>
+
+&lt;p&gt;Users who wish to manage nodes via MCollective need to have certificates signed by the Puppet CA.  Choria includes a tool to request and manage these certificates.&lt;/p&gt;
+
+&lt;h2 id=&#34;create-your-first-user&#34;&gt;Create your first user&lt;/h2&gt;
+
+&lt;p&gt;On the node you wish to run MCollective commands from you should have configured it as a &lt;em&gt;client&lt;/em&gt; in the previous step.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ whoami
+rip
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;When you are ready request the certificate from the CA, it will store it in the default location in &lt;em&gt;~/.puppetlabs&lt;/em&gt; as per Puppet AIO standards.&lt;/p&gt;
+
+&lt;div class=&#34;notices warning&#34; &gt;&lt;p&gt;You should not run any &lt;em&gt;mco&lt;/em&gt; commands as &lt;em&gt;root&lt;/em&gt;, this will produce an error.&lt;/p&gt;
+&lt;/div&gt;
+
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ mco choria request_cert
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;This will request a certificate from your Puppet CA, you should sign it there and once signed it will be downloaded and saved.  If you cannot sign it immediately you can safely run this command again later.&lt;/p&gt;
+
+&lt;p&gt;By default as my username is &lt;em&gt;rip&lt;/em&gt; the certificate that was requested will be &lt;em&gt;rip.mcollective&lt;/em&gt;.  The default Choria setup only allows &lt;em&gt;*.mcollective&lt;/em&gt; as certificate names.&lt;/p&gt;
+
+&lt;p&gt;You should now be able to run &lt;em&gt;mco ping&lt;/em&gt; and see some of your nodes:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ mco ping
+dev1.example.net                           time=55.35 ms
+dev2.example.net                           time=57.67 ms
+dev3.example.net                           time=59.52 ms
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Most other commands will not work due to the &lt;em&gt;default deny&lt;/em&gt; nature of the Choria so you have to set up some Authorization rules.&lt;/p&gt;
+
+&lt;h2 id=&#34;authorization&#34;&gt;Authorization&lt;/h2&gt;
+
+&lt;p&gt;As my user certificate is &lt;em&gt;rip.mcollective&lt;/em&gt; and I wish to be able to manage all aspects of my MCollective I am going to add a default allow rule to &lt;em&gt;Hiera&lt;/em&gt;, add this to your common tier or whichever tier will select the nodes you wish to be able to manage:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;mcollective::site_policies:
+  - action: &amp;quot;allow&amp;quot;
+    callers: &amp;quot;choria=rip.mcollective&amp;quot;
+    actions: &amp;quot;*&amp;quot;
+    facts: &amp;quot;*&amp;quot;
+    classes: &amp;quot;*&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Once this has been rolled out to your site you can go ahead and try commands like &lt;code&gt;mco puppet status&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;If you want to deploy further users I suggest you look at the &lt;a href=&#34;../../configuration/aaa/&#34;&gt;MCollective AAA&lt;/a&gt; documentation section.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Next Steps</title>
+      <link>http://docs.choria.io/deployment/next-steps/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://docs.choria.io/deployment/next-steps/</guid>
+      <description>
+
+&lt;p&gt;At this point you should have a working MCollective set up with your user able to do any command of the plugins we deployed.&lt;/p&gt;
+
+&lt;h2 id=&#34;confirming-it-is-working&#34;&gt;Confirming it is working&lt;/h2&gt;
+
+&lt;p&gt;From the shell you set up the user in lets check the version of &lt;em&gt;puppet-agent&lt;/em&gt; installed on your nodes:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ mco package status puppet-agent
+
+ * [ ============================================================&amp;gt; ] 15 / 15
+
+                 dev1.example.net: puppet-agent-1.8.0-1.el7.x86_64
+                 dev2.example.net: puppet-agent-1.8.0-1.el7.x86_64
+                 dev3.example.net: puppet-agent-1.8.0-1.el7.x86_64
+
+Summary of Arch:
+
+   x86_64 = 3
+
+Summary of Ensure:
+
+   1.8.0-1.el7 = 3
+
+
+Finished processing 3 / 3 hosts in 71.63 ms
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;MCollective knows a lot about your nodes such as all their Facts and Puppet Classes deployed to them, you
+can view what it knows about a certain node, this should include your classes, facts and agents deployed:&lt;/p&gt;
+
+&lt;div class=&#34;notices tip&#34; &gt;&lt;p&gt;MCollective identities match the certificate names from Puppet&lt;/p&gt;
+&lt;/div&gt;
+
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ mco inventory dev1.example.net
+
+Inventory for dev1.example.net:
+
+   Server Statistics:
+                      Version: 2.9.1
+                   Start Time: 2016-12-16 21:35:20 +0100
+                  Config File: /etc/puppetlabs/mcollective/server.cfg
+                  Collectives: de_collective, mcollective
+              Main Collective: mcollective
+                   Process ID: 13127
+               Total Messages: 12
+      Messages Passed Filters: 12
+            Messages Filtered: 0
+             Expired Messages: 0
+                 Replies Sent: 11
+         Total Processor Time: 35.85 seconds
+                  System Time: 16.33 seconds
+
+   Agents:
+      discovery       filemgr         package
+      puppet          rpcutil         service
+
+   Data Plugins:
+      agent           collective      fact
+      fstat           puppet          resource
+      service
+
+   Configuration Management Classes:
+    mcollective                           mcollective::config
+    mcollective::facts                    mcollective::packager
+    mcollective::plugin_dirs              mcollective::service
+    mcollective_agent_filemgr             mcollective_agent_iptables
+    mcollective_agent_package             mcollective_agent_puppet
+    mcollective_agent_puppetca            mcollective_agent_service
+    mcollective_choria                    mcollective_util_actionpolicy
+
+   Facts:
+      aio_agent_version =&amp;gt; 1.8.0
+      architecture =&amp;gt; x86_64
+      augeas =&amp;gt; {&amp;quot;version&amp;quot;=&amp;gt;&amp;quot;1.4.0&amp;quot;}
+      augeasversion =&amp;gt; 1.4.0
+      ...
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;You can get a quick report of values for some fact (add -v for node names):&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;Report for fact: aio_agent_version
+
+        1.8.0                                    found 3 times
+
+Finished processing 3 / 3 hosts in 18.61 ms
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;We can check that the Puppet service is up:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ mco service status puppet
+
+ * [ ============================================================&amp;gt; ] 3 / 3
+
+   dev3.example.net: running
+   dev2.example.net: running
+   dev1.example.net: running
+
+Summary of Service Status:
+
+   running = 3
+
+
+Finished processing 3 / 3 hosts in 98.98 ms
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;And when last Puppet ran on these nodes:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ mco puppet status
+
+ * [ ============================================================&amp;gt; ] 3 / 3
+
+   dev1.example.net: Currently idling; last completed run 6 minutes 20 seconds ago
+   dev2.example.net: Currently idling; last completed run 10 minutes 04 seconds ago
+   dev3.example.net: Currently idling; last completed run 25 seconds ago
+
+Summary of Applying:
+
+   false = 3
+
+Summary of Daemon Running:
+
+   running = 3
+
+Summary of Enabled:
+
+   enabled = 3
+
+Summary of Idling:
+
+   true = 3
+
+Summary of Status:
+
+   idling = 3
+
+
+Finished processing 3 / 3 hosts in 28.27 ms
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;further-reading&#34;&gt;Further reading&lt;/h2&gt;
+
+&lt;p&gt;There is much to learn about MCollective, at this point if all worked you&amp;rsquo;ll have a setup
+that is secured by using TLS on every middleware connection and every user securely identified
+and authorized via the Puppet SSL certificates with auditing and logging.&lt;/p&gt;
+
+&lt;p&gt;Choria has a few optional features related to integration with PuppetDB and Puppet Server,
+please see the &lt;a href=&#34;http://choria.io/configuration/&#34;&gt;optional configuration&lt;/a&gt; section.&lt;/p&gt;
+
+&lt;p&gt;The official documentation is a good resource for usage details:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;I strongly suggest you read about &lt;a href=&#34;https://docs.puppet.com/mcollective/reference/basic/basic_cli_usage.html&#34;&gt;using the mcollective CLI&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Read about &lt;a href=&#34;https://docs.puppet.com/mcollective/reference/ui/filters.html&#34;&gt;filtering which hosts to act on&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Read about &lt;a href=&#34;https://github.com/puppetlabs/mcollective-puppet-agent#usage&#34;&gt;managing Puppet&lt;/a&gt; though note the setup steps are already completed&lt;/li&gt;
+&lt;li&gt;Read about &lt;a href=&#34;https://github.com/puppetlabs/mcollective-package-agent#readme&#34;&gt;managing packages&lt;/a&gt; though note the setup steps are already completed&lt;/li&gt;
+&lt;li&gt;Read about &lt;a href=&#34;https://github.com/puppetlabs/mcollective-service-agent#readme&#34;&gt;managing services&lt;/a&gt; though note the setup steps are already completed&lt;/li&gt;
+&lt;li&gt;Read about &lt;a href=&#34;https://github.com/puppetlabs/mcollective-filemgr-agent#readme&#34;&gt;managing files&lt;/a&gt; and this setup too is already completed&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;These plugins that manage Service, Package, Puppet and Files are just plugins and they make the
+core feature set of Mcollective.  You can write your own plugins, deploy them and interact with
+them.  There is an &lt;a href=&#34;https://docs.puppet.com/mcollective/simplerpc/agents.html&#34;&gt;official guide about this&lt;/a&gt;.
+Writing your own lets you solve your deployment problems using MCollective.&lt;/p&gt;
+
+&lt;h2 id=&#34;getting-in-touch&#34;&gt;Getting in touch&lt;/h2&gt;
+
+&lt;p&gt;I am on the Puppet IRC as &lt;em&gt;Volcane&lt;/em&gt; and on slack as &lt;em&gt;ripienaar&lt;/em&gt;, we also have a &lt;em&gt;#mcollective&lt;/em&gt; channel on Freenode.&lt;/p&gt;
+
+&lt;p&gt;If you wish to file a ticket about anything here or improve something the 2 GitHub project are &lt;a href=&#34;https://github.com/ripienaar/mcollective-choria&#34;&gt;ripienaar/mcollective-choria&lt;/a&gt;
+and &lt;a href=&#34;https://github.com/ripienaar/puppet-mcollective&#34;&gt;ripienaar/puppet-mcollective&lt;/a&gt; where you can file issues.&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

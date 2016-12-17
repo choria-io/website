@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="en" class="js csstransforms3d">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta name="generator" content="Hugo 0.17" />
+    <meta name="description" content="Documentation for the Choria Orchestrator">
+<meta name="author" content="R.I.Pienaar &lt;rip@devco.net&gt;">
+
+    <link rel="shortcut icon" href="/images/favicon.png" type="image/x-icon" />
+
+    
+    <title>Message Structure</title>
+    <link href="/css/nucleus.css" rel="stylesheet">
+    <link href="/css/font-awesome.min.css" rel="stylesheet">
+    <link href="/css/hybrid.css" rel="stylesheet">
+    <link href="/css/featherlight.min.css" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css" rel="stylesheet">
+    <link href="/css/horsey.css" rel="stylesheet">
+    <link href="/css/theme.css" rel="stylesheet">
+    <link href="/css/hugo-theme.css" rel="stylesheet">
+    <script src="/js/jquery-2.x.min.js"></script>
+    <style type="text/css">:root #header + #content > #left > #rlblock_left
+    {display:none !important;}</style>
+    
+
+  </head>
+  <body class="" data-url="/development/messages/">
+    <nav id="sidebar">
+  <div id="header-wrapper">
+    <div id="header">
+      <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
+<div style="font-family: 'Raleway', serif; font-size: x-large">CHORIA</div>
+
+    </div>
+    
+</div>
+
+
+  <div class="highlightable">
+    <ul class="topics">
+      
+      
+        
+        
+          
+            
+          
+        
+          
+            
+          
+        
+          
+            
+          
+        
+          
+            
+          
+        
+          
+            
+          
+        
+      
+      
+      
+      
+
+      
+        
+      
+      
+      
+
+      <li class="dd-item  " data-nav-id="/about/">
+        <a href="/about/">
+          <span>
+            
+              <b>1. </b>
+            
+             About Choria
+            
+           </span>
+        </a>
+        
+      </li>
+      
+      
+      
+
+      
+        
+      
+      
+      
+
+      <li class="dd-item  " data-nav-id="/deployment/">
+        <a href="/deployment/">
+          <span>
+            
+              <b>2. </b>
+            
+             Deployment
+            
+           </span>
+        </a>
+        
+        <ul>
+          
+          
+          
+          
+            <li class="dd-item " data-nav-id="/deployment/requirements/">
+              <a href="/deployment/requirements/">
+                <span>Requirements     </i></span>
+              </a>
+            </li>
+          
+          
+          
+            <li class="dd-item " data-nav-id="/deployment/nats/">
+              <a href="/deployment/nats/">
+                <span>NATS Middleware     </i></span>
+              </a>
+            </li>
+          
+          
+          
+            <li class="dd-item " data-nav-id="/deployment/dns/">
+              <a href="/deployment/dns/">
+                <span>DNS Setup     </i></span>
+              </a>
+            </li>
+          
+          
+          
+            <li class="dd-item " data-nav-id="/deployment/mcollective/">
+              <a href="/deployment/mcollective/">
+                <span>MCollective     </i></span>
+              </a>
+            </li>
+          
+          
+          
+            <li class="dd-item " data-nav-id="/deployment/first-user/">
+              <a href="/deployment/first-user/">
+                <span>First User     </i></span>
+              </a>
+            </li>
+          
+          
+          
+            <li class="dd-item " data-nav-id="/deployment/next-steps/">
+              <a href="/deployment/next-steps/">
+                <span>Next Steps     </i></span>
+              </a>
+            </li>
+          
+          
+        </ul>
+        
+      </li>
+      
+      
+      
+
+      
+        
+      
+      
+      
+
+      <li class="dd-item  " data-nav-id="/configuration/">
+        <a href="/configuration/">
+          <span>
+            
+              <b>3. </b>
+            
+             Optional Configuration
+            
+           </span>
+        </a>
+        
+        <ul>
+          
+          
+          
+          
+            <li class="dd-item " data-nav-id="/configuration/puppetdb/">
+              <a href="/configuration/puppetdb/">
+                <span>PuppetDB Discovery     </i></span>
+              </a>
+            </li>
+          
+          
+          
+            <li class="dd-item " data-nav-id="/configuration/aaa/">
+              <a href="/configuration/aaa/">
+                <span>MCollective AAA     </i></span>
+              </a>
+            </li>
+          
+          
+          
+            <li class="dd-item " data-nav-id="/configuration/plugins/">
+              <a href="/configuration/plugins/">
+                <span>Plugin Distribution     </i></span>
+              </a>
+            </li>
+          
+          
+          
+            <li class="dd-item " data-nav-id="/configuration/gems/">
+              <a href="/configuration/gems/">
+                <span>Gem Distribution     </i></span>
+              </a>
+            </li>
+          
+          
+          
+            <li class="dd-item " data-nav-id="/configuration/app_orchestration/">
+              <a href="/configuration/app_orchestration/">
+                <span>Application Orchestrator     </i></span>
+              </a>
+            </li>
+          
+          
+        </ul>
+        
+      </li>
+      
+      
+      
+
+      
+        
+      
+      
+      
+
+      <li class="dd-item  " data-nav-id="/reference/">
+        <a href="/reference/">
+          <span>
+            
+              <b>4. </b>
+            
+             Reference
+            
+           </span>
+        </a>
+        
+        <ul>
+          
+          
+          
+          
+            <li class="dd-item " data-nav-id="/reference/nats/">
+              <a href="/reference/nats/">
+                <span>NATS Connector     </i></span>
+              </a>
+            </li>
+          
+          
+          
+            <li class="dd-item " data-nav-id="/reference/security/">
+              <a href="/reference/security/">
+                <span>SSL Security     </i></span>
+              </a>
+            </li>
+          
+          
+        </ul>
+        
+      </li>
+      
+      
+      
+
+      
+        
+      
+      
+      
+
+      <li class="dd-item  parent" data-nav-id="/development/">
+        <a href="/development/">
+          <span>
+            
+              <b>5. </b>
+            
+             Development
+            
+           </span>
+        </a>
+        
+        <ul>
+          
+          
+          
+          
+            <li class="dd-item " data-nav-id="/development/rest/">
+              <a href="/development/rest/">
+                <span>REST Server Support     </i></span>
+              </a>
+            </li>
+          
+          
+          
+            <li class="dd-item active" data-nav-id="/development/messages/">
+              <a href="/development/messages/">
+                <span>Message Structure     </i></span>
+              </a>
+            </li>
+          
+          
+        </ul>
+        
+      </li>
+      
+      
+    </ul>
+    <hr>
+     
+    <section id="footer">
+      <p>Hosted at <a href="https://github.com/ripienaar/mcollective-choria">GitHub</a> by <a href="https://www.devco.net/">R.I. Pienaar</a></p>
+    </section>
+  </div>
+</nav>
+
+        <section id="body">
+        <div id="overlay"></div>
+
+        <div class="padding highlightable">
+
+            <div id="top-bar">
+              
+              <div id="breadcrumbs" itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb">
+                  <span id="sidebar-toggle-span">
+                      <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                        <i class="fa fa-bars"></i>
+                      </a>
+                  </span>
+                
+                <span id="toc-menu"><a href=""><i class="fa fa-list-alt"></i></a></span>
+                
+                
+                
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                    
+                    
+                <a href="/development/" itemprop="url"><span itemprop="title">Development</span></a> <i class="fa fa-angle-right"></i>
+                    
+                  
+                
+                  
+                
+                <span itemprop="title"> Message Structure</span>
+              </div>
+              
+                  <div class="progress">
+    <div class="wrapper">
+<nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#message-protocol-details">Message Protocol Details</a>
+<ul>
+<li><a href="#a-note-on-serialization">A note on serialization</a></li>
+<li><a href="#puppet-security-plugin-request">Puppet Security Plugin Request</a></li>
+<li><a href="#puppet-security-plugin-reply">Puppet Security Plugin Reply</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+    </div>
+</div>
+
+              
+
+            </div>
+            
+    	        <div id="body-inner">
+                
+                <h1>Message Structure</h1>
+                
+
+
+
+<h2 id="message-protocol-details">Message Protocol Details</h2>
+
+<p>Below this is just developer details, you can easily skip this unless you&rsquo;re curious.</p>
+
+<p>MCollective messages are made up of layers of encoded messages, generally something like:</p>
+
+<pre><code class="language-plain">( middleware protocol
+  ( transport packet that travels over the middleware
+      ( security plugin internal representation
+        ( mcollective core representation that becomes M::Message
+          ( message body, for RPC request M::RPC::Request and M::RPC::Reply )
+        )
+      )
+    )
+  )
+)
+</code></pre>
+
+<p>This is very similar how on the internet REST is within HTTP within TCP within IP and
+eventually within transport specific layers like for Ethernet or WAN protocols.</p>
+
+<p>By doing it this way many end points like the <code>Mcollective::RPC</code> can cohabit in
+the same system (just like HTTP and FTP can on the intenret), security layers can
+be swapped out with different ones ie. the <code>ssl</code> and <code>aes</code> ones and indeed this
+one based on <code>puppet</code> PKI.</p>
+
+<p>The security system receives or send serialized packets via the middleware layer
+which again is a series of plugins - like <code>activemq</code> or <code>rabbitmq</code> and these have
+their own protocols which allow it to swap out the transport between nodes with
+different technology.</p>
+
+<p>In most security plugins the 3rd and 4th layers are combined, but this plugin is
+proposing a future core format so right now there&rsquo;s a split, so we have:</p>
+
+<pre><code class="language-plain">( Stomp, AMQP, NATS etc
+  ( JSON encoded mcollective::security::choria:request:1 or mcollective::security::choria:reply:1
+      ( encoded mcollective:request:3 or mcollective:reply:3
+        ( mcollective core as per #to_legacy_request and #to_legacy_reply
+          ( message body, for RPC request M::RPC::Request and M::RPC::Reply )
+        )
+      )
+    )
+  )
+)
+</code></pre>
+
+<p>The <code>mcollective core representation that becomes M::Message</code> layer will go away
+eventually and be replaced wtih <code>mcollective:request:3</code> and <code>mcollective:reply:3</code>.</p>
+
+<h3 id="a-note-on-serialization">A note on serialization</h3>
+
+<p>Right now the MCollective core has unfortunately exposed Ruby Symbols to the wire,
+worse they are not a standard or required and in many cases it&rsquo;s up to the users
+to use them or strings.  This means standard JSON cannot be used to encode the
+core message and a one size fits all translation layer cannot be written.</p>
+
+<p>So the message structures <code>mcollective:request:3</code> and <code>mcollective:reply:3</code> today
+hosts in their <code>message</code> property a core MCollective message with potentially
+Symbols in it&rsquo;s body.</p>
+
+<p>So we have to use YAML to serialize these messages.  A critical future goal for mc
+is to downgrade the RPC system to only support JSON primitives and to change the
+internal message structures to use Strings as keys.</p>
+
+<p>At that point the entire payload will use JSON only and no YAML. And one of the
+layers above will go away.</p>
+
+<h3 id="puppet-security-plugin-request">Puppet Security Plugin Request</h3>
+
+<p>The following is a request encoded for delivery using the communication plugins, it
+will be JSON encoded before sending:</p>
+
+<pre><code class="language-json">{
+  &quot;$schema&quot;: &quot;http://json-schema.org/draft-04/schema#&quot;,
+  &quot;type&quot;: &quot;object&quot;,
+  &quot;properties&quot;: {
+    &quot;protocol&quot;: {
+      &quot;type&quot;: &quot;string&quot;,
+      &quot;enum&quot;: [
+        &quot;mcollective::security::choria:request:1&quot;
+      ]
+    },
+    &quot;message&quot;: {
+      &quot;type&quot;: &quot;string&quot;,
+      &quot;description&quot;: &quot;YAML encoded mcollective:request:3&quot;
+    },
+    &quot;signature&quot;: {
+      &quot;type&quot;: &quot;string&quot;,
+      &quot;description&quot;: &quot;SHA256 based signature of the message using the senders private key&quot;
+    },
+    &quot;pubcert&quot;: {
+      &quot;type&quot;: &quot;string&quot;,
+      &quot;description&quot;: &quot;PEM format X509 certificate of the sender&quot;
+    }
+  },
+  &quot;required&quot;: [
+    &quot;protocol&quot;,
+    &quot;message&quot;,
+    &quot;signature&quot;,
+    &quot;pubcert&quot;
+  ]
+}
+</code></pre>
+
+<p>If it&rsquo;s the first time a request is seen from this public cert its verified against
+the CA and cached.</p>
+
+<p>The message is deserialized and the caller id extracted, the matching cert is loaded
+from disk and used to validate the signature.  If it passes the deserialized <code>message</code>
+is returned</p>
+
+<p>The format of a deserialized message is:</p>
+
+<pre><code class="language-ruby">{
+  &quot;protocol&quot; =&gt; &quot;mcollective:request:3&quot;,
+  &quot;message&quot; =&gt; Object,
+  &quot;envelope&quot; =&gt; {
+    &quot;requestid&quot; =&gt; &quot;bde834cd04835b62a2076b720d6e36d2&quot;,
+    &quot;senderid&quot; =&gt; &quot;some.node&quot;,
+    &quot;callerid&quot; =&gt; &quot;cert=rip.mcollective&quot;,
+    &quot;filter&quot; =&gt; {
+      &quot;fact&quot; =&gt; [],
+      &quot;cf_class&quot; =&gt; [],
+      &quot;agent&quot; =&gt; [&quot;rpcutil&quot;],
+      &quot;identity&quot; =&gt; [],
+      &quot;compound&quot; =&gt; []},
+    },
+    &quot;collective&quot; =&gt; &quot;mcollective&quot;,
+    &quot;agent&quot; =&gt; &quot;rpcutil&quot;,
+    &quot;ttl&quot; =&gt; 60
+    &quot;time&quot; =&gt; 1463840020
+  }
+}
+</code></pre>
+
+<p>At the moment the message is YAML serialized before encoding in the JSON that goes to the
+connectors but in future versions of MCollective the core message will become JSON safe and
+it will be JSON encoded instead.</p>
+
+<p>Eventually this <code>mcollective:request:3</code> will become the core MCollective protocol, for now
+this is converted into the current MCollective protocol and goes to become a <code>MCollective::Message</code>:</p>
+
+<pre><code class="language-ruby">{
+  :body =&gt; request[&quot;message&quot;],
+  :senderid =&gt; request[&quot;envelope&quot;][&quot;senderid&quot;],
+  :requestid =&gt; request[&quot;envelope&quot;][&quot;requestid&quot;],
+  :filter =&gt; request[&quot;envelope&quot;][&quot;filter&quot;],
+  :collective =&gt; request[&quot;envelope&quot;][&quot;collective&quot;],
+  :agent =&gt; request[&quot;envelope&quot;][&quot;agent&quot;],
+  :callerid =&gt; request[&quot;envelope&quot;][&quot;callerid&quot;],
+  :ttl =&gt; request[&quot;envelope&quot;][&quot;ttl&quot;],
+  :msgtime =&gt; request[&quot;envelope&quot;][&quot;time&quot;]
+}
+</code></pre>
+
+<h3 id="puppet-security-plugin-reply">Puppet Security Plugin Reply</h3>
+
+<p>The following is a reply encoded for delivery using the communication plugins, it
+will be JSON encoded before sending:</p>
+
+<pre><code class="language-json">{
+  &quot;$schema&quot;: &quot;http://json-schema.org/draft-04/schema#&quot;,
+  &quot;type&quot;: &quot;object&quot;,
+  &quot;properties&quot;: {
+    &quot;protocol&quot;: {
+      &quot;type&quot;: &quot;string&quot;,
+      &quot;enum&quot;: [
+        &quot;mcollective::security::choria:reply:1&quot;
+      ]
+    },
+    &quot;message&quot;: {
+      &quot;type&quot;: &quot;string&quot;,
+      &quot;description&quot;: &quot;YAML encoded mcollective:reply:3&quot;
+    },
+    &quot;hash&quot;: {
+      &quot;type&quot;: &quot;string&quot;,
+      &quot;description&quot;: &quot;SHA256 has of the message&quot;
+    }
+  },
+  &quot;required&quot;: [
+    &quot;protocol&quot;,
+    &quot;message&quot;,
+    &quot;hash&quot;
+  ]
+}
+</code></pre>
+
+<p>The format of the deserialized message is:</p>
+
+<pre><code class="language-ruby">{
+  &quot;protocol&quot; =&gt; &quot;mcollective:reply:3&quot;,
+  &quot;message&quot; =&gt; Object,
+  &quot;envelope&quot; =&gt; {
+    &quot;senderid&quot; =&gt; &quot;some.node&quot;,
+    &quot;requestid&quot; =&gt; &quot;bde834cd04835b62a2076b720d6e36d2&quot;,
+    &quot;agent&quot; =&gt; &quot;rpcutil&quot;,
+    &quot;time&quot; =&gt; 1463840021
+  }
+}
+</code></pre>
+
+<p>Eventually this <code>mcollective:reply:3</code> will become the core MCollective protocol, for now
+this is converted into the current MCollective protocol and goes on to become a <code>MCollective::Message</code>:</p>
+
+<pre><code class="language-ruby">{
+  :senderid =&gt; reply[&quot;envelope&quot;][&quot;senderid&quot;],
+  :requestid =&gt; reply[&quot;envelope&quot;][&quot;requestid&quot;],
+  :senderagent =&gt; reply[&quot;envelope&quot;][&quot;agent&quot;],
+  :msgtime =&gt; reply[&quot;envelope&quot;][&quot;time&quot;],
+  :body =&gt; reply[&quot;message&quot;]
+}
+</code></pre>
+
+
+      
+      </div>
+    </div>
+
+    <div id="navigation">
+        
+        
+    </div>
+
+    </section>
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="/js/clipboard.min.js"></script>
+    <script src="/js/perfect-scrollbar.min.js"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js"></script>
+    <script src="/js/jquery.sticky-kit.min.js"></script>
+    <script src="/js/featherlight.min.js"></script>
+    <script src="/js/html5shiv-printshiv.min.js"></script>
+    <script src="/js/highlight.pack.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+    <script src="/js/modernizr.custom.71422.js"></script>
+    <script src="/js/learn.js"></script>
+    <script src="/js/hugo-learn.js"></script>
+    
+<script>
+window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+ga('create', 'UA-10152852-12', 'auto');
+ga('send', 'pageview');
+</script>
+<script async src='//www.google-analytics.com/analytics.js'></script>
+
+
+  </body>
+</html>
+
