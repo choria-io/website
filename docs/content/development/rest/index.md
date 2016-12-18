@@ -16,51 +16,7 @@ The first requires a cooperative Security Plugin, this plugin is one and lets on
 
 The Choria security plugin has specific support for building REST services to interact with MCollective.
 
-```text
-+---------+                           +-------+                         +---------+
-| Client  |                           | REST  |                         | Server  |
-+---------+                           +-------+                         +---------+
-     |                                    |                                  |
-     | Obtain Auth Token                  |                                  |
-     |----------------------------------->|                                  |
-     |                                    |                                  |
-     |                  Stores Auth Token |                                  |
-     |<-----------------------------------|                                  |
-     |                                    |                                  |
-     | MCollective Request with Token     |                                  |
-     |----------------------------------->|                                  |
-     |                                    |                                  |
-     |                                    | /---------------\                |
-     |                                    |-| Internal RBAC |                |
-     |                                    | \---------------/                |
-     |                                    |                                  |
-     |                                    |                                  |
-     |                                    | signed with privileged user      |
-     |                                    | cert sets token based callerid   |
-     |                                    |--------------------------------->|
-     |                                    |                                  |
-     |                          RequestID |                                  |
-     |<-----------------------------------|                                  |
-     |                                    |                                  | /-----------------------\
-     |                                    |                                  |-| AAA based on callerid |
-     |                                    |                                  | \-----------------------/
-     |                                    |                                  |
-     |                                    |                           result |
-     |                 /---------------\  |<---------------------------------|
-     |                 | Stores results |-|                           result |
-     |                 |  in a database | |<---------------------------------|
-     |                 \-------------- /  |                           result |
-     |                                    |<---------------------------------|
-     |                                    |                                  |
-     | Request results for RequestID      |                                  |
-     |----------------------------------->|                                  |
-     |                                    | /------------------\             |
-     |                                    |-|Retrieves from DB |             |
-     |                                    | \------------------/             |
-     |           Result set for RequestID |                                  |
-     |<-----------------------------------|                                  |
-     |                                    |                                  |
-```
+![REST Sequence Diagram](/docs/rest-sequence.png)
 
 Here the REST service has it's own token based authentication - perhaps OAth or similar, and would have an internal username schema for it's users.
 

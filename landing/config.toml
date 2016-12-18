@@ -1,4 +1,3 @@
-baseurl = "http://dev3.devco.net:9292"
 contentdir = "content"
 theme = "hugo-base-theme"
 languageCode = "en-us"
@@ -7,10 +6,13 @@ googleAnalytics = "UA-10152852-12"
 
 [[params.social]]
     title = "docs"
-    url = "http://docs.choria.io/about/"
+    url = "docs/about/"
+    button = "primary"
 [[params.social]]
     title = "github"
     url = "https://github.com/ripienaar/mcollective-choria/"
+    button = "success"
 [[params.social]]
     title = "twitter"
     url = "https://twitter.com/ripienaar"
+    button = "info"
