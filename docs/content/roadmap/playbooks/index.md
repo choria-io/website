@@ -1,6 +1,6 @@
 +++
 title = "Playbook Design Specification"
-weight = 430
+weight = 410
 toc = true
 +++
 

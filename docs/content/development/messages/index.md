@@ -1,6 +1,6 @@
 +++
 title = "Message Structure"
-weight = 420
+weight = 620
 toc = true
 +++
 
