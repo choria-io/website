@@ -20,9 +20,9 @@ The Choria security plugin has specific support for building REST services to in
 
 Here the REST service has it's own token based authentication - perhaps OAth or similar, and would have an internal username schema for it's users.
 
-It would have a MCollective certificate that's considered a Privileged User certificate and so can set the _callerid_ to any value it likes.  To MCollective the _callerid_ would be _choria=uid_set_by_rest_ where AAA can happen.
+It would have a MCollective certificate that's considered a Privileged User certificate and so can set the _callerid_ to any value it likes.  To MCollective the _callerid_ would be *choria=uid_set_by_rest* where AAA can happen based on this callerid, thus every user has a REST assigned unique ID visible in logs etc.
 
-This way the REST gateway can do it's own RBAC, caching, security model etc and with the model above the clients do not need to wait - results spool back from a database, can be paged and retrieved at any later date
+This way the REST gateway can do it's own RBAC, caching, security model etc and with the model above the clients do not need to wait - results spool back from a database, can be paged and retrieved at any later date, ideal for building web databases or long running tasks.
 
 To set this up the REST service would get it's own SSL certs as any other clients and nodes would need to be specifically configured to trust the REST gateway as a _Privileged User_ capable of setting _callerid_ != _certname_
 
