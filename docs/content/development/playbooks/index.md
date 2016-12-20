@@ -34,14 +34,15 @@ This is a rough feature set, individual pieces are explored in more detail below
    - [x] It should be non interactive runs with rich reporting while being paramaterised
    - [x] It should have a custom logger format that shows the context as it moves through the playbook flow
    - [ ] It should support *macros* that ship with mcollective agent plugins and bring reusable self container utility logic
-   - [ ] It should support versioned playbook schemas so we can ensure an incoming playbook is usable by the system
+   - [ ] It should support versioned playbook schemas so we can ensure an incoming playbook is usable by the system ([#87](https://github.com/ripienaar/mcollective-choria/issues/87))
    - [ ] It should have JSON schemas for the full playbook schema - partially completed
    - [ ] It should validate incoming playbooks using the JSON schema
    - [ ] It should have an optional webservice where playbooks are stored and later ran under
    - [ ] It should be compatible with MCollective AAA, a webservice should be able to run commands as a certain user
-   - [ ] It should produce reports that can be stored in JSON or in a webservice for later retrieval
-   - [ ] It should support pluggable Node sources and Task types so users can extend it
-   - [ ] It should support arbitrarily named tasks lists and ability to run those from within a task list to facilitate reusing of logic
+   - [ ] It should produce reports that can be stored in JSON or in a webservice for later retrieval ([#88](https://github.com/ripienaar/mcollective-choria/issues/88))
+   - [ ] It should support pluggable Node sources so users can extend it ([#90](https://github.com/ripienaar/mcollective-choria/issues/90))
+   - [ ] It should support pluggable Task types so users can extend it ([#89](https://github.com/ripienaar/mcollective-choria/issues/89))
+   - [ ] It should support arbitrarily named tasks lists and ability to run those from within a task list to facilitate reusing of logic ([#91](https://github.com/ripienaar/mcollective-choria/issues/91))
 
 Ticked features are implemented already in the POC and usable today.
 
@@ -180,6 +181,9 @@ For any discovery type the playbook system would enforce that at least a certain
 #### when_empty (meta)
 When the *at_least* constraint is not satisfied this error / log will be produced
 
+### limit (meta)
+Limits the discovered nodes to a certain number, this is good to do canary deploys to pick a small subset of discovered nodes
+
 #### discovery_method
 For the MCollective type this picks the discovery method to use, valid values are whatever plugins are installed into your MCollective
 
@@ -236,7 +240,13 @@ For the MCollective type this is the agent and action to run, its a *.* seperate
 For the MCollective type this is a list of properties to pass to the action, unfortunately as MCollective is not JSON safe this for now might need to be Symbols as in the example
 
 #### post
-For the MCollective type this is a list of post action processing to do.  *summarize* means you want it to summarize the results received in the logs verbosely. Other post actions might be added in future
+For the MCollective type this is a list of post action processing to do.  *summarize* means you want it to log the output from the aggregate plugins
+
+#### silent
+When true it will not log the raw RPC results to the log files
+
+#### batch_size
+Perform the operation in batches of size, it will execute the action on your nodes in groups
 
 ### Hook Task Lists
 A number of specially named tasks lists are supported.  These support the exact same format of tasks as the main *tasks* list detailed above but they are only run under certain cases.
