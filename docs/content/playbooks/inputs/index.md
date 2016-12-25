@@ -18,7 +18,7 @@ inputs:
     type: "String"
     required: true
     validation: ":string"
-````
+```
 
 Here is a optional input with a default value, it also shows the use of the *shellsafe* validator that ensure this is safe to pass to scripts and would avoid shell injection attacks:
 

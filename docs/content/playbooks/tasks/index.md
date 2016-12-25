@@ -53,3 +53,27 @@ The *:message* here is a Symbol that is because today MCollective requires this,
 |silent|By default each result is logged, this disables that|
 |post|Logs aggregate summaries if *summarize* - the only current valid entry - is given|
 |properties|Any properties the action needs to function|
+
+## Shell task
+
+```yaml
+tasks:
+  - shell:
+      description: Shell test
+      command: "/home/rip/test.sh"
+      cwd: "/tmp"
+      nodes: "{{{ nodes.test_servers }}}"
+      environment:
+        "HELLO": "WORLD"
+```
+
+{{% notice warning %}}
+If you pass any inputs into your script arguments be sure to set *validation: ":shellsafe"* on the input to ensure you are safe from shell injection attcks
+{{% /notice %}}
+
+|Option|Description|
+|------|-----------|
+|command|The command to run, can be a full command with options specified and all|
+|cwd|The directory will be the working directory for the command when run|
+|nodes|A list of nodes, passed as *--nodes node1,node2* to your script|
+|environment|A hash of any environment variables you wish to set|
