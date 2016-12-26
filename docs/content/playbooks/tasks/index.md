@@ -77,3 +77,17 @@ If you pass any inputs into your script arguments be sure to set *validation: ":
 |cwd|The directory will be the working directory for the command when run|
 |nodes|A list of nodes, passed as *--nodes node1,node2* to your script|
 |environment|A hash of any environment variables you wish to set|
+
+## Slack task
+
+```yaml
+tasks:
+  - slack:
+      description: Slack test
+      token: "xoxb-YOUR_TOKEN"
+      channel: "#general"
+      username: "Ops Bot"
+      text: "Deployed Acme verion {{{ inputs.version }}} to cluster {{{ inputs.cluster }}}"
+```
+
+This posts a message to Slack with your text using the *chat.postMessage* API, above is all the possible options.

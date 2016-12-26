@@ -119,15 +119,15 @@ hooks:
     - slack:
         description: "Notify slack on success"
         token: "YOUR_API_TOKEN"
-        channel: "ops"
-        message: "Acme was upgraded on cluster {{{ inputs.cluster }}} to version {{{ inputs.version }}}"
+        channel: "#ops"
+        text: "Acme was upgraded on cluster {{{ inputs.cluster }}} to version {{{ inputs.version }}}"
 
   on_fail:
     - slack:
         description: "Notify slack on success"
         token: "YOUR_API_TOKEN"
-        channel: "ops"
-        message: "Acme upgrade on cluster {{{ inputs.cluster }}} to version {{{ inputs.version }}} failed to complete"
+        channel: "#ops"
+        text: "Acme upgrade on cluster {{{ inputs.cluster }}} to version {{{ inputs.version }}} failed to complete"
 ```
 
 You can run this playbook through the CLI, but lets look at help first, you can see our inputs are provided via *--cluster* and *--version*:
