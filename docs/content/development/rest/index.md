@@ -18,7 +18,7 @@ The Choria security plugin has specific support for building REST services to in
 
 ![REST Sequence Diagram](/docs/rest-sequence.png)
 
-Here the REST service has it's own token based authentication - perhaps OAth or similar, and would have an internal username schema for it's users.
+Here the REST service has it's own token based authentication - perhaps OAuth or similar, and would have an internal username schema for it's users.
 
 It would have a MCollective certificate that's considered a Privileged User certificate and so can set the _callerid_ to any value it likes.  To MCollective the _callerid_ would be *choria=uid_set_by_rest* where AAA can happen based on this callerid, thus every user has a REST assigned unique ID visible in logs etc.
 
