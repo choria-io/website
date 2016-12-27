@@ -155,7 +155,8 @@ that is secured by using TLS on every middleware connection and every user secur
 and authorized via the Puppet SSL certificates with auditing and logging.
 
 Choria has a few optional features related to integration with PuppetDB and Puppet Server,
-please see the [optional configuration](http://choria.io/configuration/) section.
+please see the [optional configuration](http://choria.io/docs/configuration/) section. You should
+also read about [Choria Playbooks](http://choria.io/docs/playbooks).
 
 The official documentation is a good resource for usage details:
 
