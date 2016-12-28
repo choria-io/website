@@ -1,6 +1,7 @@
 +++
 title = "Tasks"
 weight = 430
+toc = true
 +++
 
 Tasks are the main place you put things you want to happen.  Tasks goes into Task Lists and there are a few.
@@ -80,7 +81,6 @@ The typical case is where you want to wait for a set of nodes to stop all Puppet
 
 Here we get the result from *puppet.status* and assert that all the nodes have their *:idling* result *true*.  Combining this with the *tries* and *try_sleep* gives us the wait behaviour vs just a one shot check.
 
-
 |Option|Description|
 |------|-----------|
 |nodes|A node set to use, can be a template as here or just a hard coded array of nodes|
@@ -115,7 +115,37 @@ If you pass any inputs into your script arguments be sure to set *validation: ":
 |nodes|A list of nodes, passed as *--nodes node1,node2* to your script|
 |environment|A hash of any environment variables you wish to set|
 
+## Webhook task
+
+{{% notice tip %}}
+This feature is included since *0.0.13*
+{{% /notice %}}
+
+This allows arbitrary webhooks to be constructed and called via either GET or POST.
+
+For a GET method the data gets URL encoded as request parts, for POST the data gets JSON encoded and sent.
+
+```yaml
+  - webhook:
+      uri: https://another.system/webhook
+      method: POST
+      headers:
+        "X-Token": "ho ho ho"
+      data:
+        "message": "Deployed Acme release {{{ inputs.version }}}"
+        "nodes": "{{{ nodes.web_servers }}}"
+```
+
+|Option|Description|
+|------|-----------|
+|uri|The address to send the request to, supports *http* or *https*|
+|method|Either *GET* or *POST*|
+|headers|Hash of headers to send.  It will send a User Agent and Content Type on it's own but you can override those too here|
+|data|Hash of data to send either as request arguments for GET or JSON encoded data for POST|
+
 ## Slack task
+
+Sends a message to a Slack channel, tested using the basic *bot user account* style bot.
 
 ```yaml
 tasks:
