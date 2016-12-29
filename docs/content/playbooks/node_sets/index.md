@@ -142,3 +142,27 @@ The script should just output one certname per line.  Today passing arguments to
 |Option|Description|Sample|
 |------|-----------|------|
 |script|Path to a script to run, does not accept arguments|*script: "/usr/local/bin/nodes.sh"*|
+
+### Terraform Nodes
+
+{{% notice tip %}}
+This feature is included since *0.0.13*
+{{% /notice %}}
+
+Retrieves a Terraform output from a state file, only outputs of the *list* type are supported.  No effort to first pull remote states are currently made.
+
+```yaml
+nodes:
+  dev:
+    type: terraform
+    statefile: /path/to/terraform.tfstate
+    output: webservers
+```
+
+This would run *terraform output -state /path/to/terraform.tfstate -json webservers*
+
+|Option|Description|Sample|
+|------|-----------|------|
+|statefile|Path to a terraform statefile|*statefile: "/path/to/terraform.tfstate"*|
+|terraform|Optional path to the terraform executable, path is checked otherwise|*terraform: /usr/local/bin/terraform*|
+|output|The name of the defined output|*output: webservers*|

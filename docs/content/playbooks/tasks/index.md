@@ -127,7 +127,7 @@ For a GET method the data gets URL encoded as request parts, for POST the data g
 
 ```yaml
   - webhook:
-      uri: https://another.system/webhook
+      uri: https://hooks.example.net/webhook
       method: POST
       headers:
         "X-Token": "ho ho ho"
@@ -135,6 +135,8 @@ For a GET method the data gets URL encoded as request parts, for POST the data g
         "message": "Deployed Acme release {{{ inputs.version }}}"
         "nodes": "{{{ nodes.web_servers }}}"
 ```
+
+The request will include a header *X-Choria-Request-ID* with a unique UUID for every request.
 
 |Option|Description|
 |------|-----------|

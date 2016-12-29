@@ -12,6 +12,8 @@ See the [playbooks section](/docs/playbooks/) for intro material
 
 This is a rough feature set, individual pieces are explored in more detail below:
 
+### General
+
    - [x] It should support metadata like author, version, tags etc suitable for searching and cataloging on a web interface
    - [x] It should support many groups of named *node sets*, node set sources can be MCollective or many other sources
    - [x] It should support many named *inputs* usable from the CLI
@@ -33,6 +35,31 @@ This is a rough feature set, individual pieces are explored in more detail below
    - [ ] It should support pluggable Node sources so users can extend it ([#90](https://github.com/ripienaar/mcollective-choria/issues/90))
    - [ ] It should support pluggable Task types so users can extend it ([#89](https://github.com/ripienaar/mcollective-choria/issues/89))
    - [ ] It should support arbitrarily named tasks lists and ability to run those from within a task list to facilitate reusing of logic ([#91](https://github.com/ripienaar/mcollective-choria/issues/91))
+
+### Node Sets
+
+   - [x] It should be able to do MCollective discovery
+   - [x] It should be able to make arbitrary PQL queries
+   - [x] It should be able to run shell scripts and get certnames from there
+   - [x] It should be able to load node set groups from YAML
+   - [x] It should be able to use terraform outputs
+   - [ ] It should be able to get node groups from PE classifications
+   - [ ] It should be able to get node groups from foreman classifications
+   - [ ] It should be able to get all member nodes from a consul service group
+   - [ ] It should be able to query EC2 and search by tag for nodes
+
+### Tasks
+
+   - [x] It should be able to make MCollective requests
+   - [x] It should be able to make make assertions about MCollective request state
+   - [x] It should be able to run local shell scripts
+   - [x] It should be able to make GET and POST requests to arbitrary webhooks
+   - [x] It should be able to send messages to Slack
+   - [ ] It should be able to run terraform
+   - [ ] It should be able to store data in consul
+   - [ ] It should be able to store data in etcd
+   - [ ] It should be able to initiate and wait for servers to be built by razor
+
 
 Ticked features are implemented already in the POC and usable today.
 

@@ -3,7 +3,7 @@ title = "Playbooks"
 icon = "<b>4. </b>"
 +++
 
-MCollective has many agents and generally an action in isolation can be useful but generally they are best used combined.  Thus far people had to write Ruby code to do that there has been no scripting system.
+MCollective has many agents and actions, in isolation they can be useful but they are best used in combinations as a series of requests.  Thus far people had to write Ruby code interacting with the RPC API to do that - there has been no higher level scripting system.
 
 Further MCollective is hardly ever stand alone in any infrastructure, there are always other sources of truth, other APIs etc.  Imagine you might want node lists from Consul or etcd, or some YAML file.  Imagine you want to notify webhooks, or run arbitrary shell scripts, or call to systems like Slack for notification or speak to Razor to provision nodes or Terraform for EC2 resources - all of these would be tasks or data sources you'd wish to incorporate in such a script.
 
