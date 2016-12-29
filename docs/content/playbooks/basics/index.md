@@ -9,12 +9,14 @@ Lets consider a basic Playbook.  This will:
   * Test if they are reachable over mcollective
   * Verify their MCollective agent versions match our required versions as SemVer ranges
   * Disable Puppet on all the nodes
+  * Wait for puppet to go idle (needs Puppet MCOP-581 fixed)
   * Stop the *httpd* service on all nodes with 2 retries
   * Run a app upgrade step on a custom agent to a specific version, 5 at a time, with retries, summarize the results
   * Start the *httpd* service on all nodes with 2 retries
   * Enable Puppet
-  * On success notify slack
-  * On failure notify slack
+  * Trigger a splay Puppet run
+  * On success notify slack and a custom webhook
+  * On failure notify slack and a custom webhook
 
 Its quite limited for now but shows the basics
 
@@ -77,6 +79,17 @@ tasks:
       properties:
         :message: "Disabled during Acme update to version {{{ inputs.version }}}"
 
+  - mcollective_assert:
+      description: "Wait for Puppet to go idle"
+      action: "puppet.status"
+      nodes: "{{{ nodes.servers }}}"
+      expression:
+        - :idling
+        - "=="
+        - true
+      tries: 20
+      try_sleep: 30
+
   - mcollective:
       description: "Disable httpd on Acme servers"
       nodes: "{{{ nodes.servers }}}"
@@ -112,6 +125,13 @@ tasks:
       nodes: "{{{ nodes.servers }}}"
       action: "puppet.enable"
 
+  - mcollective:
+      description: "Trigger a Puppet run on Acme servers"
+      nodes: "{{{ nodes.servers }}}"
+      action: "puppet.runonce"
+      properties:
+        :splay: true
+
 # hooks for pre book, post book and fail/success handling exist,
 # they are just task lists and can have many tasks
 hooks:
@@ -122,12 +142,30 @@ hooks:
         channel: "#ops"
         text: "Acme was upgraded on cluster {{{ inputs.cluster }}} to version {{{ inputs.version }}}"
 
+    - webhook:
+        uri: https://hooks.example.net/webhook
+        method: POST
+        headers:
+          "X-Acme-Token": "TOKEN"
+        data:
+          "message": "Deployed Acme release {{{ inputs.version }}}"
+          "nodes": "{{{ nodes.servers }}}"
+
   on_fail:
     - slack:
-        description: "Notify slack on success"
+        description: "Notify slack on failure"
         token: "YOUR_API_TOKEN"
         channel: "#ops"
         text: "Acme upgrade on cluster {{{ inputs.cluster }}} to version {{{ inputs.version }}} failed to complete"
+
+    - webhook:
+        uri: https://hooks.example.net/webhook
+        method: POST
+        headers:
+          "X-Acme-Token": "TOKEN"
+        data:
+          "message": "Acme deployment to release {{{ inputs.version }}} failed"
+          "nodes": "{{{ nodes.servers }}}"
 ```
 
 You can run this playbook through the CLI, but lets look at help first, you can see our inputs are provided via *--cluster* and *--version*:

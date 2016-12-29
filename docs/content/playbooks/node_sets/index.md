@@ -1,6 +1,7 @@
 +++
 title = "Node Sets"
 weight = 420
+toc = true
 +++
 
 Node Sets are how you tell the playbook about groups of nodes that exist on your network, today you can use MCollective Discovery, PQL Queries, YAML files and Shell Scripts to create the node sets.
