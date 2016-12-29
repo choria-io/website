@@ -41,6 +41,7 @@ macros:
     method: POST
     headers:
       "X-Acme-Token": "TOKEN"
+      "X-Acme-Request-ID": "{{{ uuid }}}"
 
 hooks:
   on_success:
