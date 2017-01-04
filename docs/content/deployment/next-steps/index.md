@@ -87,6 +87,7 @@ Inventory for dev1.example.net:
 You can get a quick report of values for some fact (add -v for node names):
 
 ```bash
+$ mco facts aio_agent_version
 Report for fact: aio_agent_version
 
         1.8.0                                    found 3 times

@@ -20,10 +20,9 @@ There are very few requirements, a typical up to date Puppet installation follow
   * You must use Puppet 4 deployed using the Puppet Inc AIO packages - the one called _puppet-agent_.
   * You must be using a Puppet Master based setup, typically using _puppetserver_.
   * Your mcollective _server.cfg_ and _client.cfg_ should be Factory Default
-  * Your SSL certificates should be in the default locations.
   * You need to run middleware, Choria works best with NATS and provides a module to install that for you.
   * Your certnames must match your FQDNs - the default.
-  * You need the [ripienaar-mcollective](https://forge.puppet.com/ripienaar/mcollective) and [ripienaar-nats](https://forge.puppet.com/ripienaar/nats) modules.
+  * You need the [ripienaar/mcollective_choria](https://forge.puppet.com/ripienaar/mcollective_choria) and all it's dependencies.
 
 ### Optional
 

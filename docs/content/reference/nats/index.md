@@ -6,15 +6,13 @@ toc = true
 
 A MCollective Connector plugin for the [NATS](https://nats.io/) middleware broker designed to work within a configured Choria setup.
 
-It's goals are to be secure by default while requiring almost no configuration, it only supports TLS and it only supports doing verified TLS connections to the broker. You cannot disable this.
-
-This plugin uses the nats rubygem which unfortunately needs Event Machine. So you might need compilers on your nodes to install that.
-
-## Basic Setup
-
 {{% notice tip %}}
 After installing MCollective Choria this plugin is already completely deployed. This page is for reference only.
 {{% /notice %}}
+
+It's goals are to be secure by default while requiring almost no configuration, it only supports TLS and it only supports doing verified TLS connections to the broker. You cannot disable this.
+
+## Basic Setup
 
 In your mcollective config files you should enable this plugin:
 

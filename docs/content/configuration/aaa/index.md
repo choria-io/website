@@ -58,7 +58,7 @@ mcollective_agent_puppet::policy_default: allow
 
 ### Site wide default policy
 
-By default all actions are denied, if like in a Lab environment you want to simplify things and all all actions across all agents, you can set this in _Hiera_:
+By default all actions are denied, if like in a Lab environment you want to simplify things and allow all actions across all agents, you can set this in _Hiera_:
 
 {{% notice warning %}}
 Enabling this will allow anyone with a signed mcollective cert to perform any action on any node, please consider carefully before changing this setting.
@@ -73,7 +73,7 @@ mcollective::policy_default: allow
 
 Authentication is done via the certname embedded in the certificate, certificates must be signed by the Puppet CA.
 
-By default the only certificates that will be accepted are those matching the pattern _/\.mcollective$/_, if you have some special needs you can adjust this via _Hiera_:
+By default the only certificates that will be accepted from clients are those matching the pattern _/\.mcollective$/_, if you have some special needs you can adjust this via _Hiera_:
 
 ```yaml
 mcollective_choria::config:
@@ -96,7 +96,7 @@ Unless specifically requested you should never use certificates matching the pat
 
 ## Auditing
 
-Auditing is configured to write to a log file _/var/log/puppetlabs/mcollective-audit.log_ by default, you should set up rotation if desired (not done by the module), it's contents are like:
+Auditing is configured to write to a log file _/var/log/puppetlabs/mcollective-audit.log_ by default, you should set up rotation if desired (not done by the module), it's contents looks like:
 
 ```bash
 [2016-12-13 08:32:34 UTC] reqid=30d706be63e555db8c073ec17a23af44: reqtime=1481617954 caller=choria=rip.mcollective@dev3.example.net agent=rpcutil action=ping data={:process_results=>true}
@@ -105,3 +105,5 @@ Auditing is configured to write to a log file _/var/log/puppetlabs/mcollective-a
 [2016-12-13 13:15:35 UTC] reqid=cf95bc7621ff55a8a197e3f2e394406e: reqtime=1481634935 caller=choria=rip.mcollective@dev3.example.net agent=puppet action=status data={:process_results=>true}
 [2016-12-13 13:15:43 UTC] reqid=18192c7f260c5788a33b60ce4f01771c: reqtime=1481634943 caller=choria=rip.mcollective@dev3.example.net agent=puppet action=status data={:process_results=>true}
 ```
+
+A new plugin that logs JSON format messages is planned.

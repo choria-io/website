@@ -115,7 +115,7 @@ Setting up involves a few things, the instructions below work with the FOSS stac
  * You should already have security certificates setup for Choria, run _mco choria request_cert_ if not.
  * Your Puppet Server is found by looking in DNS or manual config as per the deployment guide, defaults to _puppet:8140_.
 
-On your PuppetServer use the _puppetlabs/puppet_authorization_ module to add a authorization rule:
+On your PuppetServer use the *puppetlabs/puppet_authorization* module to add a authorization rule:
 
 ```puppet
 puppet_authorization::rule { "puppetlabs environment":
@@ -129,7 +129,7 @@ puppet_authorization::rule { "puppetlabs environment":
 }
 ```
 
-This gives certificates *.mcollective access to the environment graph, adjust to local taste.
+This gives certificates _*.mcollective_ access to the environment graph, adjust to local taste.
 
 Add in the old /etc/puppetlabs/puppet/auth.conf add an entry:
 
@@ -169,7 +169,7 @@ Once it has the site catalog from the Puppet Server it finds the list of all nod
   4. Iterate the groups finding the nodes per group, loop them possibly in small batches
      1. Enable Puppet on these nodes
      2. Run Puppet
-     3. Wait for it to start, exit if they do not idle after a long time
+     3. Wait for it to start, exit if they do not start after a long time
      4. Wait for it to become idle, exit if they do not go idle after a long time
      5. Disable them all
      6. If any of the nodes had failed resources, fail
@@ -181,6 +181,6 @@ day though it works out, all the daemons are idle when the status is fetched and
 this is definitely for a run started after the one we needed.  So the end out come
 is the same
 
-## Status
+## Status
 
 The basic feature work and it works with the Open Source PuppetServer too, but the feature in Puppet is extremely new and needs some improvement, this tool is going to be only as good as what Puppet provides.

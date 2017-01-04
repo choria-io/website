@@ -13,8 +13,8 @@ One NATS server has been shown to be able to host over 2000 MCollective nodes co
  * Broker nodes must be managed by Puppet and have certs signed by your CA
  * Brokers must run 64bit Linux with _upstart_, _systemd_ or _sysvinit_
  * You need to get the [ripienaar-nats](https://forge.puppet.com/ripienaar/nats) module from the Puppet Forge
- * You need to ensure that port `4222` is reachable from all your Puppet nodes on all NATS servers
- * You need to ensure that in a clustered environment port `4223` is reachable by the NATS cluster hosts
+ * You need to ensure that port `4222` is reachable from all your Puppet nodes to all NATS servers
+ * You need to ensure that in a clustered environment port `4223` is reachable between all the NATS cluster hosts
  * If you wish to use the _collectd_ integration, port `8222` must be reachable from _localhost_
 
 ## Single or multiple nodes
@@ -29,7 +29,7 @@ If you just want to run a single NATS server I suggest putting this on the same 
 
 ```puppet
 node "puppet.example.net" {
-  class{"nats: }
+  class{"nats": }
 }
 ```
 
@@ -39,7 +39,7 @@ You can create a cluster of brokers, pick 3 or 5 machines and include the module
 
 ```puppet
 node "nats1.example.net" {
-  class{"nats:
+  class{"nats":
     routes_password => "Vrph54FBcIvdM"
     servers => [
       "nats1.example.net",
@@ -58,7 +58,7 @@ If you use the _puppet-collectd_ module you can optionally integrate with that:
 
 ```puppet
 node "puppet.example.net" {
-  class{"nats:
+  class{"nats":
     manage_collectd => true
   }
 }

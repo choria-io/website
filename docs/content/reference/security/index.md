@@ -6,6 +6,10 @@ toc = true
 
 Choria includes a MCollective Security plugin designed to Just Work and be secure by default.
 
+{{% notice tip %}}
+After installing MCollective Choria this plugin is already completely deployed. This page is for reference only.
+{{% /notice %}}
+
 The major goal is that the configuration should be as little as possible work.
 It should be as easy to get a very secure MCollective as it is to get the legacy
 _psk_ one working.  To that goal there is only 1 setting you have to set to enable
@@ -29,10 +33,6 @@ It shares a similar model to the old MCollective SSL security plugin but:
 
 It requires you to have a working Puppet setup with a Master acting as a CA, it
 only supports Puppet 4 AIO. Every MCollective node must already be a Puppet node.
-
-{{% notice tip %}}
-After installing MCollective Choria this plugin is already completely deployed. This page is for reference only.
-{{% /notice %}}
 
 ## Client / User Setup
 

@@ -4,7 +4,7 @@ weight = 420
 toc = true
 +++
 
-Node Sets are how you tell the playbook about groups of nodes that exist on your network, today you can use MCollective Discovery, PQL Queries, YAML files and Shell Scripts to create the node sets.
+Node Sets are how you tell the playbook about groups of nodes that exist on your network, today you can use MCollective Discovery, PQL Queries, YAML files, Shell Scripts and Terraform outputs to create the node sets.
 
 In all cases the node sets must produce a list of *certnames* that will match what MCollective expect in cases where you want to use MCollective based tasks.  In future task types will be pluggable and you just have to produce whatever node sets your type of task needs.
 
@@ -27,7 +27,7 @@ nodes:
 |------|-----------|------|
 |at_least|Fail if not at least this many nodes found|*at_least: 10*|
 |when_empty|A custom error message when no nodes are found|*when_empty: "Could not find any web servers"|
-|limit|Accept only this many nodes from the discovery source|*limit: 10*|
+|limit|Accept only this many nodes from the discovery source, if more are found, discard the excess ones|*limit: 10*|
 |test|When true performs a *mco rpc rpcutil ping* against the discovered nodes to ensure they are operational|*test: true*|
 
 ## MCollective Nodes
@@ -111,7 +111,7 @@ nodes:
 
 ## PQL Nodes
 
-While the Choria discovery method supports PQL it's a bit strict on format, you can just make arbitrary PQL queries:
+While the Choria discovery method supports PQL it's a bit strict on format, within the playbook system we have some more freedom so you can just make arbitrary PQL queries:
 
 ```yaml
 nodes:
@@ -138,7 +138,12 @@ nodes:
     script: /usr/local/bin/nodes.sh
 ```
 
-The script should just output one certname per line.  Today passing arguments to the script is not supported
+The script should just output one certname per line. It supports any arguments you might need and of course you can use templates to put *inputs* there.
+
+{{% notice warning %}}
+I strongly suggest you validate any input you use as arguments here using the *:shellsafe* validator as in the example in the Inputs section.
+{{% /notice %}}
+
 
 |Option|Description|Sample|
 |------|-----------|------|

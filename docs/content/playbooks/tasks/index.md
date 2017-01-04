@@ -43,7 +43,7 @@ tasks:
 ```
 
 {{% notice tip %}}
-The *:message* here is a Symbol that is because today MCollective requires this, in future this will become JSO safe, for now this is required and dependant on the specific agent implementation.
+The *:message* here is a Symbol that is because today MCollective requires this, in future this will become JSON safe, for now this is required and dependant on the specific agent implementation.
 {{% /notice %}}
 
 |Option|Description|

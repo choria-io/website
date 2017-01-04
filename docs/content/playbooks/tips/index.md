@@ -59,6 +59,11 @@ hooks:
           "nodes": "{{{ nodes.servers }}}"
 ```
 
+{{% notice tip %}}
+This *macros* key is not a formal standard thing but it's likely I will give it some special treatment - simply ignore it on purpose - so if you do wish to do this, stick to using *macros* like here.
+{{% /notice %}}
+
 If you have a big *data* section you can make another macro and merge that in too, for example you could set the *nodes* in the macro and just supply *message*.  In this case with just 2 data items this is a waste though.
 
 Use the *mco playbook show playbook.yaml* command to see if your merges are working.
+

@@ -6,6 +6,10 @@ toc = true
 
 Users who wish to manage nodes via MCollective need to have certificates signed by the Puppet CA.  Choria includes a tool to request and manage these certificates.
 
+{{% notice info %}}
+In the past each user typically had a *~/.mcollective* config file, with Choria this is not needed, please remove this file should it exist in your shell
+{{% /notice %}}
+
 ## Create your first user
 
 On the node you wish to run MCollective commands from you should have configured it as a _client_ in the previous step.
