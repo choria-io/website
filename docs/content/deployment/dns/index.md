@@ -44,6 +44,16 @@ mcollective_choria::config:
   srv_domain: "prod.example.net"
 ```
 
+## Disabling SRV support
+
+You might be in a situation where you have multiple environments like development and production in the same domain.  You might want to use SRV for production but not for development.
+
+Since version `0.0.16` you can disable SRV lookups entirely:
+
+```yaml
+mcollective_choria::config:
+  use_srv_records: false
+```
 
 ## Manual Config
 
