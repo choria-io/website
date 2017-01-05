@@ -7,8 +7,8 @@ weight = 220
 MCollective features a full suite of Authentication, Authorization and Auditing capabilities.
 
   * Authentication - _who_ you are, derived from a certificate
-  * Authorization - _what_ you may do on any given node, keyed to your certificate based identity
-  * Auditing - _log_ of what you did, showing your certificate based identitty and all requests
+  * Authorization - _what_ you may do on any given node, keyed to your certificate-based identity
+  * Auditing - _log_ of what you did, showing your certificate based identity and all requests
 
 Earlier we made a certificate called _rip.mcollective_ which is used to establish your identity as _choria=rip.mcollective_ which will be used throughout in the AAA system.
 
@@ -16,11 +16,11 @@ Earlier we made a certificate called _rip.mcollective_ which is used to establis
 
 Choria sets up the popular [Action Policy](https://github.com/puppetlabs/mcollective-actionpolicy-auth) based authorization and does so in a _default deny_ mode which means by default, no-one can make any requests.
 
-Some plugins may elect to ship authorization rules that allow certain read only actions by default - like the _mco puppet status_ command, but you can change or override all of this.
+Some plugins may elect to ship authorization rules that allow certain read only actions by default, like the _mco puppet status_ command, but you can change or override all of this.
 
 ### Site Policies
 
-You can allow your own users only certain access, previously when configuring your first user we did this already via _Hiera_:
+You can allow your own users only certain access, previously when configuring your first user, we did this already via _Hiera_:
 
 ```yaml
 mcollective::site_policies:
@@ -50,7 +50,7 @@ For full details see the [Action Policy](https://github.com/puppetlabs/mcollecti
 
 ### Per plugin default override
 
-As mentioned by default all actions are denied across all agents, you can change a specific agent to default allow via hiera:
+As mentioned by default all actions are denied across all agents, you can change a specific agent to default allow via _Hiera_:
 
 ```yaml
 mcollective_agent_puppet::policy_default: allow
@@ -88,7 +88,7 @@ $ mco choria request_cert --certname bob
 
 ### Revoking access
 
-Public certificates are distributed automatically but will never be removed.  To remove them you have to manually arrange for the files to be deleted from all nodes - perhaps using Puppet - before a new one can be distributed.  These live in */etc/puppetlabs/mcollective/choria_security/public_certs*.
+Public certificates are distributed automatically but will never be removed.  To remove them you have to manually arrange for the files to be deleted from all nodes, perhaps using Puppet, before a new one can be distributed.  These live in */etc/puppetlabs/mcollective/choria_security/public_certs*.
 
 ### Privileged certificates
 
@@ -96,7 +96,7 @@ Unless specifically requested you should never use certificates matching the pat
 
 ## Auditing
 
-Auditing is configured to write to a log file _/var/log/puppetlabs/mcollective-audit.log_ by default, you should set up rotation if desired (not done by the module), it's contents looks like:
+Auditing is configured to write to a log file _/var/log/puppetlabs/mcollective-audit.log_ by default, you should set up rotation if desired (it's not done by the module), its contents looks like:
 
 ```bash
 [2016-12-13 08:32:34 UTC] reqid=30d706be63e555db8c073ec17a23af44: reqtime=1481617954 caller=choria=rip.mcollective@dev3.example.net agent=rpcutil action=ping data={:process_results=>true}
