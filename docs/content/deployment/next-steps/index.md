@@ -169,9 +169,11 @@ The official documentation is a good resource for usage details:
   * Read about [managing files](https://github.com/puppetlabs/mcollective-filemgr-agent#readme) and this setup too is already completed
 
 These plugins that manage Service, Package, Puppet and Files are just plugins and they make the
-core feature set of Mcollective.  You can write your own plugins, deploy them and interact with
+main user facing feature set of Mcollective.  You can write your own plugins, deploy them and interact with
 them.  There is an [official guide about this](https://docs.puppet.com/mcollective/simplerpc/agents.html).
-Writing your own lets you solve your deployment problems using MCollective.
+
+If you do write your own plugins Choria helps you [package your plugins](../next-steps/) as Puppet modules like the ones we
+just installed, sharable on the Forge.
 
 ## Getting in touch
 

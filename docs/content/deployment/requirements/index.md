@@ -4,18 +4,11 @@ weight = 105
 toc = true
 +++
 
-For MCollective to function we need a few infrastructure components, this guide takes you through setting up all of these:
-
-  * Set up a middleware broker using [NATS.io](https://nats.io/)
-  * Configure server locations using DNS or manually if not using defaults
-  * Configure MCollective
-  * Create your first user
-
 ## Deployment Overview
 
 Deploying MCollective with Choria is broken into the following main steps that the menu on the right guides you through:
 
-  * Decide your desired NATS middleware topology and deploy it
+  * Decide your desired [NATS](https://nats.io) middleware topology and deploy it
   * If required configure DNS records or manual host locations
   * Configure MCollective using the [ripienaar/mcollective_choria](https://forge.puppet.com/ripienaar/mcollective_choria) module
   * Create your first users and their authorization rules
