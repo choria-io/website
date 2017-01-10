@@ -22,6 +22,15 @@ node "server1.example.net" {
 }
 ```
 
+If you do not have */opt/puppetlabs/bin/puppet* symlinked into */usr/bin* or somewhere in the MCollective PATH, which does not by default include the */opt/puppetlabs/bin* directory, you need add this to your Hiera config:
+
+```yaml
+mcollective_agent_puppet::config:
+  "command": "/opt/puppetlabs/puppet/bin/puppet agent"
+```
+
+This is a temporary need until the next official release of the Puppet Agent.
+
 ## Client nodes
 
 On machines where you wish to run _mco_ commands like your Bastion nodes you have to configure them to be clients, you do this via _Hiera_:

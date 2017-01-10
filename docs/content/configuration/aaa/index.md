@@ -106,4 +106,22 @@ Auditing is configured to write to a log file _/var/log/puppetlabs/mcollective-a
 [2016-12-13 13:15:43 UTC] reqid=18192c7f260c5788a33b60ce4f01771c: reqtime=1481634943 caller=choria=rip.mcollective@dev3.example.net agent=puppet action=status data={:process_results=>true}
 ```
 
-A new plugin that logs JSON format messages is planned.
+The above is the native MCollective logging format, it's a bit old and predates things like logstash being popular.  There's a new Choria plugin that you can enable via Hiera:
+
+{{% notice tip %}}
+This is available since choria module version 0.0.16 and will become the default Choria configures nearer to 1.0.0
+{{% /notice %}}
+
+```yaml
+mcollective::server_config:
+  rpcauditprovider: "choria"
+  plugin.rpcaudit.logfile: "/var/log/puppetlabs/choria-audit.log"
+```
+
+The format this will log in can be seen below, works well with ES and things like [./jq](https://stedolan.github.io/jq/).
+
+```json
+{"timestamp":"2017-01-07T07:13:30.174912+0000","request_id":"a1dbec0d79845644a5761e5969ec8ff2","request_time":1483773209,"caller":"choria=rip.mcollective","sender":"dev4.example.net","agent":"package","action":"status","data":{"package":"puppet-agent","version":null,"process_results":true}}
+{"timestamp":"2017-01-07T07:41:36.173828+0000","request_id":"bbf1d1172abe5ea2a5a73ffcb436c5d1","request_time":1483774895,"caller":"choria=rip.mcollective","sender":"dev4.example.net","agent":"puppet","action":"disable","data":{"process_results":true}}
+{"timestamp":"2017-01-07T07:42:47.278562+0000","request_id":"8f77f6f35e2358b0b697ad9b69f7f528","request_time":1483774967,"caller":"choria=rip.mcollective","sender":"dev4.example.net","agent":"puppet","action":"status","data":{"process_results":true}}
+```

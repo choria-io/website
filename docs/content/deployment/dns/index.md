@@ -4,7 +4,7 @@ weight = 120
 toc = true
 +++
 
-By default as per Puppet behaviour the Puppet Master, Puppet CA and NATS brokers are all found on the name _puppet_.  If you are doing a single node NATS installation on the Puppet Master called _puppet_ you do not neeed to configure anything and continue to the next page.
+By default as per Puppet behaviour the Puppet Master, Puppet CA and NATS brokers are all found on the name _puppet_.  If you are doing a single node NATS installation on the Puppet Master called _puppet_ you do not neeed to configure anything and can continue to the next page.
 
 When not using _puppet_ you can configure these settings manually but we strongly suggest you use SRV records if at all possible.
 
@@ -61,6 +61,7 @@ If you have to you can configure these locations manually by creating _Hiera_ da
 
 ```yaml
 mcollective_choria::config:
+  use_srv_records: false
   puppetserver_host: "puppet1.example.net"
   puppetserver_port: 8140
   puppetca_host: "ca1.example.net"
