@@ -26,7 +26,7 @@ nodes:
 |Option|Description|Sample|
 |------|-----------|------|
 |at_least|Fail if not at least this many nodes found|*at_least: 10*|
-|when_empty|A custom error message when no nodes are found|*when_empty: "Could not find any web servers"|
+|when_empty|A custom error message when no nodes are found|*when_empty: "Could not find any web servers"*|
 |limit|Accept only this many nodes from the discovery source, if more are found, discard the excess ones|*limit: 10*|
 |test|When true performs a *mco rpc rpcutil ping* against the discovered nodes to ensure they are operational|*test: true*|
 
@@ -147,7 +147,7 @@ I strongly suggest you validate any input you use as arguments here using the *:
 
 |Option|Description|Sample|
 |------|-----------|------|
-|script|Path to a script to run, does not accept arguments|*script: "/usr/local/bin/nodes.sh"*|
+|script|Shell command to run with any arguments etc|*script: "/usr/local/bin/nodes.sh"*|
 
 ### Terraform Nodes
 
@@ -155,7 +155,7 @@ I strongly suggest you validate any input you use as arguments here using the *:
 This feature is included since *0.0.13*
 {{% /notice %}}
 
-Retrieves a Terraform output from a state file, only outputs of the *list* type are supported.  No effort to first pull remote states are currently made.
+Retrieves a Terraform output from a state file, only outputs of the *list* type are supported.  No effort to first pull remote states is currently made.
 
 ```yaml
 nodes:

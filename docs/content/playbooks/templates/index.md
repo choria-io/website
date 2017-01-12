@@ -90,6 +90,34 @@ But here it will be a comma joined string:
       "message": "Acme deployed to release {{{ inputs.version }}} on nodes {{{ nodes.servers }}}"
 ```
 
+## Previous Task Status
+
+{{% notice tip %}}
+As of version *0.0.16*
+{{% /notice %}}
+
+You can reference items from the previous task via templates, only the one previous item is available
+and if no previous task ran informative data will be returned.  This is designed to use in *on_fail*
+tasks lists to notify Slack with context.
+
+```yaml
+hooks:
+  on_fail:
+    - slack:
+        description: "Notify slack"
+        token: "YOUR_API_TOKEN"
+        channel: "#general"
+        text: "Playbook `{{{ metadata.name }}}` task `{{{ previous_task.description }}}` against nodes `{{{ nodes.dev }}}` failed after `{{{ previous_task.runtime }}}` seconds with: ```{{{ previous_task.msg }}}```"
+```
+
+|Item|Description|
+|----|-----------|
+|previous_task.success|Boolean indicating if the task ran, false when not ran at all|
+|previous_task.description|The task description|
+|previous_task.msg or previous_task.message|The status message the previous task produced|
+|previous_task.data|The raw data the task produced, will be shown using *inspect* from Ruby|
+|previous_task.runtime|How long the task ran in seconds|
+
 ## Times
 {{% notice tip %}}
 As of version *0.0.14*

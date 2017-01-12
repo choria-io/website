@@ -1,6 +1,6 @@
 +++
 title = "Tips"
-weight = 450
+weight = 499
 +++
 
 ## Less repetition
