@@ -6,7 +6,7 @@ googleAnalytics = "UA-10152852-12"
 
 [[params.social]]
     title = "docs"
-    url = "docs/about/"
+    url = "docs/latest/about/"
     button = "primary"
 [[params.social]]
     title = "github"
