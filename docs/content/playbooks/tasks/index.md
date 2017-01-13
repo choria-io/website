@@ -150,13 +150,26 @@ The request will include a header *X-Choria-Request-ID* with a unique UUID for e
 Sends a message to a Slack channel, tested using the basic *bot user account* style bot.
 
 ```yaml
-tasks:
+on_fail:
   - slack:
-      description: Slack test
-      token: "xoxb-YOUR_TOKEN"
+      description: "Notify slack"
+      token: "xoxb-YOUR-TOKEN"
       channel: "#general"
-      username: "Ops Bot"
-      text: "Deployed Acme verion {{{ inputs.version }}} to cluster {{{ inputs.cluster }}}"
+      text: "Playbook `{{{ metadata.name }}}` task `{{{ previous_task.description }}}` failed after `{{{ previous_task.runtime }}}` seconds with: ```{{{ previous_task.msg }}}```"
+      color: "danger"
 ```
 
+The above will produce a slack notification like the one below.
+
+![Slack Sample](../../slack-example.png)
+
 This posts a message to Slack with your text using the *chat.postMessage* API, above is all the possible options.
+
+|Option|Description|
+|------|-----------|
+|token|Your API token for the bot user|
+|channel|The channel to send to|
+|text|Markdown encoded text to send in the attachment|
+|color|Color to use, web colors like *#aabbccdd* or one of *good*, *warning* or *danger*|
+|username|The user to appear as on the slack channel|
+

@@ -9,14 +9,10 @@ When running a playbook a report is produced that include things like all the in
 When running on the CLI you can save this report to a local YAML file:
 
 ```bash
-$ mco playbook run --report out.yaml playbook.yaml
+$ mco playbook run --report playbook.yaml
 ```
 
-In the resulting YAML file you'll find the following data:
-
-{{% notice tip %}}
-As of version 0.0.16
-{{% /notice %}}
+This will write a YAML file with a report with the following data:
 
 ## report
 

@@ -2,7 +2,7 @@ desc "Build website"
 task :build_docs do
   Dir.chdir(File.dirname(__FILE__)) do
     sh("rm -rf out")
-    sh("mkdir -p out/docs/latest")
+    sh("mkdir -p out/docs")
     sh("cp -r docs docs_template")
   end
 
@@ -11,7 +11,7 @@ task :build_docs do
   end
 
   Dir.chdir(File.join(File.dirname(__FILE__), "docs")) do
-    sh("hugo -b http://%s/docs/latest/ -d ../out/docs/latest/" % ENV["CHORIA_SITE_NAME"])
+    sh("hugo -b http://%s/docs/ -d ../out/docs/" % ENV["CHORIA_SITE_NAME"])
   end
 
   Dir.entries(File.dirname(__FILE__)).grep(/docs_\d+\.\d+\.\d+/).each do |docs_dir|
