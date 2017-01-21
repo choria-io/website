@@ -30,3 +30,23 @@ inputs:
     default: "alpha"
     validation: ":shellsafe"
 ```
+
+Inputs can be sourced from data stores like *Consul*, *etcd* or local memory when they are not specifically given on the CLI, see the Data Sources page for full details:
+
+```yaml
+data_sources:
+  local:
+    type: memory
+
+inputs:
+  cluster:
+    description: "Cluster to deploy"
+    type: "String"
+    default: "alpha"
+    validation: ":shellsafe"
+    data: "local/cluster"
+```
+
+The above sets up a local in memory data store and sets the input *cluster* to fetch data from there.  Should you not specify a value on the CLI it will consult the data store every time you reference the input.  When not found the *default* value is used.
+
+[Data Sources](../data/) are an advanced topic and covered extensively in the dedicated Data Sources page.

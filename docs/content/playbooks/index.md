@@ -11,10 +11,6 @@ Choria Playbooks is an attempt to produce a system that lets you write sets of t
 
 While Playbooks are MCollective centred they support integrating a range of 3rd party components into your flows.
 
-{{% notice tip %}}
-This feature is available since 0.0.12
-{{% /notice %}}
-
 ## Typical Use Case
 
 By way of an example here is typical use case I have in mind:

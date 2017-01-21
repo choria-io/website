@@ -151,10 +151,6 @@ I strongly suggest you validate any input you use as arguments here using the *:
 
 ### Terraform Nodes
 
-{{% notice tip %}}
-This feature is included since *0.0.13*
-{{% /notice %}}
-
 Retrieves a Terraform output from a state file, only outputs of the *list* type are supported.  No effort to first pull remote states is currently made.
 
 ```yaml

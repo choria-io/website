@@ -18,18 +18,26 @@ Apart from obvious things like being generally stable and reliable I specificall
  - [ ] The new JSON based audit plugin on by default
  - [ ] A *choria* GitHub org
  - [x] A *choria* forge namespace
- - [ ] Versioned docs
+ - [x] Versioned docs
  - [ ] Logo
 
 For playbooks:
 
- - [ ] k/v reader for inputs with at least consul supported but more possible
- - [ ] k/v writer task with at least consul supported but more possible
+ - [x] a playbook level data source definition
  - [x] reports, versioned format
  - [ ] versioned playbook document even though we wont have schemas yet
+ - [x] memory data store
+ - [ ] consul data store
+ - [x] inputs from the data store
+ - [x] data store write task
+ - [x] data store read task
+ - [ ] nodes from the data store
+
+Data store locks - anything that needs a session - are probably going to be post 1.0.0, the data store is described in the playbook spec doc
 
 Stretch Goals, but probably only after 1.0.0:
 
+ - [ ] etcd data store
  - [ ] A replacement for *mco rpc*
  - [ ] ActiveMQ that's like the NATS one - unconditional SSL, same SRV records
  - [ ] RabbitMQ that's like the NATS one - unconditional SSL, same SRV records

@@ -92,10 +92,6 @@ But here it will be a comma joined string:
 
 ## Previous Task Status
 
-{{% notice tip %}}
-As of version *0.0.16*
-{{% /notice %}}
-
 You can reference items from the previous task via templates, only the one previous item is available
 and if no previous task ran informative data will be returned.  This is designed to use in *on_fail*
 tasks lists to notify Slack with context.

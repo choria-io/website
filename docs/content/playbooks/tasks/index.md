@@ -115,11 +115,51 @@ If you pass any inputs into your script arguments be sure to set *validation: ":
 |nodes|A list of nodes, passed as *--nodes node1,node2* to your script|
 |environment|A hash of any environment variables you wish to set|
 
-## Webhook task
+## Data task
+
+A playbook can have an associated Data Source like *Consul*, *etcd* or in local memory.  Inputs can be dynamically resolved against this data and you can manipulate the data using this task.
 
 {{% notice tip %}}
-This feature is included since *0.0.13*
+This feature is included since *0.0.20*
 {{% /notice %}}
+
+```yaml
+data_sources:
+  local_memory:
+    type: memory
+
+inputs:
+  cluster:
+    description: "Cluster to deploy"
+    type: "String"
+    default: "alpha"
+    validation: ":shellsafe"
+    data: "local_memory/cluster"
+
+tasks:
+  - shell:
+      command: "/usr/local/bin/deploy --cluster {{{ inputs.cluster }}}"
+
+  - data:
+      action: "write"
+      key: "local_memory/cluster"
+      value: "bravo"
+
+  - shell:
+      command: "/usr/local/bin/deploy --cluster {{{ inputs.cluster }}}"
+```
+
+This will have the effect of at first defaulting to *alpha* for the cluster to deploy and then switching to *bravo*.
+
+In this way you can do blue/green deploys etc.  See the [Data Sources](../data/) section for full details.
+
+|Option|Description|
+|------|-----------|
+|action|The action to perform against the data - *write* or *delete*|
+|key|The key to act on in the form *data_store_name/key_name*|
+|value|When writing, the value to write|
+
+## Webhook task
 
 This allows arbitrary webhooks to be constructed and called via either GET or POST.
 
