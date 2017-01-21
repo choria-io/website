@@ -4,7 +4,11 @@ weight = 450
 toc = true
 +++
 
-Data Sources allow you to dynamically read and write data from tools like Consul, etcd or a local memory space.  In future they it will be possible to do playbook level locks and task level locks against these tools too, thus coording across multiple instances of the same playbook or related tasks across different playbooks.
+Data Sources allow you to dynamically read and write data from tools like Consul, etcd or a local memory space.
+
+In future it will be possible to do playbook level locks and task level locks against these tools too, thus coording across multiple instances of the same playbook or related tasks across different playbooks.  You will also be able to extract service membership from for example Consul Services.
+
+Today the only integration that exist is in Inputs and Tasks.
 
 {{% notice tip %}}
 This feature is included since *0.0.20*
@@ -40,7 +44,7 @@ inputs:
     data: "local_memory/cluster"
 ```
 
-You'll still be able to supply the input on the CLI - in which case it becomes static and does not change for the life of the playbook - but if you do not it will bind to the key *cluster* in the data store called *local_memory*.
+You'll still be able to supply the input on the CLI - in which case it becomes static and does not change for the life of the playbook - but if you do not it will bind to the key *cluster* in the data store called *local_memory*.  If you add the key *dynamic_only* and set it to true then the input will not appear on the CLI and will only resolve from data sources and defaults
 
 From then on any time you reference it in a template like *{{{ inputs.cluster }}}* it will query the data store and will not cache this result.  So if the playbook or an extenal tool adjusts the data in the data source the playbook will always get current data.
 
