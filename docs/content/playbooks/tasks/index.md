@@ -57,10 +57,6 @@ The *:message* here is a Symbol that is because today MCollective requires this,
 
 ## MCollective Assert task
 
-{{% notice tip %}}
-This feature is included since *0.0.13*
-{{% /notice %}}
-
 This task is very similar to the MCollective one, it even uses it under the covers, but it's goal is to be used in cases where you want to wait for a certain condition to become true or just assert that it's true now.
 
 The typical case is where you want to wait for a set of nodes to stop all Puppet runs before you make manual changes, this can be achieved using this task and the *puppet.status* action.

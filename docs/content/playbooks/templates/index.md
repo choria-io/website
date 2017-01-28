@@ -115,9 +115,6 @@ hooks:
 |previous_task.runtime|How long the task ran in seconds|
 
 ## Times
-{{% notice tip %}}
-As of version *0.0.14*
-{{% /notice %}}
 
 You might need the time to send off in webhooks or to slack etc, you can format the current time in either local or UTC time:
 
@@ -136,9 +133,6 @@ message: "Acme deployed at {{{ date(%FT%T) }}}"
 Formats are as per ruby `Time#strftime` format and you must supply a format.
 
 ## UUIDs
-{{% notice tip %}}
-As of version *0.0.14*
-{{% /notice %}}
 
 At present only UUIDs created using the `MCollective::SSL.uuid` method is supported, here we create a unique ID in a Webhook:
 

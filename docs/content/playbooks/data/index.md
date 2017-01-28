@@ -30,17 +30,17 @@ You define a data source with a unique name and source specific properties, you 
 
 ```yaml
 data_sources:
-  local_memory:
-    type: memory
+  local_consul:
+    type: consul
     timeout: 120
     ttl: 60
 ```
 
-This creates a data source called *local_memory*, for the moment only a basic local to the playbook memory store exist.
+This creates a data source called *local_consul*.
 
 |Option|Description|
 |------|-----------|
-|type|Tye type of data store, only *memory* is currently supported|
+|type|Tye type of data store, like *memory* or *consul*, see below for more|
 |timeout|How long to wait for a lock to be obtained|
 |ttl|How long a lock should be valid before expiring, this protects against stale locks if a playbook exits early|
 
@@ -59,6 +59,38 @@ data_stores:
 The memory store is a purely in-memory store and lives only for the length of the playbook run.  As such when you use it for locks these locks are not distributed or networked.
 
 It has no options other than the basic ones that apply to all stores.
+
+#### Environment Store
+
+```yaml
+data_stores:
+  pb_env:
+    type: "environment"
+    prefix: "PB_"
+```
+
+The environment store reads and writes variables from your shell environment.  It supports read, write and delete, no locking.
+
+|Option|Description|
+|------|-----------|
+|prefix|Setting a prefix of *PB_* will fetch environment variable *PB_test* when requesting *test*.|
+
+#### File Store
+
+```yaml
+data_stores:
+  pb_env:
+    type: "file"
+    file: "~/pb_data.yaml"
+    format: "yaml"
+```
+
+The file store reads and writes variables to a file on your local machine.  It supports read, write and delete, no locking.
+
+|Option|Description|
+|------|-----------|
+|file|The file to store data in. The file has to exist, but it can be 0 bytes at start.|
+|format|The file format to use, *yaml* and *json* are valid values|
 
 #### Consul Store
 
@@ -86,7 +118,10 @@ Using this Data Store you can obtain network wide excludive locks that ensure a 
 
 When using locks a Session is created and maintained, should the playbook die unexpectedly the Session will expire after *ttl* seconds.  In the example above a lock will be created in Consul called *choria/locks/playbook/playbook_name*.
 
-Should a lock not be obtained after *timeout* seconds the playbook will fail without writing a report.
+|Option|Description|
+|------|-----------|
+|ttl|How long locks should be valid for after playbook crash or similar. Locks will be refreshed 5 seconds before expiry.  10 seconds minimum|
+|timeout|How long to wait for a lock, fails after timeout|
 
 ### Binding inputs to Data Sources
 
@@ -99,10 +134,10 @@ inputs:
     type: "String"
     default: "alpha"
     validation: ":shellsafe"
-    data: "local_memory/cluster"
+    data: "local_consul/cluster"
 ```
 
-You'll still be able to supply the input on the CLI - in which case it becomes static and does not change for the life of the playbook - but if you do not it will bind to the key *cluster* in the data store called *local_memory*.  If you add the key *dynamic* and set it to true then the input will not appear on the CLI and will only resolve from data sources and defaults
+You'll still be able to supply the input on the CLI - in which case it becomes static and does not change for the life of the playbook - but if you do not it will bind to the key *cluster* in the data store called *local_consul*.  If you add the key *dynamic* and set it to true then the input will not appear on the CLI and will only resolve from data sources and defaults
 
 From then on any time you reference it in a template like *{{{ inputs.cluster }}}* it will query the data store and will not cache this result.  So if the playbook or an extenal tool adjusts the data in the data source the playbook will always get current data.
 
