@@ -26,16 +26,16 @@ This is a rough feature set, individual pieces are explored in more detail below
    - [x] It should be non interactive runs with rich reporting while being paramaterised
    - [x] It should have a custom logger format that shows the context as it moves through the playbook flow
    - [x] It should have support for distributed key/value stores used in locks, inputs, node sets and tasks
-   - [x] It should produce reports that can be stored in JSON or in a webservice for later retrieval ([#88](https://github.com/ripienaar/mcollective-choria/issues/88))
+   - [x] It should produce reports that can be stored in JSON or in a webservice for later retrieval ([#88](https://github.com/choria-io/mcollective-choria/issues/88))
    - [ ] It should support *macros* that ship with mcollective agent plugins and bring reusable self container utility logic
-   - [ ] It should support versioned playbook schemas so we can ensure an incoming playbook is usable by the system ([#87](https://github.com/ripienaar/mcollective-choria/issues/87))
+   - [ ] It should support versioned playbook schemas so we can ensure an incoming playbook is usable by the system ([#87](https://github.com/choria-io/mcollective-choria/issues/87))
    - [ ] It should have JSON schemas for the full playbook schema - partially completed
    - [ ] It should validate incoming playbooks using the JSON schema
    - [ ] It should have an optional webservice where playbooks are stored and later ran under
    - [ ] It should be compatible with MCollective AAA, a webservice should be able to run commands as a certain user
-   - [ ] It should support pluggable Node sources so users can extend it ([#90](https://github.com/ripienaar/mcollective-choria/issues/90))
-   - [ ] It should support pluggable Task types so users can extend it ([#89](https://github.com/ripienaar/mcollective-choria/issues/89))
-   - [ ] It should support arbitrarily named tasks lists and ability to run those from within a task list to facilitate reusing of logic ([#91](https://github.com/ripienaar/mcollective-choria/issues/91))
+   - [ ] It should support pluggable Node sources so users can extend it ([#90](https://github.com/choria-io/mcollective-choria/issues/90))
+   - [ ] It should support pluggable Task types so users can extend it ([#89](https://github.com/choria-io/mcollective-choria/issues/89))
+   - [ ] It should support arbitrarily named tasks lists and ability to run those from within a task list to facilitate reusing of logic ([#91](https://github.com/choria-io/mcollective-choria/issues/91))
 
 ### Inputs
 
@@ -75,4 +75,4 @@ This is a rough feature set, individual pieces are explored in more detail below
 
 Ticked features are implemented and usable today.
 
-A number of [issues have been opened on GitHub](https://github.com/ripienaar/mcollective-choria/issues?q=is%3Aissue+is%3Aopen+label%3Aplaybooks) to track work on this feature.
+A number of [issues have been opened on GitHub](https://github.com/choria-io/mcollective-choria/issues?q=is%3Aissue+is%3Aopen+label%3Aplaybooks) to track work on this feature.

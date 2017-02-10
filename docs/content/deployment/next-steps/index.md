@@ -179,6 +179,6 @@ just installed, sharable on the Forge.
 
 I am on the Puppet IRC as _Volcane_ and on slack as _ripienaar_, we also have a _#mcollective_ channel on Freenode.
 
-If you wish to file a ticket about anything here or improve something the 2 GitHub project are [ripienaar/mcollective-choria](https://github.com/ripienaar/mcollective-choria)
-and [ripienaar/puppet-mcollective](https://github.com/ripienaar/puppet-mcollective) where you can file issues.
+If you wish to file a ticket about anything here or improve something the 2 GitHub project are [choria-io/mcollective-choria](https://github.com/choria-io/mcollective-choria)
+and [choria-io/puppet-mcollective](https://github.com/choria-io/puppet-mcollective) where you can file issues.
 

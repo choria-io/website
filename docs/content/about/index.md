@@ -30,4 +30,4 @@ See the [Deployment Guide](../deployment) for details on installation.
 
 ## Status
 
-All the features of this module work as intended, though bugs are inevitable.  All AIO supported Operating Systems are supported, including Windows, and the project is under active development on [GitHub](https://github.com/ripienaar/mcollective-choria).
+All the features of this module work as intended, though bugs are inevitable.  All AIO supported Operating Systems are supported, including Windows, and the project is under active development on [GitHub](https://github.com/choria-io).

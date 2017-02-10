@@ -6,7 +6,7 @@ toc = true
 
 Version 1 of these modules and plugins seems about due after good feedback from everyone.
 
-There is a [GitHub milestone](https://github.com/ripienaar/mcollective-choria/milestone/2) with most of these captured
+There is a [GitHub milestone](https://github.com/choria-io/mcollective-choria/milestone/2) with most of these captured
 and will likely be more accurate
 
 Apart from obvious things like being generally stable and reliable I specifically want these features:

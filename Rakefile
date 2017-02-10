@@ -16,7 +16,7 @@ end
 desc "Build website"
 task :build_docs do
   Dir.chdir(File.dirname(__FILE__)) do
-    sh("rm -rf out")
+    sh("rm -rf out docs_template")
     sh("mkdir -p out/docs")
     sh("cp -r docs docs_template")
   end
@@ -42,6 +42,7 @@ task :build_docs do
         sh("rm -rf ../docs_template/static")
         sh("cp -r content ../docs_template")
         sh("cp -r static ../docs_template")
+        sh("cp -r ../docs/static/css ../docs_template/static")
       end
 
       Dir.chdir(File.join(File.dirname(__FILE__), "docs_template")) do
