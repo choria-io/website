@@ -1,12 +1,12 @@
 +++
-title = "Data Sources"
+title = "Data Stores"
 weight = 450
 toc = true
 +++
 
-Data Sources allow you to dynamically read and write data from tools like Consul, etcd or a local memory space.
+Data Stores allow you to dynamically read and write data from tools like Consul, etcd or a local memory space.
 
-Data Sources are used in a number of places:
+Data Stores are used in a number of places:
 
   * Inputs can be dynamically read from data stores
   * Data can be written to the data stores
@@ -22,21 +22,21 @@ Planned features are:
 This feature is included since *0.0.20*
 {{% /notice %}}
 
-### Defining a Data Source
+### Defining a Data Store
 
-You define a data source with a unique name and source specific properties, you can then reference it in inputs, tasks etc by name.
+You define a data store with a unique name and store specific properties, you can then reference it in inputs, tasks etc by name.
 
-#### Common Data Source Properties
+#### Common Data Store Properties
 
 ```yaml
-data_sources:
+data_stores:
   local_consul:
     type: consul
     timeout: 120
     ttl: 60
 ```
 
-This creates a data source called *local_consul*.
+This creates a data store called *local_consul*.
 
 |Option|Description|
 |------|-----------|
@@ -45,7 +45,7 @@ This creates a data source called *local_consul*.
 |ttl|How long a lock should be valid before expiring, this protects against stale locks if a playbook exits early|
 
 {{% notice tip %}}
-You can use templates when defining Data Sources so you can use inputs to vary hostnames, usernames etc
+You can use templates when defining Data Store so you can use inputs to vary hostnames, usernames etc
 {{% /notice %}}
 
 #### Memory Store
@@ -123,9 +123,9 @@ When using locks a Session is created and maintained, should the playbook die un
 |ttl|How long locks should be valid for after playbook crash or similar. Locks will be refreshed 5 seconds before expiry.  10 seconds minimum|
 |timeout|How long to wait for a lock, fails after timeout|
 
-### Binding inputs to Data Sources
+### Binding inputs to Data Stores
 
-When you define an input and add the *data* key to it this should reference a previously defined data source.
+When you define an input and add the *data* key to it this should reference a previously defined data store.
 
 ```yaml
 inputs:
@@ -137,11 +137,11 @@ inputs:
     data: "local_consul/cluster"
 ```
 
-You'll still be able to supply the input on the CLI - in which case it becomes static and does not change for the life of the playbook - but if you do not it will bind to the key *cluster* in the data store called *local_consul*.  If you add the key *dynamic* and set it to true then the input will not appear on the CLI and will only resolve from data sources and defaults
+You'll still be able to supply the input on the CLI - in which case it becomes static and does not change for the life of the playbook - but if you do not it will bind to the key *cluster* in the data store called *local_consul*.  If you add the key *dynamic* and set it to true then the input will not appear on the CLI and will only resolve from data stores and defaults
 
-From then on any time you reference it in a template like *{{{ inputs.cluster }}}* it will query the data store and will not cache this result.  So if the playbook or an extenal tool adjusts the data in the data source the playbook will always get current data.
+From then on any time you reference it in a template like *{{{ inputs.cluster }}}* it will query the data store and will not cache this result.  So if the playbook or an extenal tool adjusts the data in the data store the playbook will always get current data.
 
-For the moment only String data is supported by the data sources, but validation will happen like *:shellsafe* here.
+For the moment only String data is supported by the data store, but validation will happen like *:shellsafe* here.
 
 ### Playbook level locks
 
@@ -157,15 +157,15 @@ These locks will be obtained early in the playbook startup and if they can't the
 
 There will be timeout for how long at most it will wait to get a lock, set using the *timeout* option when creating the data store.
 
-When it makes sense the data source will create the lock in a way that should the playbook die, machine dies or other unexpected thing the lock will timeout after a period configurable using the *ttl* option when creating the data store.
+When it makes sense the data store will create the lock in a way that should the playbook die, machine dies or other unexpected thing the lock will timeout after a period configurable using the *ttl* option when creating the data store.
 
 {{% notice tip %}}
-Locks like these make no sense with the *memory* data source, you need a service like Consul
+Locks like these make no sense with the *memory* data store, you need a service like Consul
 {{% /notice %}}
 
-When you just specify a data source name like *consul_store* the lock will match the name property of the playbook else you can specify your own path like *consul_store/specific_lock*.
+When you just specify a data store name like *consul_store* the lock will match the name property of the playbook else you can specify your own path like *consul_store/specific_lock*.
 
-### Editing Data Sources
+### Editing Data Stores
 
 A playbook can write and delete data using the new *data* task - see the [Tasks](../tasks/) reference for full details.
 

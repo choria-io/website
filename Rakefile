@@ -52,7 +52,6 @@ task :build_docs do
 
   Dir.chdir(File.join(File.dirname(__FILE__), "out")) do
     rm("apple-touch-icon.png")
-    rm("favicon.ico")
   end
 end
 

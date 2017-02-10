@@ -32,18 +32,17 @@ body {
     width: 100%;
     min-height: 70%;
     position: relative;
-    background: url(../img/desk.jpg) no-repeat center center fixed;
+    /* background: url(../img/desk.jpg) no-repeat center center fixed;
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
-    background-size: cover;
+    background-size: cover; */
     z-index: 99999;
-    background-color: black;
+    background-color: #2a395b;
 }
 
 .logo {
-    max-width: 35em;
-    width: 100%;
+    max-width: 29em;
     padding: 2em;
 }
 
@@ -61,10 +60,10 @@ and (orientation : portrait)
         height: 70%;
         width: 100%;
         position: relative;
-        background: url(../img/desk-mini.jpg) no-repeat;
+        /* background: url(../img/desk-mini.jpg) no-repeat;
         background-size: 100% 100%;
-        z-index: 99999;
-        background-color: black;
+        z-index: 99999; */
+        background-color: #2a395b;
     }
 }
 
@@ -77,10 +76,10 @@ and (orientation : landscape) {
         height: 70%;
         width: 100%;
         position: relative;
-        background: url(../img/desk-long.jpg) no-repeat;
+        /* background: url(../img/desk-long.jpg) no-repeat;
         background-size: 100% 100%;
-        z-index: 99999;
-        background-color: black;
+        z-index: 99999; */
+        background-color: #2a395b;
     }
 }
 
@@ -250,6 +249,11 @@ footer a:hover {
     color: black;
     background-color: aliceblue;
     border-color: black;
+}
+
+.btn-success {
+  background-color: #66c188;
+  border-color: #66c188;
 }
 
 .btn-info:hover, .btn-primary:hover, .btn-success:hover {

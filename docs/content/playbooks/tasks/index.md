@@ -30,16 +30,16 @@ There are some items that can be applied to any type of task:
 
 ```yaml
 tasks:
-  mcollective:                                               # the type of task
-    description: "Sample Task"
-    nodes: "{{{ nodes.servers }}}"                           # a node set
-    action: "puppet.disable"                                 # agent and action
-    batch_size: 10                                           # in groups of 10 nodes
-    silent: true                                             # dont log every result
-    post:
-      - summarize                                            # log aggregate summaries
-    properties:                                              # input properties
-      :message: "Disabled by playbooks"
+  - mcollective:                                               # the type of task
+      description: "Sample Task"
+      nodes: "{{{ nodes.servers }}}"                           # a node set
+      action: "puppet.disable"                                 # agent and action
+      batch_size: 10                                           # in groups of 10 nodes
+      silent: true                                             # dont log every result
+      post:
+        - summarize                                            # log aggregate summaries
+      properties:                                              # input properties
+        :message: "Disabled by playbooks"
 ```
 
 {{% notice tip %}}
@@ -113,14 +113,14 @@ If you pass any inputs into your script arguments be sure to set *validation: ":
 
 ## Data task
 
-A playbook can have an associated Data Source like *Consul*, *etcd* or in local memory.  Inputs can be dynamically resolved against this data and you can manipulate the data using this task.
+A playbook can have an associated Data Store like *Consul*, *etcd* or in local memory.  Inputs can be dynamically resolved against this data and you can manipulate the data using this task.
 
 {{% notice tip %}}
 This feature is included since *0.0.20*
 {{% /notice %}}
 
 ```yaml
-data_sources:
+data_stores:
   local_memory:
     type: memory
 
@@ -147,7 +147,7 @@ tasks:
 
 This will have the effect of at first defaulting to *alpha* for the cluster to deploy and then switching to *bravo*.
 
-In this way you can do blue/green deploys etc.  See the [Data Sources](../data/) section for full details.
+In this way you can do blue/green deploys etc.  See the [Data Stores](../data/) section for full details.
 
 |Option|Description|
 |------|-----------|

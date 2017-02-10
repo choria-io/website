@@ -9,7 +9,7 @@ Lets consider a basic Playbook.  This will:
   * Test if they are reachable over mcollective
   * Verify their MCollective agent versions match our required versions as SemVer ranges
   * Disable Puppet on all the nodes
-  * Wait for puppet to go idle (needs Puppet MCOP-581 fixed)
+  * Wait for puppet to go idle
   * Stop the *httpd* service on all nodes with 2 retries
   * Run a app upgrade step on a custom agent to a specific version, 5 at a time, with retries, summarize the results
   * Start the *httpd* service on all nodes with 2 retries
