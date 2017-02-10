@@ -13,7 +13,7 @@ googleAnalytics = "UA-10152852-12"
     button = "primary"
 [[params.social]]
     title = "github"
-    url = "https://github.com/ripienaar/mcollective-choria/"
+    url = "https://github.com/choria-io/mcollective-choria/"
     button = "success"
 [[params.social]]
     title = "twitter"
