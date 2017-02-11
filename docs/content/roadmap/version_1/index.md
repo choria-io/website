@@ -16,10 +16,11 @@ Apart from obvious things like being generally stable and reliable I specificall
  - [x] PuppetDB and PQL integration
  - [ ] Complete Playbooks to solid v1
  - [ ] The new JSON based audit plugin on by default
- - [ ] A *choria* GitHub org
+ - [ ] The new JSON based registration plugin on by default
+ - [x] A *choria* GitHub org
  - [x] A *choria* forge namespace
  - [x] Versioned docs
- - [ ] Logo
+ - [x] Logo
 
 For playbooks:
 
@@ -27,11 +28,10 @@ For playbooks:
  - [x] reports, versioned format
  - [ ] versioned playbook document even though we wont have schemas yet
  - [x] memory data store
- - [ ] consul data store
+ - [x] consul data store
  - [x] inputs from the data store
  - [x] data store write task
  - [x] data store read task
- - [ ] nodes from the data store
 
 Data store locks - anything that needs a session - are probably going to be post 1.0.0, the data store is described in the playbook spec doc
 

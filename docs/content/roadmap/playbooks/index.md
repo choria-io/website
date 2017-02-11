@@ -48,10 +48,10 @@ This is a rough feature set, individual pieces are explored in more detail below
    - [x] It should be able to run shell scripts and get certnames from there
    - [x] It should be able to load node set groups from YAML
    - [x] It should be able to use terraform outputs
+   - [x] It should support data sources
    - [ ] It should be able to get node groups from PE classifications
    - [ ] It should be able to get node groups from foreman classifications
    - [ ] It should be able to query EC2 and search by tag for nodes
-   - [ ] It should support data sources
 
 ### Tasks
 
