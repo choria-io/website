@@ -10,7 +10,7 @@ Deploying MCollective with Choria is broken into the following main steps that t
 
   * Decide your desired [NATS](https://nats.io) middleware topology and deploy it
   * If required configure DNS records or manual host locations
-  * Configure MCollective using the [ripienaar/mcollective_choria](https://forge.puppet.com/ripienaar/mcollective_choria) module
+  * Configure MCollective using the [choria/mcollective_choria](https://forge.puppet.com/choria/mcollective_choria) module
   * Create your first users and their authorization rules
   * Explore the features Choria enable and read about the overall operation of MCollective on the official website with links this guide provide
 
@@ -25,7 +25,7 @@ To make it to the end of this guide you will need to be able to effect root leve
   * Your mcollective _server.cfg_ and _client.cfg_ should be Factory Default
   * You need to run middleware, Choria works best with NATS and provides a module to install that for you
   * Your certnames must match your FQDNs - the default
-  * You need the [ripienaar/mcollective_choria](https://forge.puppet.com/ripienaar/mcollective_choria) module and all it's dependencies
+  * You need the [choria/mcollective_choria](https://forge.puppet.com/choria/mcollective_choria) module and all it's dependencies
 
 ### Optional
 

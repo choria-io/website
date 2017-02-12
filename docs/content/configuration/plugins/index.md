@@ -10,7 +10,7 @@ In the past packaging was done via RPM or Deb packages, this was extremely limit
 
 ## Packaging
 
-Choria includes a packager that turns a common MCollective plugin into a Puppet Module like the [Puppet Agent one](https://forge.puppet.com/ripienaar/mcollective_agent_puppet).
+Choria includes a packager that turns a common MCollective plugin into a Puppet Module like the [Puppet Agent one](https://forge.puppet.com/choria/mcollective_agent_puppet).
 
 You can package your own modules in this manner:
 
@@ -29,7 +29,7 @@ mcollective::plugin_classes:
 ## Plugin Configuration
 Many MCollective plugins have extensive configuration, some times Server and Client side.
 
-The _ripienaar-mcollective_ module lets you configure any setting in any plugin via _Hiera_ data, here's an example of configuring the Puppet one:
+The _choria-mcollective_ module lets you configure any setting in any plugin via _Hiera_ data, here's an example of configuring the Puppet one:
 
 ```yaml
 mcollective_agent_puppet::config:

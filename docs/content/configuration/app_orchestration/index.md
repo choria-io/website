@@ -8,7 +8,7 @@ Choria includes an Open Source Orchestrator compatible with the Puppet Site cata
 
 This orchestrator interprets the environment graphs Puppet produces and runs your nodes in the right order.
 
-It uses the standard Puppet agent, best installed with ripienaar/mcollective_agent_puppet.
+It uses the standard Puppet agent, best installed with choria/mcollective_agent_puppet.
 
 To use it requires some careful configuration, see the bottom of this page for details of that.
 

@@ -14,7 +14,7 @@ Your mcollective config files in */etc/puppetlabs/mcollective* should be factory
 
 ## Every node
 
-All nodes should have the _ripienaar-mcollective_ module on them, by default every node becomes a MCollective Server ready to be managed via MCollective:
+All nodes should have the _choria-mcollective_ module on them, by default every node becomes a MCollective Server ready to be managed via MCollective:
 
 ```puppet
 node "server1.example.net" {

@@ -56,7 +56,7 @@ $ mco choria request_cert
 
 ## Example NATS Server configuration
 
-NATS is pretty easy to deploy, this plugin will only communicate over TLS so you need to configure things correctly.  The _ripienaar-nats_ module does this for you, but here's a example NATS config of a 3 node cluster set up with TLS should you wish to do your own:
+NATS is pretty easy to deploy, this plugin will only communicate over TLS so you need to configure things correctly.  The _choria-nats_ module does this for you, but here's a example NATS config of a 3 node cluster set up with TLS should you wish to do your own:
 
 
 ```
