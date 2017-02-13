@@ -18,10 +18,6 @@ Planned features are:
   * Task level locks
   * Service membership for node sets
 
-{{% notice tip %}}
-This feature is included since *0.0.20*
-{{% /notice %}}
-
 ### Defining a Data Store
 
 You define a data store with a unique name and store specific properties, you can then reference it in inputs, tasks etc by name.
@@ -79,7 +75,7 @@ The environment store reads and writes variables from your shell environment.  I
 
 ```yaml
 data_stores:
-  pb_env:
+  pb_yaml:
     type: "file"
     file: "~/pb_data.yaml"
     format: "yaml"
@@ -122,6 +118,73 @@ When using locks a Session is created and maintained, should the playbook die un
 |------|-----------|
 |ttl|How long locks should be valid for after playbook crash or similar. Locks will be refreshed 5 seconds before expiry.  10 seconds minimum|
 |timeout|How long to wait for a lock, fails after timeout|
+
+### Shell Store
+
+{{% notice tip %}}
+This feature is included since *0.0.23*
+{{% /notice %}}
+
+```yaml
+data_stores:
+  pb_shell:
+    type: "shell"
+    command: "/path/to/store.sh"
+    timeout: 20
+    cwd: "/path/to"
+    environment:
+      "EXAMPLE": "VALUE"
+```
+
+This type of store exist to make it easy for users to integrate existing data stores into the playbooks using just a shell command.
+
+The options are:
+
+|Option|Description|
+|------|-----------|
+|command|Path to the command that will be run.  If you pass any inputs to this script make sure to validate them as *shellsafe*|
+|timeout|How long the command is allowed to run before it's killed, defaults to *10*|
+|cwd|The working directory of the command, defaults to your temporary directory|
+|environment|Any environment variables you wish to set, all have to be strings|
+
+The design of this is to make it easy for you to write commands in any language.  Valid keys have to match */^\[a-zA-Z0-9_-\]+$/*
+
+#### Reads
+When data is requested for reading *key* your command is run as */path/to/store.sh --read key*
+
+Command environment will have:
+
+|Option|Description|
+|------|-----------|
+|CHORIA_DATA_KEY|The key to read|
+|CHORIA_DATA_ACTION|read|
+
+You should return the value in a single line to STDOUT, STDERR is ignored. Exiting non zero is failure.
+
+#### Writes
+When data is requested for writing to *key* your command is run as */path/to/store.sh --write key*
+
+Command environment will have:
+
+|Option|Description|
+|------|-----------|
+|CHORIA_DATA_KEY|The key to write|
+|CHORIA_DATA_ACTION|write|
+|CHORIA_DATA_VALUE|The value to be written|
+
+All output is ignored. Exiting non zero is failure.
+
+#### Deletes
+When you request deletion of *key* your command is run as */path/to/store.sh --delete key*
+
+Command environment will have:
+
+|Option|Description|
+|------|-----------|
+|CHORIA_DATA_KEY|The key to delete|
+|CHORIA_DATA_ACTION|delete|
+
+All output is ignored. Exiting non zero is failure.
 
 ### Binding inputs to Data Stores
 
