@@ -8,7 +8,7 @@ At this point you should have a working MCollective set up with your user able t
 
 ## Confirming it is working
 
-If you deployed Choria module *0.0.23* or newer you can inspect the resulting configuration on your CLI:
+You can inspect the resulting configuration on your CLI:
 
 ```bash
 $ mco choria show_config
@@ -50,6 +50,45 @@ Active Choria configuration settings as found in configuration files:
 
 Here you'll see all results from your SRV records, config files, defaults etc all resolved.  You can run
 this as root or a normal user and see it pick the right files etc
+
+As of version *0.0.24* you can confirm you have some nodes connected to your collective - and get some information
+about which middleware server they used in the case of clusters:
+
+```bash
+$ mco rpc choria_util info
+
+Discovering hosts using the choria method .... 3
+
+ * [ ============================================================> ] 1 / 1
+
+
+
+Summary of Client Flavour:
+
+   nats-pure = 3
+
+Summary of Client Version:
+
+   0.2.0 = 3
+
+Summary of Connected Broker:
+
+   puppet1.example.net:4222 = 1
+   puppet2.example.net:4222 = 2
+
+Summary of SRV Domain:
+
+   example.net = 2
+
+Summary of SRV Used:
+
+   true = 1
+
+
+Finished processing 3 / 3 hosts in 228.40 ms
+```
+
+Here we observe 3 nodes with 1 connected to *puppet1.example.net:4222* and 2 connected to *puppet2.example.net:4222*.  Add *--display allways* for much more details.
 
 From the shell you set up the user in lets check the version of _puppet-agent_ installed on your nodes:
 

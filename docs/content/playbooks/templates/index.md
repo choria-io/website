@@ -145,3 +145,15 @@ At present only UUIDs created using the `MCollective::SSL.uuid` method is suppor
     data:
       "message": "Acme deployed to release {{{ inputs.version }}} on nodes {{{ nodes.servers }}}"
 ```
+
+## Elapsed Time
+
+{{% notice tip %}}
+Available since 0.0.24
+{{% /notice %}}
+
+The runt ime of the playbook so far can at any time be read as a integer:
+
+```yaml
+message: "Playbook run time {{{ elapsed_time }}}"
+```

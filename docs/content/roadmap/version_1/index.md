@@ -15,8 +15,8 @@ Apart from obvious things like being generally stable and reliable I specificall
  - [x] Secure easy to deploy SSL secured NATS connector with SRV support
  - [x] PuppetDB and PQL integration
  - [ ] Complete Playbooks to solid v1
- - [ ] The new JSON based audit plugin on by default
- - [ ] The new JSON based registration plugin on by default
+ - [x] The new JSON based audit plugin on by default
+ - [x] The new JSON based registration plugin on by default
  - [x] A *choria* GitHub org
  - [x] A *choria* forge namespace
  - [x] Versioned docs

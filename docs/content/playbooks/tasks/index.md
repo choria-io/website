@@ -177,6 +177,33 @@ The request will include a header *X-Choria-Request-ID* with a unique UUID for e
 |headers|Hash of headers to send.  It will send a User Agent and Content Type on it's own but you can override those too here|
 |data|Hash of data to send either as request arguments for GET or JSON encoded data for POST|
 
+## Graphite Event Task
+
+{{% notice tip %}}
+This feature is included since *0.0.24*
+{{% /notice %}}
+
+Sends a Graphite Event to any Graphite server. This is just a convenience wrapper around the _webhook_ task.
+
+```yaml
+- graphite_event:
+    description: "Successful Deploy Event"
+    what: "playbook event"
+    data: "app weather: {{{ inputs.release }}} cluster: {{{ inputs.cluster }}}"
+    graphite: "https://graphite.example.net/events/"
+    tags:
+      - weather
+      - deploy
+```
+
+|Option|Description|
+|------|-----------|
+|what  |Short description of the event|
+|data  |Details about the event|
+|graphite|Url to the _event_ endpoint|
+|tags|Array of Strings that makes up tags about the event|
+|headers|Hash of headers to send, same as for the webhook task|
+
 ## Slack task
 
 Sends a message to a Slack channel, tested using the basic *bot user account* style bot.

@@ -35,7 +35,7 @@ node "puppet.example.net" {
 
 ## Cluster of NATS Brokers
 
-You can create a cluster of brokers, pick 3 or 5 machines and include the module on them all listing the entire cluster certnames. If you do a cluster you must configure Choria via [DNS or manually](/deployment/nats/).
+You can create a cluster of brokers, pick 3 or 5 machines and include the module on them all listing the entire cluster certnames. If you do a cluster you must configure Choria via [DNS or manually](../dns/).
 
 ```puppet
 node "nats1.example.net" {
