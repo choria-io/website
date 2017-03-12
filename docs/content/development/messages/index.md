@@ -73,7 +73,8 @@ internal message structures to use Strings as keys.
 At that point the entire payload will use JSON only and no YAML. And one of the
 layers above will go away.
 
-### Puppet Security Plugin Request
+### Choria Security Plugin
+#### Request
 
 The following is a request encoded for delivery using the communication plugins, it
 will be JSON encoded before sending:
@@ -164,7 +165,7 @@ this is converted into the current MCollective protocol and goes to become a `MC
 }
 ```
 
-### Puppet Security Plugin Reply
+#### Reply
 
 The following is a reply encoded for delivery using the communication plugins, it
 will be JSON encoded before sending:
@@ -222,5 +223,126 @@ this is converted into the current MCollective protocol and goes on to become a 
   :senderagent => reply["envelope"]["agent"],
   :msgtime => reply["envelope"]["time"],
   :body => reply["message"]
+}
+```
+
+### NATS Request
+
+The messages that flow over the NATS network are all JSON and have the following structures:
+
+In all the examples below the `data` is base64 encoded data as provided by the security plugin, the connector plugin does not ever touch this it just sends it along.
+
+#### Client Initiated Requests
+
+Requests directed to the collective without going through any federation:
+
+```json
+{
+  "data": ".....",
+  "headers": {
+    "mc_sender": "client.identity",
+    "reply-to": "mcollective.reply.client.choria.12413.1"
+  }
+}
+```
+
+Published to NATS target *mcollective.broadcast.agent.discovery* or to many per node targets in the case of direct addressed messages.
+
+Should this message need to be sent via a Federation Broker:
+
+```json
+{
+  "data": ".....",
+  "headers": {
+    "mc_sender": "client.identity",
+    "reply-to": "mcollective.reply.client.choria.12413.1",
+    "federation": {
+      "target": [
+        "mcollective.broadcast.agent.discovery"
+      ]
+    }
+  }
+}
+```
+
+This gets published to every federation network on names like `federation.network.network_a`, one publish for every federation network.
+
+The Feration Broker *identity_of_fedbroker_1* would receive the previous message and create a new request sent to the network it is connected to with:
+
+```json
+{
+  "data": ".....",
+  "headers": {
+    "mc_sender": "client.identity",
+    "reply-to": "federation.network.network_a",
+    "federation": {
+      "reply-to": "mcollective.reply.client.choria.12413.1",
+    }
+  }
+}
+```
+
+It would publish this to every *target* in the previous headers and it would be subscribed to the *queue* *federation.network.network_a* which would be shared by the cluster of Federation Brokers.
+
+#### Server Replies
+
+A damon that replies to a previous message created in the basic single collective case the following:
+
+```json
+{
+  "data": ".....",
+  "headers": {
+    "mc_sender": "server.identity"
+  }
+}
+```
+
+If the daemon is replying to a messages it received from a Federation Broker, the reply looks like this:
+
+```json
+{
+  "data": ".....",
+  "headers": {
+    "mc_sender": "server.identity",
+    "federation": {
+      "reply-to": "mcollective.reply.client.choria.12413.1",
+    }
+  }
+}
+```
+
+The Feration Broker *identity_of_fedbroker_2* would receive the previous message and create a new reply sent to the client on the federation it is connected to with:
+
+```json
+{
+  "data": ".....",
+  "headers": {
+    "mc_sender": "server.identity",
+    "federation": {
+    }
+  }
+}
+```
+
+This would be published to *mcollective.reply.client.choria.12413.1*.
+
+#### Message Route
+
+Any message can have one extra header *seen-by* that records the route the messages traverse. Maintaining this list can be enabled on the NATS connector with *nats.record_route*
+
+```json
+{
+  "data": ".....",
+  "headers": {
+    "mc_sender": "server.identity",
+    "seen-by": [
+      "nats1.example.net",
+      "collective_a_broker_1",
+      "nats2.example.net"
+    ],
+    "federation": {
+      "reply-to": "mcollective.reply.client.choria.12413.1",
+    }
+  }
 }
 ```
