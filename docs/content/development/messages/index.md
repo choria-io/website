@@ -257,6 +257,7 @@ Should this message need to be sent via a Federation Broker:
     "mc_sender": "client.identity",
     "reply-to": "mcollective.reply.client.choria.12413.1",
     "federation": {
+      "req": "message request id",
       "target": [
         "mcollective.broadcast.agent.discovery"
       ]
@@ -276,6 +277,7 @@ The Feration Broker *identity_of_fedbroker_1* would receive the previous message
     "mc_sender": "client.identity",
     "reply-to": "federation.network.network_a",
     "federation": {
+      "req": "message request id",
       "reply-to": "mcollective.reply.client.choria.12413.1",
     }
   }
@@ -305,6 +307,7 @@ If the daemon is replying to a messages it received from a Federation Broker, th
   "headers": {
     "mc_sender": "server.identity",
     "federation": {
+      "req": "message request id",
       "reply-to": "mcollective.reply.client.choria.12413.1",
     }
   }
@@ -318,8 +321,6 @@ The Feration Broker *identity_of_fedbroker_2* would receive the previous message
   "data": ".....",
   "headers": {
     "mc_sender": "server.identity",
-    "federation": {
-    }
   }
 }
 ```
@@ -341,6 +342,7 @@ Any message can have one extra header *seen-by* that records the route the messa
       "nats2.example.net"
     ],
     "federation": {
+      "req": "message request id",
       "reply-to": "mcollective.reply.client.choria.12413.1",
     }
   }

@@ -18,6 +18,16 @@ The active configuration used in Choria comes from using Puppet AIO defaults, qu
 records and reading configuration files.  The below information shows the completely resolved
 configuration that will be used when running MCollective commands
 
+MCollective selated:
+
+ MCollective Version: 2.9.1
+  Client Config File: /etc/puppetlabs/mcollective/client.cfg
+  Active Config File: /etc/puppetlabs/mcollective/client.cfg
+   Plugin Config Dir: /etc/puppetlabs/mcollective/plugin.d
+   Using SRV Records: true
+          SRV Domain: dev.example.net
+  Middleware Servers: nats1.example.net:4222, nats2.example.net:4222, nats3.example.net:4222
+
 Puppet related:
 
        Puppet Server: puppet1.example.net:8140
@@ -36,16 +46,10 @@ SSL setup:
              CA Path: /home/rip/.puppetlabs/etc/puppet/ssl/certs/ca.pem (found)
             CSR Path: /home/rip/.puppetlabs/etc/puppet/ssl/certificate_requests/rip.mcollective.pem (found)
 
-MCollective selated:
-
- MCollective Version: 2.9.1
-  Client Config File: /etc/puppetlabs/mcollective/client.cfg
-  Middleware Servers: puppet1.example.net:4222
-          SRV Domain: example.net
-
 Active Choria configuration settings as found in configuration files:
 
-  choria.srv_domain: example.net
+              choria.srv_domain: dev.example.net
+
 ```
 
 Here you'll see all results from your SRV records, config files, defaults etc all resolved.  You can run

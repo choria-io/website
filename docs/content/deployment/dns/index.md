@@ -12,7 +12,7 @@ When not using _puppet_ you can configure these settings manually but we strongl
 
 You can configure where your NATS brokers live using these SRV records:
 
-```bash
+```dns
 _x-puppet-mcollective._tcp   IN  SRV 10  0 4222  nats1.example.net.
 _x-puppet-mcollective._tcp   IN  SRV 11  0 4222  nats2.example.net.
 _x-puppet-mcollective._tcp   IN  SRV 12  0 4222  nats3.example.net.
@@ -24,13 +24,13 @@ This means you have 3 of them and they all listen on port _4222_.
 
 If your Puppet CA, PuppetDB and Puppet Server are all on the same host, you can configure that all with a single SRV record that is compatible with Puppet SRV setup.
 
-```bash
+```dns
 _x-puppet._tcp               IN  SRV 10  0 8140  puppet1.example.net.
 ```
 
 But if you wish to split the CA and DB from the master add these:
 
-```bash
+```dns
 _x-puppet-ca._tcp            IN  SRV 10  0 8140  puppetca1.example.net.
 _x-puppet-db._tcp            IN  SRV 10  0 8081  puppetdb1.example.net.
 ```
