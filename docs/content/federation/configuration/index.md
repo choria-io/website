@@ -7,15 +7,17 @@ weight = 100
 
 A quick note about sizing, in the network diagrams we have 5 node NATS clusters in the Collectives and 3 in the Federation.  This is a suggestion only and what is right depends on your needs.
 
-As mentioned a single NATS broker can easily handle 2000 MCollective Daemons and probably a lot more.  You almost never need a full 5 node cluster, 3 should be fine.  If you don't need it to be 100% always available even 1 node will do.
+As mentioned a single NATS broker can easily handle 2 000 MCollective Daemons and probably a lot more.  You almost never need a full 5 node cluster, 3 should be fine.  If you don't need it to be 100% always available even 1 node will do.
 
 {{% notice tip %}}
 It is best to run your Federation Broker Instances near the Collective they serve on your network to gain maximal benefits from the offloading the Client does onto the Federation Broker Cluster.
 {{% /notice %}}
 
-Generally on the Federation side you do not need a lot of nodes the choice of 3 is mainly about reliability.  NATS work best in even numbered node clusters.
+Generally on the Federation side you do not need many nodes, the choice of 3 is mainly about reliability.  NATS work best in uneven numbered node count clusters.
 
-You can run as many Federation Broker Instances as you need, they are entirely stateless and automatically form clusters load sharing the work.  I suggest 1 or 2 instances for every node you run your NATS daemons on.
+You can run as many Federation Broker Instances as you need, they are entirely stateless and automatically form clusters load sharing the work.
+
+I suggest 1 or 2 instances for every node you run your NATS daemons on but even 1 will do fine. If you have many people using MCollective at the same time or people and automations on the same Collective then run at least a 2 or 3 per Collective.
 
 The Federtion and Collective can even share NATS infrastructure, I imagine this is only useful in Development or Testing though.
 
@@ -41,7 +43,7 @@ _mcollective-federation_server._tcp IN      SRV     0       0       4222    nats
                                     IN      SRV     0       0       4222    nats3.fed.example.net.
 ```
 
-## Federation Broker Instance
+## Federation Broker Instance
 
 Most likely you will run the Federation Brokers on the same machines as your NATS clusters.  I suggest you name them something descriptive like here:
 

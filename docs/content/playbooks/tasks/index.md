@@ -51,6 +51,7 @@ The *:message* here is a Symbol that is because today MCollective requires this,
 |nodes|A node set to use, can be a template as here or just a hard coded array of nodes|
 |action|A *agent* and *action* specified as one|
 |batch_size|Optional setting to address the node set in smaller groups|
+|batch_sleep_time|Optional setting that relates to `batch_size` and sets the sleep time between batches|
 |silent|By default each result is logged, this disables that|
 |post|Logs aggregate summaries if *summarize* - the only current valid entry - is given|
 |properties|Any properties the action needs to function|

@@ -69,3 +69,18 @@ node "puppet.example.net" {
   }
 }
 ```
+
+## Large deploys
+
+A note about large deploys such as when you have 1 000s of nodes connected to a single NATS server.  NATS has no problem handling this but your kernel might consider the large amount of reconnects after you restarted NATS as a DDoS attempt and throttle the SYN packets.
+
+{{% notice tip %}}
+You can use the <a href="https://forge.puppet.com/thias/sysctl">thias/sysctl</a> module to manage this
+{{% /notice %}}
+
+You can overcome this by adjusting these sysctl settings:
+
+```yaml
+net.core.somaxconn: 4092
+net.ipv4.tcp_max_syn_backlog: 8192
+```
