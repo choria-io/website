@@ -21,7 +21,7 @@ After installing MCollective using Choria you can be sure that the security deci
   * A Security Plugin utilizing the Puppet 4 Certificate Authority system
   * A Discovery plugin for PuppetDB giving you a responsive and predictable interaction mode with support for PQL based infrastructure discovery
   * A Connector using NATS.io middleware
-  * Federations of Collectives eases the admin burdon of managing large geographically distributed Collectives
+  * Federations of Collectives eases the admin burden of managing large geographically distributed Collectives
   * Full end to end Authentication, Authorization and Auditing out of the box
   * Common Puppet eco system plugins like Package, Service, Puppet and File Manager deployed and ready to use
   * Operating System support for every OS Puppet 4 AIO supports.
