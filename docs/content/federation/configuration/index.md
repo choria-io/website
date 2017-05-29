@@ -85,7 +85,7 @@ mcollective::client_config:
   "plugin.choria.federation.collectives": "tokyo, london, new_york"
 ```
 
-Once this setting is present it will become a Federated Client and use the *_mcollective-federation_server._tcp* SRV record or *plugin.choria.federated_middleware_hosts* configuration entry.
+Once this setting is present it will become a Federated Client and use the *_mcollective-federation_server._tcp* SRV record or *plugin.choria.federation_middleware_hosts* configuration entry.
 
 If these are absent it will fall back to the usual configuration and use the exact same middleware configuration via SRV or config as a normal client. This way you can optimise your config for simplicity or have a case where one client is usually connected to the local Collective and only sometimes Federated and in those cases different middleware is used.
 
