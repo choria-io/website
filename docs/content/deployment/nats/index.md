@@ -25,7 +25,7 @@ If you choose to do 1 only keep it simple and install it on your Puppet Master. 
 
 ## Federated or Single Cluster
 
-As NATS only support a Full Mesh architecture it is not a a good idea to run one single large globally distributed NATS cluster.  Choria supports Federating many small MCollectives together to facilitate goegraphic deployments. Federation would also make sense if you are in one location but have many thousands of nodes.
+As NATS only support a Full Mesh architecture it is not a a good idea to run one single large globally distributed NATS cluster.  Choria supports Federating many small MCollectives together to facilitate geographic deployments. Federation would also make sense if you are in one location but have many thousands of nodes.
 
 As before if you're getting started you should focus on deploying a single location and familiarising yourself with Choria and MCollective.  Should you then choose to go ahead review the [Federation](../../federation) section of the documentation.  Deploying Federation is easy but you need to understand a bit more architecturally and it has additional monitoring utilities which are best covered seperately.
 
