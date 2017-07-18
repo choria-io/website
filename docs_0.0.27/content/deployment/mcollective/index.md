@@ -37,6 +37,3 @@ mcollective::client: true
 mcollective::server: false
 ```
 
-## Managing Choria Modules Yourself
-
-Installing the Forge module <i>choria-mcollective_choria</i> will pull in all the necessary dependencies. If however if you cannot access the Forge, or you use r10k, you will need to install the dependencies in <i>metadata.json</i> by hand.
