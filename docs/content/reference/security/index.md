@@ -61,7 +61,7 @@ be approved if you use something like the [REST](../../development/rest) feature
 On the server you have to set _securityprovider = choria_, assuming you have a working
 Puppet 4 AIO setup. This plugin itself has no options to change any paths to certificates.
 
-Client certificates are cached in _/etc/puppetlabs/mcollective/choria_security/public_certs_,
+Client certificates are cached in <i>/etc/puppetlabs/puppet/choria_security/public_certs</i>,
 the directory will be created if it does not exist.  There is no case where the cert
 will be overwritten once cached, changing a cert for user entails you having to remove
 the cert from the servers.
