@@ -88,7 +88,7 @@ $ mco choria request_cert --certname bob
 
 ### Revoking access
 
-Public certificates are distributed automatically but will never be removed.  To remove them you have to manually arrange for the files to be deleted from all nodes, perhaps using Puppet, before a new one can be distributed.  These live in */etc/puppetlabs/mcollective/choria_security/public_certs*.
+Public certificates are distributed automatically but will never be removed.  To remove them you have to manually arrange for the files to be deleted from all nodes, perhaps using Puppet, before a new one can be distributed.  These live in <i>/etc/puppetlabs/puppet/choria_security/public_certs</i>.
 
 ### Privileged certificates
 
