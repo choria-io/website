@@ -16,6 +16,11 @@ Your mcollective config files in */etc/puppetlabs/mcollective* should be factory
 
 All nodes should have the _choria-mcollective_ module on them, by default every node becomes a MCollective Server ready to be managed via MCollective:
 
+{{% notice info %}}
+The choria/mcollective_choria module has a number of [dependencies](https://forge.puppet.com/choria/mcollective_choria/dependencies), if you use R10k to manage environments please be sure to fetch all dependencies.
+{{% notice %}}
+
+
 ```puppet
 node "server1.example.net" {
   include mcollective
