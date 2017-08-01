@@ -76,6 +76,21 @@ Here you see the Puppet code needed to start the Federation Broker Cluster calle
 
 The Federation Broker Instance will listen on ports 8000 - 8005 for HTTP requests to */stats* and they will look up their SRV records in *ldn.example.net* as per the diagram.
 
+### Using supervisord instead of systemd
+
+By default the Federation Broker services will be started with *systemd*, managed by the *camptocamp/systemd*. If you don't have systemd, you can use *ajcrowe/supervisord* as an alternative:
+
+```puppet
+  mcollective_choria::federation_broker{"london":
+    instances => 2,
+    stats_base_port => 8000,
+    srv_domain => "ldn.example.net",
+    service_provider => "systemd"
+  }
+```
+
+If you need to manage the *supervisord* class elsewhere or with Class Parameters, set the *manage_supervisord* parameter to *false*.
+
 ## MCollective Client in the Federation
 
 The only real additional configuration you should do is to tell it about all the default Federation Brokers with you can do in Hiera:
