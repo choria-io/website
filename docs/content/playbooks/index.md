@@ -50,4 +50,4 @@ Once this project is complete you'll be able to express this entire deployment f
 
 ## Status
 
-This project is ongoing and not complete, for a view of what is planned and where things stand today see the [road map item](/docs/roadmap/playbooks/).
+The playbook feature is working, several data stores are supported and it's functional.  Further feedback from users are saught to drive the future of these.

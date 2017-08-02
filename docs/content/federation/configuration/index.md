@@ -56,11 +56,11 @@ node "nats1.ldn.example.net" {
   class{"nats":
     routes_password => "Vrph54FBcIvdM"
     servers => [
-      "nats1.ldn.example.net",
-      "nats2.ldn.example.net",
-      "nats3.ldn.example.net",
-      "nats4.ldn.example.net",
-      "nats5.ldn.example.net"
+      "nats1.ldn.example.net:4222",
+      "nats2.ldn.example.net:4222",
+      "nats3.ldn.example.net:4222",
+      "nats4.ldn.example.net:4222",
+      "nats5.ldn.example.net:4222"
     ],
   }
 
