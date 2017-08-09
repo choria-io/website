@@ -4,18 +4,7 @@ weight = 150
 toc = true
 +++
 
-At this point you should have a working MCollective set up with your user able to do any command of the plugins we deployed. Follow the next steps to find other users or obtain support and validate your setup.
-
-## Join the community
-
-The community is where you can go to get support should you have any problems installing or using the software or just want to discuss ideas or concerns with other users.
-
-We have a mailing list for users that will also receive notifications of updates to the modules and so forth. The group is hosted on [Google Groups, you can sign up here](https://groups.google.com/forum/#!forum/choria-users).
-
-For more interactive comms I am on the Puppet IRC as _Volcane_ and on slack as _ripienaar_, we also have a _#mcollective_ channel on Freenode.
-
-If you wish to file a ticket about anything here or improve something the 2 GitHub project are [choria-io/mcollective-choria](https://github.com/choria-io/mcollective-choria)
-and [choria-io/puppet-mcollective](https://github.com/choria-io/puppet-mcollective) where you can file issues.
+At this point you should have a working MCollective set up with your user able to do any command of the plugins we deployed.
 
 ## Confirming it is working
 
@@ -271,3 +260,11 @@ them.  There is an [official guide about this](https://docs.puppet.com/mcollecti
 
 If you do write your own plugins Choria helps you [package your plugins](../../configuration/plugins/) as Puppet modules like the ones we
 just installed, sharable on the Forge.
+
+## Getting in touch
+
+I am on the Puppet IRC as _Volcane_ and on slack as _ripienaar_, we also have a _#mcollective_ channel on Freenode.
+
+If you wish to file a ticket about anything here or improve something the 2 GitHub project are [choria-io/mcollective-choria](https://github.com/choria-io/mcollective-choria)
+and [choria-io/puppet-mcollective](https://github.com/choria-io/puppet-mcollective) where you can file issues.
+
