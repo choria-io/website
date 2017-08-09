@@ -8,6 +8,10 @@ Configuring MCollective with Choria is generally very simple and involves just i
 
 In MCollective terminology a _client_ is one you manage your network from - where you run _mco_ commands - and a _server_ is a node being managed.
 
+{{% notice info %}}
+Your mcollective config files in */etc/puppetlabs/mcollective* should be factory default before starting this, especially important if you previously tried to use another module to configure it
+{{% /notice %}}
+
 ## Every node
 
 All nodes should have the _choria-mcollective_ module on them, by default every node becomes a MCollective Server ready to be managed via MCollective:
