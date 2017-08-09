@@ -19,3 +19,7 @@ googleAnalytics = "UA-10152852-12"
     title = "twitter"
     url = "https://twitter.com/ripienaar"
     button = "info"
+[[params.social]]
+    title = "community"
+    url = "https://groups.google.com/forum/#!forum/choria-users"
+    button = "primary"

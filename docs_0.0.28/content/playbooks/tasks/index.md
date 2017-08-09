@@ -55,51 +55,8 @@ The *:message* here is a Symbol that is because today MCollective requires this,
 |silent|By default each result is logged, this disables that|
 |post|Logs aggregate summaries if *summarize* - the only current valid entry - is given|
 |properties|Any properties the action needs to function|
-|assert|Any JGrep query that will be run over the RPC reply data|
-
-### Asserting result state
-
-The typical use case for asserting reply state is where you want to wait for a set of nodes to match a specific complex state.  You'd achieve this using fine grained assertions on the result data than the true/false that is typically used to determine success.
-
-Some use cases:
-
-  * Wait for all enabled Puppet nodes to stop runs before you make manual changes using other tasks
-  * Dig into the result hashes and do complex boolean matches against the data such as asserting certain package version numbers from `package.status`
-
-#### Examples:
-
-This will wait for all `enabled` Puppet nodes to go into idling state for a period of time based on `tries` and `try_sleep`:
-
-```yaml
-  - mcollective:
-      description: Wait for Puppet to go idle
-      action: puppet.status
-      nodes: "{{{ nodes.dev }}}"
-      assert: "idling=true and enabled=true"
-      pre_sleep: 0
-      tries: 10
-      try_sleep: 30
-```
-
-An assertion like `summary.resources.failed_to_restart=0` against the `puppet.last_run_summary` action will dig deep into the result hash checking if any services failed.
-
-You can create even more complex assertions like `applying=false and enabled=true and daemon_present=true` should you want to do complex matches.
-
-Full details about the JGrep assertion language can be found on it's site [jgrep.org](http://jgrep.org/).
-
-On the CLI you can test these queries:
-
-```
-$ mco rpc puppet status -j | jgrep data.idling=true -s sender
-```
-
-This will show you the node names that match the above `idling` example.  Note you have to prefix the matching with `data` as per the JSON returned by `mco rpc -j`.
 
 ## MCollective Assert task
-
-{{% notice warning %}}
-This task is deprecated from version 0.0.29 and on ward, use the `assert` option to the `mcollective` task.
-{{% /notice %}}
 
 This task is very similar to the MCollective one, it even uses it under the covers, but it's goal is to be used in cases where you want to wait for a certain condition to become true or just assert that it's true now.
 
