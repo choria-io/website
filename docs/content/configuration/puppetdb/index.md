@@ -6,7 +6,7 @@ weight = 210
 
 Choria includes a [PuppetDB](https://docs.puppet.com/puppetdb/) based discovery plugin but it's not enabled by default.
 
-This is an advanced PuppetDB plugin that is subcollective aware and supports node, fact, class and agent filters. It uses the new _Puppet PQL_ under the hood and so requires a very recent PuppetDB.
+This is an advanced PuppetDB plugin that is subcollective aware and supports node, facts with `dot notation`, class and agent filters. It uses the new _Puppet PQL_ under the hood and so requires a very recent PuppetDB.
 
 Using it you get a very fast discovery workflow but without the awareness of which nodes are actually up and responding, it's suitable for situations where you have a stable network, or really care to know when known machines are not responding as is common during software deployments. It makes a very comfortable to use default discovery plugin.
 
@@ -35,6 +35,19 @@ The Discovery Proxy is a new project so I suspect there will be some bumps in th
 In general you can just go about using MCollective as normal after configuring it (see below).  All your usual filters like _-I_, _-C_, _-W_ etc all work as normal.
 
 Your discovery should take a fraction of a second rather than the usual 2 seconds or more and will reflect what PuppetDB thinks it should be out there.
+
+{{% notice tip %}}
+Fact dot notation is supported from version 0.0.29 and newer
+{{% /notice %}}
+
+An additional benefit of this plugin is that you can use the new dot notation for using sctructured facts directly in discovery filters:
+
+```bash
+$ mco find -W "os.distro.id!=CentOS"
+```
+
+The dot notation is parsed by PuppetDB itself so you restricted to it's behaviours.
+
 
 ### PQL
 There is an advanced feature that lets you construct complex queries using the [PQL language](https://docs.puppet.com/puppetdb/latest/api/query/v4/pql.html) for discovery though.
