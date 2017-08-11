@@ -61,6 +61,13 @@ The *:message* here is a Symbol that is because today MCollective requires this,
 
 The typical use case for asserting reply state is where you want to wait for a set of nodes to match a specific complex state.  You'd achieve this using fine grained assertions on the result data than the true/false that is typically used to determine success.
 
+To use the `assert` feature you should have the `jgrep` gem installed in your Puppet Ruby on the node where you will run *mco playbook*.  You can use Hiera to do this:
+
+```yaml
+mcollective_choria::gem_dependencies:
+  "jgrep": "1.5.0"
+```
+
 Some use cases:
 
   * Wait for all enabled Puppet nodes to stop runs before you make manual changes using other tasks
