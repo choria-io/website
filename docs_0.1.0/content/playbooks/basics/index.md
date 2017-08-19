@@ -79,11 +79,14 @@ tasks:
       properties:
         :message: "Disabled during Acme update to version {{{ inputs.target_version }}}"
 
-  - mcollective:
+  - mcollective_assert:
       description: "Wait for Puppet to go idle"
       action: "puppet.status"
       nodes: "{{{ nodes.servers }}}"
-      assert: "idling=true"
+      expression:
+        - :idling
+        - "=="
+        - true
       tries: 20
       try_sleep: 30
 
