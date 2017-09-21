@@ -22,11 +22,11 @@ task :build_docs do
   end
 
   Dir.chdir(File.join(File.dirname(__FILE__), "landing")) do
-    sh("hugo -b http://%s/ -d ../out/" % ENV["CHORIA_SITE_NAME"])
+    sh("hugo -b https://%s/ -d ../out/" % ENV["CHORIA_SITE_NAME"])
   end
 
   Dir.chdir(File.join(File.dirname(__FILE__), "docs")) do
-    sh("hugo -b http://%s/docs/ -d ../out/docs/" % ENV["CHORIA_SITE_NAME"])
+    sh("hugo -b https://%s/docs/ -d ../out/docs/" % ENV["CHORIA_SITE_NAME"])
   end
 
   Dir.entries(File.dirname(__FILE__)).grep(/docs_\d+\.\d+\.\d+/).each do |docs_dir|
@@ -46,7 +46,7 @@ task :build_docs do
       end
 
       Dir.chdir(File.join(File.dirname(__FILE__), "docs_template")) do
-        sh("hugo -b http://%s/docs/%s/ -d ../%s" % [ENV["CHORIA_SITE_NAME"], version, out_dir])
+        sh("hugo -b https://%s/docs/%s/ -d ../%s" % [ENV["CHORIA_SITE_NAME"], version, out_dir])
       end
     end
   end
@@ -63,7 +63,7 @@ task :publish_prod_docs do
   Rake::Task[:build_docs].invoke
 
   Dir.chdir(File.join(File.dirname(__FILE__), "out")) do
-    sh("surge -d choria.io -p .")
+    sh("surge -d https://choria.io -p .")
   end
 end
 
