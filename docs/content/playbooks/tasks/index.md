@@ -190,6 +190,15 @@ tasks:
       nodes: "{{{ nodes.test_servers }}}"
 ```
 
+To use this feature you need to have the Bolt gem installed, you can achieve this using the config below:
+
+```yaml
+mcollective_choria::gem_dependencies:
+  "bolt": "0.5.0"
+```
+
+Though as mentioned this is early days, you might instead want to run `/opt/puppetlabs/puppet/bin/gem install bolt` on a suitable client machine instead until this stabalise rather than distribute this to all your nodes.
+
 |Option|Description|
 |------|-----------|
 |task  |A task name, either a path to a task script or a reference like `modname::taskname`|
