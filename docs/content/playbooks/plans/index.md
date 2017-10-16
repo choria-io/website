@@ -22,6 +22,10 @@ Using plans have a number of advantages over the Playbook YAML system, however t
 
 I would say for a typical interactive Playbook this is the best way to write them.  Down the line I expect the YAML format to be the underlying data format for a Playbook Service but that is some way off.
 
+{{% notice warning %}}
+Please note that both the Plans feature in Puppet and the Integration from Choria is experimental or Feature Preview.  For sure I expect the Choria feature to only ship once Bolt does not vendor it's own Puppet.
+{{% /notice %}}
+
 ## Discovering Nodes
 
 You can discover nodes using any supported [Node Set](https://choria.io/docs/playbooks/node_sets/) in Playbooks like via Terraform outputs:
