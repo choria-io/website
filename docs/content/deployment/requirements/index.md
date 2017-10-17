@@ -30,4 +30,4 @@ To make it to the end of this guide you will need to be able to effect root leve
 ### Optional
 
   * An optional PuppetDB integration exist to use PuppetDB as the source of truth.  This requires PuppetDB and extra configuration
-  * Puppet Applications are supported and deployment can be done using Choria, it requires specific setup of your _puppetserver_
+  * Playbooks can be written using the experimental Puppet Plans DSL.  This requires additional installation.

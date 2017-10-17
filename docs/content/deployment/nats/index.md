@@ -6,7 +6,7 @@ toc = true
 
 Choria uses the excellent [NATS.io](https://nats.io/) broker by default.  It's very fast, light weight, has a simple configuration and is easy to monitor.  It's configured to only accept connections from nodes with certificates signed by the Puppet CA.
 
-One NATS server has been shown to be able to host over 2000 MCollective nodes comfortably using 300MB RAM.
+One NATS server has been shown to be able to host over 50 000 MCollective nodes comfortably.
 
 ## Prerequisites
 
