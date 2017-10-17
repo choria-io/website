@@ -249,7 +249,6 @@ If this command appears to hand it might be the broken ec2 facts, rm `/opt/puppe
 And run the plan like this, the RUBYLIB thing should go away once Puppet stop vendoring Puppet into Bolt:
 
 ```shell
-export RUBYLIB=/opt/puppetlabs/mcollective/plugins
 /opt/puppetlabs/puppet/bin/bolt plan run mymod --modules .
 ```
 
