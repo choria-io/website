@@ -31,7 +31,7 @@ Please note that both the Plans feature in Puppet and the Integration from Chori
 You can discover nodes using any supported [Node Set](https://choria.io/docs/playbooks/node_sets/) in Playbooks like via Terraform outputs:
 
 ```puppet
-choria_discover("terraform",
+$acme_servers = choria_discover("terraform",
   statefile => "/path/to/terraform.tfstate",
   output => "acme_servers"
 )
@@ -121,7 +121,7 @@ $status.ok_nodes.each |$node, $status| {
 
 ## Reading / Writing Data
 
-Data for this kind of interaction is a bit different from Hiera data, since execution is against remote nodes you might find you want to expose data via a network addressible data store.  Consult, Vault, Etcd are good options for this.
+Data for this kind of interaction is a bit different from Hiera data, since execution is against remote nodes you might find you want to expose data via a network addressible data store.  Consul, Vault and Etcd are good options for this.
 
 You can write to a consul data store:
 
@@ -141,9 +141,15 @@ The data will now be in Consul where any other network based system that might b
 $version = choria_data("version", $ds)
 ```
 
-Another handy feature of these system is network wide locking.  Upgrading an applications data base is quite sensitive, you might be doing this via Plans but what if 2 operators are not aware of each other and run the update at the same time? Choria let you use a global lock in a Plan to manage this:
+Another handy feature of these systems is network wide locking.  Upgrading an applications data base is quite sensitive, you might be doing this via Plans but what if 2 operators are not aware of each other and run the update at the same time? Choria let you use a global lock in a Plan to manage this.  Here the lock is stored in Consul and anyone with access to the same Consul DC will be coordinated around this lock:
 
 ```puppet
+$ds = {
+  type => "consul",
+  timeout => 120,
+  ttl => 60
+}
+
 choria_lock("db_update", $ds) || {
   choria_task(
     fail_ok => true,
@@ -189,3 +195,61 @@ $slack_token = bolt_rc("slack_token")
 # saves some other value
 bolt_rc("last_version", $version)
 ```
+
+## Setup
+
+To get going you have to install Bolt into your Puppet install that already has a working MCollective.  At present Bolt vendors it's own Puppet, Facter and Hiera so I'd consider this whole thing a bit risky.  Pick a machine that you do not care too much for, like don't use your Puppet Master.
+
+On my machines Bolt just would not work because Facter 2 is buggy and it's ec2 fact would just sit and try to connect to thing that will never work, so your milage might vary.  Puppet will hopefully soon stop with this vendoring.
+
+```shell
+sudo /opt/puppetlabs/puppet/bin/gem install bolt
+```
+
+Now create a directory for your bolt setup and set up some modules you will need there:
+
+```shell
+mkdir work/bolts
+cd work/bolts
+puppet module install choria/mcollective_choria --target .
+```
+
+Now you'll need a module to hold your plans, obviously call this what works for you but to play around:
+
+```shell
+mkdir work/bolts/mymod/plans -p
+cd work/bolts
+```
+
+Edit the file `mymod/plans/init.pp` and place in it:
+
+```puppet
+plan mymod {
+  $result = choria_task(
+    action => "puppet.status",
+    nodes  => choria_discover("agent" => ["puppet"])
+  )
+
+  $result.ok_nodes.each |$node, $status| {
+    notice(sprintf("%s: %s", $node, $status["data"]["message"]))
+  }
+}
+```
+
+Verify you have some nodes that has the Puppet agent - all should have if you have a working Choria machine:
+
+```shell
+mco puppet status
+```
+
+{{% notice tip %}}
+If this command appears to hand it might be the broken ec2 facts, rm `/opt/puppetlabs/puppet/lib/ruby/gems/2.4.0/gems/bolt-0.5.1/vendored/facter/lib/facter/ec2.rb`
+{{% /notice %}}
+
+And run the plan like this, the RUBYLIB thing should go away once Puppet stop vendoring Puppet into Bolt:
+
+```shell
+export RUBYLIB=/opt/puppetlabs/mcollective/plugins
+/opt/puppetlabs/puppet/bin/bolt plan run mymod --modules .
+```
+

@@ -20,6 +20,10 @@ Lets consider a basic Playbook.  This will:
 
 Its quite limited for now but shows the basics
 
+{{% notice tip %}}
+The YAML format is a experiment, it just exposes the underlying data structures and as such is not very friendly. A new experimental [Puppet Plans based DSL](../plans/) exist which will be much more friendly.
+{{% /notice %}}
+
 ```yaml
 ---
 name: "app_upgrade"
