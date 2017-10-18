@@ -26,6 +26,15 @@ mcollective::plugin_classes:
   - mcollective_agent_youragent
 ```
 
+## Additional Files
+You can add additional files into the resulting module by creating a *puppet* directory within your repository.  These files will be copied into the final module after any templates and README files were generated.
+
+Use this to add additional files like functions, tasks and plans into your modules.  You can also override any generated files in this manner.
+
+{{% notice tip %}}
+This feature is available since version 0.2.0 of the *choria/puppet-mcollective* module.
+{{% /notice %}}
+
 ## Plugin Configuration
 Many MCollective plugins have extensive configuration, some times Server and Client side.
 

@@ -37,7 +37,9 @@ $acme_servers = choria_discover("terraform",
 )
 ```
 
-You can go further and stick discovery in a function so you can reuse it between plans as `acme_app::webservers()`, and ship it via a module.  Here using Choria Discovery via PuppetDB:
+You can go further and stick discovery in a function so you can reuse it between plans as `acme_app::webservers()`, and ship it via a module.  Functions like these can be included in your MCollective plugin repositories and the Choria plugin packager will include them for you.
+
+Here using Choria Discovery via PuppetDB:
 
 ```puppet
 function acme_app::webservers (
