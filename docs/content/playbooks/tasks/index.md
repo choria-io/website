@@ -162,53 +162,6 @@ If you pass any inputs into your script arguments be sure to set *validation: ":
 |nodes|A list of nodes, passed as *--nodes node1,node2* to your script|
 |environment|A hash of any environment variables you wish to set|
 
-## Bolt task
-
-Bolt is a new command orchestrator from Puppet Inc, it's very early days and focussed on SSH based orchestrations at the moment.
-
-Choria lets you call Bolt tasks and use Bolt to run arbitrary commands on node sets within playbooks.
-
-{{% notice warning %}}
-At present Bolt is in early release, it's API is in flux so I expect things to break.  I've tested with Bolt 0.5.0. At present deploying the Bolt gem into AIO installs is risky since it vendors its own version of Puppet.  For now this works but I suggest you limit the nodes where you install this carefully to non critical CLI ones only until Bolt matures
-{{% /notice %}}
-
-```yaml
-tasks:
-  - bolt:
-      description: "Bolt Task Test"
-      task: "mymod::sample"
-      nodes: "{{{ nodes.test_servers }}}"
-      modules: "/home/rip/bolts"
-      parameters:
-        data:
-          x: hello world
-        key: x
-
-  - bolt:
-      description: "Bolt Command Test"
-      command: "/bin/date"
-      nodes: "{{{ nodes.test_servers }}}"
-```
-
-To use this feature you need to have the Bolt gem installed, you can achieve this using the config below:
-
-```yaml
-mcollective_choria::gem_dependencies:
-  "bolt": "0.5.0"
-```
-
-Though as mentioned this is early days, you might instead want to run `/opt/puppetlabs/puppet/bin/gem install bolt` on a suitable client machine instead until this stabalise rather than distribute this to all your nodes.
-
-|Option|Description|
-|------|-----------|
-|task  |A task name, either a path to a task script or a reference like `modname::taskname`|
-|command|A command to run on the node, standard shell command|
-|plan|A plan to execute - not supported at present|
-|nodes|A list of nodes to execute on. This can be in the form `node` or `winrm://node`, see also the `transport` option to have Choria help you force discovered nodes into a specific transport|
-|transport|One of `ssh` or `winrm`.  If not given defaults to `ssh` or whatever your node list gave it|
-|tty|Boolean indicating if you want a TTY opened on the remote node|
-|parameters|Set of parameters to pass to the bolt task, plan or command.  This is kind of free form just like Bolt, influenced by the Bolt metadata|
-
 ## Data task
 
 A playbook can have an associated Data Store like *Consul*, *etcd* or in local memory.  Inputs can be dynamically resolved against this data and you can manipulate the data using this task.
