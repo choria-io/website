@@ -21,11 +21,11 @@ To make it to the end of this guide you will need to be able to effect root leve
 
 ### Required
 
-  * You must use Puppet 4 or 5 deployed using the Puppet Inc AIO packages - the one called _puppet-agent_
+  * You must use Puppet 5 deployed using the Puppet Inc AIO packages - the one called _puppet-agent_
   * You must be using a Puppet Master based setup, typically using _puppetserver_
   * You need to run middleware, Choria works best with NATS and provides a module to install that for you
   * Your certnames must match your FQDNs - the default
-  * You need the [choria/mcollective_choria](https://forge.puppet.com/choria/mcollective_choria) module and all it's dependencies
+  * You need the [choria/choria](https://forge.puppet.com/choria/choria) module and all it's dependencies
 
 ### Optional
 

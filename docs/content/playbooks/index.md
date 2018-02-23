@@ -7,9 +7,9 @@ MCollective has many agents and actions, in isolation they can be useful but the
 
 Further MCollective is hardly ever stand alone in any infrastructure, there are always other sources of truth, other APIs etc.  Imagine you might want node lists from Consul or etcd, or some YAML file.  Imagine you want to notify webhooks, or run arbitrary shell scripts, or call to systems like Slack for notification or speak to Razor to provision nodes or Terraform for EC2 resources - all of these would be tasks or data stores you'd wish to incorporate in such a script.
 
-Choria Playbooks is an attempt to produce a system that lets you write sets of tasks, inputs, discovery rules and so forth to solve complex infrastructure orchestration problems.
+Choria Playbooks is a system that lets you write sets of tasks, inputs, discovery rules and so forth to solve complex infrastructure orchestration problems. Playbooks are written using the familiar Puppet Language and can be documented using the standard Puppet Strings utility.
 
-While Playbooks are MCollective centred they support integrating a range of 3rd party components into your flows.
+While Playbooks are MCollective centered they support integrating a range of 3rd party components into your flows.
 
 ## Typical Use Case
 
@@ -46,8 +46,10 @@ Should the upgrade steps pass:
   * Call a webhook on AWS Lambda
   * Tell the ops room on slack
 
-Once this project is complete you'll be able to express this entire deployment flow as a playbook and run it, schedule it, view past executions and extend it using your own capabilities.
-
 ## Status
 
-The playbook feature is working, several data stores are supported and it's functional.  Further feedback from users are saught to drive the future of these.
+The playbook feature is working, several data stores are supported and it's functional.  Further feedback from users are sought to drive the future of these.
+
+At present there are a lot of the old YAML based playbooks around, I wanted to have one release capable of supporting both.  The YAML playbooks are now deprecated though and the next release will remove them entirely.
+
+At that point a large refactor of the code will happen to simplify the implementation greatly and perhaps even make it extendable by way of other Puppet modules so adding new behaviours into the Playbook system will be easy for anyone after the transition period.
