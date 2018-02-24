@@ -3,79 +3,49 @@ title = "Inputs"
 weight = 410
 +++
 
-Inputs are how you get data from your CLI or data stores like Consul, etcd and so forth into your Playbooks.
+Playbooks can take arguments that are effectively Inputs into your Playbook.
 
-Each input gets defined in a way quite similar to how options are written in MCollective and they will show up as CLI flags in *mco playbook*.
+A basic example would be:
 
-There are 2 types of inputs.  **static** inputs are provided on the CLI and does not change for the duration of the playbook run.  **dynamic** inputs are bound to a data store like Consul and read from there every time they are referenced.
-
-A *dynamic* input can become *static* by specifically supplying it's data on the CLI.  You can also mark an input as being *dynamic* which means it can only be set by a data store and never the CLI.
-
-Inputs are surfaced on the CLI scripts as shell arguments, you can give them a short description, expected type, validation and default values.
-
-Input values can be referenced anywhere, except in inputs, via templates like *{{{ input.cluster }}}*.
-
-Here are some examples:
-
-This is a input called *cluster* that is a String and will be validated as such, it's required and has no default. The *:string* validation is the name of a MCollective validator plugin, so if you have custom ones you can use them:
-
-```yaml
-inputs:
-  cluster:
-    description: "Cluster to deploy"
-    type: "String"
-    required: true
-    validation: ":string"
+```puppet
+plan example::upgrade (
+  String $version,
+  Enum[alpha, bravo] $cluster = "alpha"
+) {
+  # use $version and $cluster
+}
 ```
 
-Here is a optional input with a default value, it also shows the use of the *shellsafe* validator that ensure this is safe to pass to scripts and would avoid shell injection attacks:
+As these are just Puppet variables the type handling will deal with validating your inputs - like the Enum here - and all the usual behaviours remain.  We will add a way to use the MCollective Validation plugins as types so you can get things like shell safe validation for free.
 
-```yaml
-inputs:
-  cluster:
-    description: "Cluster to deploy"
-    type: "String"
-    default: "alpha"
-    validation: ":shellsafe"
+There's a nice trick to use a setting store for setting you often need but that are annoying to type like API tokens:
+
+```puppet
+plan example::slack (
+  Optional[String] $api_key = undef,
+  String $message
+) {
+  $ds = {
+    "type" => "file",
+    "file" => "~/.plans.rc",
+    "format" => "yaml",
+    "create" => true
+  }
+
+  # Store if given, lookup if not
+  $token = $api_key ? {
+    String => choria::data("slack.key", $api_key, $ds),
+    default => choria::data("slack.key", $ds)
+  }
+
+  unless $token {
+    fail("A Slack API token is needed")
+  }
+
+  # use the token
+}
 ```
 
-Inputs can be sourced from data stores like *Consul*, *etcd* or local memory when they are not specifically given on the CLI, see the Data Stores page for full details:
-
-```yaml
-data_stores:
-  local:
-    type: memory
-
-inputs:
-  cluster:
-    description: "Cluster to deploy"
-    type: "String"
-    default: "alpha"
-    validation: ":shellsafe"
-    data: "local/cluster"
-```
-
-The above sets up a local in memory data store and sets the input *cluster* to fetch data from there.  Should you not specify a value on the CLI it will consult the data store every time you reference the input.  When not found the *default* value is used.
-
-You can also store the given value on the CLI to the data store automatically by setting `save`, this allows for a kind of a initialization to be done so you don't have to keep giving the same CLI values on every invocation, useful for things like where your GIT server is:
-
-```yaml
-inputs:
-  cluster:
-    description: "Cluster to deploy"
-    data: "local/cluster"
-    save: true
-```
-
-The *cluster* input can be forced to be resolved only from the Data Store and never the CLI like this:
-
-```yaml
-inputs:
-  cluster:
-    description: "Cluster to deploy"
-    data: "local/cluster"
-    dynamic: true
-```
-
+Here we mark the `$api_key` as optional and if it's given we store it into the `~/.plans.rc`, if not given we attempt to read it fro the same file.  This way you only have to provide it once and future runs of the playbook will reuse it.  The same can be done with other persistent stores like `consul` and `etcd` in which case it could be team wide behavior.
 
 [Data Stores](../data/) are an advanced topic and covered extensively in the dedicated [Data Stores](../data/) page.

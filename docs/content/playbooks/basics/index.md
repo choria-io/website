@@ -3,176 +3,215 @@ title = "Basic Playbook"
 weight = 400
 +++
 
-Lets consider a basic Playbook.  This will:
+Lets consider a basic Playbook used to restart Puppet Server and PuppetDB in a clean safe way.  Restarting Puppet Server is quite involved as you want to ensure not to interrupt the normal operations of things, so first we gracefully stop all the agents that might currently be using Puppet and then restart Puppet Server + PuppetDB followed by a Puppet run orchestrated in batches.
 
-  * Pick nodes based on a *cluster* fact via PuppetDB based discovery
-  * Test if they are reachable over mcollective
-  * Verify their MCollective agent versions match our required versions as SemVer ranges
-  * Disable Puppet on all the nodes
-  * Wait for puppet to go idle
-  * Stop the *httpd* service on all nodes with 2 retries
-  * Run a app upgrade step on a custom agent to a specific version, 5 at a time, with retries, summarize the results
-  * Start the *httpd* service on all nodes with 2 retries
-  * Enable Puppet
-  * Trigger a splay Puppet run
-  * On success notify slack and a custom webhook
-  * On failure notify slack and a custom webhook
+In details we will:
 
-Its quite limited for now but shows the basics
+ * Expect a `cluster` as input which it will use to limit the discovery of nodes to some subset
+ * Notify Slack that a restart is about to begin
+ * Find nodes with `roles::puppetserver` class using PuppetDB PQL and mark those for upgrade
+ * Find nodes with the `puppet` agent on them using PuppetDB PQL and mark those as managed nodes
+ * Validate the versions of the `puppet` and `service` agents
+ * Disable Puppet Agent on all the managed nodes
+ * Wait for Puppet to finish doing in-progress Puppet catalog runs
+ * Notify `graphite` about the server restart being done
+ * Stop the `puppetserver` service
+ * Restart the `puppetdb` service
+ * Start the `puppetserver` service
+ * Walk the managed nodes in groups of 10 and enable them, run puppet without splay and wait for them to finish
+ * Notify slack that the process was completed
 
-{{% notice tip %}}
-The YAML format is a experiment, it just exposes the underlying data structures and as such is not very friendly. A new experimental [Puppet Plans based DSL](../plans/) exist which will be much more friendly.
-{{% /notice %}}
+On failure further slack notifications will be sent.
 
-```yaml
----
-name: "app_upgrade"
-version: "1.0.0"
-author: "R.I.Pienaar <rip@devco.net>"
-description: "Upgrades our acme application on a subset of nodes"
-run_as: "choria=rip.mcollective"
-loglevel: "info"
+To complete this task we write 2 playbooks, one that does the work without any error handling and one to run the other with the Slack error and success handling.
 
-# which mcollective agents should exist and their versions
-uses:
-  rpcutil: "~1.0.0"
-  puppet: "~1.11.0"
-  acme: "~1.0.0"
-  service: "~3.1.0"
+This playbook is on purpose verbose, in reality you would make smaller playbooks and re-using them or using Puppet functions to make small utilities to do common tasks - like we did with the `example::slack` one here.
 
-# variables supplied on the CLI
-inputs:
-  cluster:
-    description: "Cluster to deploy"
-    type: "String"
-    required: true
-    validation: ":string"
+Further examples can be found in the [Tips and Patterns](../tips/) section.
 
-  target_version:
-    description: "Version of Acme to deploy"
-    type: "String"
-    require: true
-    validation: ":string"
+```puppet
+plan example::restart_puppetserver_no_error_handling (
+  Enum[alpha, bravo] $cluster
+) {
+  # Discover nodes using `choria` method which uses PuppetDB PQL
+  $puppet_servers = choria::discover("mcollective",
+    "discovery_method" => "choria",
+    "classes"  => ["roles::puppetserver"],
+    "facts" => ["cluster=${cluster}"],
+    "at_least" => 1,
+    "uses" => { "service" => ">= 3.1.5" },
+    "when_empty" => "Could not find any Puppet Servers to restart"
+  )
 
-# Node sets discovered using the choria (PuppetDB) method on mcollective.
-# Since PuppetDB is cached info, this will rpcutil ping them over
-# mcollective to ensure they are alive
-nodes:
-  servers:
-    type: mcollective
-    discovery_method: choria
-    when_empty: "No servers running Acme in cluster {{{ input.cluster }}} could be found"
-    at_least: 1
-    test: true
-    facts:
-      - "cluster={{{ input.cluster }}}"
-    agents:
-      - "acme"
-    uses:
-      - "rpcutil"
-      - "puppet"
-      - "acme"
-      - "service"
+  $puppet_agents = choria::discover("mcollective",
+    "discovery_method" => "choria",
+    "agents" => ["puppet"],
+    "facts" => ["cluster=${cluster}"],
+    "at_least" => 1,
+    "uses" => { "puppet" => ">= 1.13.1" }
+  )
 
-# Main process to update our acme app
-tasks:
-  - mcollective:
-      description: "Disable Puppet on Acme servers"
-      nodes: "{{{ nodes.servers }}}"
-      action: "puppet.disable"
-      properties:
-        :message: "Disabled during Acme update to version {{{ inputs.target_version }}}"
+  # Disable all the matched Puppet Agents
+  choria::task(
+    "action" => "puppet.disable",
+    "nodes" => $puppet_agents,
+    "fail_ok" => true,
+    "silent" => true,
+    "properties" => {"message" => "restarting puppet server"}
+  )
 
-  - mcollective:
-      description: "Wait for Puppet to go idle"
-      action: "puppet.status"
-      nodes: "{{{ nodes.servers }}}"
-      assert: "idling=true"
-      tries: 20
-      try_sleep: 30
+  # Wait for them to sleep up to 200 seconds
+  choria::task(
+    "action"    => "puppet.status",
+    "nodes"     => $puppet_agents,
+    "assert"    => "idling=true",
+    "tries"     => 10,
+    "silent"    => true,
+    "try_sleep" => 20,
+  )
 
-  - mcollective:
-      description: "Disable httpd on Acme servers"
-      nodes: "{{{ nodes.servers }}}"
-      action: "service.stop"
-      tries: 2
-      try_sleep: 10
-      properties:
-        :service: "httpd"
+  # Notify graphite via a it's event API
+  choria::task("graphite_event",
+    "description" => "Restarting Puppet Server",
+    "what" => "playbook event",
+    "data" => "cluster: ${cluster}",
+    "graphite" => "https://graphite.example.net/events/",
+    "tags" => ["puppet", "playbooks", $cluster]
+  )
 
-  - mcollective:
-      description: "Upgrade the Acme app to version {{{ inputs.target_version }}}"
-      nodes: "{{{ nodes.servers }}}"
-      action: "acme.upgrade"
-      batch_size: 5
-      tries: 2
-      try_sleep: 20
-      properties:
-        :version: "{{{ inputs.target_version }}}"
-      post:
-        - "summarize"
+  # Stop puppet server
+  choria::task(
+    "action" => "service.stop",
+    "nodes"     => $puppet_servers,
+    "properties" => {
+      "service" => "puppetserver"
+    },
+  )
 
-  - mcollective:
-      description: "Enable httpd on Acme servers"
-      nodes: "{{{ nodes.servers }}}"
-      action: "service.start"
-      tries: 2
-      try_sleep: 10
-      properties:
-        :service: "httpd"
+  # Restart puppetdb
+  choria::task(
+    "action" => "service.restart",
+    "nodes"     => $puppet_servers,
+    "properties" => {
+      "service" => "puppetdb"
+    },
+  )
 
-  - mcollective:
-      description: "Enable Puppet on Acme servers"
-      nodes: "{{{ nodes.servers }}}"
-      action: "puppet.enable"
+  # Start puppet server
+  choria::task(
+    "action" => "service.start",
+    "nodes"     => $puppet_servers,
+    "properties" => {
+      "service" => "puppetserver"
+    },
+  )
 
-  - mcollective:
-      description: "Trigger a Puppet run on Acme servers"
-      nodes: "{{{ nodes.servers }}}"
-      action: "puppet.runonce"
-      properties:
-        :splay: true
+  # Loop the Puppet Agents in groups of 10 and enable, run once and wait on each group
+  $puppet_agents.choria::in_groups_of(10) |$nodes| {
+    choria::task(
+      "action" => "puppet.enable",
+      "nodes" => $nodes,
+      "silent" => true
+    )
 
-# hooks for pre book, post book and fail/success handling exist,
-# they are just task lists and can have many tasks
-hooks:
-  on_success:
-    - slack:
-        description: "Notify slack on success"
-        token: "YOUR_API_TOKEN"
-        channel: "#ops"
-        text: "Acme was upgraded on cluster {{{ inputs.cluster }}} to version {{{ inputs.target_version }}}"
+    choria::task(
+      "action" => "puppet.runonce",
+      "nodes" => $nodes,
+      "fail_ok" => true,
+      "properties" => {
+        "force" => true
+      }
+    )
 
-    - webhook:
-        uri: https://hooks.example.net/webhook
-        method: POST
-        headers:
-          "X-Acme-Token": "TOKEN"
-        data:
-          "message": "Deployed Acme release {{{ inputs.target_version }}}"
-          "nodes": "{{{ nodes.servers }}}"
+    choria::task(
+      "action"    => "puppet.status",
+      "nodes"     => $nodes,
+      "assert"    => "idling=true",
+      "tries"     => 10,
+      "silent"    => true,
+      "try_sleep" => 20,
+      "pre_sleep" => 10,
+    )
+  }
 
-  on_fail:
-    - slack:
-        description: "Notify slack on failure"
-        token: "YOUR_API_TOKEN"
-        channel: "#ops"
-        text: "Acme upgrade on cluster {{{ inputs.cluster }}} to version {{{ inputs.target_version }}} failed to complete"
-
-    - webhook:
-        uri: https://hooks.example.net/webhook
-        method: POST
-        headers:
-          "X-Acme-Token": "TOKEN"
-        data:
-          "message": "Acme deployment to release {{{ inputs.target_version }}} failed"
-          "nodes": "{{{ nodes.servers }}}"
+  # Pass the list of Puppet Servers back to the caller or CLI
+  $puppet_servers
+}
 ```
 
-You can run this playbook through the CLI, but lets look at help first, you can see our inputs are provided via *--cluster* and *--target_version*:
+We now add a wrapper plan that does error handling and notifies slack etc:
+
+```puppet
+plan example::restart_puppetserver (
+  Enum[alpha, bravo] $cluster
+) {
+  $slack_defaults = {
+    "channel" => "#ops",
+    "mood" => "good"
+  }
+
+  # Notify slack using a helper playbook
+  choria::run_playbook("example::slack",
+    $slack_defaults + {"message" => "Starting a Puppet Server restart process"})
+
+  # Call the above playbook and prevent it from raising an exception
+  $servers = choria::run_playbook("example::restart_puppetserver_no_error_handling",
+    _catch_errors => true,
+    "cluster" => $cluster
+  )
+
+  # If the above playbook failed this will be an error object that we handle here
+  $servers.choria::on_error |$err| {
+    choria::run_playbook("example::slack",
+      $slack_defaults + {
+        "message" => sprintf("Restaring Puppet Server failed: %s", $err.message),
+        "mood" => "bad"
+      })
+
+    fail($err.message)
+  }
+
+  # When it did not fail it would just be the servers list, so we notify slack what we did
+  choria::run_playbook("example::slack",
+    $slack_defaults + { "message" => sprintf("Restarted %s Puppet Server on %s", $cluster, $servers.join(", ")) })
+
+  $servers
+}
+```
+
+The Slack helper plan is shown below, it uses a data binding to store settings like the API Keys in `~/.plans.rc`.  You should store `slack.token: your-secret-token` in `~/.plans.rc`.
+
+```puppet
+plan acme::slack (
+  String $message,
+  String $channel = "#general",
+  Enum[good, bad] $mood = "good",
+) {
+  # file store to keep token secret
+  $token = choria::data("slack.token",
+    "type"   => "file",
+    "file"   => "~/.plans.rc",
+    "format" => "yaml"
+  )
+
+  unless $token {
+    fail("A slack API token is needed")
+  }
+
+  choria::task("slack",
+    "token"   => $token,
+    "channel" => $channel,
+    "text"    => $message,
+    "color"   => $mood
+  )
+}
+```
+
+
+You can run this playbook through the CLI, but lets look at help first, you can see our inputs are provided via *--cluster* or as json.
 
 ```bash
-$ mco playbook playbook.yaml --help
+$ mco playbook run example::restart_puppetserver --modulepath modules --help
 
 Choria Playbook Runner
 
@@ -180,25 +219,45 @@ Usage:   mco playbook [OPTIONS] <ACTION> <PLAYBOOK>
 
   The ACTION can be one of the following:
 
-    show      - preview the playbook
     run       - run the playbook as your local user
 
-  The PLAYBOOK is a YAML file describing the tasks
+  The PLAYBOOK is a YAML file or Puppet Plan describing the
+  tasks
 
   Passing --help as well as a PLAYBOOK argument will show
   flags and help related to the specific playbook.
 
   Any inputs to the playbook should be given on the CLI.
 
+  A report can be produced using the --report argument
+  when running a playbook
+
 Application Options
-        --cluster CLUSTER            Cluster to deploy (String)
-        --target_version VERSION     Version of Acme to deploy (String)
+        --cluster CLUSTER            Plan input property (Enum['alpha', 'bravo'])
+        --input INPUT                JSON input to pass to the task
+        --modulepath PATH            Path to find Puppet module when using the Plan DSL
         --loglevel LEVEL             Override the loglevel set in the playbook (debug, info, warn, error, fatal)
     -c, --config FILE                Load configuration from file rather than default
     -v, --verbose                    Be verbose
     -h, --help                       Display this screen
 
-The Marionette Collective 2.9.1
+The Marionette Collective 2.11.4
 ```
 
-And you can run the playbook using `mco playbook run playbook.yaml --cluster alpha --target_version 0.10`
+And you can run the playbook using a few methods:
+
+```
+mco playbook run example::restart_puppetserver --modulepath modules --cluster alphda
+```
+
+Some effort is made to convert from the CLI to Puppet data types but for complex inputs you will have to use a JSON input
+
+```
+mco playbook run example::restart_puppetserver --modulepath modules --intput '{"cluster":"alpha"}'
+```
+
+or with larger inputs from a file:
+
+```
+mco playbook run example::restart_puppetserver --modulepath modules --input @pb_input.json
+```

@@ -22,11 +22,11 @@ task :build_docs do
   end
 
   Dir.chdir(File.join(File.dirname(__FILE__), "landing")) do
-    sh("hugo -b https://%s/ -d ../out/" % ENV["CHORIA_SITE_NAME"])
+    sh("hugo -b %s/ -d ../out/" % ENV["CHORIA_SITE_NAME"])
   end
 
   Dir.chdir(File.join(File.dirname(__FILE__), "docs")) do
-    sh("hugo -b https://%s/docs/ -d ../out/docs/" % ENV["CHORIA_SITE_NAME"])
+    sh("hugo -b %s/docs/ -d ../out/docs/" % ENV["CHORIA_SITE_NAME"])
   end
 
   Dir.entries(File.dirname(__FILE__)).grep(/docs_\d+\.\d+\.\d+/).each do |docs_dir|
@@ -46,7 +46,7 @@ task :build_docs do
       end
 
       Dir.chdir(File.join(File.dirname(__FILE__), "docs_template")) do
-        sh("hugo -b https://%s/docs/%s/ -d ../%s" % [ENV["CHORIA_SITE_NAME"], version, out_dir])
+        sh("hugo -b %s/docs/%s/ -d ../%s" % [ENV["CHORIA_SITE_NAME"], version, out_dir])
       end
     end
   end
@@ -58,7 +58,7 @@ end
 
 desc "Build and Publish the production website"
 task :publish_prod_docs do
-  ENV["CHORIA_SITE_NAME"] = "choria.io"
+  ENV["CHORIA_SITE_NAME"] = "https://choria.io"
 
   Rake::Task[:build_docs].invoke
 
@@ -69,7 +69,7 @@ end
 
 desc "Build and Publish the preview website"
 task :publish_docs do
-  ENV["CHORIA_SITE_NAME"] = "dev.choria.io"
+  ENV["CHORIA_SITE_NAME"] = "http://dev.choria.io"
 
   Rake::Task[:build_docs].invoke
 
