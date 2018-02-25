@@ -16,7 +16,7 @@ After installing MCollective using Choria you can be sure that the security deci
 
 ## Features
 
-  * A complete playbook system that integrates MCollective with any number of other services to conduct full workflow based actions. YAML and Puppet based DSLs exist.
+  * A complete Playbook system that integrates MCollective with any number of other services to conduct full workflow based actions. Playbooks are written using the Puppet DSL.
   * A Security Plugin utilizing the Puppet Certificate Authority system
   * A Discovery plugin for PuppetDB giving you a responsive and predictable interaction mode with support for PQL based infrastructure discovery
   * A Connector using NATS.io middleware that has been tested to 100s of thousands of nodes. 50 000 nodes can comfortably be run on a single NATS server.
