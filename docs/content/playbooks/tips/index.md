@@ -3,6 +3,14 @@ title = "Tips and Patterns"
 weight = 499
 +++
 
+## Module Layout and Naming
+
+Generally the Playbooks behave as you would expect any modern Puppet function or data type.
+
+You place the Playbook `mymod::mybook` in `modules/mymod/plans/mybook.pp` and in there you need `plan mymod::mybook`. Naming of Playbooks are subject to the same naming rules as Puppet, for example you cannot have a `-` in the Playbook name.
+
+When running in this mode Puppet has a number of changes in behaviour for example strict variable checks are enabled by default and templates are disabled.  I cannot find a list of these behaviour changes but it's something to be aware of.
+
 ## Interacting With Task Results
 
 When a task is run it returns an instance of `Choria::TaskResults` which contains one of more `Choria::TaskResult` for every node that was affected by the task.
@@ -224,6 +232,10 @@ $nodes.choria::in_groups_of(10) |$n| {
   # see the example in the basics section for this in action
 }
 ```
+
+## Validating Playbook syntax
+
+You can use the standard Puppet CLI to validate your Playbook syntax if you pass *--tags* like `puppet parser validate --tasks playbook.pp`
 
 ## Documentation using Puppet Strings
 
