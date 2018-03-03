@@ -1,6 +1,6 @@
 +++
 title = "Configuration"
-weight = 100
+weight = 200
 +++
 
 ## Middleware Sizing
