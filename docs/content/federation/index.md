@@ -15,7 +15,7 @@ Below you can see an overview of a Federation of Collectives.  The locations *lo
 
 The central Middleware act as a management location where all the Collectives are Federated into one.  The Collectives can not communicate with each other but the Federation can communicate with them all thus creating a safe way to manage Development and Production without exposing Production to Development.
 
-![Federation of Collectives](../../choria_federation.png)
+![Federation of Collectives](../choria_federation.png)
 
 The Federation Brokers are a share-nothing architecture. They are completely stateless and scales horizontally and vertically.  By default every Choria Broker with Federation enabled will run 10 instances.
 
