@@ -43,6 +43,10 @@ Most likely you will run the Federation Brokers on the same machines as your Net
 
 Here you see the Puppet code needed to start the Network Broker and Federation Broker Cluster called *london*. By default this will mean 50 instances of the Federation Broker and it will be capable of serving tremendously large Collectives.  You'll only see one process - `choria broker`.
 
+{{% notice tip %}}
+While I show the Puppet code here for completeness, I recommend using Hiera to configure these settings
+{{% /notice %}}
+
 ```puppet
 node "nats1.ldn.example.net" {
   class{"choria":
@@ -59,7 +63,7 @@ node "nats1.ldn.example.net" {
       "nats://choria3.ldn.example.net:5222",
       "nats://choria4.ldn.example.net:5222",
       "nats://choria5.ldn.example.net:5222"
-    ],
+    ]
   }
 }
 ```
