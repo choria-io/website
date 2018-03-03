@@ -5,7 +5,7 @@ icon = "<b>5. </b>"
 
 Deploying large distributed Collectives can be tricky mainly due to the operation concerns of running a single huge Middleware Deployment spanning multiple Data Centres or even Countries.
 
-In the past there was no choice but to run such a single distributed Middleware deployment. With Choria you can divide your network into smaller, managable, parts and use a component called a *Federation Broker* to combine them into a single entity.  With the NATS middleware Federation is recommended for setups spanning multiple Data Centres as it only supports Full Mesh networks.
+In the past there was no choice but to run such a single distributed Middleware deployment. With Choria you can divide your network into smaller, managable, parts and use a component called a *Federation Broker* to combine them into a single entity.  If your network span multiple datacenters Federating your networks using the Federation Broker is recommended.
 
 ## Topology
 

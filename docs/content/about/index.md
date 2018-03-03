@@ -19,7 +19,7 @@ After installing MCollective using Choria you can be sure that the security deci
   * A complete Playbook system that integrates MCollective with any number of other services to conduct full workflow based actions. Playbooks are written using the Puppet DSL.
   * A Security Plugin utilizing the Puppet Certificate Authority system
   * A Discovery plugin for PuppetDB giving you a responsive and predictable interaction mode with support for PQL based infrastructure discovery
-  * A Connector using NATS.io middleware that has been tested to 100s of thousands of nodes. 50 000 nodes can comfortably be run on a single NATS server.
+  * A Connector using NATS.io middleware that has been tested to 100s of thousands of nodes. 50 000 nodes can comfortably be run on a single Choria Broker.
   * Federations of Collectives eases the admin burden of managing large geographically distributed Collectives
   * Full end to end Authentication, Authorization and Auditing out of the box
   * Common Puppet eco system plugins like Package, Service, Puppet and File Manager deployed and ready to use

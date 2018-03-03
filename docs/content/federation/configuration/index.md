@@ -5,21 +5,15 @@ weight = 100
 
 ## Middleware Sizing
 
-A quick note about sizing, in the network diagrams we have 5 node NATS clusters in the Collectives and 3 in the Federation.  This is a suggestion only and what is right depends on your needs.
+A quick note about sizing, in the network diagrams we have 5 node Network Broker clusters in the Collectives and 3 in the Federation.  This is a suggestion only and what is right depends on your needs.
 
-As mentioned a single NATS broker can easily handle 2 000 MCollective Daemons and probably a lot more.  You almost never need a full 5 node cluster, 3 should be fine.  If you don't need it to be 100% always available even 1 node will do.
+As mentioned a single Network Broker broker can easily handle 50 000 MCollective Daemons.  You almost never need a full 5 node cluster, 3 should be fine.  If you don't need it to be 100% always available even 1 node will do.
 
 {{% notice tip %}}
-It is best to run your Federation Broker Instances near the Collective they serve on your network to gain maximal benefits from the offloading the Client does onto the Federation Broker Cluster.
+It is best to run your Federation Broker Instances near the Collective they serve on your network to gain maximal benefits from the offloading the Client does onto the Federation Network Broker Cluster. Since they are integrated with the Network Broker I suggest simply enabling the feature on your existing brokers that serve each Collective.
 {{% /notice %}}
 
-Generally on the Federation side you do not need many nodes, the choice of 3 is mainly about reliability.  NATS work best in uneven numbered node count clusters.
-
-You can run as many Federation Broker Instances as you need, they are entirely stateless and automatically form clusters load sharing the work.
-
-I suggest 1 or 2 instances for every node you run your NATS daemons on but even 1 will do fine. If you have many people using MCollective at the same time or people and automations on the same Collective then run at least a 2 or 3 per Collective.
-
-The Federtion and Collective can even share NATS infrastructure, I imagine this is only useful in Development or Testing though.
+Generally on the Federation side you do not need many nodes, the choice of 3 is mainly about reliability.  Network Brokers require an uneven numbered node count clusters.
 
 ![Federation Broker DNS](../../federation_dns_config.png)
 
@@ -32,64 +26,45 @@ On the Collective side of the Broker the same configuration is used as for the M
 On the Federation side you need additional records in the same domain:
 
 ```dns
-_mcollective-server._tcp            IN      SRV     0       0       4222    nats1.ldn.example.net.
-                                    IN      SRV     0       0       4222    nats2.ldn.example.net.
-                                    IN      SRV     0       0       4222    nats3.ldn.example.net.
-                                    IN      SRV     0       0       4222    nats4.ldn.example.net.
-                                    IN      SRV     0       0       4222    nats5.ldn.example.net.
+_mcollective-server._tcp            IN      SRV     0       0       4222    choria1.ldn.example.net.
+                                    IN      SRV     0       0       4222    choria2.ldn.example.net.
+                                    IN      SRV     0       0       4222    choria3.ldn.example.net.
+                                    IN      SRV     0       0       4222    choria4.ldn.example.net.
+                                    IN      SRV     0       0       4222    choria5.ldn.example.net.
 
-_mcollective-federation_server._tcp IN      SRV     0       0       4222    nats1.fed.example.net.
-                                    IN      SRV     0       0       4222    nats2.fed.example.net.
-                                    IN      SRV     0       0       4222    nats3.fed.example.net.
+_mcollective-federation_server._tcp IN      SRV     0       0       4222    choria1.fed.example.net.
+                                    IN      SRV     0       0       4222    choria2.fed.example.net.
+                                    IN      SRV     0       0       4222    choria3.fed.example.net.
 ```
 
 ## Federation Broker Instance
 
-Most likely you will run the Federation Brokers on the same machines as your NATS clusters.  I suggest you name them something descriptive like here:
+Most likely you will run the Federation Brokers on the same machines as your Network Brokers clusters.  I suggest you name them something descriptive like here.
 
-{{% notice warning %}}
-At present the *mcollective_choria::federation_broker* only supports *systemd* based Operating Systems
-{{% /notice %}}
+Here you see the Puppet code needed to start the Network Broker and Federation Broker Cluster called *london*. By default this will mean 50 instances of the Federation Broker and it will be capable of serving tremendously large Collectives.  You'll only see one process - `choria broker`.
 
 ```puppet
 node "nats1.ldn.example.net" {
-  class{"nats":
-    routes_password => "Vrph54FBcIvdM"
-    servers => [
-      "nats1.ldn.example.net:4222",
-      "nats2.ldn.example.net:4222",
-      "nats3.ldn.example.net:4222",
-      "nats4.ldn.example.net:4222",
-      "nats5.ldn.example.net:4222"
-    ],
+  class{"choria":
+    srv_domain => "ldn.example.net"
   }
 
-  mcollective_choria::federation_broker{"london":
-    instances => 2,
-    stats_base_port => 8000,
-    srv_domain => "ldn.example.net"
+  class{"choria::broker":
+    network_broker => true,
+    federation_broker => true,
+    federation_cluster => "london",
+    network_peers => [
+      "nats://choria1.ldn.example.net:5222",
+      "nats://choria2.ldn.example.net:5222",
+      "nats://choria3.ldn.example.net:5222",
+      "nats://choria4.ldn.example.net:5222",
+      "nats://choria5.ldn.example.net:5222"
+    ],
   }
 }
 ```
 
-Here you see the Puppet code needed to start the Federation Broker Cluster called *london* with 2 Instances on every one of your NATS nodes.  Thus you'll have 5 x NATS nodes and 10 x Federation Broker Instances.
-
-The Federation Broker Instance will listen on ports 8000 - 8005 for HTTP requests to */stats* and they will look up their SRV records in *ldn.example.net* as per the diagram.
-
-### Using supervisord instead of systemd
-
-By default the Federation Broker services will be started with *systemd*, managed by the *camptocamp/systemd*. If you don't have systemd, you can use *ajcrowe/supervisord* as an alternative:
-
-```puppet
-  mcollective_choria::federation_broker{"london":
-    instances => 2,
-    stats_base_port => 8000,
-    srv_domain => "ldn.example.net",
-    service_provider => "systemd"
-  }
-```
-
-If you need to manage the *supervisord* class elsewhere or with Class Parameters, set the *manage_supervisord* parameter to *false*.
+The Federation Broker statistics will be part of the normal Prometheus stats exposed on port `8222` and they will look up their SRV records in *ldn.example.net* as per the diagram.
 
 ## MCollective Client in the Federation
 
