@@ -3,8 +3,6 @@ title = "NATS Streaming"
 weight = 200
 +++
 
-## Overview
-
 [NATS Streaming Server](https://github.com/nats-io/nats-streaming-server) is a easy to deploy and scale Streaming Server from the same people who make the NATS technology that the Choria Network Broker is built on.
 
 The Choria NATS Streaming Adapter is hosted in the Choria Broker and is configured using the `choria::broker` class.

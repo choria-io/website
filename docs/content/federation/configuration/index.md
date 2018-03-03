@@ -5,27 +5,21 @@ weight = 200
 
 ## Middleware Sizing
 
-A quick note about sizing, in the network diagrams we have 5 node Network Broker clusters in the Collectives and 3 in the Federation.  This is a suggestion only and what is right depends on your needs.
+As mentioned a single Network Broker broker can easily handle 50 000 MCollective Daemons.  You almost never need more than 3 brokers.  If you don't need it to be 100% always available even 1 node will do.
 
-As mentioned a single Network Broker broker can easily handle 50 000 MCollective Daemons.  You almost never need a full 5 node cluster, 3 should be fine.  If you don't need it to be 100% always available even 1 node will do.
+Generally on the Federation side you do not need many nodes, the choice of 3 is mainly about reliability.  Network Brokers require an uneven numbered node count clusters.  Internally the Federation Brokers use a worker pool of 10 Brokers consisting of 3 micro services each.  This is very scalable and should be able to handle any reasonable size network.
+
+![Federation Broker DNS](../../federation_dns_config.png)
 
 {{% notice tip %}}
 It is best to run your Federation Broker Instances near the Collective they serve on your network to gain maximal benefits from the offloading the Client does onto the Federation Network Broker Cluster. Since they are integrated with the Network Broker I suggest simply enabling the feature on your existing brokers that serve each Collective.
 {{% /notice %}}
 
-Generally on the Federation side you do not need many nodes, the choice of 3 is mainly about reliability.  Network Brokers require an uneven numbered node count clusters.
-
-![Federation Broker DNS](../../federation_dns_config.png)
-
 ## DNS SRV Records
 
 Like the normal MCollective Server and Client configuration is largely done via SRV records.  You can of course manually configure it but with SRV records it will more or less just work.
 
-Below you'll see DNS records for the 2 SRV Records covering the Federation (left, numbered **1**) and the Collective (right, numbered **2**). These are in the domain configured as `srv_domain` to the `choria` class - `ldn.example.net` in the example below.
-
-{{% notice tip %}}
-If you cannot or do not wish to use use SRV records see later in the same page for manual configuration
-{{% /notice %}}
+Below you'll see DNS records for the 2 SRV Records covering the Federation (left, numbered **1**) and the Collective (right, numbered **2**). These are in the domain configured as `srv_domain` to the `choria` class - `ldn.example.net` in the example below.  We are configuring the middle 3 Federation Brokers.
 
 To discover the middleware for the Federation:
 
@@ -43,11 +37,13 @@ _mcollective-server._tcp            IN      SRV     0       0       4222    chor
                                     IN      SRV     0       0       4222    choria3.ldn.example.net.
 ```
 
+{{% notice tip %}}
+If you cannot or do not wish to use use SRV records see later in the same page for manual configuration
+{{% /notice %}}
+
 ## Federation Broker Instance
 
-Most likely you will run the Federation Brokers on the same machines as your Network Brokers clusters.  I suggest you name them something descriptive like here.
-
-Here you see the Puppet code needed to start the Network Broker and Federation Broker Cluster called *london*. By default this will mean 50 instances of the Federation Broker and it will be capable of serving tremendously large Collectives.  You'll only see one process - `choria broker`.
+Most likely you will run the Federation Brokers on the same machines as your Network Brokers clusters. Here you see the Puppet code needed to start the Network Broker and Federation Broker Cluster called *london*. By default this will mean 30 instances of the Federation Broker - 10 per Broker -and it will be capable of serving tremendously large Collectives.  You'll only see one process - `choria broker`.
 
 {{% notice tip %}}
 While I show the Puppet code here for completeness, I recommend using Hiera to configure these settings

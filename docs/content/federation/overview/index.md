@@ -3,7 +3,7 @@ title = "Overview"
 weight = 100
 +++
 
-Deploying large distributed Collectives can be tricky mainly due to the operation concerns of running a single huge Middleware Deployment spanning multiple Data Centres or even Countries.
+Deploying large distributed Collectives can be tricky mainly due to the operation concerns of running a single huge Middleware deployment spanning multiple Data Centres or even Countries.
 
 In the past there was no choice but to run such a single distributed Middleware deployment. With Choria you can divide your network into smaller, managable, parts and use a component called a *Federation Broker* to combine them into a single entity.  If your network span multiple datacenters Federating your networks using the Federation Broker is recommended.
 
@@ -15,6 +15,8 @@ The central Middleware act as a management location where all the Collectives ar
 
 ![Federation of Collectives](../../choria_federation.png)
 
+The Federation Brokers are a share-nothing architecture. They are completely stateless and scales horizontally and vertically.  By default every Choria Broker with Federation enabled will run 10 instances.
+
 ## Benefits
 
  * Easier to manage at a large scale
@@ -23,6 +25,7 @@ The central Middleware act as a management location where all the Collectives ar
  * All MCollective features remain functional
  * A Collective can belong to several Federations
  * Federation Brokers need no shared infrastructure like Consul or databases
+ * Extensive Prometheus metrics about the internals of the brokers
 
 ## Terminology
 
