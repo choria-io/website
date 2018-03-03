@@ -1,5 +1,5 @@
 +++
-title = "Choria Broker
+title = "Choria Broker"
 weight = 110
 toc = true
 +++
