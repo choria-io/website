@@ -1,5 +1,6 @@
 +++
 title = "Federations of Collectives"
+chapter = true
 icon = "<b>5. </b>"
 +++
 
