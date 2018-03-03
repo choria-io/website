@@ -2,3 +2,4 @@ out
 docs_template
 */public
 *.swp
+.DS_Store
