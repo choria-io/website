@@ -3,11 +3,7 @@ title = "Overview"
 weight = 100
 +++
 
-Protocol Adapters is a Choria only technology that exists to convert data from one format to another.
-
-Traditionally MCollective supported publishing Registration data but there existed no way to handle the messages in a scalable manner.
-
-Since then a number of new paradigms appeared including Stream Processing.  Protocol Adapters receive data from Choria Network Brokers and convert them to Streaming data.
+Protocol Adapters is a Choria only technology that exists to convert data from the highly concurrent broadcast medium of Choria into formats more suitable to processing using technologies like Stream Processing.
 
 ![Adapters Overview](../../adapters-overview.png)
 
