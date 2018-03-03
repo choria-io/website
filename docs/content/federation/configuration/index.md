@@ -17,24 +17,30 @@ Generally on the Federation side you do not need many nodes, the choice of 3 is 
 
 ![Federation Broker DNS](../../federation_dns_config.png)
 
-## DNS
+## DNS SRV Records
 
 Like the normal MCollective Server and Client configuration is largely done via SRV records.  You can of course manually configure it but with SRV records it will more or less just work.
 
-On the Collective side of the Broker the same configuration is used as for the MCollective Daemon and Client, so if you did the SRV setup for those you can just leave that alone.
+Below you'll see DNS records for the 2 SRV Records covering the Federation (left, numbered **1**) and the Collective (right, numbered **2**). These are in the domain configured as `srv_domain` to the `choria` class - `ldn.example.net` in the example below.
 
-On the Federation side you need additional records in the same domain:
+{{% notice tip %}}
+If you cannot or do not wish to use use SRV records see later in the same page for manual configuration
+{{% /notice %}}
+
+To discover the middleware for the Federation:
+
+```dns
+_mcollective-federation_server._tcp IN      SRV     0       0       4222    choria1.fed.example.net.
+                                    IN      SRV     0       0       4222    choria2.fed.example.net.
+                                    IN      SRV     0       0       4222    choria3.fed.example.net.
+```
+
+To discover the middleware for the Collective:
 
 ```dns
 _mcollective-server._tcp            IN      SRV     0       0       4222    choria1.ldn.example.net.
                                     IN      SRV     0       0       4222    choria2.ldn.example.net.
                                     IN      SRV     0       0       4222    choria3.ldn.example.net.
-                                    IN      SRV     0       0       4222    choria4.ldn.example.net.
-                                    IN      SRV     0       0       4222    choria5.ldn.example.net.
-
-_mcollective-federation_server._tcp IN      SRV     0       0       4222    choria1.fed.example.net.
-                                    IN      SRV     0       0       4222    choria2.fed.example.net.
-                                    IN      SRV     0       0       4222    choria3.fed.example.net.
 ```
 
 ## Federation Broker Instance
@@ -61,14 +67,37 @@ node "nats1.ldn.example.net" {
       "nats://choria1.ldn.example.net:5222",
       "nats://choria2.ldn.example.net:5222",
       "nats://choria3.ldn.example.net:5222",
-      "nats://choria4.ldn.example.net:5222",
-      "nats://choria5.ldn.example.net:5222"
     ]
   }
 }
 ```
 
 The Federation Broker statistics will be part of the normal Prometheus stats exposed on port `8222` and they will look up their SRV records in *ldn.example.net* as per the diagram.
+
+If you wish to configure the middleware manually rather than SRV records you can do so:
+
+```puppet
+  class{"choria::broker":
+    network_broker => true,
+    federation_broker => true,
+    federation_cluster => "london",
+    federation_middleware_hosts => [
+      "nats://choria1.fed.example.net:5222",
+      "nats://choria2.fed.example.net:5222",
+      "nats://choria3.fed.example.net:5222",
+    ],
+    collective_middleware_hosts => [
+      "nats://choria1.ldn.example.net:5222",
+      "nats://choria2.ldn.example.net:5222",
+      "nats://choria3.ldn.example.net:5222",
+    ],
+    network_peers => [
+      "nats://choria1.ldn.example.net:5222",
+      "nats://choria2.ldn.example.net:5222",
+      "nats://choria3.ldn.example.net:5222",
+    ]
+  }
+```
 
 ## MCollective Client in the Federation
 
