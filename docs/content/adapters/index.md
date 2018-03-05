@@ -1,9 +1,9 @@
 +++
-title = "Protocol Adapters"
+title = "Data Adapters"
 icon = "<b>6. </b>"
 +++
 
-Protocol Adapters is a Choria only technology that exists to convert data from the highly concurrent broadcast medium of Choria into formats more suitable to processing using technologies like Stream Processing.
+Data Adapters is a Choria only technology that exists to convert data from the highly concurrent broadcast medium of Choria into formats more suitable to processing using technologies like Stream Processing.
 
 ![Adapters Overview](../adapters-overview.png)
 
@@ -18,4 +18,4 @@ The use cases for this include:
 At present only NATS Streaming is supported, this feature is under active development
 {{% /notice %}}
 
-Protocol adapters are hosted inside the Choria Brokers much the same way that Network Brokers and Federation Brokers can live in the same binary.
+Data adapters are hosted inside the Choria Brokers much the same way that Network Brokers and Federation Brokers can live in the same binary.
