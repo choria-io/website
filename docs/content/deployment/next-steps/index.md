@@ -12,10 +12,10 @@ The community is where you can go to get support should you have any problems in
 
 We have a mailing list for users that will also receive notifications of updates to the modules and so forth. The group is hosted on [Google Groups, you can sign up here](https://groups.google.com/forum/#!forum/choria-users).
 
-For more interactive comms I am on the Puppet IRC as _Volcane_ and on slack as _ripienaar_, we also have a _#mcollective_ channel on Freenode.
+For more interactive comms I am on the Puppet IRC as _Volcane_ and on slack as _ripienaar_, we also have a _#mcollective_ channel on Freenode of _#choria_ on the [Puppet Slack](http://slack.puppet.com/).
 
 If you wish to file a ticket about anything here or improve something the 2 GitHub project are [choria-io/mcollective-choria](https://github.com/choria-io/mcollective-choria)
-and [choria-io/puppet-mcollective](https://github.com/choria-io/puppet-mcollective) where you can file issues.
+and [choria-io/puppet-choria](https://github.com/choria-io/puppet-choria) where you can file issues.
 
 ## Confirming it is working
 

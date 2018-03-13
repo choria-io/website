@@ -5,7 +5,7 @@ title = "Choria"
 googleAnalytics = "UA-10152852-12"
 
 [params]
-    mainIcon = "/img/choria-vert-400px.png"
+    mainIcon = "img/choria-vert-400px.png"
 
 [[params.social]]
     title = "docs"

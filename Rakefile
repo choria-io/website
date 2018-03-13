@@ -63,17 +63,17 @@ task :publish_prod_docs do
   Rake::Task[:build_docs].invoke
 
   Dir.chdir(File.join(File.dirname(__FILE__), "out")) do
-    sh("surge -d https://choria.io -p .")
+    sh("netlify deploy -s wonderful-curie-7b58ce -p .")
   end
 end
 
 desc "Build and Publish the preview website"
 task :publish_docs do
-  ENV["CHORIA_SITE_NAME"] = "http://dev.choria.io"
+  ENV["CHORIA_SITE_NAME"] = "https://master.choria.io"
 
   Rake::Task[:build_docs].invoke
 
   Dir.chdir(File.join(File.dirname(__FILE__), "out")) do
-    sh("surge -d dev.choria.io -p .")
+    sh("netlify deploy -s zealous-babbage-1b685b -p .")
   end
 end
