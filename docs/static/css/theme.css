@@ -536,6 +536,11 @@ code {
     border: 1px solid #fbf0cb;
     padding: 0px 2px;
 }
+
+.nohighlight {
+  color: white;
+}
+
 code + .copy-to-clipboard {
     margin-left: -1px;
     border-left: 0 !important;

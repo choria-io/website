@@ -7,4 +7,4 @@ googleAnalytics = "UA-10152852-12"
 [params]
   description = "Documentation for the Choria Orchestrator"
   author = "R.I.Pienaar <rip@devco.net>"
-  menu = [ "about", "deployment", "configuration", "playbooks", "federation", "adapters", "reference", "development"]
+  menu = [ "about", "deployment", "configuration", "playbooks", "tasks", "federation", "adapters"]
