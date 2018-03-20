@@ -14,13 +14,13 @@ The agent have a number of actions, you generally will give people access to all
 |Action|Description|
 |------|-----------|
 |download|Downloads a Puppet Task into a local cache|
-|run_and_wait|Runs a Puppet Task that was previously downloaded, wait for it to finish|
-|run_no_wait|Runs a Puppet Task that was previously downloaded do not wait for it to finish|
-|task_status|Request the status of a previously ran task|
+|run\_and\_wait|Runs a Puppet Task that was previously downloaded, wait for it to finish|
+|run\_no\_wait|Runs a Puppet Task that was previously downloaded do not wait for it to finish|
+|task\_status|Request the status of a previously ran task|
 
-If you give someone access to _download_, _run_and_wait_ and _run_no_wait_ they can initiate and run tasks, you can give someone access to _task_status_ only to view statusses.
+If you give someone access to _download_, _run_and_wait_ and _run_no_wait_ they can initiate and run tasks, you can give someone access to _task\_status_ only to view statusses.
 
-Note that the data plugin effecitvely shows all the _task_status_ action shows and there are no RBAC for those.  So basically _task_status_ is always open.
+Note that the data plugin effecitvely shows all the _task\_status_ action shows and there are no RBAC for those.  So basically _task\_status_ is always open.
 
 So the example from earlier in this document gives _choria=rip.mcollective_ full access to the Puppet Task feature:
 
@@ -28,10 +28,25 @@ So the example from earlier in this document gives _choria=rip.mcollective_ full
 mcollective_agent_bolt_tasks::policies:
   - action: "allow"
     callers: "choria=rip.mcollective"
-    actions: "download,run_and_wait,run_no_wait,task_status"
+    actions: "download run_and_wait run_no_wait task_status"
     facts: "*"
     classes: "*"
 ```
+
+Once you have this in place you have to authorize specific tasks:
+
+```yaml
+mcollective_agent_bolt_tasks::policies:
+  - action: "allow"
+    callers: "choria=rip.mcollective"
+    actions: "puppet_conf gcompute::snapshot"
+    facts: "*"
+    classes: "*"
+```
+
+Here this user will have the ability to run the _puppet\_conf_ task as well as the _gcompute::snapshot_ one but no others.
+
+Every task invocation will call the RBAC system twice - one for the _run\_and\_wait_ or _run_no_wait_ action and once for an action matching the task name.
 
 ## Auditing
 
@@ -71,7 +86,9 @@ $ sudo tail -n 1000 /var/log/puppetlabs/mcollective-audit.log|jq 'select(.reques
 }
 </code></pre>
 
-You might of course find additional status calls etc too:
+Above you can see the double RBAC in action - once for _action_ _run\_and\_wait_ and once for _puppet\_conf_.
+
+Ynou might of course find additional status calls etc too:
 
 <pre><code class="nohighlight">
 $ sudo tail -n 1000 /var/log/puppetlabs/mcollective-audit.log|jq 'select(.data.task_id=="45250c07824f5922be68468d08f6b76c")'

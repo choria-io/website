@@ -50,12 +50,12 @@ Basic RBAC rules are shown here, but refer to a later section in this guide for 
 mcollective_agent_bolt_tasks::policies:
   - action: "allow"
     callers: "choria=rip.mcollective"
-    actions: "download,run_and_wait,run_no_wait,task_status"
+    actions: "*"
     facts: "*"
     classes: "*"
 ```
 
-Change *choria=rip.mcollective* here with your own certificate name, this will give you full control of the tasks feature
+Change *choria=rip.mcollective* here with your own certificate name, this will give you full control of the tasks feature and all tasks.
 
 ## Obtain some tasks
 
