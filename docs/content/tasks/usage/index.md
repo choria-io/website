@@ -12,7 +12,7 @@ With the default Puppet Tasks runner from Puppet Inc the tasks are copied from y
   * The metadata is fetched from your Puppet Server and the CLI is created
   * Inputs are validated against the task signature
   * The task files specification are sent to all your nodes and they will attempt to download the task files
-  * Request that nodes should run the Task once it's confirmed that the entire node set has the exact same task files and commands downloaded and cached
+  * Request that nodes should run the Task - once it's confirmed that the entire node set has the exact same task files and commands downloaded and cached
   * Wait for up to 60 seconds for the Task to complete everywhere
 
 At this point the task is either done or still executing - either way - you have a summary output that includes the task ID.

@@ -70,11 +70,11 @@ You can create a cluster of brokers, pick 3 or 5 machines and include the module
 node "nats1.example.net" {
   class{"choria::broker":
     network_peers => [
-      "nats://choria1.example.net:5222",
-      "nats://choria2.example.net:5222",
-      "nats://choria3.example.net:5222",
-      "nats://choria4.example.net:5222",
-      "nats://choria5.example.net:5222"
+      "nats://choria1.example.net:4223",
+      "nats://choria2.example.net:4223",
+      "nats://choria3.example.net:4223",
+      "nats://choria4.example.net:4223",
+      "nats://choria5.example.net:4223"
     ],
   }
 }

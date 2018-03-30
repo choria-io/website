@@ -3,7 +3,7 @@ title = "Security"
 weight = 300
 +++
 
-Choria integrate Puppet Tasks rightly with it's AAA (Authentication, Authorization and Auditing) suite, this section will introduce you to the features of each.
+Choria integrate Puppet Tasks tightly with it's AAA (Authentication, Authorization and Auditing) suite, this section will introduce you to the features of each.
 
 ## Authorization
 
@@ -18,7 +18,7 @@ The agent have a number of actions, you generally will give people access to all
 |run\_no\_wait|Runs a Puppet Task that was previously downloaded do not wait for it to finish|
 |task\_status|Request the status of a previously ran task|
 
-If you give someone access to _download_, _run_and_wait_ and _run_no_wait_ they can initiate and run tasks, you can give someone access to _task\_status_ only to view statusses.
+If you give someone access to _download_, _run\_and\_wait_ and _run\_no\_wait_ they can initiate and run tasks, you can give someone access to _task\_status_ only to view statusses.
 
 Note that the data plugin effecitvely shows all the _task\_status_ action shows and there are no RBAC for those.  So basically _task\_status_ is always open.
 
@@ -46,11 +46,11 @@ mcollective_agent_bolt_tasks::policies:
 
 Here this user will have the ability to run the _puppet\_conf_ task as well as the _gcompute::snapshot_ one but no others.
 
-Every task invocation will call the RBAC system twice - one for the _run\_and\_wait_ or _run_no_wait_ action and once for an action matching the task name.
+Every task invocation will call the RBAC system twice - one for the _run\_and\_wait_ or _run\_no\_wait_ action and once for an action matching the task name.
 
 ## Auditing
 
-Auditing is done as per normal Choria Audit Logs and are written in JSON format.  For every _run_ there would be 2 actions performed - download and one of the run variants.
+Auditing is done as per normal Choria Audit Logs and are written in JSON format.  For every _run_ there would be 2 actions performed - one of the run variants and one for the actual task name being invoked.
 
 <pre><code class="nohighlight">
 $ sudo tail -n 1000 /var/log/puppetlabs/mcollective-audit.log|jq 'select(.request_id=="45250c07824f5922be68468d08f6b76c")'
