@@ -78,14 +78,14 @@ If you wish to configure the middleware manually rather than SRV records you can
     federation_broker => true,
     federation_cluster => "london",
     federation_middleware_hosts => [
-      "nats://choria1.fed.example.net:5222",
-      "nats://choria2.fed.example.net:5222",
-      "nats://choria3.fed.example.net:5222",
+      "choria1.fed.example.net:4222",
+      "choria2.fed.example.net:4222",
+      "choria3.fed.example.net:4222",
     ],
     collective_middleware_hosts => [
-      "nats://choria1.ldn.example.net:5222",
-      "nats://choria2.ldn.example.net:5222",
-      "nats://choria3.ldn.example.net:5222",
+      "choria1.ldn.example.net:4222",
+      "choria2.ldn.example.net:4222",
+      "choria3.ldn.example.net:4222",
     ],
     network_peers => [
       "nats://choria1.ldn.example.net:5222",
@@ -94,6 +94,14 @@ If you wish to configure the middleware manually rather than SRV records you can
     ]
   }
 ```
+
+The full reference of Federation related configuration options can be seen below:
+
+|Option|Description|Sample|
+|------|-----------|------|
+|plugin.choria.federation.collectives|List of collectives that belong to the federation|`london,tokyo,new_york`|
+|plugin.choria.federation_middleware_hosts|Choria Brokers on the Federation side to connect to|`c1.fed.example.net:4222,c2.fed.example.net:4222`|
+|plugin.choria.federation.cluster|A cluster name that a specific Federation Broker forms part of|`london`|
 
 ## MCollective Client in the Federation
 
