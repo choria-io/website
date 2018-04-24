@@ -1,3 +1,4 @@
 /docs/deployment/nats   /docs/deployment/broker/  301
 /docs/deployment/nats/  /docs/deployment/broker/  301
 /schemas/:schema.json   https://raw.githubusercontent.com/choria-io/go-choria/master/schemas/:schema.json 301
+/schemas/sr/:version/:schema.json   https://raw.githubusercontent.com/choria-io/stream-replicator/master/schemas/:version/:schema.json 301

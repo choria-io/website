@@ -1,3 +1,0 @@
-301 /docs/deployment/nats                                   /docs/deployment/broker/
-301 /docs/deployment/nats/                                  /docs/deployment/broker/
-307 /schemas/:schema.json                                   https://raw.githubusercontent.com/choria-io/go-choria/master/schemas/:schema.json
