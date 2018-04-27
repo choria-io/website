@@ -6,7 +6,7 @@ toc = true
 
 ## Deployment Overview
 
-Deploying MCollective with Choria is broken into the following main steps that the menu on the right guides you through:
+Deploying MCollective with Choria is broken into the following main steps that the menu on the left guides you through:
 
   * Decide your desired Choria Broker middleware topology and deploy it
   * If required configure DNS records or manual host locations
