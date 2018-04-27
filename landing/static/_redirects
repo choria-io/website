@@ -1,3 +1,5 @@
+/docs /docs/about/ 301
+/docs/ /docs/about/ 301
 /docs/deployment/nats   /docs/deployment/broker/  301
 /docs/deployment/nats/  /docs/deployment/broker/  301
 /schemas/*   https://raw.githubusercontent.com/choria-io/schemas/master/:splat 301

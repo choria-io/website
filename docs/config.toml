@@ -1,10 +1,15 @@
-baseurl = "http://dev3.devco.net:9292"
+baseurl = "http://dev1.devco.net:9292"
 contentdir = "content"
 theme = "hugo-theme-learn"
 title = "Choria Orchestrator"
 googleAnalytics = "UA-10152852-12"
 
+[outputs]
+  home = [ "HTML", "RSS", "JSON"]
+
 [params]
   description = "Documentation for the Choria Orchestrator"
   author = "R.I.Pienaar <rip@devco.net>"
+  showVisitedLinks = false
   menu = [ "about", "concepts", "tasks", "playbooks", "federation", "adapters", "deployment", "configuration" ]
+  themeVariant = "choria"
