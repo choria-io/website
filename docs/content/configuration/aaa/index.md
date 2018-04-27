@@ -1,10 +1,10 @@
 +++
-title = "MCollective AAA"
+title = "Choria AAA"
 toc = true
 weight = 220
 +++
 
-MCollective features a full suite of Authentication, Authorization and Auditing capabilities.
+Choria features a full suite of Authentication, Authorization and Auditing capabilities.
 
   * Authentication - _who_ you are, derived from a certificate
   * Authorization - _what_ you may do on any given node, keyed to your certificate-based identity

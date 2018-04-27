@@ -1,6 +1,5 @@
 +++
 title = "About Choria"
-weight = 1
 icon = "<b>1. </b>"
 +++
 
@@ -42,4 +41,4 @@ See the [Deployment Guide](../deployment) for details on installation.
 
 This system is production ready but under active development.  At various fronts we are working to replace reliance on Puppet Agent and legacy MCollective, the project lives on [GitHub](https://github.com/choria-io).
 
-Extensive performance testing has been done that showed the system to be stable at over 100 000 nodes.  Getting to 50 000 nodes is easily achievable using a single middleware server.
+Extensive performance testing has been done that showed the system to be stable at over 100 000 nodes.  Getting to 50 000 nodes is easily achievable using a single middleware compute node.

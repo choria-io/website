@@ -1,8 +1,7 @@
 +++
 title = "Deployment"
-weight = 100
 chapter = true
-icon = "<b>2. </b>"
+icon = "<b>6. </b>"
 +++
 
 # Deployment

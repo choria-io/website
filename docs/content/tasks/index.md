@@ -1,6 +1,6 @@
 +++
 title = "Puppet Tasks"
-icon = "<b>5. </b>"
+icon = "<b>3. </b>"
 +++
 
 ## Introduction

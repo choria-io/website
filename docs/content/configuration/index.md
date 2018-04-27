@@ -1,8 +1,7 @@
 +++
 title = "Optional Configuration"
-weight = 200
 chapter = true
-icon = "<b>3. </b>"
+icon = "<b>7. </b>"
 +++
 
 # Optional Configuration
