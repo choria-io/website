@@ -4,7 +4,7 @@ weight = 150
 toc = true
 +++
 
-At this point you should have a working MCollective set up with your user able to do any command of the plugins we deployed. Follow the next steps to find other users or obtain support and validate your setup.
+At this point you should have a working Choria set up with your user able to do any command of the plugins we deployed. Follow the next steps to find other users or obtain support and validate your setup.
 
 ## Join the community
 
@@ -260,7 +260,7 @@ The official documentation is a good resource for usage details:
 
   * Read about [Choria Playbooks](/docs/playbook) to write higher order orchestration scripts than the CLI provides
   * Read about [Puppet Tasks](/docs/tasks/) that provides a way to gain access to much more shared capabilities from the Puppet Forge
-  * I strongly suggest you read about [using the mcollective CLI](https://docs.puppet.com/mcollective/reference/basic/basic_cli_usage.html)
+  * I strongly suggest you read about [using the mcollective CLI](../../concepts/cli)
   * Read about [filtering which hosts to act on](https://docs.puppet.com/mcollective/reference/ui/filters.html)
   * Read about [managing Puppet](https://github.com/puppetlabs/mcollective-puppet-agent#usage) though note the setup steps are already completed
   * Read about [managing packages](https://github.com/puppetlabs/mcollective-package-agent#readme) though note the setup steps are already completed
