@@ -7,7 +7,7 @@ icon = "<b>1. </b>"
 
 Choria is an ongoing project to create a new Orchestration System with roots in The Marionette Collective (mcollective) but with a view on the future.  It's part trivially installable mcollective and part brand new development.
 
-Using Choria an Open Source Puppet user can be up and running with a scalable, clustered, secure orchestration system within 30 minutes.  Out of the box it's known to support 50 000 nodes on a single server.
+Using Choria an Open Source Puppet user can be up and running with a scalable, clustered, secure orchestration system within 30 minutes.  Out of the box it's known to support 50 000 nodes on a single compute node.
 
 The system is secure by default, easy to maintain and production ready. Once invested in deploying this many avenues for using it exist including turn key end user capabilities.
 
@@ -22,10 +22,12 @@ As Puppet Inc is in the process of sunsetting The Marionette Collective the Chor
 
 ## Developer Features
 
+  * Write your own Agents that expose new Actions unique to your environment and interact with them from Playbooks, CLI and your own custom Clients.
   * [Embed a Choria Server into your own Golang software](https://github.com/ripienaar/embedded-choria-sample#readme) to create a fast and secure management backplane for any software
   * [Embed a Choria Server into your IoT platform](https://github.com/ripienaar/choriapi) to create a secure data access layer and life cycle management
   * Produce a custom build of Choria with auto provisioning, custom security and custom automation agents compiled right into the binary, using your own branding and paths without a reliance on Puppet
   * Create highly scalable data pipe lines with node data being processed through Stream Processors like NATS Streaming using Choria Data Adapters, ideal for IoT or managing very large geo diverse server estates
+  * Build vastly scalable asset data bases using Stream Processing techniques and Choria Metadata
 
 ## Operations Features
 
