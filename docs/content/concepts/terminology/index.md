@@ -10,7 +10,7 @@ As with most modern complex systems Choria has it's own verbiage, this page atte
 
 Agents expose tasks, we call these tasks actions. Each agent like a exim queue management agent might expose many tasks like *mailq*, *rm*, *retry* etc. These are al actions provided by an agent.
 
-## Agent
+## Agent
 
 Code that captures a specific API a server wish to expose to Choria Clients. Example agents are *package*, *service*, *puppet* and ones you write your own.
 
@@ -24,7 +24,7 @@ A log kept by the RPC framework of all actions performed on a server
 
 The process of securely identifying a user using PKI
 
-## Authorization
+## Authorization
 
 Sometimes known as RBAC, a list of rules that are used to decide if a request should be authorized.  Builds on Authentication to apply the right rules to the right user.
 
@@ -32,27 +32,29 @@ Sometimes known as RBAC, a list of rules that are used to decide if a request sh
 
 See *Middleware*
 
-## Choria Data Adapters
+## Choria Data Adapters
 
 A micro-services framework hosted within the Choria Broker process that receives data from subsystems like Registration and republishes it into other frameworks like Stream Processing systems.
+
+Delivered as part of the *choria* single binary.
 
 ## Choria Federation Broker
 
 A Choria protocol aware router and intelligent gateway that connect several independent Collectives together into 1.  Also performs co-processing for Clients significantly reducing the work they have to do.
 
-Delivered as part of the `choria` single binary.
+Delivered as part of the *choria* single binary.
 
 ## Choria Server
 
 A *Server* written in Golang. It can run standalone and replace *mcollectived* but can also be embedded into other Golang projects at compile time.
 
-Delivered as part of the `choria` single binary.
+Delivered as part of the *choria* single binary.
 
 ## Choria Network Broker
 
 A managed instance of the [NATS.io](https://nats.io) Server, capable of serving 50 000 or more connection on a single compute node.
 
-Delivered as part of the `choria` single binary.
+Delivered as part of the *choria* single binary.
 
 ## Client
 
@@ -82,7 +84,7 @@ Choria builds on many of the ideas, modernizes a lot of the concepts and provide
 
 A [publish subscribe](https://en.wikipedia.org/wiki/Publish%E2%80%93subscribe_pattern) based broker used to communicate between Clients and Servers.
 
-## Node
+## Node
 
 The Computer or Operating System that the Server runs on. A compute node or physical machine.
 
