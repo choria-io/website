@@ -19,12 +19,12 @@ As Puppet Inc is in the process of sunsetting The Marionette Collective the Chor
   * A complete [Playbook System](/docs/playbooks/) that integrates Choria with any number of other services to conduct full workflow based actions. Playbooks are written using the Puppet DSL.
   * Support for executing [Puppet Tasks](/docs/tasks/) as found on the Puppet Forge without the need for SSH and with RBAC
   * A Discovery plugin for PuppetDB giving you a responsive and predictable interaction mode with support for PQL based infrastructure discovery
-  * Common plugins like Package, Service, Puppet and File Manager deployed and ready to use
+  * Common plugins like Package, Service, Puppet and File Manager deployed and ready to use, many more actively maintained and ready to install.
 
 ## Developer Features
 
-  * Embed a Choria Server into your own Golang software to create a fast and secure management backplane for any software
-  * Embed a Choria Server into your IoT platform to create a secure data access layer and life cycle management
+  * [Embed a Choria Server into your own Golang software](https://github.com/ripienaar/embedded-choria-sample#readme) to create a fast and secure management backplane for any software
+  * [Embed a Choria Server into your IoT platform](https://github.com/ripienaar/choriapi) to create a secure data access layer and life cycle management
   * Produce a custom build of Choria with auto provisioning, custom security and custom automation agents compiled right into the binary, using your own branding and paths without a reliance on Puppet
   * Create highly scalable data pipe lines with node data being processed through Stream Processors like NATS Streaming using Choria Data Adapters, ideal for IoT or managing very large geo diverse server estates
 
