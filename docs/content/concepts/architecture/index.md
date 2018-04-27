@@ -1,5 +1,6 @@
 +++
 title = "Architecture"
+weight = 1
 icon = "<b>1. </b>"
 +++
 
@@ -51,6 +52,6 @@ The Choria Broker provides a system that can receive regular data from your netw
 
 Imagine your nodes publish their metadata such as Puppet Facts every 10 minutes (something the Choria Server can do out of the box), the Data Adapter will live in all your Choria Broker and translate that data onto other systems like [NATS Streaming](https://github.com/nats-io/nats-streaming-server) where your team can write software to process this data in a streaming fashion.
 
-![Adapters Overview](../adapters-overview.png)
+![Adapters Overview](../../adapters-overview.png)
 
 Support for Kafka, Kinesis and other similar systems is planned.
