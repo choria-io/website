@@ -1,0 +1,50 @@
+
+      {{ if not .Params.chapter }}
+      <br />
+      <div id="disqus_thread"></div>
+      <script>
+      var disqus_config = function () {
+      this.page.url = "{{ .Site.BaseURL }}{{ .RelPermalink }}";  // Replace PAGE_URL with your page's canonical URL variable
+      this.page.identifier = "{{ .RelPermalink }}"; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+      };
+
+      (function() { // DON'T EDIT BELOW THIS LINE
+      var d = document, s = d.createElement('script');
+      s.src = 'https://choria-io.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+      })();
+      </script>
+      <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+      {{ end }}
+
+      {{ if .Params.chapter }}
+        </div> <!-- end chapter-->
+      {{ end }}
+
+      </div>
+    </div>
+
+    <div id="navigation">
+        {{ with .Params.prev }}<a class="nav nav-prev" href="{{ . }}"> <i class="fa fa-chevron-left"></i></a>{{ end }}
+        {{ with .Params.next }}<a class="nav nav-next" href="{{ . }}" style="margin-right: 0px;"><i class="fa fa-chevron-right"></i></a>{{ end }}
+    </div>
+
+    </section>
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="{{ .Site.BaseURL }}js/clipboard.min.js"></script>
+    <script src="{{ .Site.BaseURL }}js/perfect-scrollbar.min.js"></script>
+    <script src="{{ .Site.BaseURL }}js/perfect-scrollbar.jquery.min.js"></script>
+    <script src="{{ .Site.BaseURL }}js/jquery.sticky-kit.min.js"></script>
+    <script src="{{ .Site.BaseURL }}js/featherlight.min.js"></script>
+    <script src="{{ .Site.BaseURL }}js/html5shiv-printshiv.min.js"></script>
+    <script src="{{ .Site.BaseURL }}js/highlight.pack.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+    <script src="{{ .Site.BaseURL }}js/modernizr.custom.71422.js"></script>
+    <script src="{{ .Site.BaseURL }}js/learn.js"></script>
+    <script src="{{ .Site.BaseURL }}js/hugo-learn.js"></script>
+    {{ partial "script.html" . }}
+  </body>
+</html>

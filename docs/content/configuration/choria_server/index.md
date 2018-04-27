@@ -48,7 +48,28 @@ If however you have your own custom agents and clients/applications I urge you t
 
 ## Configuration
 
-To configure the new daemon you do everything the basic getting started guide shows you except the following changed data:
+To configure the new daemon you do everything the basic getting started guide shows you. You have to run at least these module versions to ensure the JSON DDL files exist (though not all the actual modules are needed of course):
+
+```ruby
+mod "choria-choria", "0.8.0"
+mod "choria-mcollective_choria", "0.8.0"
+mod "choria-mcollective_agent_bolt_tasks", "0.8.0"
+mod "choria-mcollective", "0.5.0"
+mod "choria-mcollective_util_actionpolicy", "3.0.0"
+mod "choria-mcollective_data_sysctl", "3.0.0"
+mod "choria-mcollective_agent_shell", "1.0.3"
+mod "choria-mcollective_agent_service", "4.0.1"
+mod "choria-mcollective_agent_puppet", "2.0.2"
+mod "choria-mcollective_agent_puppetca", "4.0.1"
+mod "choria-mcollective_agent_process", "4.0.2"
+mod "choria-mcollective_agent_package", "5.0.1"
+mod "choria-mcollective_agent_nettest", "4.0.2"
+mod "choria-mcollective_agent_nrpe", "4.0.1"
+mod "choria-mcollective_agent_filemgr", "2.0.1"
+mod "choria-mcollective_agent_iptables", "4.0.1"
+```
+
+And you need to change some data:
 
 On all your nodes where you wish to run the new service:
 
