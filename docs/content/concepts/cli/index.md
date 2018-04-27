@@ -1,5 +1,5 @@
 +++
-title = "CLI Usage"
+title = "CLI Interaction Model"
 weight = 202
 icon = "<b>2. </b>"
 +++
@@ -16,7 +16,7 @@ very familiar.
 
 A simple example of a *mco* command can be seen below:
 
-{% highlight console %}
+```
 $ mco ping
 archlinux1.choria.example.net            time=41.72 ms
 ubuntu16.choria.example.net              time=42.49 ms
@@ -27,7 +27,7 @@ puppet.choria.example.net                time=46.49 ms
 
 ---- ping statistics ----
 5 replies max: 46.49 min: 41.72 avg: 43.65
-{% endhighlight %}
+```
 
 In this example the *ping* sub-command is referred to as an
 *application*. Choria provides many applications, for a list of
@@ -35,8 +35,7 @@ them, type *mco help*. You can also create your own application to plug
 into the framework. The *help* sub-command will show you something like
 this:
 
-
-{% highlight console %}
+```
 % mco help
 The Marionette Collective version 2.12.1
 
@@ -60,13 +59,13 @@ The Marionette Collective version 2.12.1
   service         Manages system services
   shell           Run shell commands
   tasks           Puppet Task Orchestrator
-{% endhighlight %}
+```
 
 You can request help for a specific application using either *mco help
 application* or *mco application ---help*. Shown below is part of the
 help for the *rpc* application:
 
-{% highlight console %}
+```
 % mco rpc --help
 Generic RPC agent client application
 
@@ -118,7 +117,7 @@ Host Filters
     -I, --wi, --with-identity IDENT  Match hosts with a certain configured identity
 
 The Marionette Collective 2.12.1
-{% endhighlight %}
+```
 
 The *help* first shows a basic overview of the command line syntax
 followed by options specific to this command.  Following that you will
@@ -134,7 +133,7 @@ your servers. It is capable of interacting with any standard Remote
 Procedure Call (RPC) agent. Below is an example that shows an attempt to
 start a webserver on several machines:
 
-{% highlight console %}
+```
 % mco rpc service start service=httpd
 Determining the amount of hosts matching filter for 2 seconds .... 10
 
@@ -145,7 +144,7 @@ dev4                                     Request Aborted
 
 
 Finished processing 10 / 10 hosts in 1323.61 ms
-{% endhighlight %}
+```
 
 The order of events in this process are:
 
@@ -165,9 +164,9 @@ commands.
 Choria agents are broken up into actions and each action can take
 input arguments.
 
-{% highlight console %}
+```
 % mco rpc service stop service=httpd
-{% endhighlight %}
+```
 
 This shows the basic make-up of an RPC command. In this case we are:
 
@@ -178,9 +177,9 @@ This shows the basic make-up of an RPC command. In this case we are:
 
 The same command has a longer form as well:
 
-{% highlight console %}
+```
 % mco rpc --agent service --action stop --argument service=httpd
-{% endhighlight %}
+```
 
 These two commands are functionally identical.
 
@@ -191,7 +190,7 @@ but how can you find out that this agent even exists? On a correctly
 installed Choria system you can use the *plugin* application to get
 a list:
 
-{% highlight console %}
+```
 % mco plugin doc
 Please specify a plugin. Available plugins are:
 
@@ -206,7 +205,7 @@ Agents:
   rpcutil                   General helpful actions that expose stats and internals to SimpleRPC clients
   service                   Manages Operating System Services
   shell                     Run commands with the local shell
-{% endhighlight %}
+```
 
 The first part of this list shows all the agents this computer is aware
 of. In order to show up on this list, an agent must have a *DDL* file
@@ -215,7 +214,7 @@ and be installed locally.
 To find out the *actions*, *inputs* and *outputs* for a specific agent
 use the plugin application again:
 
-{% highlight console %}
+```
 % mco plugin doc agent/service
 service
 =======
@@ -254,7 +253,7 @@ ACTIONS:
                Display As: Service Status
             Default Value: unknown
 ....
-{% endhighlight %}
+```
 
 This shows a truncated example of the auto-generated help for the
 *service* agent. First shown is metadata such as version, author and
@@ -269,7 +268,7 @@ receive one output called *status*
 With this information, you can request the status for a specific
 service:
 
-{% highlight console %}
+```
 % mco rpc service status service=httpd
 Determining the amount of hosts matching filter for 2 seconds .... 10
 
@@ -287,7 +286,7 @@ dev4
 .
 
 Finished processing 10 / 10 hosts in 326.01 ms
-{% endhighlight %}
+```
 
 Unlike the previous example, in this case specific information is
 returned on the success of the action. This is because this specific
@@ -307,9 +306,9 @@ a display name, the doc for the associated agent will have a
 A key capability of Choria is fast discovery of network resources.
 Discovery rules are written using *filters*.  For example:
 
-{% highlight console %}
+```
 % mco rpc service status service=httpd -S "environment=development or customer=acme"
-{% endhighlight %}
+```
 
 This shows a filter rule that limits the RPC request to being run on
 machines that are either in the Puppet environment *development* or
@@ -322,7 +321,7 @@ Management Class* on the node, the node's *Identity*, or installed
 Here are a number of examples of this with short descriptions of each
 filter:
 
-{% highlight console %}
+```
 # all machines with the service agent
 % mco ping -A service
 % mco ping --with-agent service
@@ -346,7 +345,7 @@ filter:
 
 # all machines in the domain foo.com
 % mco ping -I /foo.com$/
-{% endhighlight %}
+```
 
 As you can see, you can filter by Agent, Class and/or Fact, and you can
 use regular expressions almost anywhere.  You can also combine filters
@@ -354,10 +353,10 @@ additively in a command so that all the criteria have to be matched.
 
 Note: You can use a shortcut to combine Class and Fact filters:
 
-{% highlight console %}
+```
 # all machines with classes matching /apache/ in the UK
 % mco ping -W "/apache/ location=uk"
-{% endhighlight %}
+```
 
 ### Complex *Compound* or *Select* Queries
 
@@ -365,9 +364,9 @@ While the above examples are easy to enter, they are limited in that
 they can only combine filters additively. If you want to create searches
 with more complex boolean logic use the *-S* switch. For example:
 
-{% highlight console %}
+```
 % mco ping -S "((customer=acme and environment=staging) or environment=development) and /apache/"
-{% endhighlight %}
+```
 
 The above example shows a scenario where the development environment is
 usually labeled *development* but one customer has chosen to use
@@ -379,19 +378,18 @@ so you can easily build the logic of the search.
 
 The *-S* switch also allows for negative matches using *not* or *!*:
 
-{% highlight console %}
+```
 % mco ping -S "environment=development and !customer=acme"
 % mco ping -S "environment=development and not customer=acme"
-{% endhighlight %}
+```
 
 ### Filtering Using Data Plugins
 
-As of version 2.1.0, custom data plugins can also be used to create
-complex filters:
+Custom data plugins can also be used to create complex filters:
 
-{% highlight console %}
+```
 % mco ping -S "fstat('/etc/hosts').md5=/baa3772104/ and environment=development"
-{% endhighlight %}
+```
 
 This will search for the md5 hash of a specific file with matches
 restricted to the *development* environment.  Note that as before,
@@ -400,7 +398,7 @@ regular expressions can also be used.
 As with agents, you can also discover which plugins are available for
 use:
 
-{% highlight console %}
+```
 % mco plugin doc
 
 Please specify a plugin. Available plugins are:
@@ -421,7 +419,7 @@ Data Queries:
   puppet                    Information about Puppet agent state
   resource                  Information about Puppet managed resources
   service                   Checks the status of a service
-{% endhighlight %}
+```
 
 For information on the input these plugins take and  output they provide
 use the *mco plugin doc fstat* command.
@@ -435,9 +433,9 @@ The *rpc* application can chain commands one after the other. The
 example below uses the *package* agent to find machines with a specific
 version of mcollective and then schedules Puppet runs on those machines:
 
-{% highlight console %}
+```
 % mco rpc package status package=mcollective -j|jgrep "data.properties.ensure=2.0.0-6.el6" |mco rpc puppetd runonce
-{% endhighlight %}
+```
 
 Choria results can also be filtered using the opensource gem,
 jgrep. Choria data output is fully compatible with jgrep.
@@ -450,9 +448,9 @@ Puppet Query Language that you use via the `puppet query` command.
 Much like the above example of chaining RPC requests Choria supports
 reading results from Puppet Query:
 
-{% highlight console %}
+```
 % puppet query "inventory { facts.os.name = 'CentOS' }"| mco rpc puppetd runonce
-{% endhighlight %}
+```
 
 This will run Puppet on all CentOS machines
 
@@ -466,18 +464,18 @@ By default the *rpc* application will try to show human-readable data.
 To see the actual raw data, add the *-v* flag to disable the display
 helpers:
 
-{% highlight console %}
+```
 % mco rpc nrpe runcommand command=check_load -I dev1 -v
 .
 .
 dev1                                    : OK
     {:exitcode=>0,     :output=>"OK - load average: 0.00, 0.00, 0.00",     :perfdata=>      "load1=0.000;1.500;2.000;0; load5=0.000;1.500;2.000;0; load15=0.000;1.500;2.000;0;"}
-{% endhighlight %}
+```
 
 
 This data can also be returned in JSON format:
 
-{% highlight console %}
+```
 % mco rpc nrpe runcommand command=check_load -I dev1 -j
 [
   {
@@ -493,23 +491,23 @@ This data can also be returned in JSON format:
     "sender": "dev1"
   }
 ]
-{% endhighlight %}
+```
 
 ## Error Messaging
 
 When an application encounters an error, it returns an explanatory
 string:
 
-{% highlight console %}
+```
 % mco rpc rpcutil foo
 rpc failed to run: Attempted to call action foo for rpcutil but it's not declared in the DDL (MCollective::DDLValidationError)
-{% endhighlight %}
+```
 
 By default only an abbreviated error string is shown that  provides some
 insight into the nature of the problem.  For more details, add the *-v*
 flag to show a full stack trace:
 
-{% highlight console %}
+```
 % mco rpc rpcutil foo -v
 rpc failed to run: Attempted to call action foo for rpcutil but it's not declared in the DDL (MCollective::DDLValidationError)
         from /usr/lib/ruby/site_ruby/1.8/mcollective/ddl.rb:303:in `validate_rpc_request'
@@ -519,7 +517,7 @@ rpc failed to run: Attempted to call action foo for rpcutil but it's not declare
         from /usr/lib/ruby/site_ruby/1.8/mcollective/application.rb:283:in `run'
         from /usr/lib/ruby/site_ruby/1.8/mcollective/applications.rb:23:in `run'
         from /usr/bin/mco:20
-{% endhighlight %}
+```
 
 ## Exit codes
 
@@ -543,7 +541,7 @@ In such cases, a custom application may be useful For example, the
 basic safe guards for its use. The agent also provides the commonly
 required data. Typical *package* output looks like this:
 
-{% highlight console %}
+```
 % mco package status kernel
 Do you really want to operate on packages unfiltered? (y/n): y
 
@@ -559,7 +557,7 @@ Do you really want to operate on packages unfiltered? (y/n): y
            Nodes: 25 / 25
         Versions: 9 * 2.6.32-220.2.1.el6, 9 * 2.6.32-220.4.1.el6, 7 * 2.6.32-220.el6
     Elapsed Time: 3.95 s
-{% endhighlight %}
+```
 
 
 Notice how this application recognises that you are acting on all
