@@ -10,14 +10,14 @@ Choria is an ongoing project to create a new Orchestration System with roots in 
 
 Using Choria an Open Source Puppet user can be up and running with a scalable, clustered, secure orchestration system within 30 minutes.  Out of the box it's known to support 50 000 nodes on a single server.
 
-The system is be secure by default, easy to maintain and production ready.
+The system is secure by default, easy to maintain and production ready. Once invested in deploying this many avenues for using it exist including turn key end user capabilities.
 
-As Puppet Inc is in the process of sunsetting mcollective Choria safe guards the investment users have made through a compatibility framework capable of running mcollective agents.
+As Puppet Inc is in the process of sunsetting The Marionette Collective the Choria Project safe guards the investment users have made through a compatibility framework capable of running mcollective agents.
 
 ## End User Features
 
-  * A complete Playbook system that integrates Choria with any number of other services to conduct full workflow based actions. Playbooks are written using the Puppet DSL.
-  * Support for executing Puppet Tasks as found on the Puppet Forge without the need for SSH and with RBAC
+  * A complete [Playbook System](/docs/playbooks/) that integrates Choria with any number of other services to conduct full workflow based actions. Playbooks are written using the Puppet DSL.
+  * Support for executing [Puppet Tasks](/docs/tasks/) as found on the Puppet Forge without the need for SSH and with RBAC
   * A Discovery plugin for PuppetDB giving you a responsive and predictable interaction mode with support for PQL based infrastructure discovery
   * Common plugins like Package, Service, Puppet and File Manager deployed and ready to use
 
@@ -31,7 +31,7 @@ As Puppet Inc is in the process of sunsetting mcollective Choria safe guards the
 ## Operations Features
 
   * Integration with the Puppet Certificate Authority system
-  * A Connector middleware technology that has been tested to 100s of thousands of nodes. 50 000 nodes can comfortably be run on a single Choria Broker.
+  * A middleware technology that is used in production on 100s of thousands of nodes. 50 000 nodes can comfortably be run on a single Choria Broker.
   * Federations of Collectives eases the admin burden of managing large geographically distributed Collectives
   * Full end to end Authentication, Authorization and Auditing out of the box
   * Support for SRV records and sane configuration defaults to attain a zero config setup
