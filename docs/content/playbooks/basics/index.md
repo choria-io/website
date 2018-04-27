@@ -7,17 +7,17 @@ Lets consider a basic Playbook used to restart Puppet Server and PuppetDB in a c
 
 In details we will:
 
- * Expect a `cluster` as input which it will use to limit the discovery of nodes to some subset
+ * Expect a *cluster* as input which it will use to limit the discovery of nodes to some subset
  * Notify Slack that a restart is about to begin
- * Find nodes with `roles::puppetserver` class using PuppetDB PQL and mark those for upgrade
- * Find nodes with the `puppet` agent on them using PuppetDB PQL and mark those as managed nodes
- * Validate the versions of the `puppet` and `service` agents
+ * Find nodes with *roles::puppetserver* class using PuppetDB PQL and mark those for upgrade
+ * Find nodes with the *puppet* agent on them using PuppetDB PQL and mark those as managed nodes
+ * Validate the versions of the *puppet* and *service* agents
  * Disable Puppet Agent on all the managed nodes
  * Wait for Puppet to finish doing in-progress Puppet catalog runs
- * Notify `graphite` about the server restart being done
- * Stop the `puppetserver` service
- * Restart the `puppetdb` service
- * Start the `puppetserver` service
+ * Notify *graphite* about the server restart being done
+ * Stop the *puppetserver* service
+ * Restart the *puppetdb* service
+ * Start the *puppetserver* service
  * Walk the managed nodes in groups of 10 and enable them, run puppet without splay and wait for them to finish
  * Notify slack that the process was completed
 

@@ -10,7 +10,7 @@ In all cases the node sets must produce a list of *certnames* that will match wh
 
 ## Common Node Set options
 
-There are a few common options you can supply to all node sets, here's a sample `shell` discovery with some common options set, these apply to all discovery types:
+There are a few common options you can supply to all node sets, here's a sample *shell* discovery with some common options set, these apply to all discovery types:
 
 ```puppet
 $nodes = choria::discover("shell",
@@ -47,7 +47,7 @@ $nodes = choria::discover(
 )
 ```
 
-You can also make it explicit that this is a `mcollective` type discovery:
+You can also make it explicit that this is a *mcollective* type discovery:
 
 ```puppet
 $nodes = choria::discover("mcollective",

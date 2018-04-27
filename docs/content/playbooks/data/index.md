@@ -15,7 +15,7 @@ Data Stores are used in a number of places:
 
 ### Defining a Data Store
 
-Here's a typical `consul` data store:
+Here's a typical *consul* data store:
 
 ```puppet
 $ds = {
@@ -37,7 +37,7 @@ $token = choria::data("api_token", $ds)
 
 #### Common Data Store Properties
 
-Here's a typical `consul` data store
+Here's a typical *consul* data store
 ```puppet
 $ds = {
   "type" => "consul",
@@ -140,7 +140,7 @@ Using this Data Store you can store, read and delete data in the Etcd store.
 
 |Option|Description|
 |------|-----------|
-|url|Where to find your etcd cluster, https is supported but not yet custom certs due to missing features in the etcdv3 gem.  Defaults to `http://127.0.0.1:2379`|
+|url|Where to find your etcd cluster, https is supported but not yet custom certs due to missing features in the etcdv3 gem.  Defaults to *http://127.0.0.1:2379*|
 |user|Username to connect as, defaults to no username|
 |password|Password to connect with, defaults to no password|
 

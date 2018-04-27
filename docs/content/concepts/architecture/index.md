@@ -39,7 +39,7 @@ Clients do not need additional open ports, nothing will listen for connections, 
 
 ## Middleware Brokers
 
-Choria provides a system called Choria Broker.  This Broker is to Choria what Ethernet is to servers. All communications with the outside world will traverse this broker.
+Choria provides a system called Choria Broker.  This Broker is to Choria what Ethernet is to nodes. All communications with the outside world will traverse this broker.
 
 Servers and Clients will open connections to the Broker, all communication with nodes will happen via this.
 

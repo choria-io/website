@@ -3,7 +3,7 @@ title = "Usage"
 weight = 200
 +++
 
-The majority of your interaction with this feature will be via the `mco tasks` cli.  It has extensive `--help` output which will not be reproduced here, sample commands will be shown here but please refer to the help for full details.
+The majority of your interaction with this feature will be via the *mco tasks* cli.  It has extensive *--help* output which will not be reproduced here, sample commands will be shown here but please refer to the help for full details.
 
 ## Execution Flow
 
@@ -120,7 +120,7 @@ In most cases Choria will attempt to convert a string like _1_ into an Integer w
 }
 ```
 
-You could save this file to _input.json_ and run `mco tasks run puppet_conf --input @input.json` and it will use these settings, here we'll show supplying them on the CLI though:
+You could save this file to _input.json_ and run *mco tasks run puppet_conf --input @input.json* and it will use these settings, here we'll show supplying them on the CLI though:
 
 <pre><code class="nohighlight">
 $ mco tasks run puppet_conf --action set --section user --setting modulepath --value /tmp/modules -I node1.example.net

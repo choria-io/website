@@ -7,15 +7,15 @@ weight = 499
 
 Generally the Playbooks behave as you would expect any modern Puppet function or data type.
 
-You place the Playbook `mymod::mybook` in `modules/mymod/plans/mybook.pp` and in there you need `plan mymod::mybook`. Naming of Playbooks are subject to the same naming rules as Puppet, for example you cannot have a `-` in the Playbook name.
+You place the Playbook *mymod::mybook* in *modules/mymod/plans/mybook.pp* and in there you need *plan mymod::mybook*. Naming of Playbooks are subject to the same naming rules as Puppet, for example you cannot have a *-* in the Playbook name.
 
-When running in this mode Puppet has a number of changes in behaviour for example strict variable checks are enabled by default and templates are disabled.  I cannot find a list of these behaviour changes but it's something to be aware of.
+When running in this mode Puppet has a number of changes in behavior for example strict variable checks are enabled by default and templates are disabled.  I cannot find a list of these behavior changes but it's something to be aware of.
 
 ## Interacting With Task Results
 
-When a task is run it returns an instance of `Choria::TaskResults` which contains one of more `Choria::TaskResult` for every node that was affected by the task.
+When a task is run it returns an instance of *Choria::TaskResults* which contains one of more *Choria::TaskResult* for every node that was affected by the task.
 
-Each `Choria::TaskResult` has the following properties you can use:
+Each *Choria::TaskResult* has the following properties you can use:
 
 |Property / Method|Type|Description|
 |-----------------|----|-------|
@@ -23,11 +23,11 @@ Each `Choria::TaskResult` has the following properties you can use:
 |result           |Data           |The data that was returned from the task, this depends on the type of task|
 |error            |Optional[Error]|A Puppet standard Error object if the task failed|
 |ok               |Boolean        |If the task was successful, always true when `fail_ok` is given|
-|type             |String[1]      |The type of task that this result represents, like `mcollective`|
-|`$r["foo"]`      |Data           |Utility to access the data of the result if it's a hash|
+|type             |String[1]      |The type of task that this result represents, like *mcollective*|
+|*$r["foo"]*      |Data           |Utility to access the data of the result if it's a hash|
 |value            |Data           |The entire value that the task produced|
 
-Each `Choria::TaskResults` has the following properties you can use:
+Each *Choria::TaskResults* has the following properties you can use:
 
 |Property / Method|Type|Description|
 |-------------------|----|-------|
@@ -40,10 +40,10 @@ Each `Choria::TaskResults` has the following properties you can use:
 |fail_ok            |Boolean                  |If failures are ignored when checking ok|
 |hosts              |Choria::Nodes            |List of nodes in this result set|
 |message            |String                   |A short descriptive message about the outcome|
-|`find("some.node")`|Optional[Choria::TaskResult]|Finds the Choria::TaskResult for a specific node|
+|*find("some.node")*|Optional[Choria::TaskResult]|Finds the Choria::TaskResult for a specific node|
 |first              |Optional[Choria::TaskResult]|Returns just the first Choria::TaskResult|
 
-With these you can do complex error and result handling, display statusses you like, send to Slack etc.
+With these you can do complex error and result handling, display statuses you like, send to Slack etc.
 
 ```puppet
 $result = choria::task("action" => "rpcutil.ping", "nodes" => $nodes, "fail_ok" => true)
@@ -56,7 +56,7 @@ if $result.error_set.empty {
 }
 ```
 
-If you return these from a plan - or the last statement in your plan is a `choria::task` you can interact and error handle plans based on these.
+If you return these from a plan - or the last statement in your plan is a *choria::task* you can interact and error handle plans based on these.
 
 ## Nodes on the CLI
 
@@ -82,13 +82,13 @@ You can also load nodes from some file like this:
 $ mco playbook run playbook.yaml --input @nodes.json
 ```
 
-Your JSON would just have a array of node names in JSON format, you can also use YAML format by naming the file `nodes.yaml`
+Your JSON would just have a array of node names in JSON format, you can also use YAML format by naming the file *nodes.yaml*
 
 ## Error Handling Strategies
 
 By default when you run a playbook any failure will just fail the playbook, but you might want to handle failures and branch to recovery code after failure, here's a Playbook that handles failures and success, I'll show a few possible syntaxes of the same thing:
 
-The key to error handling is to pass `_catch_errors => true` to `choria::run_playbook` which would avoid raising errors instead giving you a chance to handle them.
+The key to error handling is to pass `_catch_errors => true` to *choria::run_playbook* which would avoid raising errors instead giving you a chance to handle them.
 
 ```puppet
 choria::run_playbook("example::app_upgrade", _catch_errors => true,
@@ -131,9 +131,9 @@ $result.choria::on_success |$results| {
 
 The Base Example page shows this in action where one Playbook wraps another and provides custom error handling.
 
-These functions are clever enough to only trigger for `Choria::TaskResults` so if you wish to handle failures AND return non `Choria::TaskResults` from a Plan that's totally ok.
+These functions are clever enough to only trigger for *Choria::TaskResults* so if you wish to handle failures AND return non *Choria::TaskResults* from a Plan that's totally ok.
 
-```
+```puppet
 plan example::update {
   $nodes = choria::discover(
     # ....
@@ -147,7 +147,7 @@ plan example::update {
 }
 ```
 
-```
+```puppet
 $nodes = choria::run_playbook("example::update", _catch_errors => true)
   .on_error |$err| {
     # handle
@@ -156,7 +156,7 @@ $nodes = choria::run_playbook("example::update", _catch_errors => true)
 notice($nodes.join(", "))
 ```
 
-In this example your `$nodes` is an array or strings, the `example::update` returns the nodes and you print it using `join` which only works with arrays.  However if the task failed you'd get a `Choria::TaskResults` back and the error handling will deal with that failure for you.
+In this example your *$nodes* is an array or strings, the *example::update* returns the nodes and you print it using *join* which only works with arrays.  However if the task failed you'd get a *Choria::TaskResults* back and the error handling will deal with that failure for you.
 
 ## Utility Functions and Playbooks
 
@@ -204,8 +204,8 @@ $results = choria::run_playbook("example::puppet::disable_and_wait",
 )
 ```
 
-```
-$ mco playbook run example::puppet::disable_and_wait --message "disabled while testing"
+```nohighlight
+mco playbook run example::puppet::disable_and_wait --message "disabled while testing"
 ```
 
 For things that clearly have no standalone value functions can be made:

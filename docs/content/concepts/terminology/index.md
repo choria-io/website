@@ -9,11 +9,11 @@ As with most modern complex systems Choria has it's own verbiage, this page atte
 
 ## Action
 
-Agents expose tasks, we call these tasks actions. Each agent like a exim queue management agent might expose many tasks like *mailq*, *rm*, *retry* etc. These are al actions provided by an agent.
+[Agents](#agent) expose tasks, we call these tasks actions. Each agent like a exim queue management agent might expose many tasks like *mailq*, *rm*, *retry* etc. These are al actions provided by an agent.
 
 ## Agent
 
-Code that captures a specific API a server wish to expose to Choria Clients. Example agents are *package*, *service*, *puppet* and ones you write your own.
+Code that captures a specific API a server wish to expose to Choria Clients. Example agents are *package*, *service*, *puppet* and ones you write your own.  Agents expose [Actions](#action) to clients.
 
 They can be written in Ruby via the MCollective Compatibility Framework or in Golang and soon other options will be made.
 
@@ -31,7 +31,9 @@ Sometimes known as RBAC, a list of rules that are used to decide if a request sh
 
 ## Broker
 
-See *Middleware*
+A piece of software that facilitates communication between disconnected entities. The Choria Broker incorporates the Choria Network Broker, Choria Federation Broker, Choria Data Adapter
+
+See also [Middleware](#middleware)
 
 ## Choria Data Adapters
 
@@ -75,6 +77,12 @@ Multiple collectives can be built sharing the same Middleware but kept separate.
 
 Discreet bits of information about your nodes. Examples could be the domain name, country, role, operating system release etc. These are often gathered and exposed by Configuration Management systems like Puppet.
 
+## Federation
+
+Federation in distributed systems is typically software that combines isolated systems into one larger system.  Choria supports Federation allowing you to build a combined Federated Collective that have as it's members many isolated Collectives.
+
+See [Federations of Collectives](../../federation)
+
 ## Marionette Collective / MCollective
 
 A Orchestration System written by the author of Choria and sold to Puppet Inc. This system was included in Puppet since 2009 and is being sunset late 2018.
@@ -84,6 +92,8 @@ Choria builds on many of the ideas, modernizes a lot of the concepts and provide
 ## Middleware
 
 A [publish subscribe](https://en.wikipedia.org/wiki/Publish%E2%80%93subscribe_pattern) based broker used to communicate between Clients and Servers.
+
+See also [Broker](#broker)
 
 ## Node
 
