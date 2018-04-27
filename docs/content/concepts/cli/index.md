@@ -1,6 +1,7 @@
 +++
 title = "CLI Interaction Model"
 weight = 202
+toc = true
 icon = "<b>2. </b>"
 +++
 

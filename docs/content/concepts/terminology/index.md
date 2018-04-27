@@ -1,6 +1,7 @@
 +++
 title = "Terminology"
 weight = 203
+toc = true
 icon = "<b>3. </b>"
 +++
 
