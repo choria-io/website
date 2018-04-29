@@ -6,9 +6,9 @@ weight = 30
 
 ## Introduction
 
-Puppet Tasks are new containers for commands, much like MCollective Agents they have metadata that can describe their inputs and outputs and they are distrubted using the Puppet Forge.
+Puppet Tasks are new containers for commands, much like Choria Agents they have metadata that can describe their inputs and outputs and they are distributed using the Puppet Forge.
 
-These can be much easier to write than MCollective Agents as their metadata is very light weight and can progressively become more complex as your needs grow.  Tasks can be written using any Programming Language.
+These can be much easier to write than Choria Agents as their metadata is very light weight and can progressively become more complex as your needs grow.  Tasks can be written using any Programming Language.
 
 Tasks are distributed using the Puppet Forge and one can search for [all modules with tasks](https://forge.puppet.com/modules?utf-8=%E2%9C%93&sort=rank&q=&endorsements=&with_tasks=yes).
 
@@ -16,7 +16,7 @@ Choria provides support for tasks as a new first class agent type, accessible ov
 
 ## Benefits
 
-Choria provides support for Puppet Tasks to the Open Source Community.  Choria provides a strong enterprise focussed workflow with the following features:
+Choria provides support for Puppet Tasks to the Open Source Community, it provides a strong enterprise focussed workflow with the following features:
 
   * Tasks are downloaded from the Puppet Server to the nodes. You have a single point of code management and it's not 100s of admins home directory
   * Does not need SSH or direct access to nodes
@@ -44,6 +44,6 @@ At present I consider this feature a mature beta quality feature, it's functiona
 
 The reason this took several months to ship is because I needed to ensure we have strong input validation. Today we do have strong input validation on the client but on the
 nodes we do not have it. There's a major short coming in the Puppet Server APIs in that it does not tell us what version of metadata we look at and so there are trivial
-timing based problems. Until the feature I reuqested is implemented in Puppet Server a strong reliable server side input validation method is impossible.
+timing based problems. Until the feature I requested is implemented in Puppet Server a strong reliable server side input validation method is impossible.
 
 You can follow [open issues in GitHub](https://github.com/choria-io/mcollective-choria/issues?q=is%3Aissue+is%3Aopen+label%3Atasks) to get an idea of what is out standing.

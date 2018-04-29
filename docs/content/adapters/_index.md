@@ -4,14 +4,14 @@ pre = "<b>6. </b>"
 weight = 60
 +++
 
-Data Adapters is a Choria only technology that exists to convert data from the highly concurrent broadcast medium of Choria into formats more suitable to processing using technologies like Stream Processing.
+Data Adapters is a Choria technology that exists to convert data from the highly concurrent broadcast medium of Choria into formats more suitable to processing using technologies like Stream Processing.
 
 ![Adapters Overview](../adapters-overview.png)
 
 The use cases for this include:
 
- * Receiving Registration data from large amounts of nodes and processing out of band
- * Receiving telemetry such as temperature and humidity from IoT devices that embed Choria Server into their systems
+ * Receiving data from large amounts of nodes and processing out of band
+ * Receiving telemetry such as temperature and humidity from IoT devices that embed Choria Server
  * Creating secure setups where requestors will not be able to view replies - they go into something like Elastic Search
  * Scaling asynchronous services by storing replies to requests in a less real time medium
 

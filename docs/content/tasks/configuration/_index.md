@@ -3,7 +3,7 @@ title = "Configuration"
 weight = 100
 +++
 
-There are a number of steps you have to perform, which includes changes to your Puppet Server, to get Tasks working.  For this reason it's not enabled by default, the following will guide you through the required steps.
+There are a number of steps you have to perform to get Tasks working, as these include changes to your Puppet Server it is not enabled by default.
 
 ## Puppet Server
 
@@ -69,7 +69,7 @@ You can therefore use _puppet module_, _r10k_ or _librarian puppet_ to place you
 
 ## End to End Testing
 
-A test task is inluded in the _mcollective\_agent\_bolt\_tasks_ module, you can verify the functionality of your network using it:
+A test task is included in the _mcollective\_agent\_bolt\_tasks_ module, you can verify the functionality of your network using it:
 
 ```nohighlight
 $ mco tasks run mcollective_agent_bolt_tasks::ping --message "hello world"

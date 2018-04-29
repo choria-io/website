@@ -4,13 +4,13 @@ pre = "<b>4. </b>"
 weight = 40
 +++
 
-MCollective has many agents and actions, in isolation they can be useful but they are best used in combinations as a series of requests.  Thus far people had to write Ruby code interacting with the RPC API to do that - there has been no higher level scripting system.
+Choria has many agents and actions, in isolation they can be useful but they are best used in combinations forming part of a larger Orchestration.  Thus far people had to write Ruby code interacting with the RPC API to do that - there has been no higher level scripting system.
 
-Further MCollective is hardly ever stand alone in any infrastructure, there are always other sources of truth, other APIs etc.  Imagine you might want node lists from Consul or etcd, or some YAML file.  Imagine you want to notify webhooks, or run arbitrary shell scripts, or call to systems like Slack for notification or speak to Razor to provision nodes or Terraform for EC2 resources - all of these would be tasks or data stores you'd wish to incorporate in such a script.
+Choria is hardly ever stand alone in any infrastructure, there are always other sources of truth, other APIs etc.  Imagine you might want node lists from Consul or etcd, or some YAML file.  Imagine you want to notify webhooks, or run arbitrary shell scripts, or call to systems like Slack for notification or speak to Razor to provision nodes or Terraform for EC2 resources - all of these would be tasks or data stores you'd wish to incorporate in such a script.
 
 Choria Playbooks is a system that lets you write sets of tasks, inputs, discovery rules and so forth to solve complex infrastructure orchestration problems. Playbooks are written using the familiar Puppet Language and can be documented using the standard Puppet Strings utility.
 
-While Playbooks are MCollective centered they support integrating a range of 3rd party components into your flows.
+While Playbooks are Choria Agent centered they support integrating a range of 3rd party components into your flows.
 
 ## Typical Use Case
 
@@ -18,7 +18,7 @@ By way of an example here is typical use case I have in mind:
 
 ![Web Cluster](../playbooks-use-case.png)
 
-Here we want a playbook that can upgrade one of the 2 tiers - *alfa* or *bravo* - by using a number of MCollective agents such as haproxy, nrpe, puppet, appmgr (used to manage our internal app) etc.
+Here we want a playbook that can upgrade one of the 2 tiers - *alfa* or *bravo* - by using a number of Choria Agents such as haproxy, nrpe, puppet, appmgr (used to manage our internal app) etc.
 
 We want to do:
 
@@ -51,6 +51,4 @@ Should the upgrade steps pass:
 
 The playbook feature is working, several data stores are supported and it's functional.  Further feedback from users are sought to drive the future of these.
 
-At present there are a lot of the old YAML based playbooks around, I wanted to have one release capable of supporting both.  The YAML playbooks are now deprecated though and the next release will remove them entirely.
-
-At that point a large refactor of the code will happen to simplify the implementation greatly and perhaps even make it extendable by way of other Puppet modules so adding new behaviours into the Playbook system will be easy for anyone after the transition period.
+A large refactor of the code is due after the removal of the legacy YAML based playbooks.  The aim is to simplify the implementation greatly and perhaps even make it extendable by way of other Puppet modules so adding new behaviors into the Playbook system will be easy for anyone after the transition period.

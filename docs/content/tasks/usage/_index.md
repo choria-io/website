@@ -17,7 +17,7 @@ With the default Puppet Tasks runner from Puppet Inc the tasks are copied from y
 
 At this point the task is either done or still executing - either way - you have a summary output that includes the task ID.
 
-You can later retrieve task results, statusses and metadata from the nodes using the ID.
+You can later retrieve task results, statuses and metadata from the nodes using the ID.
 
 ## Deploying a Task
 

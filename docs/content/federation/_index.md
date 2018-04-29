@@ -6,9 +6,9 @@ weight = 50
 
 Federations of Collectives combines multiple standalone Collectives into one.  This improves the operability of large distributed networks and greatly increase the scale achievable.
 
-Deploying large distributed Collectives can be tricky mainly due to the operation concerns of running a single huge Middleware deployment spanning multiple Data Centres or even Countries.
+Deploying large distributed Collectives can be tricky mainly due to the operation concerns of running a single huge Middleware deployment spanning multiple Data Centers or even Countries.
 
-In the past there was no choice but to run such a single distributed Middleware deployment. With Choria you can divide your network into smaller, managable, parts and use a component called a *Federation Broker* to combine them into a single entity.  If your network span multiple datacenters Federating your networks using the Federation Broker is recommended.
+In the past there was no choice but to run such a single distributed Middleware deployment. With Choria you can divide your network into smaller, manageable, parts and use a component called a *Federation Broker* to combine them into a single entity.  If your network span multiple data centers Federating your networks using the Federation Broker is recommended.
 
 ## Topology
 
@@ -18,14 +18,14 @@ The central Middleware act as a management location where all the Collectives ar
 
 ![Federation of Collectives](../choria_federation.png)
 
-The Federation Brokers are a share-nothing architecture. They are completely stateless and scales horizontally and vertically.  By default every Choria Broker with Federation enabled will run 10 instances.
+The Federation Brokers are a share-nothing architecture. They are completely stateless and scales horizontally and vertically.
 
 ## Benefits
 
  * Easier to manage at a large scale
  * Member Collectives remain functional as standalone entities
- * The scale and throughput is increased thanks to offloading some functionality from client to the Federation Brokers
- * All MCollective features remain functional
+ * The scale and throughput is increased thanks to offloading some functionality from the Client to the Federation Brokers
+ * All Choria features remain functional
  * A Collective can belong to several Federations
  * Federation Brokers need no shared infrastructure like Consul or databases
  * Extensive Prometheus metrics about the internals of the brokers
@@ -34,7 +34,7 @@ The Federation Brokers are a share-nothing architecture. They are completely sta
 
 ### Member Collective
 
-A traditional standalone MCollective install with a single cluster of Middleware, typically regional or per DC
+A standalone Choria install with a single cluster of Middleware, typically regional or per DC
 
 ### Federation of Collectives
 

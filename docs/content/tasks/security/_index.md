@@ -7,7 +7,7 @@ Choria integrate Puppet Tasks tightly with it's AAA (Authentication, Authorizati
 
 ## Authorization
 
-Any MCollective authorization plugin will be supported by the Tasks integration.  Of course Choria configures only the Action Policy so the documentation will focus on that.
+Any Choria authorization plugin will be supported by the Tasks integration.  Of course Choria configures only the Action Policy so the documentation will focus on that.
 
 The agent have a number of actions, you generally will give people access to all of these:
 
@@ -18,9 +18,9 @@ The agent have a number of actions, you generally will give people access to all
 |run\_no\_wait|Runs a Puppet Task that was previously downloaded do not wait for it to finish|
 |task\_status|Request the status of a previously ran task|
 
-If you give someone access to _download_, _run\_and\_wait_ and _run\_no\_wait_ they can initiate and run tasks, you can give someone access to _task\_status_ only to view statusses.
+If you give someone access to _download_, _run\_and\_wait_ and _run\_no\_wait_ they can initiate and run tasks, you can give someone access to _task\_status_ only to view statuses.
 
-Note that the data plugin effecitvely shows all the _task\_status_ action shows and there are no RBAC for those.  So basically _task\_status_ is always open.
+Note that the data plugin effectively shows all the _task\_status_ action shows and there are no RBAC for those.  So basically _task\_status_ is always open.
 
 So the example from earlier in this document gives _choria=rip.mcollective_ full access to the Puppet Task feature:
 

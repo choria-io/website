@@ -5,9 +5,9 @@ weight = 200
 
 ## Middleware Sizing
 
-As mentioned a single Network Broker broker can easily handle 50 000 MCollective Daemons.  You almost never need more than 3 brokers.  If you don't need it to be 100% always available even 1 node will do.
+A single Choria Network Broker can easily handle 50 000 Choria managed compute nodes. You almost never need more than 3 brokers. If you don't need it to be 100% always available we recommend a single Network Broker per Collective.
 
-Generally on the Federation side you do not need many nodes, the choice of 3 is mainly about reliability.  Network Brokers require an uneven numbered node count clusters.  Internally the Federation Brokers use a worker pool of 10 Brokers consisting of 3 micro services each.  This is very scalable and should be able to handle any reasonable size network.
+Generally on the Federation side you do not need many brokers, the choice of 3 is mainly about reliability and again if you do not need 100% reliability, a single node is recommended.  Network Brokers require an uneven numbered node count clusters.  Internally the Federation Brokers use a worker pool of 10 Brokers consisting of 3 micro services each.  This is very scalable and should be able to handle any reasonable size network.
 
 ![Federation Broker DNS](../../federation_dns_config.png)
 
@@ -17,7 +17,7 @@ It is best to run your Federation Broker Instances near the Collective they serv
 
 ## DNS SRV Records
 
-Like the normal MCollective Server and Client configuration is largely done via SRV records.  You can of course manually configure it but with SRV records it will more or less just work.
+Like the normal Choria Server and Client configuration is largely done via SRV records.  You can of course manually configure it but with SRV records it will more or less just work.
 
 Below you'll see DNS records for the 2 SRV Records covering the Federation (left, numbered **1**) and the Collective (right, numbered **2**). These are in the domain configured as `srv_domain` to the `choria` class - `ldn.example.net` in the example below.  We are configuring the middle 3 Federation Brokers.
 
@@ -43,7 +43,7 @@ If you cannot or do not wish to use use SRV records see later in the same page f
 
 ## Federation Broker Instance
 
-Most likely you will run the Federation Brokers on the same machines as your Network Brokers clusters. Here you see the Puppet code needed to start the Network Broker and Federation Broker Cluster called *london*. By default this will mean 30 instances of the Federation Broker - 10 per Broker -and it will be capable of serving tremendously large Collectives.  You'll only see one process - `choria broker`.
+Most likely you will run the Federation Brokers on the same machines as your Network Brokers. Here you see the Puppet code needed to start the Network Broker and Federation Broker Cluster called *london*. By default this will mean 30 instances of the Federation Broker - 10 per Broker -and it will be capable of serving tremendously large Collectives.  You'll only see one process - `choria broker`.
 
 {{% notice tip %}}
 While I show the Puppet code here for completeness, I recommend using Hiera to configure these settings
@@ -103,7 +103,7 @@ The full reference of Federation related configuration options can be seen below
 |plugin.choria.federation_middleware_hosts|Choria Brokers on the Federation side to connect to|`c1.fed.example.net:4222,c2.fed.example.net:4222`|
 |plugin.choria.federation.cluster|A cluster name that a specific Federation Broker forms part of|`london`|
 
-## MCollective Client in the Federation
+## Choria Client in the Federation
 
 The only real additional configuration you should do is to tell it about all the default Federation Brokers with you can do in Hiera:
 
@@ -114,7 +114,7 @@ mcollective::client_config:
 
 Once this setting is present it will become a Federated Client and use the *_mcollective-federation_server._tcp* SRV record or *plugin.choria.federation_middleware_hosts* configuration entry.
 
-If these are absent it will fall back to the usual configuration and use the exact same middleware configuration via SRV or config as a normal client. This way you can optimise your config for simplicity or have a case where one client is usually connected to the local Collective and only sometimes Federated and in those cases different middleware is used.
+If these are absent it will fall back to the usual configuration and use the exact same middleware configuration via SRV or config as a normal client. This way you can optimize your config for simplicity or have a case where one client is usually connected to the local Collective and only sometimes Federated and in those cases different middleware is used.
 
 If you have a client that is generally only connected to the local Collective or one where you do not always want to specify all the Federation Collectives you can use the *CHORIA_FED_COLLECTIVE* environment variable to set the *plugin.choria.federation.collectives* setting in the same format.
 
