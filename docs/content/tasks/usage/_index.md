@@ -33,7 +33,7 @@ You can therefore use _puppet module_, _r10k_ or _librarian puppet_ to place you
 
 A basic list of tasks can be fetched from the CLI:
 
-<pre><code class="nohighlight">
+```nohighlight
 $ mco tasks
 Known tasks in the production environment
 
@@ -44,13 +44,13 @@ Known tasks in the production environment
 
 Use mco task <TASK> to see task help
 Pass option --detail to see task descriptions
-</code></pre>
+```
 
 Passing _--detail_ will request their descriptions, but please note that due to short comings in the Puppet API this is quite slow as a REST request has to be made for every task.
 
 You can view details about one specific task:
 
-<pre><code class="nohighlight">
+```nohighlight
 $ mco tasks puppet_conf
 Retrieving task metadata for task puppet_conf from the Puppet Server
 
@@ -105,7 +105,7 @@ Application Options
     -c, --config FILE                Load configuration from file rather than default
     -v, --verbose                    Be verbose
     -h, --help                       Display this screen
-</code></pre>
+```
 
 I've removed the bulk of the Help output here, the thing to note are the parameters like _--action, these are inputs defined by the task exposed on the CLI.
 
@@ -122,7 +122,7 @@ In most cases Choria will attempt to convert a string like _1_ into an Integer w
 
 You could save this file to _input.json_ and run *mco tasks run puppet_conf --input @input.json* and it will use these settings, here we'll show supplying them on the CLI though:
 
-<pre><code class="nohighlight">
+```nohighlight
 $ mco tasks run puppet_conf --action set --section user --setting modulepath --value /tmp/modules -I node1.example.net
 Retrieving task metadata for task puppet_conf from the Puppet Server
 Attempting to download and run task puppet_conf on 1 nodes
@@ -143,11 +143,11 @@ Summary for task 45250c07824f5922be68468d08f6b76c
                           Failed: 0
 
                 Average Run Time: 1.39s
-</code></pre>
+```
 
 Here as is typical for MCollective it will only show failures, you can later retrieve the output the command produced:
 
-<pre><code class="nohighlight">
+```nohighlight
 $ mco tasks status 45250c07824f5922be68468d08f6b76c -v -I node1.example.net
 Discovering hosts using the choria method .... 1
 
@@ -167,11 +167,11 @@ Summary for task 45250c07824f5922be68468d08f6b76c
                           Failed: 0
 
                 Average Run Time: 1.39s
-</code></pre>
+```
 
 Overview metadata about a task can be retrieved:
 
-<pre><code class="nohighlight">
+```nohighlight
 $ mco tasks status 45250c07824f5922be68468d08f6b76c --metadata -I node1.example.net
 Requesting task metadata for request 45250c07824f5922be68468d08f6b76c
 
@@ -230,7 +230,7 @@ $ mco tasks status 45250c07824f5922be68468d08f6b76c --json -I node1.example.net|
     "success": true
   }
 }
-</code></pre>
+```
 
 ## Discovery Integration
 
@@ -240,7 +240,7 @@ Choria provides a discovery data source that expose a lot of data about a task t
 
 Lets see what data the plugin provides and then we'll use what we saw to run a command on all nodes where a previous one failed:
 
-<pre><code class="nohighlight">
+```nohighlight
 $ mco plugin doc data/bolt_task
 bolt_task
 =========
@@ -321,15 +321,14 @@ QUERY FUNCTION OUTPUT:
            wrapper_spawned:
               Description: Did the wrapper start successfully
                Display As: Wrapper Spawned
-
-</code></pre>
+```
 
 So there's a ton of information about past tasks, lets assume we ran a Task to upgrade some software and where the upgrade failed we have to do some remediation.
 
 The original task that failed has id _ae561842dc7d5a9dae94f766dfb3d4c8_:
 
-<pre><code class="nohighlight">
+```nohighlight
 $ mco tasks run acme::recover -S "bolt_task('ae561842dc7d5a9dae94f766dfb3d4c8').exitcode > 0"
-</code></pre>
+```
 
 This will query your network for all nodes where the task had a exitcode of greater than 0 and then it will run this _acme::recover_ task on them.

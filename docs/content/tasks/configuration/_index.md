@@ -71,7 +71,7 @@ You can therefore use _puppet module_, _r10k_ or _librarian puppet_ to place you
 
 A test task is inluded in the _mcollective\_agent\_bolt\_tasks_ module, you can verify the functionality of your network using it:
 
-<pre><code class="nohighlight">
+```nohighlight
 $ mco tasks run mcollective_agent_bolt_tasks::ping --message "hello world"
 Retrieving task metadata for task mcollective_agent_bolt_tasks::ping from the Puppet Server
 Attempting to download and run task mcollective_agent_bolt_tasks::ping on 33 nodes
@@ -92,11 +92,11 @@ Summary for task 884525e46b015b0789e57c019cd5f990
                           Failed: 0
 
                 Average Run Time: 0.13s
-</code></pre>
+```
 
 After execution you can retrieve the output of each command:
 
-<pre><code class="nohighlight">
+```nohighlight
 $ mco tasks status 884525e46b015b0789e57c019cd5f990 -v
 Discovering hosts using the choria method .... 33
 
@@ -116,7 +116,7 @@ Summary for task 884525e46b015b0789e57c019cd5f990
                           Failed: 0
 
                 Average Run Time: 0.13s
-</code></pre>
+```
 
 You may also see the results in JSON format with the *-j* flag.
 

@@ -52,7 +52,7 @@ Every task invocation will call the RBAC system twice - one for the _run\_and\_w
 
 Auditing is done as per normal Choria Audit Logs and are written in JSON format.  For every _run_ there would be 2 actions performed - one of the run variants and one for the actual task name being invoked.
 
-<pre><code class="nohighlight">
+```nohighlight
 $ sudo tail -n 1000 /var/log/puppetlabs/mcollective-audit.log|jq 'select(.request_id=="45250c07824f5922be68468d08f6b76c")'
 {
   "timestamp": "2018-03-19T13:50:51.762983+0000",
@@ -84,13 +84,13 @@ $ sudo tail -n 1000 /var/log/puppetlabs/mcollective-audit.log|jq 'select(.reques
     "process_results": true
   }
 }
-</code></pre>
+```
 
 Above you can see the double RBAC in action - once for _action_ _run\_and\_wait_ and once for _puppet\_conf_.
 
-Ynou might of course find additional status calls etc too:
+You might of course find additional status calls etc too:
 
-<pre><code class="nohighlight">
+```nohighlight
 $ sudo tail -n 1000 /var/log/puppetlabs/mcollective-audit.log|jq 'select(.data.task_id=="45250c07824f5922be68468d08f6b76c")'
 {
   "timestamp": "2018-03-19T13:51:41.232263+0000",
@@ -105,4 +105,4 @@ $ sudo tail -n 1000 /var/log/puppetlabs/mcollective-audit.log|jq 'select(.data.t
     "process_results": true
   }
 }
-</code></pre>
+```

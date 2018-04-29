@@ -9,7 +9,7 @@ icon = "<b>1. </b>"
 
 Choria is a client-server model system. A **Server** expose a set of APIs that allow clients to manage the server - think install a package, get the status of a service or trigger a Puppet run. A **Client** instructs one or 10s of thousands of servers to perform one of the actions that they expose via their API.
 
-The architecture of Choria is based around three main components: servers, clients, and the middleware.
+The architecture of Choria is based around three main components: servers, clients, and the middleware broker.
 
 ![Client Server Overview](../../basic_client_server_overview.png)
 
@@ -46,6 +46,8 @@ Servers and Clients will open connections to the Broker, all communication with 
 The Choria Broker is very light weight and performant.  On a 4GB memory compute node you will be able to handle communication needs for 50 0000 Servers.
 
 The Choria Broker can be clustered on a LAN level and we support Federating many geographically distributed networks into one giant network using the Choria Federation Broker.
+
+![Federation Overview](../../choria_federation.png)
 
 ## Data Adapters
 
