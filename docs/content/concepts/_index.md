@@ -13,7 +13,7 @@ Immediately after installing Choria you can start managing Packages, Services, P
 
 You do this using commands like:
 
-```
+```nohighlight
 $ mco package status apache -W country=uk -C apache
 ```
 
@@ -27,7 +27,7 @@ To manage other parts of your infrastructure, like the Puppet CA, you can instal
 
 You can start writing [Playbooks](../playbooks/) that allow you to combine agents, tasks, different databases, webhooks and more into complex multi step orchestrations.
 
-You can write your own Tasks and use them via Choria, Bolt and share them with others on the forge.
+You can write your own Tasks and use them via Choria or Bolt and share them with others on the forge.
 
 ### Second Month
 
