@@ -1,6 +1,6 @@
 +++
 title = "Architecture"
-weight = 201
+weight = 202
 toc = true
 icon = "<b>1. </b>"
 +++
