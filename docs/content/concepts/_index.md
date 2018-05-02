@@ -21,6 +21,8 @@ Here we will get the installed Apache version on all our machines in the *UK* (i
 
 You can use it to discover nodes, inspect their classification and perform single actions across your cluster.
 
+You can try this right now without installing anything on your servers using our [Vagrant Demo](https://github.com/choria-io/vagrant-demo).
+
 ### First Weeks
 
 To manage other parts of your infrastructure, like the Puppet CA, you can install other agents from our [Puppet Forge](https://forge.puppet.com/choria). If you have any Puppet Tasks already or see any [on the forge you like](https://forge.puppet.com/modules?utf-8=%E2%9C%93&page_size=100&with_tasks=true) you can configure [Tasks](../tasks/) support and execute those over Choria without SSH and with full RBAC in a really performant manner.
