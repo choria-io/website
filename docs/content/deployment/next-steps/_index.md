@@ -21,13 +21,13 @@ and [choria-io/puppet-choria](https://github.com/choria-io/puppet-choria) where 
 
 You can inspect the resulting configuration on your CLI:
 
-```bash
+```nohighlight
 $ mco choria show_config
 Active Choria configuration:
 
 The active configuration used in Choria comes from using Puppet AIO defaults, querying SRV
 records and reading configuration files.  The below information shows the completely resolved
-configuration that will be used when running MCollective commands
+configuration that will be used when running Choria commands
 
 MCollective selated:
 
@@ -69,7 +69,7 @@ this as root or a normal user and see it pick the right files etc
 You can confirm you have some nodes connected to your collective - and get some information
 about which middleware server they used in the case of clusters:
 
-```bash
+```nohighlight
 $ mco rpc choria_util info
 
 Discovering hosts using the choria method .... 3
@@ -88,8 +88,8 @@ Summary of Client Version:
 
 Summary of Connected Broker:
 
-   puppet1.example.net:4222 = 1
-   puppet2.example.net:4222 = 2
+   nats://puppet1.example.net:4222 = 1
+   nats://puppet2.example.net:4222 = 2
 
 Summary of SRV Domain:
 
@@ -107,7 +107,7 @@ Here we observe 3 nodes with 1 connected to *puppet1.example.net:4222* and 2 con
 
 From the shell you set up the user in lets check the version of _puppet-agent_ installed on your nodes:
 
-```bash
+```nohighlight
 $ mco package status puppet-agent
 
  * [ ============================================================> ] 15 / 15
@@ -128,14 +128,14 @@ Summary of Ensure:
 Finished processing 3 / 3 hosts in 71.63 ms
 ```
 
-MCollective knows a lot about your nodes such as all their Facts and Puppet Classes deployed to them, you
+Choria knows a lot about your nodes such as all their Facts and Puppet Classes deployed to them, you
 can view what it knows about a certain node, this should include your classes, facts and agents deployed:
 
 {{% notice tip %}}
-MCollective identities match the certificate names from Puppet
+Choria identities match the certificate names from Puppet
 {{% /notice %}}
 
-```bash
+```nohighlight
 $ mco inventory dev1.example.net
 
 Inventory for dev1.example.net:
@@ -183,7 +183,7 @@ Inventory for dev1.example.net:
 
 You can get a quick report of values for some fact (add -v for node names):
 
-```bash
+```nohighlight
 $ mco facts aio_agent_version
 Report for fact: aio_agent_version
 
@@ -194,7 +194,7 @@ Finished processing 3 / 3 hosts in 18.61 ms
 
 We can check that the Puppet service is up:
 
-```bash
+```nohighlight
 $ mco service status puppet
 
  * [ ============================================================> ] 3 / 3
@@ -213,7 +213,7 @@ Finished processing 3 / 3 hosts in 98.98 ms
 
 And when last Puppet ran on these nodes:
 
-```bash
+```nohighlight
 $ mco puppet status
 
  * [ ============================================================> ] 3 / 3
@@ -262,14 +262,13 @@ The official documentation is a good resource for usage details:
   * Read about [Puppet Tasks](/docs/tasks/) that provides a way to gain access to much more shared capabilities from the Puppet Forge
   * I strongly suggest you read about [using the mcollective CLI](../../concepts/cli)
   * Read about [filtering which hosts to act on](https://docs.puppet.com/mcollective/reference/ui/filters.html)
-  * Read about [managing Puppet](https://github.com/puppetlabs/mcollective-puppet-agent#usage) though note the setup steps are already completed
-  * Read about [managing packages](https://github.com/puppetlabs/mcollective-package-agent#readme) though note the setup steps are already completed
-  * Read about [managing services](https://github.com/puppetlabs/mcollective-service-agent#readme) though note the setup steps are already completed
-  * Read about [managing files](https://github.com/puppetlabs/mcollective-filemgr-agent#readme) and this setup too is already completed
+  * Read about [managing Puppet](https://forge.puppet.com/choria/mcollective_agent_puppet) though note the setup steps are already completed
+  * Read about [managing packages](https://forge.puppet.com/choria/mcollective_agent_package) though note the setup steps are already completed
+  * Read about [managing services](https://forge.puppet.com/choria/mcollective_agent_service) though note the setup steps are already completed
+  * Read about [managing files](https://forge.puppet.com/choria/mcollective_agent_filemgr) and this setup too is already completed
 
-These plugins that manage Service, Package, Puppet and Files are just plugins and they make the
-main user facing feature set of Mcollective.  You can write your own plugins, deploy them and interact with
-them.  There is an [official guide about this](https://docs.puppet.com/mcollective/simplerpc/agents.html).
+These plugins that manage Service, Package, Puppet and Files are just plugins for Choria.  You can write your own plugins,
+deploy them and interact with them. There is an [official guide about this](https://docs.puppet.com/mcollective/simplerpc/agents.html).
 
 If you do write your own plugins Choria helps you [package your plugins](../../configuration/plugins/) as Puppet modules like the ones we
 just installed, sharable on the Forge.

@@ -15,6 +15,8 @@ As Puppet Inc is in the process of sunsetting The Marionette Collective the Chor
 
 Review the [Key Concepts](../concepts) section to discover what you can do with Choria, it's Architecture and detailed overview of the project.
 
+If you just wish to get your hands dirty and experience Choria first-hand please see our [Vagrant Demo](https://github.com/choria-io/vagrant-demo).
+
 ## Status
 
 This system is production ready but under active development.  At various fronts we are working to replace reliance on Puppet Agent and legacy MCollective, the project lives on [GitHub](https://github.com/choria-io).
