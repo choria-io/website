@@ -8,4 +8,4 @@ A full featured Playbook system is included that integrate systems like Slack, P
 
 Supports running Puppet Tasks without the need for SSH and with complete RBAC.
 
-Includes plugins to manage Packages, Services, File and orchestrate Puppet.  Tightly integrates with PuppetDB.
+Includes plugins to manage Packages, Services, File and orchestrate Puppet.  Optionally integrates with PuppetDB as discovery source.
