@@ -13,21 +13,22 @@ Choria, being MCollective compatible, relies on the MCollective CLI toolkit
 for it's interactions, if you've previously used MCollective it should be
 very familiar.
 
+{{% notice tip %}}
+These examples can be tried using our [Vagrant Demo](https://github.com/choria-io/vagrant-demo) environment
+{{% /notice %}}
+
 ## Basic Usage of the *mco* Command
 
 A simple example of a *mco* command can be seen below:
 
 ```nohighlight
 $ mco ping
-archlinux1.choria.example.net            time=41.72 ms
-ubuntu16.choria.example.net              time=42.49 ms
-centos7.choria.example.net               time=43.25 ms
-debian9.choria.example.net               time=44.29 ms
-puppet.choria.example.net                time=46.49 ms
-
+choria1.choria                           time=30.49 ms
+puppet.choria                            time=30.71 ms
+choria0.choria                           time=31.47 ms
 
 ---- ping statistics ----
-5 replies max: 46.49 min: 41.72 avg: 43.65
+3 replies max: 31.47 min: 30.49 avg: 30.89
 ```
 
 In this example the *ping* sub-command is referred to as an
@@ -37,14 +38,14 @@ into the framework. The *help* sub-command will show you something like
 this:
 
 ```nohighlight
-% mco help
+$ mco help
 The Marionette Collective version 2.12.1
 
-  choria          Choria Orchestrator Management
+  choria          Choria Orchestrator Management and Configuration
   completion      Helper for shell completion systems
   describe_filter Display human readable interpretation of filters
   facts           Reports on usage for a specific fact
-  federation      Choria Federation Brokers
+  federation      Choria Federation Broker Utilities
   filemgr         Generic File Manager Client
   find            Find hosts using the discovery system matching filter criteria
   help            Application list and help
@@ -67,7 +68,7 @@ application* or *mco application ---help*. Shown below is part of the
 help for the *rpc* application:
 
 ```nohighlight
-% mco rpc --help
+$ mco rpc --help
 Generic RPC agent client application
 
 Usage: mco rpc [options] [filters] --agent <agent> --action <action> [--argument <key=val> --argument ...]
@@ -132,19 +133,35 @@ most applications.
 The *rpc* application is the main application used to make requests to
 your servers. It is capable of interacting with any standard Remote
 Procedure Call (RPC) agent. Below is an example that shows an attempt to
-start a webserver on several machines:
+restart a ssh server on several machines:
 
 ```nohighlight
-% mco rpc service start service=httpd
-Determining the amount of hosts matching filter for 2 seconds .... 10
+$ mco rpc service restart service=sshd
+Discovering hosts using the mc method for 2 second(s) .... 3
 
- * [ ============================================================> ] 10 / 10
-
-dev4                                     Request Aborted
-   Could not start Service[httpd]: Execution of '/sbin/service httpd start' returned 1:
+ * [ ============================================================> ] 3 / 3
 
 
-Finished processing 10 / 10 hosts in 1323.61 ms
+puppet.choria                            Unknown Request Status
+   Systemd restart for sshd failed!
+journalctl log for sshd:
+-- Logs begin at Thu 2018-05-03 10:20:09 UTC, end at Thu 2018-05-03 10:33:40 UTC. --
+May 03 10:33:40 puppet.choria systemd[1]: Stopping OpenSSH server daemon...
+May 03 10:33:40 puppet.choria systemd[1]: Starting OpenSSH server daemon...
+May 03 10:33:40 puppet.choria systemd[1]: sshd.service: main process exited, code=exited, status=203/EXEC
+May 03 10:33:40 puppet.choria systemd[1]: Failed to start OpenSSH server daemon.
+May 03 10:33:40 puppet.choria systemd[1]: Unit sshd.service entered failed state.
+May 03 10:33:40 puppet.choria systemd[1]: sshd.service failed.
+
+
+
+Summary of Service Status:
+
+   running = 2
+   unknown = 1
+
+
+Finished processing 3 / 3 hosts in 542.48 ms
 ```
 
 The order of events in this process are:
@@ -166,7 +183,7 @@ Choria agents are broken up into actions and each action can take
 input arguments.
 
 ```nohighlight
-% mco rpc service stop service=httpd
+$ mco rpc service stop service=sshd
 ```
 
 This shows the basic make-up of an RPC command. In this case we are:
@@ -174,12 +191,12 @@ This shows the basic make-up of an RPC command. In this case we are:
  * using the *rpc* application - a generic application that can interact with any agent
  * directing our request to machines with the *service* agent
  * sending a request to the *stop* action of the service agent
- * supplying a value, *httpd*, to the *service* argument of the *stop* action
+ * supplying a value, *sshd*, to the *service* argument of the *stop* action
 
 The same command has a longer form as well:
 
 ```nohighlight
-% mco rpc --agent service --action stop --argument service=httpd
+$ mco rpc --agent service --action stop --argument service=sshd
 ```
 
 These two commands are functionally identical.
@@ -192,7 +209,7 @@ installed Choria system you can use the *plugin* application to get
 a list:
 
 ```nohighlight
-% mco plugin doc
+$ mco plugin doc
 Please specify a plugin. Available plugins are:
 
 Agents:
@@ -216,7 +233,7 @@ To find out the *actions*, *inputs* and *outputs* for a specific agent
 use the plugin application again:
 
 ```nohighlight
-% mco plugin doc agent/service
+$ mco plugin doc agent/service
 service
 =======
 
@@ -270,23 +287,29 @@ With this information, you can request the status for a specific
 service:
 
 ```nohighlight
-% mco rpc service status service=httpd
-Determining the amount of hosts matching filter for 2 seconds .... 10
+$ mco rpc service status service=sshd
+Discovering hosts using the mc method for 2 second(s) .... 3
 
- * [ ============================================================> ] 10 / 10
+ * [ ============================================================> ] 3 / 3
 
 
-dev1
+choria1.choria
+   Service Status: running
+
+puppet.choria
    Service Status: stopped
 
-dev4
-   Service Status: stopped
+choria0.choria
+   Service Status: running
 
-.
-.
-.
 
-Finished processing 10 / 10 hosts in 326.01 ms
+Summary of Service Status:
+
+   running = 2
+   stopped = 1
+
+
+Finished processing 3 / 3 hosts in 21.35 ms
 ```
 
 Unlike the previous example, in this case specific information is
@@ -308,7 +331,7 @@ A key capability of Choria is fast discovery of network resources.
 Discovery rules are written using *filters*.  For example:
 
 ```nohighlight
-% mco rpc service status service=httpd -S "environment=development or customer=acme"
+$ mco rpc service status service=httpd -S "environment=development or customer=acme"
 ```
 
 This shows a filter rule that limits the RPC request to being run on
@@ -324,28 +347,28 @@ filter:
 
 ```nohighlight
 # all machines with the service agent
-% mco ping -A service
-% mco ping --with-agent service
+$ mco ping -A service
+$ mco ping --with-agent service
 
 # all machines with the apache class on them
-% mco ping -C apache
-% mco ping --with-class apache
+$ mco ping -C apache
+$ mco ping --with-class apache
 
 # all machines with a class that match the regular expression
-% mco ping -C /service/
+$ mco ping -C /service/
 
 # all machines in the UK
-% mco ping -F country=uk
-% mco ping --with-fact country=uk
+$ mco ping -F country=uk
+$ mco ping --with-fact country=uk
 
 # all machines in either UK or USA
-% mco ping -F "country=/uk|us/"
+$ mco ping -F "country=/uk|us/"
 
 # just the machines called dev1 or dev2
-% mco ping -I dev1 -I dev2
+$ mco ping -I dev1 -I dev2
 
 # all machines in the domain foo.com
-% mco ping -I /foo.com$/
+$ mco ping -I /foo.com$/
 ```
 
 As you can see, you can filter by Agent, Class and/or Fact, and you can
@@ -356,7 +379,7 @@ Note: You can use a shortcut to combine Class and Fact filters:
 
 ```nohighlight
 # all machines with classes matching /apache/ in the UK
-% mco ping -W "/apache/ location=uk"
+$ mco ping -W "/apache/ location=uk"
 ```
 
 ### Complex *Compound* or *Select* Queries
@@ -366,7 +389,7 @@ they can only combine filters additively. If you want to create searches
 with more complex boolean logic use the *-S* switch. For example:
 
 ```nohighlight
-% mco ping -S "((customer=acme and environment=staging) or environment=development) and /apache/"
+$ mco ping -S "((customer=acme and environment=staging) or environment=development) and /apache/"
 ```
 
 The above example shows a scenario where the development environment is
@@ -380,8 +403,8 @@ so you can easily build the logic of the search.
 The *-S* switch also allows for negative matches using *not* or *!*:
 
 ```nohighlight
-% mco ping -S "environment=development and !customer=acme"
-% mco ping -S "environment=development and not customer=acme"
+$ mco ping -S "environment=development and !customer=acme"
+$ mco ping -S "environment=development and not customer=acme"
 ```
 
 ### Filtering Using Data Plugins
@@ -389,7 +412,7 @@ The *-S* switch also allows for negative matches using *not* or *!*:
 Custom data plugins can also be used to create complex filters:
 
 ```nohighlight
-% mco ping -S "fstat('/etc/hosts').md5=/baa3772104/ and environment=development"
+$ mco ping -S "fstat('/etc/hosts').md5=/baa3772104/ and environment=development"
 ```
 
 This will search for the md5 hash of a specific file with matches
@@ -400,7 +423,7 @@ As with agents, you can also discover which plugins are available for
 use:
 
 ```nohighlight
-% mco plugin doc
+$ mco plugin doc
 
 Please specify a plugin. Available plugins are:
 
@@ -435,7 +458,7 @@ example below uses the *package* agent to find machines with a specific
 version of mcollective and then schedules Puppet runs on those machines:
 
 ```nohighlight
-% mco rpc package status package=mcollective -j|jgrep "data.properties.ensure=2.0.0-6.el6" |mco rpc puppetd runonce
+$ mco rpc package status package=mcollective -j|jgrep "data.properties.ensure=2.0.0-6.el6" |mco rpc puppetd runonce
 ```
 
 Choria results can also be filtered using the opensource gem,
@@ -450,7 +473,7 @@ Much like the above example of chaining RPC requests Choria supports
 reading results from Puppet Query:
 
 ```nohighlight
-% puppet query "inventory { facts.os.name = 'CentOS' }"| mco rpc puppetd runonce
+$ puppet query "inventory { facts.os.name = 'CentOS' }"| mco rpc puppetd runonce
 ```
 
 This will run Puppet on all CentOS machines
@@ -466,30 +489,35 @@ To see the actual raw data, add the *-v* flag to disable the display
 helpers:
 
 ```nohighlight
-% mco rpc nrpe runcommand command=check_load -I dev1 -v
+$ mco rpc package status package=puppet-agent -I choria0.choria -v
 .
 .
-dev1                                    : OK
-    {:exitcode=>0,     :output=>"OK - load average: 0.00, 0.00, 0.00",     :perfdata=>      "load1=0.000;1.500;2.000;0; load5=0.000;1.500;2.000;0; load15=0.000;1.500;2.000;0;"}
+choria0.choria                          : OK
+    {:output=>nil,     :epoch=>"0",     :arch=>"x86_64",     :ensure=>"5.5.1-1.el7",     :version=>"5.5.1",     :provider=>"yum",     :name=>"puppet-agent",     :release=>"1.el7"}
 ```
 
 
 This data can also be returned in JSON format:
 
 ```nohighlight
-% mco rpc nrpe runcommand command=check_load -I dev1 -j
+$ mco rpc package status package=puppet-agent -I choria0.choria -j
 [
   {
-    "action": "runcommand",
-    "agent": "nrpe",
-    "data": {
-      "exitcode": 0,
-      "output": "OK - load average: 0.00, 0.00, 0.00",
-      "perfdata": "load1=0.000;1.500;2.000;0; load5=0.000;1.500;2.000;0; load15=0.000;1.500;2.000;0;"
-    },
+    "agent": "package",
+    "action": "status",
+    "sender": "choria0.choria",
     "statuscode": 0,
     "statusmsg": "OK",
-    "sender": "dev1"
+    "data": {
+      "output": null,
+      "epoch": "0",
+      "arch": "x86_64",
+      "ensure": "5.5.1-1.el7",
+      "version": "5.5.1",
+      "provider": "yum",
+      "name": "puppet-agent",
+      "release": "1.el7"
+    }
   }
 ]
 ```
@@ -545,28 +573,25 @@ basic safe guards for its use. The agent also provides the commonly
 required data. Typical *package* output looks like this:
 
 ```nohighlight
-% mco package status kernel
-Do you really want to operate on packages unfiltered? (y/n): y
+$ mco service restart sshd
+Do you really want to operate on services unfiltered? (y/n): y
 
- * [ ============================================================> ] 25 / 25
+ * [ ============================================================> ] 3 / 3
 
 
- dev5                                     version = kernel-2.6.32-220.7.1.el6
- dev9                                     version = kernel-2.6.32-220.2.1.el6
- .
- .
+Summary of Service Status:
 
----- package agent summary ----
-           Nodes: 25 / 25
-        Versions: 9 * 2.6.32-220.2.1.el6, 9 * 2.6.32-220.4.1.el6, 7 * 2.6.32-220.el6
-    Elapsed Time: 3.95 s
+   running = 3
+
+
+Finished processing 3 / 3 hosts in 537.23 ms
 ```
 
 
-Notice how this application recognises that you are acting on all
-possible machines, an action which might have a big impact on your YUM
-servers. Consequently, *package* prompts for confirmation and, at the
-end of processing, displays a brief summary of the network status.
+Notice how this application recognizes that you are acting on all
+possible machines, an action which might have a big impact on your
+servers. Consequently, *service* prompts for confirmation and, at the
+end of processing, displays a brief summary.
 
 While the behaviors of custom applications are not always consistent
 with each other, in general they accept the standard discovery flags.
