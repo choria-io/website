@@ -21,7 +21,9 @@ Here we will get the installed Apache version on all our machines in the *UK* (i
 
 You can use it to discover nodes, inspect their classification and perform single actions across your cluster.
 
-You can try this right now without installing anything on your servers using our [Vagrant Demo](https://github.com/choria-io/vagrant-demo).
+{{% notice tip %}}
+You can try this right now without installing anything using our [Vagrant Demo](https://github.com/choria-io/vagrant-demo) environment
+{{% /notice %}}
 
 ### First Weeks
 

@@ -66,7 +66,7 @@ Task Files:
   init.rb                        1231 bytes
 
 Use 'mco tasks run puppet_conf' to run this task
-</code></pre>
+```
 
 ## Running a Task
 
@@ -74,15 +74,15 @@ Tasks are always run dissociated from the MCollectived, you can therefore use th
 
 Lets look at the task input first
 
-<pre><code class="nohighlight">
+```
 $ mco tasks run puppet_conf
 The action option is mandatory
 The setting option is mandatory
 
 Please run with --help for detailed help
-</code></pre>
+```
 
-<pre><code class="nohighlight">
+```
 $ mco tasks run puppet_conf --help
 
 Puppet Task Orchestrator
