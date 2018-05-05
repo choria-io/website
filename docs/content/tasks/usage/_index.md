@@ -341,7 +341,7 @@ As of version 0.9.0 of the *choria/choria* module you can use Tasks from within 
 
 ### Running a Task
 
-The integration is intended to be used by other Playbooks, lets look at using the [Package Tasks](https://forge.puppet.com/puppetlabs/package) to retrieve the version of the *puppet-agent* package:
+The integration is intended to be used by other Playbooks, lets look at using the [Package Task](https://forge.puppet.com/puppetlabs/package) to retrieve the version of the *puppet-agent* package:
 
 ```puppet
 plan acme::agent_status () {
@@ -424,7 +424,7 @@ You can also retrieve the status for a specific task in a Playbook:
   # ....
 ```
 
-### Waiting for a task to complete
+### Waiting for a task to complete
 
 And finally if you started a task across a set of nodes and this task might run for a very long time you can pause your Playbook while this is happening:
 
