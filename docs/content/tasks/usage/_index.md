@@ -3,9 +3,11 @@ title = "Usage"
 weight = 200
 +++
 
-The majority of your interaction with this feature will be via the *mco tasks* cli.  It has extensive *--help* output which will not be reproduced here, sample commands will be shown here but please refer to the help for full details.
+## CLI
 
-## Execution Flow
+The CLI tools have extensive *--help* output which will not be reproduced here, sample commands will be shown here but please refer to the help for full details.
+
+### Execution Flow
 
 With the default Puppet Tasks runner from Puppet Inc the tasks are copied from your shell to remote nodes and ran there.  The flow in Choria is significantly different so I will show the steps that are followed when you execute a Task
 
@@ -19,7 +21,7 @@ At this point the task is either done or still executing - either way - you have
 
 You can later retrieve task results, statuses and metadata from the nodes using the ID.
 
-## Deploying a Task
+### Deploying a Task
 
 Tasks are delivered using Puppet modules much like anything else in the Puppet world. Uniquely to Tasks you only have to put the files on your Puppet Server module paths, you do not need to include any classes etc.
 
@@ -29,7 +31,7 @@ At present Choria will only consult your _production_ environment for tasks.
 
 You can therefore use _puppet module_, _r10k_ or _librarian puppet_ to place your modules in the _production_ environment and that should be enough for them to be used by Choria
 
-## Discovering Tasks
+### Discovering Tasks
 
 A basic list of tasks can be fetched from the CLI:
 
@@ -68,7 +70,7 @@ Task Files:
 Use 'mco tasks run puppet_conf' to run this task
 ```
 
-## Running a Task
+### Running a Task
 
 Tasks are always run dissociated from the MCollectived, you can therefore use them to restart MCollective, do system upgrades and other long running tasks.
 
@@ -232,7 +234,7 @@ $ mco tasks status 45250c07824f5922be68468d08f6b76c --json -I node1.example.net|
 }
 ```
 
-## Discovery Integration
+### Discovery Integration
 
 In the examples above it was kind of annoying to keep typing the hostname via _-I_, and it would not work really if you had many nodes or wanted to address only nodes that completed a task (or not).
 
@@ -332,3 +334,108 @@ $ mco tasks run acme::recover -S "bolt_task('ae561842dc7d5a9dae94f766dfb3d4c8').
 ```
 
 This will query your network for all nodes where the task had a exitcode of greater than 0 and then it will run this _acme::recover_ task on them.
+
+## Playbooks
+
+As of version 0.9.0 of the *choria/choria* module you can use Tasks from within Choria Playbooks.
+
+### Running a Task
+
+The integration is intended to be used by other Playbooks, lets look at using the [Package Tasks](https://forge.puppet.com/puppetlabs/package) to retrieve the version of the *puppet-agent* package:
+
+```puppet
+plan acme::agent_status () {
+  $nodes = choria::discover(
+    "agents" => ["bolt_tasks"]
+  )
+
+  $results = choria::run_playbook("choria::tasks::run",
+    "nodes" => $nodes,
+    "task" => "package",
+    "silent" => true,
+    "inputs" => {
+      "name" => "puppet-agent",
+      "action" => "status"
+    }
+  )
+
+  $results.reduce({}) |$memo, $result| {
+    $memo + {$result.host => $result["data"]["stdout"].parsejson}
+  }
+}
+```
+
+Here we use the *choria::tasks::run* playbook to perform the same basic Flow that the CLI does - get metadata, validate input, download task files, run task and wait up to 60 seconds.
+
+{{% notice tip %}}
+The examples shown were made using our [Vagrant Demo](https://github.com/choria-io/vagrant-demo) environment
+{{% /notice %}}
+
+We use the *Choria::Results* set to create a simplified result status, this might look like this:
+
+```nohighlight
+$ mco playbook run acme::agent_status
+Notice: Scope(<module>/acme/plans/agent_status.pp, 2): Discovered 3 node(s) in node set task_nodes
+Info: Scope(<module>/choria/plans/tasks/download_files.pp, 12): Downloading files for task 'package' onto 3 nodes
+Notice: Scope(<module>/choria/plans/tasks/download_files.pp, 14): About to run task: mcollective task
+Notice: Scope(<module>/choria/plans/tasks/download_files.pp, 14): Starting request for bolt_tasks#download against 3 nodes
+Notice: Scope(<module>/choria/plans/tasks/download_files.pp, 14): Successful request de3266400e165b76aa165c1f29f1063c for bolt_tasks#download in 1.01s against 3 node(s)
+Info: Scope(<module>/choria/plans/tasks/run.pp, 43): Running task 'package' on 3 nodes
+Notice: Scope(<module>/choria/plans/tasks/run.pp, 45): About to run task: mcollective task
+Notice: Scope(<module>/choria/plans/tasks/run.pp, 45): Starting request for bolt_tasks#run_and_wait against 3 nodes
+Notice: Scope(<module>/choria/plans/tasks/run.pp, 45): Successful request ca87087b91f950b6a226dd52d33f7c42 for bolt_tasks#run_and_wait in 3.62s against 3 node(s)
+
+Plan acme::agent_status ran in 5.93 seconds: OK
+
+Result:
+
+     {
+       "choria1.choria": {
+         "status": "up to date",
+         "version": "5.5.1-1.el7"
+       },
+       "choria0.choria": {
+         "status": "up to date",
+         "version": "5.5.1-1.el7"
+       },
+       "puppet.choria": {
+         "status": "up to date",
+         "version": "5.5.1-1.el7"
+       }
+     }
+```
+
+The *choria::tasks::run* playbooks supports options for batching requests and more, please review the comments in it's code.
+
+This is a normal task invocation, so you could for example use *mco tasks status ca87087b91f950b6a226dd52d33f7c42* to later look at this task from the CLI.
+
+### Retrieving task Status
+
+You can also retrieve the status for a specific task in a Playbook:
+
+```puppet
+  # ....
+
+  $results = choria::run_playbook("choria::tasks::status",
+    "nodes" => $nodes,
+    "task_id" => "ca87087b91f950b6a226dd52d33f7c42",
+  )
+
+  # ....
+```
+
+### Waiting for a task to complete
+
+And finally if you started a task across a set of nodes and this task might run for a very long time you can pause your Playbook while this is happening:
+
+```puppet
+  # ...
+  choria::run_playbook("choria::tasks::wait",
+    "nodes" => $nodes,
+    "task_id" => "ca87087b91f950b6a226dd52d33f7c42",
+  )
+
+  # ...
+```
+
+Here the Playbook system will regularly fetch the status and wait for all nodes to complete.  By default it will check 90 times with a 20 second sleep - so for 30 minutes.  You can influence these parameters using *tries* and *sleep* arguments to the *choria::tasks::wait* playbook.
