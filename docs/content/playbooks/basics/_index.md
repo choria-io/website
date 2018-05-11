@@ -5,6 +5,10 @@ weight = 400
 
 Lets consider a basic Playbook used to restart Puppet Server and PuppetDB in a clean safe way.  Restarting Puppet Server is quite involved as you want to ensure not to interrupt the normal operations of things, so first we gracefully stop all the agents that might currently be using Puppet and then restart Puppet Server + PuppetDB followed by a Puppet run orchestrated in batches.
 
+{{% notice tip %}}
+If you just want to dive in and get your hands dirty review the [Tips and Patterns](../tips/) section which explains where to place Playbooks and show you much more detail
+{{% /notice %}}
+
 In details we will:
 
  * Expect a *cluster* as input which it will use to limit the discovery of nodes to some subset
@@ -26,8 +30,6 @@ On failure further slack notifications will be sent.
 To complete this task we write 2 playbooks, one that does the work without any error handling and one to run the other with the Slack error and success handling.
 
 This playbook is on purpose verbose, in reality you would make smaller playbooks and re-using them or using Puppet functions to make small utilities to do common tasks - like we did with the `example::slack` one here.
-
-Further examples can be found in the [Tips and Patterns](../tips/) section.
 
 ```puppet
 plan example::restart_puppetserver_no_error_handling (
