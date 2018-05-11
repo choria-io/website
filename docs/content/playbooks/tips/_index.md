@@ -9,6 +9,8 @@ Generally the Playbooks behave as you would expect any modern Puppet function or
 
 You place the Playbook *mymod::mybook* in *modules/mymod/plans/mybook.pp* and in there you need *plan mymod::mybook*. Naming of Playbooks are subject to the same naming rules as Puppet, for example you cannot have a *-* in the Playbook name.
 
+The modules with playbooks all go into a directory and you have to point at that directory with *--modulepath*. which defaults to *~/.puppetlabs/etc/code/modules*, the same location *puppet module install* will place modules by default.
+
 When running in this mode Puppet has a number of changes in behavior for example strict variable checks are enabled by default and templates are disabled.  I cannot find a list of these behavior changes but it's something to be aware of.
 
 ## Interacting With Task Results
