@@ -102,7 +102,7 @@ To use the Consul store you should have the `diplomat` gem installed in your Pup
 
 ```yaml
 mcollective_choria::gem_dependencies:
-  "diplomat": "1.1.0"
+  "diplomat": "2.0.2"
 ```
 
 The Consul store requires you to have a local [Consul Agent](https://consul.io) instance running on your node where you run *mco playbook* from.  Configuring a Consul cluster is out of scope for this guide.
