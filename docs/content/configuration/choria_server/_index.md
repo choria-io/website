@@ -51,15 +51,15 @@ If however you have your own custom agents and clients/applications I urge you t
 To configure the new daemon you do everything the basic getting started guide shows you. You have to run at least these module versions to ensure the JSON DDL files exist (though not all the actual modules are needed of course):
 
 ```ruby
-mod "choria-choria", "0.8.0"
-mod "choria-mcollective_choria", "0.8.0"
-mod "choria-mcollective_agent_bolt_tasks", "0.8.0"
-mod "choria-mcollective", "0.5.0"
+mod "choria-choria", "0.9.0"
+mod "choria-mcollective_choria", "0.9.0"
+mod "choria-mcollective_agent_bolt_tasks", "0.9.0"
+mod "choria-mcollective", "0.6.0"
 mod "choria-mcollective_util_actionpolicy", "3.0.0"
 mod "choria-mcollective_data_sysctl", "3.0.0"
 mod "choria-mcollective_agent_shell", "1.0.3"
 mod "choria-mcollective_agent_service", "4.0.1"
-mod "choria-mcollective_agent_puppet", "2.0.2"
+mod "choria-mcollective_agent_puppet", "2.1.0"
 mod "choria-mcollective_agent_puppetca", "4.0.1"
 mod "choria-mcollective_agent_process", "4.0.2"
 mod "choria-mcollective_agent_package", "5.0.1"

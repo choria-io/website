@@ -40,10 +40,8 @@ The pages in this section will provide a thorough reference for this feature, yo
 
 ## Status
 
-At present I consider this feature a mature beta quality feature, it's functional but I think there are some UI tweaks I would like to make and we do have a few key issues outstanding.
+At present I consider this feature a mature feature, it's functional and complete, but we do have a few key issues outstanding.
 
 The reason this took several months to ship is because I needed to ensure we have strong input validation. Today we do have strong input validation on the client but on the
 nodes we do not have it. There's a major short coming in the Puppet Server APIs in that it does not tell us what version of metadata we look at and so there are trivial
 timing based problems. Until the feature I requested is implemented in Puppet Server a strong reliable server side input validation method is impossible.
-
-You can follow [open issues in GitHub](https://github.com/choria-io/mcollective-choria/issues?q=is%3Aissue+is%3Aopen+label%3Atasks) to get an idea of what is out standing.
