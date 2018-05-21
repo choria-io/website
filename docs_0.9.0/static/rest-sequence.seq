@@ -1,0 +1,24 @@
+seqdiag {
+   edge_length = 300;
+=== Client Authentication ===
+   Client -> "REST Server" [label = "Obtain Auth Token"];
+   "REST Server" -> "REST Server" [label = "Internal or Remote AUTH"];
+   Client <-- "REST Server" [label = "Stores Token"];
+=== Async RPC Request ===
+   Client -> "REST Server" [label = "Request signed with Token", color = blue];
+   "REST Server" -> "REST Server" [label = "RBAC"];
+   "REST Server" -> "Database" [label = "Create request record"];
+   "REST Server" <-- "Database";
+   "REST Server" ->> Servers [label = "Request signed with privileged cert, sets per client callerid", color = red];
+   Client <<-- "REST Server" [label = "requestid"];
+   Servers ->> Servers [label = "AAA of callerid"];
+   "REST Server" <<-- "Servers" [label = "RPC Results"];
+   "REST Server" -> "Database" [label = "Store results"];
+   "REST Server" <-- "Database";
+=== Result Retrieval ===
+   Client -> "REST Server" [label = "Signed request for requestid"];
+   "REST Server" -> "REST Server" [label = "RBAC"];
+   "REST Server" -> "Database" [label = "Retrieve results set"];
+   "REST Server" <-- "Database";
+   Client <-- "REST Server" [label = "Result sets"];
+}
