@@ -16,6 +16,7 @@ This guide will help you replace the *mcollectived* with a new *choria server*.
 
 The aim is to do the bulk of things that the old *mcollectived* did, it might do some things a bit different and downgrade some capabilities but it is hoped to be a smooth path forward.  Current list of short comings / issues are below, please get in touch should you find any more:
 
+  * You must be on a very recent version of Puppet Agent 5.0
   * Compound Filters used in discovery - those with _-S_ - do not work today, the server logs a error message.  However you can use them in action policy rules without a problem.  Planned before GA.
   * To use a agent with this daemon you have to repackage it using the latest _mco plugin package_. This ensures that the Ruby language DDL files are translated into portable JSON
   * Agents like the ones that load Puppet - service, package, puppet - are a bit slower by around 1 second per invocation due to _require "puppet"_ being very slow.

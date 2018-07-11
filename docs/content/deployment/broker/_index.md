@@ -10,13 +10,13 @@ Choria has it's own broker that is based on the excellent [NATS.io](https://nats
   * Handles 50 000 MCollective connections per node - can be increased with a custom build
   * Supports clustering on a LAN using a Full Mesh
   * Expose extensive Prometheus.io compatible metrics
-  * Distributed for RedHat 5, 6 and 7, Debian Stretch and Ubuntu Xenial
+  * Distributed for RedHat 5, 6 and 7, Debian Stretch and Ubuntu Xenial or Bionic
   * Includes advanced features like [Federation](../../federation) and Protocol Adapters.
 
 ## Prerequisites
 
  * The Broker must be managed by Puppet and have certs signed by your CA
- * The Brokers must run RedHat 5, 6 or 7, Ubuntu Xenial or Debian Stretch
+ * The Brokers must run RedHat 5, 6 or 7, Ubuntu Xenial, Ubuntu Bionic or Debian Stretch
  * You need to ensure port `4222` is reachable from all your Puppet nodes to all the Choria Broker servers
  * You need to ensure that in a clustered environment port `4223` is reachable between all the Choria Broker servers
 
