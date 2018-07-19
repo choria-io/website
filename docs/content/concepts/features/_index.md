@@ -32,4 +32,4 @@ icon = "<b>1. </b>"
   * Produce a custom build of Choria with auto provisioning, custom security and custom automation agents compiled right into the binary, using your own branding and paths without a reliance on Puppet
 
 
-See the [Deployment Guide](../deployment) for details on installation.
+See the [Deployment Guide](/docs/deployment/) for details on installation.
