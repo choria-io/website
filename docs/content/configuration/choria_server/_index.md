@@ -18,7 +18,7 @@ The aim is to do the bulk of things that the old *mcollectived* did, it might do
 
   * You must be on a very recent version of Puppet Agent 5.0
   * Compound Filters used in discovery - those with _-S_ - do not work today, the server logs a error message.  However you can use them in action policy rules without a problem.  Planned before GA.
-  * To use a agent with this daemon you have to repackage it using the latest _mco plugin package_. This ensures that the Ruby language DDL files are translated into portable JSON
+  * To use an agent with this daemon you have to repackage it using the latest _mco plugin package_. This ensures that the Ruby language DDL files are translated into portable JSON
   * Agents like the ones that load Puppet - service, package, puppet - are a bit slower by around 1 second per invocation due to _require "puppet"_ being very slow.
   * If you rely on registration in the *mcollectived* you will need to migrate that to our newer format which is much more flexible and scalable (but not yet documented)
   * It is available for Debian 9, Ubuntu LTS, Enterprise Linux 5-7 from the Choria Package Repositories.  No Windows support yet.
@@ -43,7 +43,7 @@ YAML on the network has a number of problems and in particular how old MCollecti
   * It has a massive scope for security problems.  We have luckily found very few actionable YAML attacks in MCollective but it's a ever present concern
   * Cross language portability problems
 
-As shown above in the status list there's a huge change happening here - the whole network protocol is now JSON pure.  This is a big big change in behaviour, I've tried to mitigate a lot of this and people who wrote agents as per the official guides will hopefully not notice problems. Further mitigation is needed and I will do those soon once I can be a bit more aggresive in the kinds of changes I can make to the MCollective code. This is a first step towards that.
+As shown above in the status list there's a huge change happening here - the whole network protocol is now JSON pure.  This is a big big change in behaviour, I've tried to mitigate a lot of this and people who wrote agents as per the official guides will hopefully not notice problems. Further mitigation is needed and I will do those soon once I can be a bit more aggressive in the kinds of changes I can make to the MCollective code. This is a first step towards that.
 
 If however you have your own custom agents and clients/applications I urge you to carefully test them in development under this new mode of operation.
 

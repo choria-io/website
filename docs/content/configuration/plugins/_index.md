@@ -46,7 +46,7 @@ mcollective_agent_puppet::config:
 
 This creates files in `/etc/puppetlabs/mcollective/plugin.d` with the per plugin settings.  This will only work on plugins distributed using the method shown above.
 
-You can ship your own custom configuration items in the Plugin directory that gets mixed into the final default data, this can be used to add for example default Action Policies that allow read-only aciton.
+You can ship your own custom configuration items in the Plugin directory that gets mixed into the final default data, this can be used to add for example default Action Policies that allow read-only action.
 
 Placing this in the `.plugin.yaml` of the top directory of the Puppet Agent causes a default ACL where anyone can run the *last_run_summary* and *status* actions:
 
