@@ -43,7 +43,7 @@ $nodes = choria::discover(
   "test" => true,
   "classes" => ["apache"],
   "uses" => {"rpcutil" => "~ 1.0.0"},
-  "facts" => ["countr=uk"]
+  "facts" => ["country=uk"]
 )
 ```
 
