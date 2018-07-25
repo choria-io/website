@@ -1,8 +1,8 @@
 +++
 title = "Deployment"
 chapter = true
-pre = "<b>7. </b>"
-weight = 70
+pre = "<b>8. </b>"
+weight = 80
 +++
 
 # Deployment
