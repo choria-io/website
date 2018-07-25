@@ -1,7 +1,7 @@
 +++
 title = "Federations of Collectives"
-pre = "<b>6. </b>"
-weight = 60
+pre = "<b>5. </b>"
+weight = 50
 +++
 
 Federations of Collectives combines multiple standalone Collectives into one.  This improves the operability of large distributed networks and greatly increase the scale achievable.

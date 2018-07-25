@@ -16,7 +16,7 @@ It provides the following:
 * Return data should be easy to print, in most cases the framework should be able to print a sensible output with a single, provided, function.  The DDL is used here to improve the standard one-size-fits-all methods.
 * [Standardised packaging](/configuration/plugins/) on the Puppet Forge using Puppet Modules.
 
-We've provided full tutorials on [Writing RPC Clients](clients/) and [Agents](agents/).
+We've provided full tutorials on [Writing RPC Clients](clients/) and [Agents](agents/). Numerous full featured examples can be found in our [GitHub Project dedicated to plugins](https://github.com/choria-plugins).
 
 
 A bit of code probably says more than lots of English, so here's a simple hello world Agent, it just echo's back everything you send it in the _:msg_ argument:

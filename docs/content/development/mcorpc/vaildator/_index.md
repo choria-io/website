@@ -1,6 +1,6 @@
 +++
 title = "Validator Plugins"
-weight = 40
+weight = 50
 +++
 
 ## Overview

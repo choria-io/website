@@ -6,7 +6,7 @@ weight = 10
 As pointed out in the Introduction page you can use the _mco rpc_ CLI to call agents and it will do it's best to print results in a sane way.  When
 this is not enough you can write your own clients.
 
-This guide shows you how to use the Client API to interact with MCollective RPC agents.  This API can be used as here in standalone scripts but you can also apply the knowledge documented here to create new sub commands like _mco yourapp_ for when you wish to have entirely custom UIs above those that the one-size-fits-all _mco rpc_ provides.
+This guide shows you how to use the Client API to interact with MCollective RPC agents.  This API can be used as here in standalone scripts but you can also apply the knowledge documented here to create [new sub commands](../applications/) like _mco yourapp_ for when you wish to have entirely custom UIs above those that the one-size-fits-all _mco rpc_ provides.
 
 We'll walk through building a ever more complex example of Hello World here that you saw in the introduction section.
 
