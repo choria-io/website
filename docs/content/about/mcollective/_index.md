@@ -13,4 +13,7 @@ Today in Puppet 5.x there is no concern everything continues to work, once Puppe
 
 Please review the [Choria Website](https://choria.io) for further information about the Choria project.
 
-We are working with Puppet Inc to take over items like the code, mailing lists and more, this page will get further updates as details become clear.
+We are working with Puppet Inc to give items like the code, mailing lists and more a new home, this page will get further updates as details become clear.
+
+For further information please contact me am on the Puppet IRC as _Volcane_ and on slack as _ripienaar_, we also have a _#mcollective_ channel on Freenode of _#choria_ on the [Puppet Slack](http://slack.puppet.com/).
+
