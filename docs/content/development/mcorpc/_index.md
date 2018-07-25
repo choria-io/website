@@ -14,7 +14,7 @@ It provides the following:
 * The provided generic client tool - `mco rpc` - should be able to speak to most compliant agents
 * Should you need to you can still write your own clients, this should be very easy too
 * Return data should be easy to print, in most cases the framework should be able to print a sensible output with a single, provided, function.  The DDL is used here to improve the standard one-size-fits-all methods.
-* [Standardised packaging](/configuration/plugins/) on the Puppet Forge using Puppet Modules.
+* [Standardised packaging](/docs/configuration/plugins/) on the Puppet Forge using Puppet Modules.
 
 We've provided full tutorials on [Writing RPC Clients](clients/) and [Agents](agents/). Numerous full featured examples can be found in our [GitHub Project dedicated to plugins](https://github.com/choria-plugins).
 

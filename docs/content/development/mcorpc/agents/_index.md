@@ -1,5 +1,5 @@
 +++
-title = "Agents"
+title = "Ruby Agents"
 weight = 20
 +++
 
@@ -335,11 +335,11 @@ helpers.dosomething
 
 ## Authorization
 
-You can write a fine grained Authorization system to control access to actions and agents, please see [Choria AAA](/configuration/aaa/) for full details.
+You can write a fine grained Authorization system to control access to actions and agents, please see [Choria AAA](/docs//configuration/aaa/) for full details.
 
 ## Auditing
 
-The actions that agents perform can be Audited by code you provide, potentially creating a centralized audit log of all actions.  See [Choria AAA][/configuration/aaa/] for full details.
+The actions that agents perform can be Audited by code you provide, potentially creating a centralized audit log of all actions.  See [Choria AAA](/docs/configuration/aaa/) for full details.
 
 ## Logging
 

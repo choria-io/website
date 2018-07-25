@@ -1,5 +1,5 @@
 +++
-title = "Clients"
+title = "Ruby Clients"
 weight = 10
 +++
 
@@ -12,6 +12,10 @@ We'll walk through building a ever more complex example of Hello World here that
 
 {{% notice warning %}}
 This section of the documentation have recently been migrated from the old mcollective documentation, we are still in the process of verifying every example works in modern mcollective.  If you find any issues please get in touch.
+{{% /notice %}}
+
+{{% notice tip %}}
+A [Golang client](https://godoc.org/github.com/choria-io/mcorpc-agent-provider/mcorpc/client) is in progress, early releases are available today.
 {{% /notice %}}
 
 ## The Basic Client
