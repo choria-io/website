@@ -10,10 +10,6 @@ This guide shows you how to use the Client API to interact with MCollective RPC 
 
 We'll walk through building a ever more complex example of Hello World here that you saw in the introduction section.
 
-{{% notice warning %}}
-This section of the documentation have recently been migrated from the old mcollective documentation, we are still in the process of verifying every example works in modern mcollective.  If you find any issues please get in touch.
-{{% /notice %}}
-
 {{% notice tip %}}
 A [Golang client](https://godoc.org/github.com/choria-io/mcorpc-agent-provider/mcorpc/client) is in progress, early releases are available today.
 {{% /notice %}}
@@ -117,7 +113,7 @@ mc.verbose = true
 printrpc mc.echo(:msg => "Welcome to MCollective RPC")
 ```
 
-In this case everything will be verbose, regardless of command line options.
+In this case you'll have verbose discovery always - all interactions involving mc.xxx will be verbose - but the displaying of data using `printrpc` will not be verbose.
 
 ### Disabling the progress indicator
 
@@ -135,9 +131,10 @@ Now whenever you call an action you will not see the progress indicator.
 You can retrieve the stats from the clients and also get text of reports without printing them:
 
 ```ruby
-stats = mc.echo(:msg => "Welcome to MCollective RPC").stats
-
+mc.echo(:msg => "Welcome to MCollective RPC")
+stats = mc.stats
 report = stats.report
+nr = stats.no_response_report
 ```
 
 _report_ will now have the text that would have been displayed by 'printrpcstats' you can also use _no\_response\_report_ to get report text for just the list of hosts that didnt respond.
@@ -145,7 +142,7 @@ _report_ will now have the text that would have been displayed by 'printrpcstats
 If you didn't want to just print the results out to STDOUT you can also get them back as just text:
 
 ```ruby
-report = rpcresults(mc.echo(:msg => "Welcome to MCollective RPC"))
+report = MCollective::RPC::Helpers.rpcresults(mc.echo(:msg => "Welcome to MCollective RPC"))
 ```
 
 ## Applying filters programatically
@@ -155,7 +152,7 @@ You can pass filters on the command line using the normal _--with-*_ options but
 ```
 mc = rpcclient("helloworld")
 
-mc.class_filter /dev_server/
+mc.class_filter "/dev_server/"
 mc.fact_filter "country", "uk"
 
 printrpc mc.echo(:msg => "Welcome to MCollective RPC")
@@ -179,7 +176,7 @@ If while using the client you wish to reset the filters to an empty set of filte
 ```ruby
 mc = rpcclient("helloworld")
 
-mc.class_filter /dev_server/
+mc.class_filter "/dev_server/"
 
 mc.reset_filter
 ```
@@ -219,7 +216,7 @@ By default it will only do discovery once per script and then re-use the results
 ```ruby
 mc = rpcclient("helloworld")
 
-mc.class_filter /dev_server/
+mc.class_filter "/dev_server/"
 printrpc mc.echo(:msg => "Welcome to MCollective RPC")
 
 mc.reset
@@ -232,8 +229,7 @@ Here we make one _echo_ call - which would do a discovery - we then reset the cl
 
 ## Supplying your own discovery information
 
-A new core messaging mode has been introduced that enables direct non filtered communicatin to specific nodes.  This has enabled us to provide an discovery-optional
-mode but only if the collective is configured to support direct messaging.
+Discovery can be bypassed by supplying the node knowledge directly:
 
 ```ruby
 mc = rpcclient("helloworld")
@@ -261,9 +257,6 @@ mc.discover(:nodes => ["host1", "host2", "host3"]
 
 printrpc mc.echo(:msg => "Welcome to MCollective RPC")
 ```
-
-With the TTL set to 3600 if any of the hosts are down at the time of the request the request will wait on the middleware and should they come back up
-before 3600 has passed since request time they will then perform the requested action.
 
 ## Only sending requests to a subset of discovered nodes
 
@@ -313,7 +306,7 @@ Just note these now, I'll reference them later down.
 
 ### MCollective RPC style results
 
-MCollective RPC provides a trimmed down version of results from the basic Client library.  You'd choose to use this if you just want to do basic things or maybe you're just learning Ruby.  You'll get to process the results _after_ the call is either done or timed out completely.
+MCollective RPC provides a trimmed down version of results from the core Client library - RPC being a set of conventions ontop of the core the aim is to make a more user friendly data format for RPC use.
 
 This is an important difference between the two approaches, in one you can parse the results as it comes in, in the other you will only get results after processing is done.  This would be the main driving facter for choosing one over the other.
 
@@ -333,24 +326,34 @@ dev2.example.net                          : hello world
 dev3.example.net                          : hello world
 ```
 
-The _each_ in the above code just loops through the array of results.  Results are an array of Hashes, the data you got for above has the following structure:
+The _each_ in the above code just loops through the array of results.  Results are an array of MCollective::RPC::Result instances, the data you got for above has the following structure when accessed as a hash as above:
 
 ```ruby
-[{:statusmsg=>"OK",
- :sender=>"dev1.example.net",
- :data=>{:msg => "hello world"},
- :statuscode=>0},
-{:statusmsg=>"OK",
- :sender=>"dev2.example.net",
- :data=>{:msg => "hello world"},
- :statuscode=>0}]
+[
+ {
+  :statusmsg=>"OK",
+  :sender=>"dev1.example.net",
+  :data=>{
+    :msg => "hello world"
+  },
+  :statuscode=>0
+ },
+ {
+  :statusmsg=>"OK",
+  :sender=>"dev2.example.net",
+  :data=>{
+    :msg => "hello world"
+  },
+  :statuscode=>0
+ }
+]
 ```
 
-The _:statuscode_ matches the table above so you can make decisions based on each result's status.
+The _:statuscode_ matches the table above so you can make decisions based on each result's status. The result object has a few other interesting methods like `#agent`, and `#action` to figure out what agent the data belongs to.
 
 ### Gaining access to MCollective::Client#req results
 
-You can get access to each result in real time, in this case you will supply a block that will be invoked for each result as it comes in.  The result set will be exactly as from the full blown client.
+You can get access to each result in real time, in this case you will supply a block that will be invoked for each result as it comes in.  The result set will be exactly as from the underlying core client library which gives you access to some lower level data.
 
 In this mode there will be no progress indicator, you'll deal with results as and when they come in not after the fact as in the previous example.
 
@@ -366,7 +369,7 @@ end
 
 The output will be the same as above
 
-In this mode the results you get will be like this:
+In this mode the results you get will be Hash instances like this:
 
 ```ruby
 {
@@ -449,7 +452,7 @@ dev2.example.net                          : foo
 dev3.example.net                          : foo
 ```
 
-Documentation for the Options Parser can be found [in its code][OptionParser].
+The options parser used here is the standard Ruby OptionParser class.
 
 And finally if you add options as above rather than try to parse it yourself you will get help integration for free:
 

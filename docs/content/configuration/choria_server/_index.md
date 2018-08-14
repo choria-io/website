@@ -94,4 +94,4 @@ The MCollective subsystem will still log to your normal *mcollective.log* and au
 
 ## Feeback / Issues
 
-This is a Beta phase and we can only know it's ready for GA with your support.  Please contact us on #choria on [Slack](http://slack.puppet.com), [Choria Users](https://groups.google.com/forum/#!forum/choria-users) or #mcollective on Freenode with your feedback - both good and bad!
+This is a Beta phase and we can only know it's ready for GA with your support.  Please contact us on #choria on [Slack](http://slack.puppet.com), [Choria Users](https://groups.google.com/forum/#!forum/choria-users) or #choria on Freenode with your feedback - both good and bad!

@@ -35,7 +35,7 @@ You can write your own Tasks and use them via Choria or Bolt and share them with
 
 ### Second Month
 
-If you have advanced orchestration needs not handled by the above options and you are very familiar with the use of Choria you can start writing completely custom Agents and Clients. These could manage almost any conceivable thing and present any user interface you like.
+If you have advanced orchestration needs not handled by the above options and you are very familiar with the use of Choria you can [start writing completely custom Agents and Clients](/docs/development/). These could manage almost any conceivable thing and present any user interface you like.
 
 If you ever wanted to write small utilities that can interact with your fleet but were afraid of the daunting task of designing connectivity, ensuring its secure, figuring out addressing or even just did not want a ever growing list of daemons and listening ports. Now you have a framework that let you concentrate on just your problem while gaining a strong unified security model encompassing Authentication, Authorization and Auditing - you won't have to write 1 line of code in those areas, just write the utilities you need and let Choria handle those boring aspects.
 
@@ -43,9 +43,11 @@ If you ever wanted to write small utilities that can interact with your fleet bu
 
 You can start building large scale node metadata stores using our Data Adapters to do stream processing using the data from your nodes.
 
-You can embed a choria server into completely custom software, perhaps you have microservices written in Golang.  With Choria embedded in those microservices they will gain a management backplane that you can reach using the *mco rpc* CLI, the API or you can use the management backplane to extract running status from them. Perhaps you wish to build a big red button that can disable processing if ever there is a problem - with Choria embedded in microservices that's a quick *mco rpc circuit_breaker off -W country=us* away.
+You can embed a choria server into completely custom software, perhaps you have microservices written in Golang.  With Choria embedded in those microservices they will gain a [management backplane](https://github.com/choria-io/go-backplane) that you can reach using the *mco rpc* CLI, the API or you can use the management backplane to extract running status from them. Perhaps you wish to build a big red button that can disable processing if ever there is a problem - with Choria embedded in microservices that's a quick *mco rpc circuit_breaker off -W country=us* away.
 
 If you are keen on IoT you can embed Choria into your small sensor devices and create lifecycle management for your entire IoT fleet.
+
+See our [Related Projects](/docs/concepts/related/) page for links to other projects we work on in this space.
 
 ## Introduction
 

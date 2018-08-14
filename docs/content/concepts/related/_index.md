@@ -24,13 +24,29 @@ The [Choria Stream Replicator](https://github.com/choria-io/stream-replicator) i
 
 In a modern containerised world the use for a general purpose orchestration server like the main Choria Server is a bit limited, if you write your Microservices in Go though you can use the [Choria Embeddable Backplane](https://github.com/choria-io/go-backplane) to gain Circuit Breakers, Health Checks and Emergency Shutdown features that live on the Choria Broker Network where you can manage these Microservices using the CLI, Ruby API, Go API or Choria Playbooks.
 
-Tools like the Stream Replicator and Prometheus Streams will feature this Backplane to manage their internals.
+Tools like the Stream Replicator and Prometheus Streams will feature this Backplane to manage their internals.  The Choria Server Provisioner already incorporates it.
+
+A video demonstrating this capability can be seen below:
+
+<iframe width="840" height="473" src="https://www.youtube.com/embed/97OqYIT6ynQ" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 
 ## Prometheus Streams
 
 Prometheus is a very flexible and scalable monitoring system but it has a very unfortunate Pull based system that requires vast amount of network ports to be opened between DCs. The [Choria Prometheus Streams](https://github.com/choria-io/prometheus-streams) project lets you poll in your remote DCs and have the metrics streamed over a NATS Streaming Server - and optionaly replicated using the Choria Stream Replicator.
 
 Using this you can create a single pane of glass for multiple data centers.  It's not for all uses - in fact it has a very narrow focus, review it's README carefully before adopting it.
+
+## Choria Server Provisioner
+
+In large dynamic environments where you do not have configuration management systems like Puppet or wish to do custom CA integration we provide a provisioning system that gives you full control over the life cycle of the Choria Daemon, unconfigured daemons enter a provisioning state where a software component can reach out to them and configure them.
+
+This is an advanced feature and requires custom builds to be made (but we provide the tools for this).
+
+See the documentation in [provisioning-agent](https://github.com/choria-io/provisioning-agent).
+
+A video demonstrating this capability can be seen below:
+
+<iframe width="840" height="473" src="https://www.youtube.com/embed/7sGHf55_OQM" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 
 ## Go Libraries
 
