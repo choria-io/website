@@ -77,7 +77,7 @@ By default the only certificates that will be accepted from clients are those ma
 
 ```yaml
 mcollective_choria::config:
-  security.certname_whitelist: "bob, jill, /\.mcollective$/"
+  security.certname_whitelist: "bob, jill, /\\.mcollective$/"
 ```
 
 And you can request custom certificate names on the CLI:
