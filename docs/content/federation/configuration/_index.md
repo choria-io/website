@@ -60,9 +60,9 @@ node "nats1.ldn.example.net" {
     federation_broker => true,
     federation_cluster => "london",
     network_peers => [
-      "nats://choria1.ldn.example.net:5222",
-      "nats://choria2.ldn.example.net:5222",
-      "nats://choria3.ldn.example.net:5222",
+      "nats://choria1.ldn.example.net:4223",
+      "nats://choria2.ldn.example.net:4223",
+      "nats://choria3.ldn.example.net:4223",
     ]
   }
 }
@@ -88,9 +88,9 @@ If you wish to configure the middleware manually rather than SRV records you can
       "choria3.ldn.example.net:4222",
     ],
     network_peers => [
-      "nats://choria1.ldn.example.net:5222",
-      "nats://choria2.ldn.example.net:5222",
-      "nats://choria3.ldn.example.net:5222",
+      "nats://choria1.ldn.example.net:4223",
+      "nats://choria2.ldn.example.net:4223",
+      "nats://choria3.ldn.example.net:4223",
     ]
   }
 ```
