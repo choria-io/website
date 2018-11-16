@@ -36,6 +36,10 @@ Prometheus is a very flexible and scalable monitoring system but it has a very u
 
 Using this you can create a single pane of glass for multiple data centers.  It's not for all uses - in fact it has a very narrow focus, review it's README carefully before adopting it.
 
+## Prometheus File Exporter
+
+A [small exporter and CLI tool](https://github.com/choria-io/prometheus-file-exporter) that allows you to run commands like `pfe counter acme_ctr` or `pfe counter acme_ctr --inc 10` to create metrics from cron jobs and similar.  The exporter listens via inotify for changes and updates a HTTP based exporter in real time.
+
 ## Choria Server Provisioner
 
 In large dynamic environments where you do not have configuration management systems like Puppet or wish to do custom CA integration we provide a provisioning system that gives you full control over the life cycle of the Choria Daemon, unconfigured daemons enter a provisioning state where a software component can reach out to them and configure them.
