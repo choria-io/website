@@ -30,3 +30,4 @@ For further information please contact me am on the Puppet IRC as _Volcane_ and 
 |2018/07/17|Official deprecation by Puppet Inc|
 |2018/07/25|#choria created on Freenode|
 |Fall 2018|Target date for Puppet 6 and removal of _mcollective_ libraries from _puppet-agent_|
+|2018/11/19|Puppet Inc officially hand over all _mcollective_ related code, hosted in [Choria Legacy](https://github.com/choria-legacy)|
