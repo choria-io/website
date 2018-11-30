@@ -6,6 +6,10 @@ weight = 250
 
 The *Choria Server* is a replacement for the old *mcollectived* daemon.  This new daemon is written in Golang and it's very fast, light weight and embeddable while providing a MCollective compatability layer for hosting old agents.
 
+{{% notice tip %}}
+If your node runs Puppet 6 it will already be running the Choria Server
+{{% /notice %}}
+
 {{% notice warning %}}
 Today this server is in Beta / Preview, we've done extensive testing on the agents Choria provide but please use with caution.  We make this early version available to solicit feedback from the community
 {{% /notice %}}
@@ -50,25 +54,6 @@ If however you have your own custom agents and clients/applications I urge you t
 ## Configuration
 
 To configure the new daemon you do everything the basic getting started guide shows you. You have to run at least these module versions to ensure the JSON DDL files exist (though not all the actual modules are needed of course):
-
-```ruby
-mod "choria-choria", "0.9.0"
-mod "choria-mcollective_choria", "0.9.0"
-mod "choria-mcollective_agent_bolt_tasks", "0.9.0"
-mod "choria-mcollective", "0.6.0"
-mod "choria-mcollective_util_actionpolicy", "3.0.0"
-mod "choria-mcollective_data_sysctl", "3.0.0"
-mod "choria-mcollective_agent_shell", "1.0.3"
-mod "choria-mcollective_agent_service", "4.0.1"
-mod "choria-mcollective_agent_puppet", "2.1.0"
-mod "choria-mcollective_agent_puppetca", "4.0.1"
-mod "choria-mcollective_agent_process", "4.0.2"
-mod "choria-mcollective_agent_package", "5.0.1"
-mod "choria-mcollective_agent_nettest", "4.0.2"
-mod "choria-mcollective_agent_nrpe", "4.0.1"
-mod "choria-mcollective_agent_filemgr", "2.0.1"
-mod "choria-mcollective_agent_iptables", "4.0.1"
-```
 
 And you need to change some data:
 

@@ -12,7 +12,7 @@ In MCollective terminology a _client_ is one you manage your network from - wher
 
 All nodes should have the _choria-mcollective_ module on them, by default every node becomes a MCollective Server ready to be managed via MCollective:
 
-{{% notice info %}}
+{{% notice tip %}}
 The choria/mcollective_choria module has a number of [dependencies](https://forge.puppet.com/choria/mcollective_choria/dependencies), if you use R10k to manage environments please be sure to fetch all dependencies.
 {{% /notice %}}
 
@@ -38,6 +38,19 @@ mcollective::client: true
 mcollective::server: false
 ```
 
-## Choria Server
+## Puppet 6
 
-If you are feeling adventurous and want to give back we are currently testing the next generation *mcollectived* called *Choria Server*, you can [help us test this upcoming feature](/docs/configuration/choria_server/) if you wish.
+With the release of Puppet 6 Puppet Inc has [deprecated Marionette Collective](https://choria.io/mcollective), Choria support Puppet 6 by enabling the Choria Server as a replacement for `mcollectived`.
+
+{{% notice warning %}}
+Puppet 6 support is available since release `0.12.0` of the `choria/choria` module, it's the first release that supports Puppet 6 and while extensive testing was done please ensure you test this upgrade in your lab first.
+{{% /notice %}}
+
+If you are running a Puppet 6 only network everything will just work, if you run a mix 5 and 6 network you have to make create an additional data item:
+
+```yaml
+mcollective_choria::config:
+  security.serializer: "json"
+```
+
+You can enable the same Choria Server on your Puppet 5 nodes by following the steps in the [Choria Server](/docs/configuration/choria_server/) guide.
