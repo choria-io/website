@@ -1,0 +1,324 @@
++++
+title = "Custom Certificate Authority"
+toc = true
+weight = 100
++++
+
+While Choria is configured by default to use the Puppet CA the system does support custom Certificate Authorities including Intermediatries.  You can use any software to produce these certificates as long as they make compliant x509 certificates.
+
+This section will guide you through the creation of a layered CA setup for a Choria network using the [Cloudflare's PKI toolkit](https://cfssl.org/).
+
+## Overview
+
+This guide will cover the following:
+
+ * Creating a *Example Root CA* that is used to sign a per datacenter intermediate CA
+ * Creating a *London CA* and a *New York CA* that issues certificates in each datacenter
+ * Create user certificates in each datacenter and configure Choria CLI
+ * Configure individual servers in each data center
+
+What this guide will not cover:
+
+ * How PKI works. [This guide](https://smallstep.com/blog/everything-pki.html) is very good.
+ * How to get the certificates on every node, this step is essentially going to be unique per site, we cannot realistically cover this for everyone. The [Choria Server Provisioner](https://github.com/choria-io/provisioning-agent) can enroll nodes in any CA with an API.
+ * Certificate revocation and renewal
+ * How to use cfssl in detail or it's deployment best practices
+
+## Requirements
+
+ * You need to be running Choria Server 0.9.0 or later, the Ruby `mcollectived` does not support this.
+
+## Root Certificate Authority
+
+In PKI the Root CA is your main CA that you generally keep offline on something like a USB stick or encrypted somewhere.  You use it to generate new Intermediate Certificate Authorities - in our example each data center is a Intermediate CA.
+
+The data center then deploys a Certificate Authority bundle that declares the chain of trust and states which Certificate Authorities are to be trusted by a particular node.
+
+Here we will create our Root Certificate Authority using CFSSL, this involves a few steps:
+
+ * Initialize the Root CA
+ * Set it's signing policy
+
+### Initialize the CA
+
+cfssl works by reading JSON files that represents the certificate requests etc, lets create one describing our Root CA:
+
+Create `csr_root.json`:
+
+```json
+{
+    "CN": "Example Root CA",
+        "key": {
+            "algo": "ecdsa",
+            "size": 256
+        },
+    "names": [
+        {
+            "C": "MT",
+            "L": "Siggiewi",
+            "O": "Example",
+            "OU": "Example Root Certificate Authority"
+        }
+    ],
+    "ca": {
+        "expiry": "262800h"
+    }
+}
+```
+
+The Root CA has a validity of 30 years and you can see it's various properties.
+
+We can now initiate our Root Authority:
+
+```
+cfssl gencert -initca csr_root.json | cfssljson -bare root_ca
+```
+
+You should see files `root_ca.csr`, `root_ca.pem` and `root_ca-key.pem`.  These are the public and private keys for your CA, you should keep this safe, if you loose this or they get compromised the entire infrastructure is at risk.
+
+### Signing Policy
+
+We need to state what the policy this CA will follow when signing new Certificate Authorities, this we will do using the file `intermediate_ca_signing.json`:
+
+```json
+{
+    "signing": {
+        "default": {
+            "usages": ["digital signature","cert sign","crl sign","signing"],
+            "expiry": "262800h",
+            "ca_constraint": {
+                "is_ca": true,
+                "max_path_len":0,
+                "max_path_len_zero": true
+            }
+        }
+    }
+}
+```
+
+This means Certificate Authorities being created by this CA will also have a long life and will be able to sign certs on their own.
+
+## London Intermediate CA
+
+Each DC needs a CSR that will be signed by the Root CA, this signing process creates the chain of trust from certificate, to DC CA to Root CA.
+
+We'll do the following:
+
+ * Create the Key, CSR etc of the CA
+ * Sign the CSR at the Root Ca
+ * Configure the CA signing policies
+ * Create the local bundle
+
+I will show how to do this for London, you can just repeat this process for other DCs.
+
+### Create the London CA
+
+Lets create `london_ca_csr.json`:
+
+```json
+{
+    "CN": "London CA",
+    "key": {
+        "algo": "ecdsa",
+        "size": 256
+    },
+    "names": [
+        {
+            "C": "UK",
+            "L": "London",
+            "O": "Example",
+            "OU": "London Certificate Authority"
+        }
+    ],
+    "ca": {
+        "expiry": "87600h"
+    }
+}
+```
+
+Here we are describing the signing request for the London CA that has a validity of 10 years.  Lets create the key and x509 csr:
+
+```
+cfssl gencert -initca london_ca_csr.json | cfssljson -bare london_ca
+```
+
+This will create the following files:
+
+|File|Description|
+|----|-----------|
+|london_ca.csr|The signing request that the Root will sign|
+|london_ca.pem|The unsigned intermediate so its useless, you can discard this one|
+|london_ca-key.pem|The private key for your CA, do not loose this or share it|
+
+### Sign the London CA using the Root CA
+
+Now you need to transport this `london_ca.csr` to your Root CA, do not worry there is nothing important in here you do not need to keep it private or super secure.
+
+Do this on the Root CA:
+
+```
+cfssl sign -ca root_ca.pem -ca-key root_ca-key.pem -config intermediate_ca_signing.json london_ca.csr | cfssljson -bare london_ca
+```
+
+The main output here will be a file called `london_ca.pem`, this is the London CA signed by your Root CA.  Copy this file back to your London CA.
+
+### Configure signing policy for London
+
+Create a file `server-signing.json` that has the following:
+
+```json
+{
+    "signing": {
+        "profiles": {
+            "default": {
+                "usages": ["signing", "key encipherment", "server auth"],
+                "expiry": "43800h"
+            }
+        }
+    }
+}
+```
+
+This states that when signing a request from a particular server it should be able to do server related things - but not for example make new CAs - and that the signed certificate will be valid for 5 years.
+
+### Create the London Bundle
+
+You should grab a copy of the root `ca.pem` and the `london_ca.pem` to create the bundle:
+
+```
+cat ca.pem >> bundle.pem
+cat london_ca.pem >> bundle.pem
+```
+
+This file will be distributed to all the servers.
+
+## Enrolling a node
+
+We'll issue certificates for every node, this entails:
+
+ * Creating the private key and CSR
+ * Signing it in the data center CA
+ * Configuring the Choria Server
+
+{{% notice tip %}}
+The [Choria Server Provisioner](https://github.com/choria-io/provisioning-agent) can automate this enrollment of nodes in a Certificate Authority, using it is not for everyone but if you are a big complex site it might be of interest to you.
+{{% /notice %}}
+
+#### Creating the CSR
+
+Every node will need a certificate matching its _fqdn_, lets create the CSR for the server, first the JSON request in `/etc/choria/ssl/csr.json`:
+
+```json
+{
+    "CN": "server1.example.net",
+    "key": {
+        "algo": "rsa",
+        "size": 2048
+    },
+    "names": [
+        {
+            "C": "UK",
+            "L": "London",
+            "O": "Example Inc",
+            "OU": "Operations"
+        }
+    ]
+}
+```
+
+Now we generate our private key and the x509 format CSR:
+
+```
+cfssl genkey csr.json|cfssljson -bare server1.example.net
+```
+
+### Signing it using the London CA
+
+The previous step would create your private key and a few others, you should transport the `server1.example.net.csr` to the `London CA` host and sign it there:
+
+```
+cfssl sign -ca london_ca.pem -ca-key london_ca-key.pem -config server-signing.json server1.example.net.csr
+```
+
+This will produce a `server1.example.net.pem` that you should copy back to the node into `/etc/choria/ssl`
+
+You should also grab the `bundle.pem` and place this in `/etc/choria/ssl/ca.pem`
+
+### Configure Choria
+
+By default Choria Server will try to use certificates in the official locations Puppet Agent puts them, we need to switch that to manual paths in `/etc/choria/server.conf`
+
+```json
+plugin.security.provider = file
+plugin.security.file.certificate = /etc/choria/ssl/server1.example.net.pem
+plugin.security.file.key = /etc/choria/ssl/server1.example.net-key.pem
+plugin.security.file.ca = /etc/choria/ssl/ca.pem
+plugin.security.file.cache = /etc/choria/ssl/cache
+```
+
+## User Certificates
+
+Just as nodes need to be able to identify their identities so should every distinct user who access Choria.  To enroll a user we need more or less the same things as the node needed above:
+
+ * Creating the private key and CSR
+ * Signing it in the data center CA
+ * Configuring the Choria Client
+
+### Creating the private key and CSR
+
+We'll create `/home/alice/.choria.d/ssl` and place all the files in there for the user `alice`.
+
+Create the JSON CSR `/home/alice/.choria.d/ssl/csr.json`:
+
+```json
+{
+    "CN": "alice.mcollective",
+    "key": {
+        "algo": "rsa",
+        "size": 2048
+    },
+    "names": [
+        {
+            "C": "UK",
+            "L": "London",
+            "O": "Example Inc",
+            "OU": "Operations"
+        }
+    ]
+}
+```
+
+Now we generate our private key and the x509 format CSR:
+
+```
+cfssl genkey csr.json|cfssljson -bare certificate
+```
+
+### Sign the CSR in the London DC
+
+The previous step would create your private key and a few others, you should transport the `certificate.csr` to the `London CA` host and sign it there:
+
+```
+cfssl sign -ca london_ca.pem -ca-key london_ca-key.pem -config server-signing.json certificate.csr
+```
+
+This will produce a `certificate.pem` that you should copy back to the node into `/home/alice/.choria.d/ssl/`
+
+You should also grab the `bundle.pem` and place this in `/home/alice/.choria.d/ssl/ca.pem`
+
+### Configure Choria
+
+Assuming you are enabling this pattern for all users on the machine you can edit  `/etc/puppetlabs/mcollective/client.cfg`:
+
+```ini
+plugin.security.provider = file
+plugin.security.file.certificate = ~/.choria.d/ssl/certificate.pem
+plugin.security.file.key = ~/.choria.d/ssl/certificate-key.pem
+plugin.security.file.ca = ~/.choria.d/ssl/ca.pem
+```
+
+If done correctly the `mco choria show_config` command will show the paths to the certificate files and report a valid setup.
+
+## Conclusion
+
+At this point you should be able to use `mco` cli as normal, nodes will validate your certificates are signed by the CA and matches who you claim to be.

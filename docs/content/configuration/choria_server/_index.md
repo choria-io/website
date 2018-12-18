@@ -1,7 +1,7 @@
 +++
 title = "Choria Server"
 toc = true
-weight = 250
+weight = 260
 +++
 
 The *Choria Server* is a replacement for the old *mcollectived* daemon.  This new daemon is written in Golang and it's very fast, light weight and embeddable while providing a MCollective compatability layer for hosting old agents.
