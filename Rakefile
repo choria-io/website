@@ -74,6 +74,6 @@ task :publish_docs do
   Rake::Task[:build_docs].invoke
 
   Dir.chdir(File.join(File.dirname(__FILE__), "out")) do
-    sh("netlify deploy -s zealous-babbage-1b685b -p .")
+    sh("netlify deploy -s e293fe95-122a-4b0a-ae62-c74fa588ab8d -p -d .")
   end
 end
