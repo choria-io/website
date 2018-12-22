@@ -4,3 +4,9 @@
 /docs/deployment/nats/  /docs/deployment/broker/  301
 /schemas/*   https://raw.githubusercontent.com/choria-io/schemas/master/:splat 301
 /mcollective /docs/about/mcollective/ 302
+
+https://marionette-collective.com/* https://choria.io/docs/about/mcollective/ 301!
+https://marionette-collective.org/* https://choria.io/docs/about/mcollective/ 301!
+https://www.marionette-collective.com/* https://choria.io/docs/about/mcollective/ 301!
+https://www.marionette-collective.org/* https://choria.io/docs/about/mcollective/ 301!
+https://wonderful-curie-7b58ce.netlify.com/* https://choria.io/:splat 301!
