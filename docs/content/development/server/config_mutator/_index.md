@@ -104,7 +104,7 @@ func (c *Mutator) PluginVersion() string {
 
 // PluginName implements plugin.Pluggable
 func (c *Mutator) PluginName() string {
-	return "Acme Dynamic Protocol Security Configurator version " + c.PluginVersion()
+	return "Acme Dynamic Protocol Security Configurer version " + c.PluginVersion()
 }
 
 // PluginType implements plugin.Pluggable
@@ -151,6 +151,7 @@ var _ = Describe("configurator/acme", func() {
 		log := logrus.NewEntry(logger)
 
 		protocol.Secure = "false"
+		build.TLS = "false"
 
 		c.Choria.SecurityProvider = "puppet"
 		m.Mutate(c, log)
@@ -173,6 +174,7 @@ var _ = Describe("configurator/acme", func() {
 		c.Choria.FileSecurityCA = "testdata/nonzero.txt"
 		m.Mutate(c, log)
 		Expect(protocol.IsSecure()).To(BeTrue())
+		Expect(build.HasTLS()).To(BeTrue())
 	})
 })
 ```
@@ -182,6 +184,7 @@ var _ = Describe("configurator/acme", func() {
 You can now build your own Choria instance based on the [Packaging](../packaging) documentation, you'll load your plugin as follows in the `packager/user_plugins.yaml`
 
 ```yaml
+---
 dynamic_security: gitlab.example.net/ops/dynamic_security
 ```
 

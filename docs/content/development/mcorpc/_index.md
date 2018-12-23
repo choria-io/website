@@ -1,5 +1,6 @@
 +++
 title = "MCollective RPC"
+weight = 10
 +++
 
 MCollective RPC is a framework that first appeared in The Marionette Collective that Choria provides a compatability layer for.
