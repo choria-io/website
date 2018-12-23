@@ -59,11 +59,11 @@ func (c *Mutator) Mutate(cfg *config.Config, log *logrus.Entry) {
 	}
 
 	if fileExistNonZero(cfg.Choria.FileSecurityCertificate) && fileExistNonZero(cfg.Choria.FileSecurityKey) && fileExistNonZero(cfg.Choria.FileSecurityCA) {
-        log.Info("Enabling protocol security since all SSL configuration paths exist")
+		log.Info("Enabling protocol security since all SSL configuration paths exist")
 
-        // These adjust the build flags, they are always strings as they are setable from the CLI
-        protocol.Secure = "true"
-        build.TLS = "true"
+		// These adjust the build flags, they are always strings as they are setable from the CLI
+		protocol.Secure = "true"
+		build.TLS = "true"
 	}
 }
 
@@ -189,3 +189,11 @@ dynamic_security: gitlab.example.net/ops/dynamic_security
 ```
 
 Once built the output from `choria buildinfo` will show your mutator loaded.
+
+```
+$ choria buildinfo
+...
+Configuration Mutators:
+       Acme Dynamic Protocol Security Configurer version 0.0.1
+...
+```
