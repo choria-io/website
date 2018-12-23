@@ -12,7 +12,9 @@ This is generally fine and I imagine you want to use this kind of plugin only in
  * You want to look up hosts to connect to using means other than SRV or static configuration
  * You want to prepare a token or other kind of credential, perhaps fetched from credential store during initialization
 
-These are all pretty weird edge cases, some of them might be better served by creating a specific kind of plugin in the Choria framework - like the token cases - but regardless you can use this to solve some pretty weird edge cases.
+Mutators called after the server.conf is read and configuration defaults are set but before the framework initialize, so you have a chance to basically do any weird startup fiddling with the configuration or build settings.
+
+These are all pretty weird edge cases, some of them might be better served by creating a specific kind of plugin in the Choria framework - like the token cases - but regardless you can use this to solve dynamic configuration cases pre server initialization.
 
 Multiple mutators can be run in the same Choria instance.
 
@@ -40,13 +42,13 @@ type Mutator struct{}
 // paths, if those are set and a files all exist, are > 0 then protocol security
 // is enabled otherwise the setting is left as is
 func (c *Mutator) Mutate(cfg *config.Config, log *logrus.Entry) {
-    // We only want to do this if we're running in file security mode, makes no sense in others
+	// We only want to do this if we're running in file security mode, makes no sense in others
 	if cfg.Choria.SecurityProvider != "file" {
 		return
 	}
 
-    // We are already running in Secure mode, perhaps a compile time option, regardless lets not support
-    // downgrading security - only upgrading security
+	// We are already running in Secure mode, perhaps a compile time option, regardless lets not support
+	// downgrading security - only upgrading security
 	if protocol.IsSecure() {
 		return
 	}
@@ -59,7 +61,7 @@ func (c *Mutator) Mutate(cfg *config.Config, log *logrus.Entry) {
 	if fileExistNonZero(cfg.Choria.FileSecurityCertificate) && fileExistNonZero(cfg.Choria.FileSecurityKey) && fileExistNonZero(cfg.Choria.FileSecurityCA) {
         log.Info("Enabling protocol security since all SSL configuration paths exist")
 
-        // these adjust the build glads, they are always strings as they are setable from the CLI
+        // These adjust the build flags, they are always strings as they are setable from the CLI
         protocol.Secure = "true"
         build.TLS = "true"
 	}
@@ -81,7 +83,7 @@ func fileExistNonZero(p string) bool {
 
 ### Plugin
 
-The plugin needs to have the *plugin.Pluggable* interface implemented, see the [../plugin_interface](Plugin Interface) documentation for the background on this:
+The plugin needs to have the *plugin.Pluggable* interface implemented, see the [Plugin Interface](../plugin_interface) documentation for the background on this:
 
 ```go
 package acme
@@ -177,7 +179,7 @@ var _ = Describe("configurator/acme", func() {
 
 ## Compile into Choria
 
-You can now build your own Choria instance based on the [../packaging](Packaging) documentation, you'll load your plugin as follows in the `packager/user_plugins.yaml`
+You can now build your own Choria instance based on the [Packaging](../packaging) documentation, you'll load your plugin as follows in the `packager/user_plugins.yaml`
 
 ```yaml
 dynamic_security: gitlab.example.net/ops/dynamic_security
