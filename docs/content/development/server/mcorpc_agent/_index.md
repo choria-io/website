@@ -32,9 +32,11 @@ var metadata = &agents.Metadata{
 }
 
 func New(mgr server.AgentManager) (*mcorpc.Agent, error) {
-    agent := mcorpc.New("echo", metadata, mgr.Choria(), mgr.Logger())
+	agent := mcorpc.New("echo", metadata, mgr.Choria(), mgr.Logger())
 
-    agent.MustRegisterAction("ping", pingAction)
+	agent.MustRegisterAction("ping", pingAction)
+
+	return agent, err
 })
 
 func pingAction(ctx context.Context, req *mcorpc.Request, reply *mcorpc.Reply, agent *mcorpc.Agent, conn choria.ConnectorInfo) {
