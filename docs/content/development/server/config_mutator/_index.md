@@ -1,6 +1,6 @@
 +++
 title = "Config Mutator"
-weight = 30
+weight = 40
 +++
 
 Configuration Mutator plugins allow you to dynamically adjust the configuration of the Choria Server. The server starts up with a number of hard coded defaults and build flags set during compilation and then reads the server.conf.
