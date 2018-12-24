@@ -5,17 +5,17 @@ weight = 50
 
 Choria Server supports a Provisioning Mode where it will start up with a specific configuration allowing a piece of software to dynamically configure it. You can read more about this in the [Provisioning Agent](https://github.com/choria-io/provisioning-agent) repository we also have a [video](https://youtu.be/7sGHf55_OQM) explaining the concept and message flow.
 
-The problem with provisioning is that you have to connect somewhere where there is a provisioner. You can imagine for example if you have 30 data centers you might want to provision regionally to each DC. You could make it so that you always arrange for lets say `choria-provision.$dc.example.net` resolving as `choria-provision` but what if you have many different kinds of network or do not have the ability to influence DNS in this manner? A simple static build time configuration does not work.
+The problem with provisioning is that you have to connect somewhere where there is a provisioner. You can imagine, for example, if you have 30 data centers you might want to provision regionally to each DC. You could make it so that you always arrange for lets say *choria-provision.$dc.example.net* resolving as *choria-provision* but what if you have many different kinds of network or do not have the ability to influence DNS in this manner? A simple static build time configuration does not work.
 
-Choria therefore let you plug your own logic into it where you can resolve things however you wish.  You can do FQDN parsing, or call out to your cloud provider API, or speak to something like Consul or etcd to do service discovery. This plugin is called a `Provisioning Target` and we'll show you how to build a basic one.
+Choria therefore let you plug your own logic into it where you can resolve things however you wish.  You can do FQDN parsing, or call out to your cloud provider API, or speak to something like Consul or etcd to do service discovery. This plugin is called a *Provisioning Target* and we'll show you how to build a basic one.
 
 ## File based hints
 
-Lets write a Provisioning Target that reads `/etc/dc.json` and construct a provisioning name using that information:
+Lets write a Provisioning Target that reads */etc/dc.json* and construct a provisioning name using that information:
 
-The interface you need to implement is `provtarget.TargetResolver`, it looks like this ([godoc](https://godoc.org/github.com/choria-io/go-choria/provtarget)):
+The interface you need to implement is *provtarget.TargetResolver*, it looks like this ([godoc](https://godoc.org/github.com/choria-io/go-choria/provtarget)):
 
-```golang
+```go
 // TargetResolver is capable of resolving the target brokers for provisioning into list of strings in the format host:port
 type TargetResolver interface {
 	// Name the display name that will be shown in places like `choria buildinfo`
@@ -28,7 +28,7 @@ type TargetResolver interface {
 
 That's pretty easy, lets write a small provider.
 
-It's important that these providers should rety more or less forever - or perhaps fall back to a static value.  Any number of things can prevent this from working and you would not want your unprovisioned servers to exit and remain unprovisioned. So we retry forever with a backoff based sleep between tries.
+It's important that these resolvers should retry more or less forever - or perhaps fall back to a static value.  Any number of things can prevent this from working and you would not want your unprovisioned servers to exit and remain unprovisioned. So we retry forever with a backoff based sleep between tries.
 
 ```go
 package provtarget
@@ -66,7 +66,7 @@ func (r *HintResolver) Targets(ctx context.Context, log *logrus.Entry) (targets 
 			return targets
 		}
 
-		// sleep and try again
+		// sleep in a way that the context can interrupt and try again
 		log.Infof("Sleeping %s before trying to resolve provisioning target again", backoff.FiveSec.Duration(try))
 		backoff.FiveSec.InterruptableSleep(ctx, try)
 
@@ -81,7 +81,6 @@ func resolve(log *logrus.Entry) (targets []string, err error) {
 	}
 
 	hint := &DCHint{}
-
 	err = json.Unmarshal(d, hint)
 	if err != nil {
 		return targets, err
@@ -136,7 +135,7 @@ You can now build your own Choria instance based on the [Packaging](../packaging
 
 ```yaml
 ---
-dc_hint_provisioner: gitlab.example.net/ops/dc_hint_provtarget
+dc_hint_provtarget: gitlab.example.net/ops/dc_hint_provtarget
 ```
 
 Once built the `choria buildinfo` command will show you that you have yours enabled:
