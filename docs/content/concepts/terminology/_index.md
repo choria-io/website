@@ -85,7 +85,7 @@ See [Federations of Collectives](../../federation)
 
 ## Marionette Collective / MCollective
 
-A Orchestration System written by the author of Choria and sold to Puppet Inc. This system was included in Puppet since 2009 and is being sunset late 2018.
+A Orchestration System written by the author of Choria and sold to Puppet Inc. This system was included in Puppet since 2009 and sunset in late 2018.
 
 Choria builds on many of the ideas, modernizes a lot of the concepts and provide a compatibility framework for MCollective agents while looking towards the future.
 

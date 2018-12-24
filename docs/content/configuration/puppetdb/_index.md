@@ -6,7 +6,7 @@ weight = 210
 
 Choria includes a [PuppetDB](https://docs.puppet.com/puppetdb/) based discovery plugin but it's not enabled by default.
 
-This is an advanced PuppetDB plugin that is subcollective aware and supports node, facts with `dot notation`, class and agent filters. It uses the new _Puppet PQL_ under the hood and so requires a very recent PuppetDB.
+This is an advanced PuppetDB plugin that is Subcollective aware and supports node, facts with `dot notation`, class and agent filters. It uses the new _Puppet PQL_ under the hood and so requires a very recent PuppetDB.
 
 Using it you get a very fast discovery workflow but without the awareness of which nodes are actually up and responding, it's suitable for situations where you have a stable network, or really care to know when known machines are not responding as is common during software deployments. It makes a very comfortable to use default discovery plugin.
 

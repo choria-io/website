@@ -12,4 +12,4 @@ On the nodes the primary focus will be around _Agents_ which are API's your node
 
 On your _Client_ - where you run _mco ...._ commands - the interaction comes in the form of API clients, CLI clients or specialised tools like Playbooks.  You can use the APIs to write your own custom clients to manage your infrastructure in any way you choose such as custom daemons that react to outages and do remediation by interacting with the Agents on your nodes via the APIs.
 
-A large focus of this work is in adapting the client and agent model created in The Marionette Collective and having Choria present a compatability layer, the documentation here is largely adapted from this legacy system.
+A large focus of this work is in adapting the client and agent model created in The Marionette Collective and having Choria present a compatibility layer, the documentation here is largely adapted from this legacy system.

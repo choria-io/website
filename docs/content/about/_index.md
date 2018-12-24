@@ -4,7 +4,7 @@ pre = "<b>1. </b>"
 menu = "about"
 weight = 10
 +++
-
+ 
 ## Overview
 
 Choria is an ongoing project to create a new Orchestration System with roots in The Marionette Collective (mcollective).  It's part trivially installable mcollective and part brand new development of turn key end user features, new content and modernization.

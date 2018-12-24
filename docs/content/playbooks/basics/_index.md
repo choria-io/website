@@ -209,7 +209,6 @@ plan acme::slack (
 }
 ```
 
-
 You can run this playbook through the CLI, but lets look at help first, you can see our inputs are provided via *--cluster* or as json.
 
 ```bash

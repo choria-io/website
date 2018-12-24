@@ -14,7 +14,7 @@ The Choria project provides a path forward for users who wish to keep using MCol
 
 We welcome users of The Marionette Collective who wish to continue using it, we have gone to great length to ensure you can continue as always - and the Choria project added a lot of new and exciting features to the platform.
 
-While the Choria project builds heavily ontop of the foundation laid by The Marionnette Collective this does not mean an end or even a significant hurdle for this project.
+While the Choria project builds heavily on top of the foundation laid by The Marionnette Collective this does not mean an end or even a significant hurdle for this project.
 
 Today in Puppet 5.x there is no concern everything continues to work, once Puppet 6 is released there will be a short delay until the Choria project is ready to run on Puppet 6.
 

@@ -61,7 +61,7 @@ Note: Please see the [agents](agents/) and [clients](clients/) pages for a thoro
 But you can still write your own clients, it's incredibly simple, full details of a client is out of scope for the introduction - see the [Writing Clients](clients/) page instead for full details - but here is some sample code to do the same call as above including full discovery and help output:
 
 ```ruby
-#!/bin/env ruby
+#!/usr/bin/env ruby
 
 require "mcollective"
 

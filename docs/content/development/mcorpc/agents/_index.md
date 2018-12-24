@@ -80,7 +80,6 @@ You'll notice it comes in two parts, the agent definition in the DDL file, and t
 
 The agent name is derived from the class name, the example code creates the ruby class *MCollective::Agent::Echo*, the agent name for this would be *echo*.
 
-
 ## Help and the Data Description Language
 
 We have a file that goes together with an agent implementation which is used to describe the agent in detail.  This is referred to as the ddl file, _$libdir/mcollective/agent/echo.ddl_ in the previous example.
@@ -88,7 +87,6 @@ We have a file that goes together with an agent implementation which is used to 
 The DDL file can be used to generate help texts, and to declare the validation that arguments must pass.  This information helps us in making more robust clients and can be used to auto generate user interfaces.
 
 We'll not say much more about the DDL here, for more details read the [DDL](../ddl/) reference.
-
 
 ## Actions
 
@@ -117,7 +115,6 @@ action "echo", :description => "Echos back any message it receives" do
         :default     => ""
 end
 ```
-
 
 ### Implementing Actions
 
@@ -162,7 +159,7 @@ Accessing via _request.data_ will give you full access to all the normal Hash me
 request[:msg]
 ```
 
-Accesing via _request[]_ will only give you access to _include?_ like behaviour, nil will be returned for unknown keys or data that is not supplied.
+Accessing via _request[]_ will only give you access to _include?_ like behaviour, nil will be returned for unknown keys or data that is not supplied.
 
 #### Running Shell Commands
 
@@ -254,7 +251,6 @@ end
 
 This will search each configured libdir for _mcollective/agent/$agent_name/script.py_ and _agent/$agent_name/script.py_, and will use the former if found. If you specified a full path it will not try to find the file in libdirs.
 
-
 ## Constructing Replies
 
 ### Reply Data
@@ -267,7 +263,7 @@ reply[:msg] = request[:msg]
 
 ### Reply Status
 
-Replies have a strong concept of success or failure indicating the overall success of the request, the table below shows the valid statusses:
+Replies have a strong concept of success or failure indicating the overall success of the request, the table below shows the valid statuses:
 
 |Status Code|Description|Exception Class|
 |-----------|-----------|---------------|

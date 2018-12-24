@@ -96,18 +96,18 @@ The key to error handling is to pass `_catch_errors => true` to *choria::run_pla
 choria::run_playbook("example::app_upgrade", _catch_errors => true,
   "action" => "appmgr.restart",
   "nodes" => $nodes)
-
     .choria::on_error |Choria::TaskResults $err| {
       notice("Application upgrade failed: ${err.message}, recovering using example::recover")
 
-      choria::run_playbook("example::rocover",
+      choria::run_playbook("example::recover",
         "cluster" => $cluster
       )
 
-      fail("deploying cluster ${cluster} failed, recovery run succesfully")}
-
+      fail("deploying cluster ${cluster} failed, recovery run successfully")
+    }
     .choria::on_success |Choria::TaskResults $results| {
-      notice("deployment succesful on cluster ${cluster}")}
+      notice("deployment successful on cluster ${cluster}")
+    }
 ```
 
 This syntax might be a bit foreign to Puppet users, here's another approach but now you need temporary variables which can be very annoying:
@@ -119,15 +119,15 @@ $result = choria::task("mcollective", _catch_errors => true,
 )
 
 $result.choria::on_error |$results| {
-  choria::run_playbook("example::rocover",
+  choria::run_playbook("example::recover",
     "cluster" => $cluster
   )
 
-  fail("deploying cluster ${cluster} failed, recovery run succesfully")
+  fail("deploying cluster ${cluster} failed, recovery run successfully")
 }
 
 $result.choria::on_success |$results| {
-  notice("deployment succesful on cluster ${cluster}")
+  notice("deployment successful on cluster ${cluster}")
 }
 ```
 

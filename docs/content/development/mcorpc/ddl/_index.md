@@ -109,7 +109,7 @@ Importantly you do not need to have the _service.rb_ on a machine to use the DDL
 
 You can view a human readable version of this using *mco plugin doc &lt;agent&gt;* command:
 
-```ruby
+```nohighlight
 % mco plugin doc service
 service
 =======
@@ -157,7 +157,7 @@ As you see above the input block has _:type_ option, types can be _:string_, _:l
 
 #### :string type
 
-The string type validates initially that the input is infact a String, then it validates the length of the input and finally matches the supplied Regular Expression.
+The string type validates initially that the input is in fact a String, then it validates the length of the input and finally matches the supplied Regular Expression.
 
 Both _:validation_ and _:maxlength_ are required arguments for the string type of input.
 

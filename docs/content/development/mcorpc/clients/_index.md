@@ -306,9 +306,9 @@ Just note these now, I'll reference them later down.
 
 ### MCollective RPC style results
 
-MCollective RPC provides a trimmed down version of results from the core Client library - RPC being a set of conventions ontop of the core the aim is to make a more user friendly data format for RPC use.
+MCollective RPC provides a trimmed down version of results from the core Client library - RPC being a set of conventions on top of the core the aim is to make a more user friendly data format for RPC use.
 
-This is an important difference between the two approaches, in one you can parse the results as it comes in, in the other you will only get results after processing is done.  This would be the main driving facter for choosing one over the other.
+This is an important difference between the two approaches, in one you can parse the results as it comes in, in the other you will only get results after processing is done.  This would be the main driving factor for choosing one over the other.
 
 Here's an example that will print out results in a custom way.
 

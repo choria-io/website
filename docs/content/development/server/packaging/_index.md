@@ -10,6 +10,7 @@ The packaging used to build the open source Choria builds can also be used to bu
 Every Choria build needs a build specification, below we'll show one that build a custom Choria called acme-choria with custom paths and settings. This file goes into `packager/buildspec.yaml`.
 
 ```yaml
+---
 # Flags are variables that can be set by the linker to particular values. These are all String values, if you are linking
 # in your own code you can add variables for those here too, below is the current set of Choria build time settables.  More
 # about their individual uses later in this guide in sections dedicated to types of plugin
@@ -119,13 +120,13 @@ There are a few variables you can use to adjust things for what packages to buil
 
 So to build full set of packages and binaries we do:
 
-```
+```bash
 $ VERSION=1.2.3-acme BUILD=acme PACKAGES=el7_64,bionic_64 rake build
 ```
 
 Or just the binaries
 
-```
+```bash
 $ VERSION=1.2.3-acme BUILD=acme rake build
 ```
 
@@ -201,4 +202,4 @@ I can now build custom builds that copies in my *user_plugins.yaml* and *buildsp
 CHORIA_TAG=0.8.0 PKG_VERSION=0.8.1-acme rake build
 ```
 
-The result will be Choria 0.8.0 with my customizations called *acme-choria-0.8.1-acme.*.rpm*
+The result will be Choria 0.8.0 with my customisations called *acme-choria-0.8.1-acme.*.rpm*

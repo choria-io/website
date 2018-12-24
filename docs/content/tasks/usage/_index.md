@@ -72,11 +72,11 @@ Use 'mco tasks run puppet_conf' to run this task
 
 ### Running a Task
 
-Tasks are always run dissociated from the MCollectived, you can therefore use them to restart MCollective, do system upgrades and other long running tasks.
+Tasks are always run dissociated from the *mcollectived*, you can therefore use them to restart MCollective, do system upgrades and other long running tasks.
 
 Lets look at the task input first
 
-```
+```nohighlight
 $ mco tasks run puppet_conf
 The action option is mandatory
 The setting option is mandatory
@@ -84,7 +84,7 @@ The setting option is mandatory
 Please run with --help for detailed help
 ```
 
-```
+```nohighlight
 $ mco tasks run puppet_conf --help
 
 Puppet Task Orchestrator
@@ -109,7 +109,7 @@ Application Options
     -h, --help                       Display this screen
 ```
 
-I've removed the bulk of the Help output here, the thing to note are the parameters like _--action, these are inputs defined by the task exposed on the CLI.
+I've removed the bulk of the Help output here, the thing to note are the parameters like _--action_, these are inputs defined by the task exposed on the CLI.
 
 In most cases Choria will attempt to convert a string like _1_ into an Integer when that is what the task need so for most tasks you can pass the options as normal.  You can though also use a YAML or JSON file as input, for example:
 
@@ -185,12 +185,12 @@ Requesting task metadata for request 45250c07824f5922be68468d08f6b76c
 
 
 Finished processing 1 / 1 hosts in 171.36 ms
-</code></pre>
+```
 
-And finally you can retrieve all the output and statusses as JSON:
+And finally you can retrieve all the output and statuses as JSON:
 
-<pre><code class="nohighlight">
-$ mco tasks status 45250c07824f5922be68468d08f6b76c --json -I node1.example.net|jq .
+```nohighlight
+$ mco tasks status 45250c07824f5922be68468d08f6b76c --json -I node1.example.net | jq .
 {
   "items": [
     {
