@@ -3,7 +3,7 @@ title = "MCO RPC Agent"
 weight = 20
 +++
 
-Agents can be written that is compatible with the Ruby MCollective RPC API - covered separately in this section - here I'll show a very basic echo agent and how to plug it into Choria Server at compile time.
+Agents can be written that are compatible with the Ruby MCollective RPC API - covered separately in this section - here I'll show a very basic echo agent and how to plug it into Choria Server at compile time.
 
 ## Echo Agent
 
@@ -21,47 +21,49 @@ type EchoReply struct {
     TimeStamp int `json:"timestamp"`
 }
 
-func New(mgr server.AgentManager) (*mcorpc.Agent, error) {
-    metadata := &agents.Metadata{
-		Name:        "echo",
-		Description: "Choria Echo Agent",
-		Author:      "R.I.Pienaar <rip@devco.net>",
-		Version:     "1.0.0",
-		License:     "Apache-2",
-		Timeout:     2,
-		URL:         "http://choria.io",
-	}
+var metadata = &agents.Metadata{
+	Name:        "echo",
+	Description: "Choria Echo Agent",
+	Author:      "R.I.Pienaar <rip@devco.net>",
+	Version:     "1.0.0",
+	License:     "Apache-2",
+	Timeout:     2,
+	URL:         "http://choria.io",
+}
 
+func New(mgr server.AgentManager) (*mcorpc.Agent, error) {
     agent := mcorpc.New("echo", metadata, mgr.Choria(), mgr.Logger())
 
     agent.MustRegisterAction("ping", pingAction)
 })
 
-func echoAction(ctx context.Context, req *mcorpc.Request, reply *mcorpc.Reply, agent *mcorpc.Agent, conn choria.ConnectorInfo) {
+func pingAction(ctx context.Context, req *mcorpc.Request, reply *mcorpc.Reply, agent *mcorpc.Agent, conn choria.ConnectorInfo) {
 	i := &EchoRequest{}
 	if !mcorpc.ParseRequestData(i, req, reply) {
-		// reply was already filled in with appropriate error messages by ParseRequestData
 		return
 	}
 
 	reply.Data = &EchoReply{i.Message}
 }
+
+// ChoriaPlugin produces the Choria pluggable plugin it uses the metadata
+// to dynamically answer questions of name and version
+func ChoriaPlugin() plugin.Pluggable {
+	return mcorpc.NewChoriaAgentPlugin(metadata, New)
+}
 ```
 
 You'll have to write a DDL file like for Ruby agents, review the MCO RPC section in the docs about that, here we're mainly covering compiling this into the server.
 
-Next we have to implement the *plugin.Pluggable* interface, there's a convenient helper to do this for you, lets see how *plugin.go* of the agent would look:
+Notice we show the `ChoriaPlugin()` function here that you saw in the [Plugin Interface](../plugin_interface) documentation, this is all you need to do as the framework will use the agent Metadata to supply values like Version, Name etc.
 
-```golang
-package echo
+## Compile into Choria
 
-import (
-	"github.com/choria-io/go-choria/plugin"
-	"github.com/choria-io/mcorpc-agent-provider/mcorpc"
-)
+You can now build your own Choria instance based on the [Packaging](../packaging) documentation, you'll load your plugin as follows in the `packager/user_plugins.yaml`
 
-// ChoriaPlugin produces the plugin for choria
-func ChoriaPlugin() plugin.Pluggable {
-	return mcorpc.NewChoriaAgentPlugin(Metadata, New)
-}
+```yaml
+---
+echo_agent: gitlab.example.net/ops/echo_agent
 ```
+
+Once built you'll be able to interact with the echo agent via any MCO RPC client - as long as you also write the DDL files.
