@@ -20,9 +20,10 @@ This guide will cover the following:
 What this guide will not cover:
 
  * How PKI works. [This guide](https://smallstep.com/blog/everything-pki.html) is very good.
- * How to get the certificates on every node, this step is essentially going to be unique per site, we cannot realistically cover this for everyone. The [Choria Server Provisioner](https://github.com/choria-io/provisioning-agent) can enroll nodes in any CA with an API.
+ * How to get the certificates on every node, this step is essentially going to be unique per site, we cannot realistically cover this for everyone. The [Choria Server Provisioner](https://github.com/choria-io/provisioning-agent) can enroll nodes in any CA with an API
  * Certificate revocation and renewal
- * How to use cfssl in detail or it's deployment best practices
+ * How to use CFSSL in detail or its deployment best practices
+  * For documentation on the CFSSL project, and how to run it in a client/server fasion, please visit the [Cloudlare CFSSL documentation repo](https://github.com/cloudflare/cfssl/tree/master/doc)
 
 ## Requirements
 
@@ -30,18 +31,18 @@ What this guide will not cover:
 
 ## Root Certificate Authority
 
-In PKI the Root CA is your main CA that you generally keep offline on something like a USB stick or encrypted somewhere.  You use it to generate new Intermediate Certificate Authorities - in our example each data center is a Intermediate CA.
+In PKI the Root CA is your main CA that you generally keep offline on something like a USB stick or encrypted somewhere.  You use it to generate new Intermediate Certificate Authorities - in our example each data center is a Intermediate CA.  It is very important that you protect this secret.  If it's compromised,  your entire chain of trust will be broken.  An intermediate CA will help reduce the scope of the damage.
 
 The data center then deploys a Certificate Authority bundle that declares the chain of trust and states which Certificate Authorities are to be trusted by a particular node.
 
 Here we will create our Root Certificate Authority using CFSSL, this involves a few steps:
 
- * Initialize the Root CA
- * Set it's signing policy
+* Initialize the Root CA
+* Set the signing policy of the intermediate CAs
 
 ### Initialize the CA
 
-cfssl works by reading JSON files that represents the certificate requests etc, lets create one describing our Root CA:
+CFSSL works by reading JSON files that represents the certificate requests etc, lets create one describing our Root CA:
 
 Create `csr_root.json`:
 
@@ -66,7 +67,7 @@ Create `csr_root.json`:
 }
 ```
 
-The Root CA has a validity of 30 years and you can see it's various properties.
+The Root CA has a validity of 30 years and you can see the various properties.
 
 We can now initiate our Root Authority:
 
@@ -74,7 +75,7 @@ We can now initiate our Root Authority:
 cfssl gencert -initca csr_root.json | cfssljson -bare root_ca
 ```
 
-You should see files `root_ca.csr`, `root_ca.pem` and `root_ca-key.pem`.  These are the public and private keys for your CA, you should keep this safe, if you loose this or they get compromised the entire infrastructure is at risk.
+You should see files `root_ca.csr`(certificate signing request), `root_ca.pem`(public key) and `root_ca-key.pem`(private key).  The private key for your CA should be stored in a safe location, preferably offline, and encrypted.
 
 ### Signing Policy
 
@@ -98,9 +99,13 @@ We need to state what the policy this CA will follow when signing new Certificat
 
 This means Certificate Authorities being created by this CA will also have a long life and will be able to sign certs on their own.
 
+{{% notice tip %}}
+Of particular note is the _usages_ field - these will specify Extended Key Usage policies on the request which downstream consumers can use to validate the uses of the certificate, should they be presented with it.  Choria enforces these policies by default.
+{{% /notice %}}
+
 ## London Intermediate CA
 
-Each DC needs a CSR that will be signed by the Root CA, this signing process creates the chain of trust from certificate, to DC CA to Root CA.
+Each DC will need to generate a CSR that will be processed by the Root CA.  This signing process creates a chain of trust from the client and server certificates, combined with the intermediate CA, to the root CA.  As mentioned with the root CA private key, the intermediate CA private keys should be protected to the policies of your organization has for any important PKI infrastructure(ie offline if possible, encrypted if not).
 
 We'll do the following:
 
@@ -147,8 +152,8 @@ This will create the following files:
 |File|Description|
 |----|-----------|
 |london_ca.csr|The signing request that the Root will sign|
-|london_ca.pem|The unsigned intermediate so its useless, you can discard this one|
-|london_ca-key.pem|The private key for your CA, do not loose this or share it|
+|london_ca.pem|The unsigned intermediate so it's useless, you can discard this one|
+|london_ca-key.pem|The private key for your CA, do not lose this or share it|
 
 ### Sign the London CA using the Root CA
 
@@ -181,16 +186,23 @@ Create a file `server-signing.json` that has the following:
 
 This states that when signing a request from a particular server it should be able to do server related things - but not for example make new CAs - and that the signed certificate will be valid for 5 years.
 
+### Chained certificates
+
+When creating infrastructure with TLS and x509 certificates, you have several options.  At minimum, all servers will need to have a copy of the `root_ca.pem` file.  Servers should have a copy of their local intermediate CA (in this example, `london_ca.pem`) file in their CA bundle (as shown below), and clients can optionally present their own local intermediate CAs as part of their negotiation - this is particularly useful in cross DC requests where you might not have distributed the CA bundle universally, or have rotated the remote intermediate CA.
+
+In all cases, the certificate file on disk should contain the canoconical certificate of the _server_ or _client_ first, _then_ the intermediate CA(s).  It should not contain the root CA file.
+
+The CA root bundle ordering does not matter, but by convention the root CA should be present at the top.
+
 ### Create the London Bundle
 
-You should grab a copy of the root `ca.pem` and the `london_ca.pem` to create the bundle:
+You should grab a copy of the root `root_ca.pem` and the `london_ca.pem` to create the bundle:
 
 ```
-cat ca.pem >> bundle.pem
-cat london_ca.pem >> bundle.pem
+cat root_ca.pem london_ca.pem > bundle.pem
 ```
 
-This file will be distributed to all the servers.
+This file will be distributed to all the clients and servers within the _London_ DC.
 
 ## Enrolling a node
 
@@ -228,16 +240,16 @@ Every node will need a certificate matching its _fqdn_, lets create the CSR for 
 
 Now we generate our private key and the x509 format CSR:
 
-```
-cfssl genkey csr.json|cfssljson -bare server1.example.net
+```bash
+cfssl genkey csr.json | cfssljson -bare server1.example.net
 ```
 
 ### Signing it using the London CA
 
 The previous step would create your private key and a few others, you should transport the `server1.example.net.csr` to the `London CA` host and sign it there:
 
-```
-cfssl sign -ca london_ca.pem -ca-key london_ca-key.pem -config server-signing.json server1.example.net.csr
+```bash
+cfssl sign -ca london_ca.pem -ca-key london_ca-key.pem -config server-signing.json server1.example.net.csr | cfssljson -bare server1.example.net
 ```
 
 This will produce a `server1.example.net.pem` that you should copy back to the node into `/etc/choria/ssl`
@@ -290,8 +302,8 @@ Create the JSON CSR `/home/alice/.choria.d/ssl/csr.json`:
 
 Now we generate our private key and the x509 format CSR:
 
-```
-cfssl genkey csr.json|cfssljson -bare certificate
+```bash
+cfssl genkey csr.json | cfssljson -bare certificate
 ```
 
 ### Sign the CSR in the London DC
@@ -299,12 +311,28 @@ cfssl genkey csr.json|cfssljson -bare certificate
 The previous step would create your private key and a few others, you should transport the `certificate.csr` to the `London CA` host and sign it there:
 
 ```
-cfssl sign -ca london_ca.pem -ca-key london_ca-key.pem -config server-signing.json certificate.csr
+cfssl sign -ca london_ca.pem -ca-key london_ca-key.pem -config server-signing.json certificate.csr | cfssljson -bare certificate
 ```
 
 This will produce a `certificate.pem` that you should copy back to the node into `/home/alice/.choria.d/ssl/`
 
 You should also grab the `bundle.pem` and place this in `/home/alice/.choria.d/ssl/ca.pem`
+
+### Validating chain of trust
+
+The `openssl` command can by used to validate the chain of trust.  For the above example:
+
+```bash
+openssl verify -CAfile bundle.pem certificate.pem
+certificate.pem: OK
+```
+
+If you are using intermediate certificates in _client_ or _server_ certificates(where the client/server certificate has the intermediate certificates present _after_ the public identity certificate), you'll want to specify the `-untrusted` flag:
+
+```bash
+openssl verify -CAfile bundle.pem -untrusted certificate.pem certificate.pem
+certificate.pem: OK
+```
 
 ### Configure Choria
 
