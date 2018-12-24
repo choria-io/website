@@ -101,6 +101,8 @@ This means Certificate Authorities being created by this CA will also have a lon
 
 {{% notice tip %}}
 Of particular note is the _usages_ field - these will specify Extended Key Usage policies on the request which downstream consumers can use to validate the uses of the certificate, should they be presented with it.  Choria enforces these policies by default.
+
+The *ca_constraint* key is to prevent the intermediate certificate from being able to create additional certificate authorities underneath it (or, if the value is set to non-zero, that many levels of CAs underneath it).  For the purposes of this demonstration, we are leaving it at zero.
 {{% /notice %}}
 
 ## London Intermediate CA
