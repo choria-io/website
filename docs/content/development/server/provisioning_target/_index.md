@@ -39,11 +39,12 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
-type HintResolver struct{}
-
+// DCHint is the data to put in the JSON file
 type DCHint struct {
 	DC string `json:"datacenter"`
 }
+
+type HintResolver struct{}
 
 // Name implements provtarget.TargetResolver
 func (r *HintResolver) Name() string {
@@ -115,7 +116,7 @@ func (r *HintResolver) PluginVersion() string {
 
 // PluginName implements plugin.Pluggable
 func (r *HintResolver) PluginName() string {
-	return r.Name()
+	return r.Name() + " version " + r.PluginVersion()
 }
 
 // PluginType implements plugin.Pluggable
@@ -143,6 +144,6 @@ Once built the `choria buildinfo` command will show you that you have yours enab
 ```bash
 $ choria buildinfo
 ...
-    Provisioning Target Resolver: Acme DC hints Provisioning Target
+    Provisioning Target Resolver: Acme DC hints Provisioning Target version 1.0.0
 ...
 ```
