@@ -54,15 +54,15 @@ func (r *HintResolver) Targets(ctx context.Context, log *logrus.Entry) (targets 
 	try := 1
 
 	for {
+		// check the context before starting a try
+		if ctx.Err() != nil {
+			return targets
+		}
+
 		targets, err := resolve(log)
 		if err != nil {
 			log.Errorf("Could not resolve provisioning targets: %s", err)
 		} else if len(targets) > 0 {
-			return targets
-		}
-
-		// got nothing, bail if context is dead
-		if ctx.Err() != nil {
 			return targets
 		}
 
