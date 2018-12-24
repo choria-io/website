@@ -252,4 +252,3 @@ end
 
 As you can see you pass the _halt_ helper an instance of the RPC Client statistics and it will then
 use that to do the right exit code.
-

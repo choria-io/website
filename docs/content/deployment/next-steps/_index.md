@@ -29,7 +29,7 @@ The active configuration used in Choria comes from using Puppet AIO defaults, qu
 records and reading configuration files.  The below information shows the completely resolved
 configuration that will be used when running Choria commands
 
-MCollective selated:
+MCollective related:
 
  MCollective Version: 2.9.1
   Client Config File: /etc/puppetlabs/mcollective/client.cfg
@@ -103,7 +103,7 @@ Summary of SRV Used:
 Finished processing 3 / 3 hosts in 228.40 ms
 ```
 
-Here we observe 3 nodes with 1 connected to *puppet1.example.net:4222* and 2 connected to *puppet2.example.net:4222*.  Add *--display allways* for much more details.
+Here we observe 3 nodes with 1 connected to *puppet1.example.net:4222* and 2 connected to *puppet2.example.net:4222*.  Add *--display always* for much more details.
 
 From the shell you set up the user in lets check the version of _puppet-agent_ installed on your nodes:
 

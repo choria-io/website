@@ -4,7 +4,7 @@ weight = 205
 toc = true
 +++
 
-There are a number of related projects in the project GitHub respositories, I'll call out a few key ones here:
+There are a number of related projects in the project GitHub repositories, I'll call out a few key ones here:
 
 ## Choria Plugins
 
@@ -32,7 +32,7 @@ A video demonstrating this capability can be seen below:
 
 ## Prometheus Streams
 
-Prometheus is a very flexible and scalable monitoring system but it has a very unfortunate Pull based system that requires vast amount of network ports to be opened between DCs. The [Choria Prometheus Streams](https://github.com/choria-io/prometheus-streams) project lets you poll in your remote DCs and have the metrics streamed over a NATS Streaming Server - and optionaly replicated using the Choria Stream Replicator.
+Prometheus is a very flexible and scalable monitoring system but it has a very unfortunate Pull based system that requires vast amount of network ports to be opened between DCs. The [Choria Prometheus Streams](https://github.com/choria-io/prometheus-streams) project lets you poll in your remote DCs and have the metrics streamed over a NATS Streaming Server - and optionally replicated using the Choria Stream Replicator.
 
 Using this you can create a single pane of glass for multiple data centers.  It's not for all uses - in fact it has a very narrow focus, review it's README carefully before adopting it.
 

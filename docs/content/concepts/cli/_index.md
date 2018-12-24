@@ -171,7 +171,7 @@ The order of events in this process are:
  * Show any results that were out of the ordinary
  * Show some statistics
 
-Chroia client applications aim to only provide the most relevant
+Choria client applications aim to only provide the most relevant
 information.  In this case, the application is not showing verbose
 information about the nine *OK* results, since the most important issue
 is the one *Failure*. Keep this in mind when viewing the results of

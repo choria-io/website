@@ -23,18 +23,18 @@ Below you'll see DNS records for the 2 SRV Records covering the Federation (left
 
 To discover the middleware for the Federation:
 
-```dns
-_mcollective-federation_server._tcp IN      SRV     0       0       4222    choria1.fed.example.net.
-                                    IN      SRV     0       0       4222    choria2.fed.example.net.
-                                    IN      SRV     0       0       4222    choria3.fed.example.net.
+```nohighlight
+_mcollective-federation_server._tcp IN  SRV 0 0 4222  choria1.fed.example.net.
+                                    IN  SRV 0 0 4222  choria2.fed.example.net.
+                                    IN  SRV 0 0 4222  choria3.fed.example.net.
 ```
 
 To discover the middleware for the Collective:
 
-```dns
-_mcollective-server._tcp            IN      SRV     0       0       4222    choria1.ldn.example.net.
-                                    IN      SRV     0       0       4222    choria2.ldn.example.net.
-                                    IN      SRV     0       0       4222    choria3.ldn.example.net.
+```nohighlight
+_mcollective-server._tcp            IN  SRV 0 0 4222  choria1.ldn.example.net.
+                                    IN  SRV 0 0 4222  choria2.ldn.example.net.
+                                    IN  SRV 0 0 4222  choria3.ldn.example.net.
 ```
 
 {{% notice tip %}}
@@ -51,14 +51,15 @@ While I show the Puppet code here for completeness, I recommend using Hiera to c
 
 ```puppet
 node "nats1.ldn.example.net" {
-  class{"choria":
+  class { "choria":
     srv_domain => "ldn.example.net"
   }
 
-  class{"choria::broker":
-    network_broker => true,
-    federation_broker => true,
+  class { "choria::broker":
+    network_broker     => true,
+    federation_broker  => true,
     federation_cluster => "london",
+
     network_peers => [
       "nats://choria1.ldn.example.net:4223",
       "nats://choria2.ldn.example.net:4223",
@@ -74,9 +75,10 @@ If you wish to configure the middleware manually rather than SRV records you can
 
 ```puppet
   class{"choria::broker":
-    network_broker => true,
-    federation_broker => true,
+    network_broker     => true,
+    federation_broker  => true,
     federation_cluster => "london",
+
     federation_middleware_hosts => [
       "choria1.fed.example.net:4222",
       "choria2.fed.example.net:4222",

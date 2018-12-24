@@ -8,7 +8,7 @@ toc = true
 
 Deploying MCollective with Choria is broken into the following main steps that the menu on the left guides you through:
 
-  * Decide your desired Choria Broker middleware topology and deploy it
+  * Decide on your desired Choria Broker middleware topology and deploy it
   * If required configure DNS records or manual host locations
   * Configure MCollective using the [choria/choria](https://forge.puppet.com/choria/choria) module
   * Create your first users and their authorization rules

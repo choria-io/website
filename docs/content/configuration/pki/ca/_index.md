@@ -4,7 +4,7 @@ toc = true
 weight = 100
 +++
 
-While Choria is configured by default to use the Puppet CA the system does support custom Certificate Authorities including Intermediatries.  You can use any software to produce these certificates as long as they make compliant x509 certificates.
+While Choria is configured by default to use the Puppet CA the system does support custom Certificate Authorities including intermediaries.  You can use any software to produce these certificates as long as they make compliant x509 certificates.
 
 This section will guide you through the creation of a layered CA setup for a Choria network using the [Cloudflare's PKI toolkit](https://cfssl.org/).
 
@@ -12,10 +12,10 @@ This section will guide you through the creation of a layered CA setup for a Cho
 
 This guide will cover the following:
 
- * Creating a *Example Root CA* that is used to sign a per datacenter intermediate CA
- * Creating a *London CA* and a *New York CA* that issues certificates in each datacenter
- * Create user certificates in each datacenter and configure Choria CLI
- * Configure individual servers in each data center
+ * Creating a *Example Root CA* that is used to sign a per datacentre intermediate CA
+ * Creating a *London CA* and a *New York CA* that issues certificates in each datacentre
+ * Create user certificates in each datacentre and configure Choria CLI
+ * Configure individual servers in each datacentre
 
 What this guide will not cover:
 
@@ -23,7 +23,7 @@ What this guide will not cover:
  * How to get the certificates on every node, this step is essentially going to be unique per site, we cannot realistically cover this for everyone. The [Choria Server Provisioner](https://github.com/choria-io/provisioning-agent) can enroll nodes in any CA with an API
  * Certificate revocation and renewal
  * How to use CFSSL in detail or its deployment best practices
-  * For documentation on the CFSSL project, and how to run it in a client/server fasion, please visit the [Cloudlare CFSSL documentation repo](https://github.com/cloudflare/cfssl/tree/master/doc)
+  * For documentation on the CFSSL project, and how to run it in a client/server fashion, please visit the [Cloudlare CFSSL documentation repo](https://github.com/cloudflare/cfssl/tree/master/doc)
 
 ## Requirements
 
@@ -192,7 +192,7 @@ This states that when signing a request from a particular server it should be ab
 
 When creating infrastructure with TLS and x509 certificates, you have several options.  At minimum, all servers will need to have a copy of the `root_ca.pem` file.  Servers should have a copy of their local intermediate CA (in this example, `london_ca.pem`) file in their CA bundle (as shown below), and clients can optionally present their own local intermediate CAs as part of their negotiation - this is particularly useful in cross DC requests where you might not have distributed the CA bundle universally, or have rotated the remote intermediate CA.
 
-In all cases, the certificate file on disk should contain the canoconical certificate of the _server_ or _client_ first, _then_ the intermediate CA(s).  It should not contain the root CA file.
+In all cases, the certificate file on disk should contain the canonical certificate of the _server_ or _client_ first, _then_ the intermediate CA(s).  It should not contain the root CA file.
 
 The CA root bundle ordering does not matter, but by convention the root CA should be present at the top.
 

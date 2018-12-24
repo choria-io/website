@@ -102,9 +102,7 @@ You can obtain a list of validators using the *plugin* application:
 
 Please specify a plugin. Available plugins are:
 
-.
-.
-.
+<snip>
 
 Validator Plugins:
   array                     Validates that a value is included in a list

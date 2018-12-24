@@ -113,7 +113,7 @@ $nodes = choria::discover("pql",
 )
 ```
 
-All non deactivated certnames will be extracted and used as discovery source. This also shows how to use a input variable and a reminder you should test MCollectivity connectivity to this sort of node set
+All non deactivated certnames will be extracted and used as discovery source. This also shows how to use a input variable and a reminder you should test MCollective connectivity to this sort of node set.
 
 |Option|Description|Sample|
 |------|-----------|------|
@@ -134,7 +134,6 @@ The script should just output one certname per line. It supports any arguments y
 {{% notice warning %}}
 I strongly suggest you validate any input you use as arguments here to not include things that might cause shell escapes.  You can do this using the `Choria::ShellSafe` data type.
 {{% /notice %}}
-
 
 |Option|Description|Sample|
 |------|-----------|------|

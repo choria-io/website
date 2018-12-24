@@ -35,5 +35,5 @@ Thus when you add your plugin to the plugin system like below in `packager/user_
 myplugin: github.com/mycorp/myplugin
 ```
 
-The system will call your *myplugin.ChoriaPlugin()* that should produce a *plugin.Pluggable*. An example of this can be found in the [Golang MCO RPC compatability layer](https://godoc.org/github.com/choria-io/mcorpc-agent-provider/mcorpc/golang).
+The system will call your *myplugin.ChoriaPlugin()* that should produce a *plugin.Pluggable*. An example of this can be found in the [Golang MCO RPC compatibility layer](https://godoc.org/github.com/choria-io/mcorpc-agent-provider/mcorpc/golang).
 

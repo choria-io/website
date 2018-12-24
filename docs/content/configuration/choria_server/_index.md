@@ -4,7 +4,7 @@ toc = true
 weight = 260
 +++
 
-The *Choria Server* is a replacement for the old *mcollectived* daemon.  This new daemon is written in Golang and it's very fast, light weight and embeddable while providing a MCollective compatability layer for hosting old agents.
+The *Choria Server* is a replacement for the old *mcollectived* daemon.  This new daemon is written in Golang and it's very fast, light weight and embeddable while providing a MCollective compatibility layer for hosting old agents.
 
 {{% notice tip %}}
 If your node runs Puppet 6 it will already be running the Choria Server

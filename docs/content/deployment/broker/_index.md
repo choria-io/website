@@ -85,7 +85,7 @@ node "nats1.example.net" {
 A note about large deploys such as when you have many thousands of nodes connected to a single NATS server.  NATS has no problem handling this but your kernel might consider the large amount of reconnects after you restarted NATS as a DDoS attempt and throttle the SYN packets.
 
 {{% notice tip %}}
-You can use the <a href="https://forge.puppet.com/thias/sysctl">thias/sysctl</a> module to manage this
+You can use the [thias/sysctl](https://forge.puppet.com/thias/sysctl) module to manage kernel parameters
 {{% /notice %}}
 
 You can overcome this by adjusting these sysctl settings:

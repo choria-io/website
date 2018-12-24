@@ -15,21 +15,21 @@ Given a NATS Streaming server setup with a cluster id of `prod_1`, the following
 class{"choria::broker":
   adapters => {
     "node_data" => {
-      "stream" => {
-        "type" => "natsstream",
+      "stream"  => {
+        "type"      => "natsstream",
         "clusterid" => "prod_1",
-        "topic" => "node_data",
-        "workers" => 10,
-        "servers" => [
+        "topic"     => "node_data",
+        "workers"   => 10,
+        "servers"   => [
           "stan1.example.net:4222",
           "stan2.example.net:4222",
           "stan3.example.net:4222"
         ]
       },
       "ingest" => {
-        "topic" => "mcollective.broadcast.agent.discovery",
+        "topic"    => "mcollective.broadcast.agent.discovery",
         "protocol" => "request",
-        "workers" => 10
+        "workers"  => 10
       }
     }
   }
