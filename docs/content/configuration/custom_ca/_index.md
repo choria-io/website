@@ -1,12 +1,16 @@
 +++
 title = "Custom Certificate Authority"
 toc = true
-weight = 100
+weight = 270
 +++
 
 While Choria is configured by default to use the Puppet CA the system does support custom Certificate Authorities including intermediaries.  You can use any software to produce these certificates as long as they make compliant x509 certificates.
 
 This section will guide you through the creation of a layered CA setup for a Choria network using the [Cloudflare's PKI toolkit](https://cfssl.org/).
+
+{{% notice tip %}}
+This is support from Choria Server 0.9.0 and the the mcollective-choria module version 0.12.1
+{{% /notice %}}
 
 ## Overview
 
