@@ -1,18 +1,3 @@
-desc "Capture a new version"
-task :snapshot do
-  abort("Please specify VERSION") unless ENV.include?("VERSION")
-  abort("%s is in the wrong format") unless ENV["VERSION"].match(/^\d+\.\d+\.\d+$/)
-
-  target = File.join(File.dirname(__FILE__), "docs_%s" % ENV["VERSION"])
-
-  abort("%s already exist" % target) if File.exist?(target)
-
-  mkdir(target)
-
-  cp_r "docs/content", target
-  cp_r "docs/static", target
-end
-
 desc "Build website"
 task :build_docs do
   Dir.chdir(File.dirname(__FILE__)) do
@@ -29,26 +14,8 @@ task :build_docs do
     sh("hugo -b %s/docs/ -d ../out/docs/" % ENV["CHORIA_SITE_NAME"])
   end
 
-  Dir.entries(File.dirname(__FILE__)).grep(/docs_\d+\.\d+\.\d+/).each do |docs_dir|
-    if docs_dir =~ /docs_(\d+\.\d+\.\d+)/
-      version = $1
-      source_dir = File.join(File.dirname(__FILE__), docs_dir)
-      out_dir = "out/docs/%s" % version
-
-      sh("mkdir -p %s" % out_dir)
-
-      Dir.chdir(File.join(File.dirname(__FILE__), docs_dir)) do
-        sh("rm -rf ../docs_template/content")
-        sh("rm -rf ../docs_template/static")
-        sh("cp -r content ../docs_template")
-        sh("cp -r static ../docs_template")
-        sh("cp -r ../docs/static/css ../docs_template/static")
-      end
-
-      Dir.chdir(File.join(File.dirname(__FILE__), "docs_template")) do
-        sh("hugo -b %s/docs/%s/ -d ../%s" % [ENV["CHORIA_SITE_NAME"], version, out_dir])
-      end
-    end
+  Dir.chdir(File.join(File.dirname(__FILE__), "blog")) do
+    sh("hugo -b %s/blog/ -d ../out/blog/" % ENV["CHORIA_SITE_NAME"])
   end
 
   Dir.chdir(File.join(File.dirname(__FILE__), "out")) do
@@ -76,4 +43,13 @@ task :publish_docs do
   Dir.chdir(File.join(File.dirname(__FILE__), "out")) do
     sh("netlify deploy -s e293fe95-122a-4b0a-ae62-c74fa588ab8d -p -d .")
   end
+end
+
+desc "Build for local consumption "
+task :publish_local_docs do
+  ENV["CHORIA_SITE_NAME"] = "http://localhost:8080" % Dir.pwd
+
+  Rake::Task[:build_docs].invoke
+
+  puts "execute: ruby -run -e httpd -- out"
 end

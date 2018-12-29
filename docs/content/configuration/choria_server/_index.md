@@ -28,8 +28,6 @@ The aim is to do the bulk of things that the old *mcollectived* did, it might do
   * It is available for Debian 9, Ubuntu LTS, Enterprise Linux 5-7 from the Choria Package Repositories.  No Windows support yet.
   * Agents written in Go - *rpcutil* and *choria_info* - cannot be limited using the policy system and does not produce audit logs.  Planned before GA.
   * To communicate with this daemon you have to configure your client to be JSON pure.  Ruby *mcollectived* supports JSON mode too so you can run a mix mode network, but JSON mode has a few issues today:
-    * _mco facts_ does not work
-    * Code you wrote that uses nested hashes where the nested keys are symbols will fail as JSON does not support symbols
     * If you had custom agents and clients that sends data types other than JSON primitives they will stop working
 
 Thanks to not keeping the whole Puppet in memory it is a lot lighter on your environment:

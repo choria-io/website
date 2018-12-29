@@ -36,3 +36,4 @@ Source code for legacy Marionette Collective projects was donated to Choria by P
 |2018/07/25|#choria created on Freenode|
 |Fall 2018|Target date for Puppet 6 and removal of _mcollective_ libraries from _puppet-agent_|
 |2018/11/19|Puppet Inc officially hand over all _mcollective_ related code, hosted in [Choria Legacy](https://github.com/choria-legacy)|
+|2018/12/01|Initial Choria releases that support Puppet 6|

@@ -11,14 +11,22 @@ googleAnalytics = "UA-10152852-12"
     title = "docs"
     url = "docs/about/"
     button = "primary"
+
 [[params.social]]
     title = "github"
     url = "https://github.com/choria-io"
     button = "success"
+
+[[params.social]]
+    title = "blog"
+    url = "blog/"
+    button = "primary"
+
 [[params.social]]
     title = "twitter"
     url = "https://twitter.com/ripienaar"
     button = "info"
+    
 [[params.social]]
     title = "community"
     url = "https://groups.google.com/forum/#!forum/choria-users"

@@ -1,0 +1,43 @@
+baseURL = "http://choria.io/blog"
+languageCode = "en-us"
+title = "choria.io/blog"
+theme = "beautifulhugo"
+googleAnalytics = "UA-10152852-12"
+disqusShortname = "choria-io"
+
+[Params]
+  homeTitle = "Choria Blog"
+  subtitle = "Adventures in large scale orchestration"
+  logo = "img/logo-blue.png" # Expecting square dimensions
+  favicon = "img/favicon.ico"
+  dateFormat = "January 2, 2006"
+  commit = false
+  rss = true
+  comments = true
+  readingTime = true
+  wordCount = false
+  useHLJS = true
+  socialShare = true
+  delayDisqus = true
+  showRelatedPosts = true
+  
+[Author]
+  name = "R.I.Pienaar"
+  website = "https://devco.net"
+  twitter = "ripienaar"
+  github = "choria-io"
+
+[[menu.main]]
+  name = "Home"
+  url = "https://choria.io/"
+  weight = 1
+
+[[menu.main]]
+  name = "Docs"
+  url = "https://choria.io/docs"
+  weight = 2
+
+[[menu.main]]
+  name = "GitHub"
+  url = "https://github.com/choria-io"
+  weight = 3
