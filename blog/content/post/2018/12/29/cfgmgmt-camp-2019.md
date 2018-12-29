@@ -8,9 +8,11 @@ I will be giving a talk at the 2019 installment of [CfgMgmtCamp](https://cfgmgmt
 
 The talk will be focussed on [Choria Data Adpaters](https://choria.io/docs/adapters/), [NATS Streaming](https://github.com/nats-io/nats-streaming-server), metadata and will discuss the design of the [Choria Stream Replicator](http://github.com/choria-io/stream-replicator).
 
-I'll hopefully also show of something new I've been hacking on on and off!
+I'll hopefully also show off something new I've been hacking on on and off!
 
-The CFP submission can be seen below, I hope to see many Choria users there!
+The CFP submission can be seen below the fold, I hope to see many Choria users there!
+
+<!--more-->
 
 ## Solving large scale operational metadata problems using stream processing
 
