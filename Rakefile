@@ -30,7 +30,7 @@ task :publish_prod_docs do
   Rake::Task[:build_docs].invoke
 
   Dir.chdir(File.join(File.dirname(__FILE__), "out")) do
-    sh("netlify deploy -s wonderful-curie-7b58ce -p .")
+    sh("netlify deploy -s 39463be8-021a-4db4-ad07-709104da884a -p -d .")
   end
 end
 
