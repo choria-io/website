@@ -20,7 +20,8 @@ disqusShortname = "choria-io"
   socialShare = true
   delayDisqus = true
   showRelatedPosts = true
-  
+  rssLimit = 20
+
 [Author]
   name = "R.I.Pienaar"
   website = "https://devco.net"
