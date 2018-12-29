@@ -16,9 +16,9 @@ Today we published a bunch of releases and as of version 0.12.0 of the [choria/c
 
 There are some caveats to note:
 
- * On Puppet AIO 6 you will now automatically be switched to Choria Server, mcollectived does not exist anymore
- * On Puppet AIO 6 you will now automatically get a choria-release repository added, controllable using choria::manage_package_repo
- * If you are on a mix Puppet 5 and 6 environment you need to set JSON encoding [as per the deployment docs](https://choria.io/docs/deployment/mcollective/#puppet-6).
+ * On Puppet AIO 6 you will now automatically be switched to Choria Server, *mcollectived* does not exist anymore
+ * On Puppet AIO 6 you will now automatically get a *choria-release* repository added, controllable using *choria::manage_package_repo* Hiera data
+ * If you are on a mix Puppet 5 and 6 environment you need to set JSON encoding [as per the deployment docs](https://choria.io/docs/deployment/mcollective/#puppet-6) on all your nodes, even the older ones
  * On Puppet AIO 6 you will see a new gem [choria-mcorpc-support](https://rubygems.org/gems/choria-mcorpc-support) installed into the AIO Ruby
  * Windows is not yet supported
  * Read the [pre-release documentation](https://choria.io/docs/configuration/choria_server/) for Choria Server keeping in mind limitations mentioned there

@@ -4,11 +4,11 @@ date: 2018-12-28T23:05:00+01:00
 tags: ["releases", "server"]
 ---
 
-Today I released version 0.9.0 of the Choria Server along with a update to the Ruby plugin for MCollective.
+Today I released version 0.9.0 of the Choria Server along with an update to the Ruby plugin for MCollective.
 
-This is a significant milestone release that give us full support for custom Certificate Authorities including chains of Intermediates.  This Choria Server Provisioner supports requesting CSR's from nodes and supplying those nodes with signed certs and you can integrate it with any CA with a API of your choosing.
+This is a significant milestone release that give us full support for custom Certificate Authorities including chains of Intermediates.  The [Choria Server Provisioner](https://github.com/choria-io/provisioning-agent) supports requesting CSR's from nodes and supplying those nodes with signed certs and you can integrate it with any CA with an API of your choosing.
 
-We're also fixing some bugs, tweaking some things and generally iterating ever forward.
+We've also fixed some bugs, tweaked some things and generally iterated ever forward.
 
 <!--more-->
 
@@ -16,7 +16,7 @@ We're also fixing some bugs, tweaking some things and generally iterating ever f
 
 So far we have relied on the Puppet CA for all certificate authority needs.  The Choria Server had some features to let you configure custom paths to SSL files but this was not really possible with the Ruby client.
 
-In this release the Ruby client gainst the ability to be configured with custom paths and the both the server and client now support non Puppet CAs including chained ones.
+In this release the Ruby client gained the ability to be configured with custom paths and both the server and client now support non Puppet CAs including chained ones.
 
 Here's an example of the config you can supply for custom paths:
 
@@ -36,7 +36,7 @@ A lof ot this work was completed with the help of [Vincent Janelle](https://twit
 
 ## Server plugin documentation
 
-We started documenting how to write various kinds of plugins for the Choria Server and also how to compile your own custom packages using our tooling.  This documentation is in the [/development section](https://choria.io/docs/development/) of the documentation.
+We started documenting how to write various kinds of plugins for the Choria Server and also how to compile your own custom packages using our tooling.  This documentation is in the [Extending Choria section](https://choria.io/docs/development/) of the documentation.
 
 ## Additional lifecycle events
 
@@ -46,7 +46,7 @@ The `alive` events will be used to create a service that keeps a tally of all kn
 
 Choria Lifecycle Events are created using the [go-lifecycle](https://github.com/choria-io/go-lifecycle) project, this project reached version 1.0.0 this cycle so we will support it subject to SemVer.
 
-You can observe these events on your networks using the `choria tool event`.  If you want to build on these the schemas are published in our [schemas repository](https://github.com/choria-io/schemas/tree/master/choria/lifecycle/v1).  In go you can use the SDK in the lifecycle project.
+You can observe these events on your networks using the `choria tool event`.  If you want to build on these the schemas are published in our [schemas repository](https://github.com/choria-io/schemas/tree/master/choria/lifecycle/v1).  In Go you can use the SDK in the lifecycle project.
 
 ## Runtime Mutation of configuration defaults
 
