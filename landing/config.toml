@@ -20,13 +20,8 @@ googleAnalytics = "UA-10152852-12"
 [[params.social]]
     title = "blog"
     url = "blog/"
-    button = "primary"
-
-[[params.social]]
-    title = "twitter"
-    url = "https://twitter.com/ripienaar"
     button = "info"
-    
+
 [[params.social]]
     title = "community"
     url = "https://groups.google.com/forum/#!forum/choria-users"
