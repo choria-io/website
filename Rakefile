@@ -15,7 +15,11 @@ task :build_docs do
   end
 
   Dir.chdir(File.join(File.dirname(__FILE__), "blog")) do
-    sh("hugo -b %s/blog/ -d ../out/blog/" % ENV["CHORIA_SITE_NAME"])
+    if ENV["CHORIA_BLOG_DRAFTS"]
+      sh("hugo -b %s/blog/ -D -d ../out/blog/" % ENV["CHORIA_SITE_NAME"])
+    else
+      sh("hugo -b %s/blog/ -d ../out/blog/" % ENV["CHORIA_SITE_NAME"])
+    end
   end
 
   Dir.chdir(File.join(File.dirname(__FILE__), "out")) do
@@ -26,7 +30,7 @@ end
 desc "Build and Publish the production website"
 task :publish_prod_docs do
   ENV["CHORIA_SITE_NAME"] = "https://choria.io"
-
+  ENV["CHORIA_BLOG_DRAFTS"] = "1"
   Rake::Task[:build_docs].invoke
 
   Dir.chdir(File.join(File.dirname(__FILE__), "out")) do
