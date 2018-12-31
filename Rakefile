@@ -30,7 +30,7 @@ end
 desc "Build and Publish the production website"
 task :publish_prod_docs do
   ENV["CHORIA_SITE_NAME"] = "https://choria.io"
-  ENV["CHORIA_BLOG_DRAFTS"] = "1"
+
   Rake::Task[:build_docs].invoke
 
   Dir.chdir(File.join(File.dirname(__FILE__), "out")) do
@@ -41,6 +41,7 @@ end
 desc "Build and Publish the preview website"
 task :publish_docs do
   ENV["CHORIA_SITE_NAME"] = "https://master.choria.io"
+  ENV["CHORIA_BLOG_DRAFTS"] = "1"
 
   Rake::Task[:build_docs].invoke
 
@@ -52,6 +53,7 @@ end
 desc "Build for local consumption "
 task :publish_local_docs do
   ENV["CHORIA_SITE_NAME"] = "http://localhost:8080" % Dir.pwd
+  ENV["CHORIA_BLOG_DRAFTS"] = "1"
 
   Rake::Task[:build_docs].invoke
 

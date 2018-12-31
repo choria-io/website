@@ -25,7 +25,7 @@ Read on for full details.
 
 A situation where we use these events is in the [Provisioning Server](https://github.com/choria-io/provisioning-agent) where we detect a new provisioning mode node starting up from its `startup` event of the `provision_mode_server` component and then trigger an immediate provision flow, the sequence disgram below indicates the flow.
 
-```mermaid
+{{< mermaid >}}
 sequenceDiagram
     participant Server
     participant Broker
@@ -51,9 +51,13 @@ sequenceDiagram
     Server-->>Broker: Shutdown event
     Server->Server: Restart to Provisioned state
     Server-->>Broker: Startup Event
-```
+{{< /mermaid >}}
 
-Using this reactive event driven approach we can provision a node including CA enrolment within a second of it starting up and it scales really well - we can do 1000s of these in a minute.
+In reality things are a bit more complex - we receive the events into a Go channel and then have a worker pool of provisioners take care of machines found through these events, the channel and pool help us control concurrency.
+
+Using this reactive event driven approach we can provision a node including CA enrolment within a second of it starting up and it scales really well - we can configure 1000s of nodes in a minute.
+
+Once configured other systems like our CD system pick up the startup event of configured nodes and add them to queues for delivering our software.
 
 Observing this with the event viewer CLI shows us:
 
@@ -146,7 +150,7 @@ This will observe the `server` component and produce these stats:
 
 Configure Prometheus to poll `/metrics`.
 
-TODO: sample dashboard
+![Lifecycle Dashboard](tally-console-big.png)
 
 ## Producing events
 
