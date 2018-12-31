@@ -150,6 +150,8 @@ This will observe the `server` component and produce these stats:
 
 Configure Prometheus to poll `/metrics`.
 
+The kind of dashboard you can create with these events can be seen below, we'll add it to the repo soon.
+
 ![Lifecycle Dashboard](tally-console-big.png)
 
 ## Producing events
@@ -178,10 +180,10 @@ If you have an agent that you compile into the Server and perhaps you want to pu
 
 ```go
 func configureAction(ctx context.Context, req *mcorpc.Request, reply *mcorpc.Reply, agent *mcorpc.Agent, conn choria.ConnectorInfo) {
-	err = agent.ServerInfoSource.NewEvent(lifecycle.Provisioned)
-	if err != nil {
-		agent.Log.Errorf("Could not publish provisioned event: %s", err)
-	}
+    err = agent.ServerInfoSource.NewEvent(lifecycle.Provisioned)
+    if err != nil {
+        agent.Log.Errorf("Could not publish provisioned event: %s", err)
+    }
 }
 ```
 
@@ -196,66 +198,66 @@ First for completeness I'll show how to set up a basic Choria framework and hook
 {{% details "Basic program setup including Choria initialization (click to expand)" %}}
 ```go
 import (
-	"github.com/choria-io/go-choria/choria"
-	"github.com/choria-io/go-choria/config"
-	lifecycle "github.com/choria-io/go-lifecycle"
+    "github.com/choria-io/go-choria/choria"
+    "github.com/choria-io/go-choria/config"
+    lifecycle "github.com/choria-io/go-lifecycle"
 )
 
 var log *logrus.Entry
 
 func setupChoria(ctx context.Context) (*choria.Framework, choria.Connector, error) {
-	fw, err = choria.New()
-	if err != nil {
-		return nil, nil, err
-	}
+    fw, err = choria.New()
+    if err != nil {
+        return nil, nil, err
+    }
 
-	log = fw.Logger("events")
+    log = fw.Logger("events")
 
-	conn, err := fw.NewConnector(ctx, fw.MiddlewareServers, fw.Certname(), log)
-	if err != nil {
-		return nil, nil, err
-	}
+    conn, err := fw.NewConnector(ctx, fw.MiddlewareServers, fw.Certname(), log)
+    if err != nil {
+        return nil, nil, err
+    }
 
-	return fw, conn, nil
+    return fw, conn, nil
 }
 
 func main() {
-	ctx, cancel = context.WithCancel(context.Background())
-	defer cancel()
+    ctx, cancel = context.WithCancel(context.Background())
+    defer cancel()
 
-	fw, conn, err := setupChoria(ctx)
-	panicIfErr(err)
+    fw, conn, err := setupChoria(ctx)
+    panicIfErr(err)
 
-	events := make(chan *choria.ConnectorMessage, 100)
+    events := make(chan *choria.ConnectorMessage, 100)
 
-	subid, err := uuid.NewV4()
-	panicIfErr(err)
+    subid, err := uuid.NewV4()
+    panicIfErr(err)
 
-	err = r.options.Connector.QueueSubscribe(ctx, subid.String(), "choria.lifecycle.event.>", "", events)
-	panicIfErr(err)
+    err = r.options.Connector.QueueSubscribe(ctx, subid.String(), "choria.lifecycle.event.>", "", events)
+    panicIfErr(err)
 
-	for {
-		select {
-		case e := <-events:
-			// this event is a lifecycle.Event that is in effect perhaps a
-			// lifecycle.AliveEvent, later we will coerce it to the right type
-			event, err := lifecycle.NewFromJSON(e.Data)
-			if err != nil {
-				log.Errorf("could not parse event: %s", err)
-				continue
-			}
+    for {
+        select {
+        case e := <-events:
+            // this event is a lifecycle.Event that is in effect perhaps a
+            // lifecycle.AliveEvent, later we will coerce it to the right type
+            event, err := lifecycle.NewFromJSON(e.Data)
+            if err != nil {
+                log.Errorf("could not parse event: %s", err)
+                continue
+            }
 
-			err = process(e)
-			if err != nil {
-				log.Errorf("could not process event: %s", err)
-				continue
-			}
+            err = process(e)
+            if err != nil {
+                log.Errorf("could not process event: %s", err)
+                continue
+            }
 
-		case <-ctx.Done():
-			conn.Close()
-			return
-		}
-	}
+        case <-ctx.Done():
+            conn.Close()
+            return
+        }
+    }
 }
 ```
 {{% /details %}}
@@ -265,14 +267,14 @@ Above you can see turning the JSON data into an event is quite easy - lets say y
 ```go
 event, err := lifecycle.NewFromJSON(ebytes)
 if err != nil {
-	log.Errorf("could not parse event: %s", err)
-	continue
+    log.Errorf("could not parse event: %s", err)
+    continue
 }
 
 err = process(e)
 if err != nil {
-	log.Errorf("could not process event: %s", err)
-	continue
+    log.Errorf("could not process event: %s", err)
+    continue
 }
 ```
 
@@ -280,26 +282,26 @@ So that connects us up and delivers `lifecycle.Event` instances to a `process(e 
 
 ```go
 func process(e lifecycle.Event) error {
-	// we need to understand what kind of message it is so we can coerce it to the right type
-	switch e.Type() {
-		case lifecycle.Alive:
-			// we know what it is so we can safely coerce it to the right type, but for completeness
-			// I show how to validate it and not panic
-			alive, ok := e.(*lifecycle.AliveEvent)
-			if !ok {
-				return fmt.Errorf("Failed to process event from %s as an Alive event", e.Identity())
-			}
+    // we need to understand what kind of message it is so we can coerce it to the right type
+    switch e.Type() {
+        case lifecycle.Alive:
+            // we know what it is so we can safely coerce it to the right type, but for completeness
+            // I show how to validate it and not panic
+            alive, ok := e.(*lifecycle.AliveEvent)
+            if !ok {
+                return fmt.Errorf("Failed to process event from %s as an Alive event", e.Identity())
+            }
 
-			// and now we can access the type specific field like Version
-			log.Infof("Handling alive event from %s with version %s", alive.Identity(), alive.Version)
+            // and now we can access the type specific field like Version
+            log.Infof("Handling alive event from %s with version %s", alive.Identity(), alive.Version)
 
-		case lifecycle.Shutdown:
-			shutdown := e.(*lifecycle.ShutdownEvent)
-			// these have no version
-			log.Infof("Handling shutdown event from %s", startup.Identity())
+        case lifecycle.Shutdown:
+            shutdown := e.(*lifecycle.ShutdownEvent)
+            // these have no version
+            log.Infof("Handling shutdown event from %s", startup.Identity())
 
-		default:
-			log.Errorf("Unsupported event type %s received from %s", e.TypeString(), e.Identity())
+        default:
+            log.Errorf("Unsupported event type %s received from %s", e.TypeString(), e.Identity())
     }
 }
 ```
