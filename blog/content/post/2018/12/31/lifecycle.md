@@ -61,7 +61,7 @@ Once configured other systems like our CD system pick up the startup event of co
 
 Observing this with the event viewer CLI shows us:
 
-```nostyle
+```nohighlight
 $ choria tool event
 ...
 12:45:06 [startup] dev1.example.net: provision_mode_server version 0.99.0.20181230
@@ -112,7 +112,7 @@ These messages are published to the Choria Broker on standard topics `choria.lif
 
 If you just want to observe your network from the CLI we have 2 ways to do it, if you have choria you can do `choria tool event --component server --type alive` to show `server` `alive` messages, without any `--component` or `--type` you will see all events.
 
-```nostyle
+```nohighlight
 $ choria tool event
 Waiting for events from topic choria.lifecycle.event.> on nats://broker1.example.net:4222
 12:45:03 [shutdown] dev1.example.net: server
@@ -121,7 +121,7 @@ Waiting for events from topic choria.lifecycle.event.> on nats://broker1.example
 
 It supports --debug to see the raw events:
 
-```nostyle
+```nohighlight
 $ choria tool event --debug
 DEBU[0000] Logging at debug level due to CLI override
 Waiting for events from topic choria.lifecycle.event.> on nats://broker1.example.net:4222
@@ -133,7 +133,7 @@ Waiting for events from topic choria.lifecycle.event.> on nats://broker1.example
 
 We include in the go-lifecycle project a `lifecycle` binary that can be used to passively observe a running Choria network and record all the components and versions of a specific type, the information is presented to Prometheus for consumption:
 
-```nostyle
+```nohighlight
 lifecycle tally --component server --port 8080
 ```
 
