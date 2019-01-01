@@ -5,9 +5,11 @@ tags: ["lifecycle"]
 draft: true
 ---
 
-Choria Server and other components emit a number of events during the lifecycle of the processes, these are produced by the [go-lifecycle](https://github.com/choria-io/go-lifecycle) project.
+Events are small JSON documents that describe an event that happens in a system.  Events come in many forms but usually they indicate things like startup, shutdown, aliveness, problems or major completed tasks.  They tend to be informational and so should be considered lossy - in other words do not expect to get a `shutdown` event for every shutdown that happens, some kinds of shutdown can prevent it from reaching you.  Likewise startups where the middleware connection is flakey.
 
-Lifecycle events come in many flavours and there are not really many standards around for this stuff, one effort [cloudevents](https://cloudevents.io) from the CNCF looks to be on a good path and once things mature we'll look to adopt them as the underlying format for our lifecycle messages too.
+These events come in many flavours and there are not really many standards around for this stuff, one effort [cloudevents](https://cloudevents.io) from the CNCF looks to be on a good path and once things mature we'll look to adopt them as the underlying format for our lifecycle messages too.
+
+In Choria we call these *Lifecycle Events*, this post will introduce what we have today and what we use them for.
 
 These kinds of event allow other tools to react to events happening from Choria components, some uses:
 
@@ -42,7 +44,7 @@ sequenceDiagram
     Server->>Provisioner: inventory
     Provisioner->>Server: choria_provision.gencsr
     Server->>Provisioner: x509 CSR
-    Provisioner->Provisioner: helper
+    Provisioner->Provisioner: calculate configuration
     Provisioner->>Server: choria_provision.configure
     Server->>Provisioner: ack
     Server-->>Broker: Provisioned Event
@@ -129,9 +131,17 @@ Waiting for events from topic choria.lifecycle.event.> on nats://broker1.example
 {"protocol":"choria:lifecycle:startup:1","identity":"dev1.example.net","component":"server","timestamp":1546257701,"version":"0.99.0.20181230"}
 ```
 
+In Choria these events are produced by the [go-lifecycle](https://github.com/choria-io/go-lifecycle) project, it includes a viewer:
+
+```nohighlight
+$ lifecycle view
+```
+
+Which works just like the `choria` one above and also supports filtering what you see.
+
 ## Creating event dashboards
 
-We include in the go-lifecycle project a `lifecycle` binary that can be used to passively observe a running Choria network and record all the components and versions of a specific type, the information is presented to Prometheus for consumption:
+Included in the go-lifecycle projects `lifecycle` binary is a feature that can be used to passively observe a running Choria network and record all the components and versions of a specific type, the information is presented to Prometheus for consumption:
 
 ```nohighlight
 lifecycle tally --component server --port 8080
@@ -191,7 +201,7 @@ If you need to pass any options to the event factory you can do so in the call t
 
 ## Consuming events
 
-Again I'll show the Go SDK way to produce these however realise that the Choria Broker speaks the NATS protocol and so any NATS client can connect, subscribe and consume these events. Previously we detailed the generated topics that these are published to.
+Again I'll show the Go SDK way to consume these however realise that the Choria Broker speaks the NATS protocol and so any NATS client can connect, subscribe and consume these events. Previously we detailed the generated topics that these are published to.
 
 First for completeness I'll show how to set up a basic Choria framework and hook into the events, here it will use the normal Choria client configs to find middleware, certificates and more.
 
