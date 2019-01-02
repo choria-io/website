@@ -5,7 +5,7 @@ tags: ["lifecycle"]
 draft: true
 ---
 
-Events are small JSON documents that describe an event that happens in a system.  Events come in many forms but usually they indicate things like startup, shutdown, aliveness, problems or major completed tasks.  They tend to be informational and so should be considered lossy - in other words do not expect to get a `shutdown` event for every shutdown that happens, some kinds of shutdown can prevent it from reaching you.  Likewise startups where the middleware connection is flakey.
+Events are small JSON documents that describe an event that happens in a system.  Events come in many forms but usually they indicate things like startup, shutdown, aliveness, problems or major completed tasks. They tend to be informational and so should be considered lossy - in other words do not expect to get a `shutdown` event for every shutdown that happens, some kinds of shutdown can prevent it from reaching you.  Likewise startups where the middleware connection is flakey.
 
 These events come in many flavours and there are not really many standards around for this stuff, one effort [cloudevents](https://cloudevents.io) from the CNCF looks to be on a good path and once things mature we'll look to adopt them as the underlying format for our lifecycle messages too.
 
@@ -13,7 +13,7 @@ In Choria we call these *Lifecycle Events*, this post will introduce what we hav
 
 These kinds of event allow other tools to react to events happening from Choria components, some uses:
 
- * Create a dashboard of active versions of a component - use startup, shutdown and alive events.
+ * Create a dashboard of active versions of a component by passively observing the network - use startup, shutdown and alive events.
  * React to nodes starting up by activating other orchestration systems like continuous delivery systems
  * React to a specific component starting up and provision them asap
 
@@ -22,6 +22,7 @@ There are many other cases where an event flow is useful and in time we will add
 Today Choria Server, Choria Backplane and Choria Provisioner produce events while Choria Provisioner consumes them. We are a bit conservative with when and where we emit them as the clusters we support can be in the 50k node range we need to consider each type of event and the need for it carefully.
 
 Read on for full details.
+
 <!--more-->
 ## Designing for events
 
@@ -95,14 +96,16 @@ All of the events are published in JSON format with the minimum set of fields vi
 
 ```json
 {
-    "protocol":"choria:lifecycle:<type>:<version>",
+    "protocol":"io.choria.lifecycle.<version>.<type>",
     "identity":"<configured identity>",
     "component":"<component>",
     "timestamp":1535369536
 }
 ```
 
-Types would add to this for example `startup` and `alive` include a `version` field. Each type has a published schema, a protocol line of `choria:lifecycle:alive:1` would be `https://choria.io/schemas/choria/lifecycle/v1/alive.json`
+**NOTE:** We are migrating from a protocol format of `choria:lifecycle:<version>:<type>` for a while you will still see those, the Go SDK supports both.
+
+Types would add to this for example `startup` and `alive` include a `version` field. Each type has a published schema, a protocol line of `io.choria.lifecycle.v1.alive` would be `https://choria.io/schemas/choria/lifecycle/v1/alive.json`
 
 Types are any of `startup`, `shutdown`, `provisioned` and `alive` while component indicate what it is that is starting.  There's no finite list of these components but Choria Server emits `server` component messages.
 
