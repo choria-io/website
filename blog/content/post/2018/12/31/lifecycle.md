@@ -9,7 +9,7 @@ Events are small JSON documents that describe an event that happens in a system.
 
 These events come in many flavours and there are not really many standards around for this stuff, one effort [cloudevents](https://cloudevents.io) from the CNCF looks to be on a good path and once things mature we'll look to adopt them as the underlying format for our lifecycle messages too.
 
-In Choria we call these *Lifecycle Events*, this post will introduce what we have today and what we use them for.
+In Choria we call these *Lifecycle Events*, and this post will introduce what we have today and what we use them for.
 
 These kinds of event allow other tools to react to events happening from Choria components, some uses:
 
@@ -26,7 +26,7 @@ Read on for full details.
 <!--more-->
 ## Designing for events
 
-A situation where we use these events is in the [Provisioning Server](https://github.com/choria-io/provisioning-agent) where we detect a new provisioning mode node starting up from its `startup` event of the `provision_mode_server` component and then trigger an immediate provision flow, the sequence disgram below indicates the flow.
+A situation where we use these events is in the [Provisioning Server](https://github.com/choria-io/provisioning-agent) where we detect a new provisioning mode node starting up from its `startup` event of the `provision_mode_server` component and then trigger an immediate provision flow, the sequence diagram below indicates the flow.
 
 {{< mermaid >}}
 sequenceDiagram
@@ -75,9 +75,9 @@ $ choria tool event
 
 It's important to note these events are informational and published on a best efforts basis, you cannot rely that you will get 100% of events, your event based systems have to consider this.
 
-In the Choria Provisioner in addition to the above event based node discovery we also do regular discoveries for provisionable nodes which would pick up any where we missed their events or where their first provisioning flow failed.
+In the Choria Provisioner in addition to the above event based node discovery we also do regular discoveries for provisionable nodes which would pick up anywhere we missed their events or where their first provisioning flow failed.
 
-At present these events are emitted within the Collective that the Servers belong to and they do not cross Federation borders and Choria cannot push them to streams via its Adapters.  We'll fix the short coming in Adapters that would allow you to communicate these events outside of the local Collective.
+At present these events are emitted within the Collective that the Servers belong to and they do not cross Federation borders and Choria cannot push them to streams via its Adapters.  We'll fix the shortcoming in Adapters that would allow you to communicate these events outside of the local Collective.
 
 ## Event Types
 
@@ -169,7 +169,7 @@ The kind of dashboard you can create with these events can be seen below, we'll 
 
 ## Producing events
 
-We have a SDK for producing events from Choria Golang components - but really these are just JSON published via the NATS protocol that the Choria Broker supports so you can emit these from more or less anything.
+We have an SDK for producing events from Choria Golang components - but really these are just JSON published via the NATS protocol that the Choria Broker supports so you can emit these from more or less anything.
 
 ### Publishing from Go
 
