@@ -1,15 +1,15 @@
 ---
 title: "Choria Lifecycle Events"
-date: 2018-12-31T13:28:00+01:00
+date: 2019-01-03T13:28:00+01:00
 tags: ["lifecycle"]
-draft: true
+draft: false
 ---
 
 Events are small JSON documents that describe an event that happens in a system.  Events come in many forms but usually they indicate things like startup, shutdown, aliveness, problems or major completed tasks. They tend to be informational and so should be considered lossy - in other words do not expect to get a `shutdown` event for every shutdown that happens, some kinds of shutdown can prevent it from reaching you.  Likewise startups where the middleware connection is flakey.
 
 These events come in many flavours and there are not really many standards around for this stuff, one effort [cloudevents](https://cloudevents.io) from the CNCF looks to be on a good path and once things mature we'll look to adopt them as the underlying format for our lifecycle messages too.
 
-In Choria we call these *Lifecycle Events*, and this post will introduce what we have today and what we use them for.
+In Choria we call these *Lifecycle Events*. I recently released an initial version `1.0.0` of the package that manages these, this post will introduce what we have today and what we use them for.
 
 These kinds of event allow other tools to react to events happening from Choria components, some uses:
 
@@ -97,6 +97,7 @@ All of the events are published in JSON format with the minimum set of fields vi
 ```json
 {
     "protocol":"io.choria.lifecycle.<version>.<type>",
+    "id":"01e72410-d734-4611-9485-8c6a2dd2579b",
     "identity":"<configured identity>",
     "component":"<component>",
     "timestamp":1535369536
@@ -109,7 +110,7 @@ Types would add to this for example `startup` and `alive` include a `version` fi
 
 Types are any of `startup`, `shutdown`, `provisioned` and `alive` while component indicate what it is that is starting.  There's no finite list of these components but Choria Server emits `server` component messages.
 
-Timestamps are UTC Unix format timestamps.
+Timestamps are UTC Unix format timestamps. The ID is a randomly generated correlation ID, usually a v4 UUID but could just be random characters in the exceptional case where UUID generation fails.
 
 These messages are published to the Choria Broker on standard topics `choria.lifecycle.event.<type>.<component>`, this way you can subscribe to events matching just your interest, for example all events would be a subscription to `choria.lifecycle.event.>` while all `alive` messages would `choria.lifecycle.event.alive.*` or even all events types for a `server` would be `choria.lifecycle.event.*.server`.
 
