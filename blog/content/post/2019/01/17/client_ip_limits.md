@@ -14,7 +14,7 @@ If you have this concern the upcoming version `0.10.0` of the Choria Broker will
 <!--more-->
 ## How we use the middleware
 
-Choria has a number of network targets that it uses during its general life, we want to prevent everyone from having to know how this work so the managed allow/deny lists takes care of restricting just how Choria actually uses the network.
+Choria has a number of network targets that it uses during its general life, we want to avoid everyone from having to know how this work so the managed allow/deny lists takes care of restricting just how Choria actually uses the network.
 
 We documented all the targets that Choria uses on the network in a new [documentation page](https://choria.io/docs/development/middleware/).
 
@@ -30,7 +30,7 @@ This is achieved by allowing clients to do anything on the network, while server
 
 One might convincingly argue that we should do this using a default deny list rather than a default allow list but I think there are legit cases where other software will live on the Choria Broker network - like NATS Streaming Servers.  Additionally custom targets like where registration is published and messages directed at the Adapters are basically free form.
 
-To keep the configuration simple we went the default allow route. The alternative would require users to write a full set of allow/deny rules which might be beyond the scope of the managed NATS service in the Choria Broker, you could always run a full NATS Server if you are so inclined.
+To keep the configuration simple we went the default allow route. The alternative would require users to write a full set of allow/deny rules and require them to understand a bunch of internal details that they really do not need to worry about - given that the Choria Broker exist to simplify the running of a broker we decided to optimise for the user experience. Once can always run a full NATS Server if you need very fine grained control.
 
 ### Subscribe limits
 
@@ -59,4 +59,6 @@ Note publishing to `choria.federation.*.collective` is allowed as that's where f
 
 ## Conclusion
 
-This is probably an advanced feature, we think the certificate based model is suitable to the usage model but in some strict environments this might not be enough.  We tried to keep the setup as simple as possible leaving full manual setup to users who can run their own full blown NATS Servers.
+This is an advanced feature that most will not need to use, we think the certificate based model is suitable to the usage model but in some strict environments this might not be enough.
+
+We tried to keep the setup as simple as possible leaving full manual setup to users who can run their own full blown NATS Servers.
