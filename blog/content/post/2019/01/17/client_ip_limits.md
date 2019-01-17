@@ -11,6 +11,7 @@ Today the security model allow anyone with the correctly issued and signed certi
 
 If you have this concern the upcoming version `0.10.0` of the Choria Broker will include the ability to limit what networks clients can come from.
 
+<!--more-->
 ## How we use the middleware
 
 Choria has a number of network targets that it uses during its general life, we want to prevent everyone from having to know how this work so the managed allow/deny lists takes care of restricting just how Choria actually uses the network.
