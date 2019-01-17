@@ -1,6 +1,6 @@
 +++
 title = "MCO RPC Agent"
-weight = 20
+weight = 30
 +++
 
 Agents can be written that are compatible with the Ruby MCollective RPC API - covered separately in this section - here I'll show a very basic echo agent and how to plug it into Choria Server at compile time.
@@ -9,7 +9,7 @@ Agents can be written that are compatible with the Ruby MCollective RPC API - co
 
 Below a very basic agent that would respond to `mco rpc echo ping message="hello world"`.
 
-```golang
+```go
 package echo
 
 type EchoRequest struct {
