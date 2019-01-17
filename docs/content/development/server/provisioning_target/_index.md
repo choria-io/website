@@ -31,7 +31,7 @@ That's pretty easy, lets write a small provider.
 It's important that these resolvers should retry more or less forever - or perhaps fall back to a static value.  Any number of things can prevent this from working and you would not want your unprovisioned servers to exit and remain unprovisioned. So we retry forever with a backoff based sleep between tries.
 
 ```go
-package provtarget
+package acme
 
 import (
 	"github.com/choria-io/go-choria/backoff"
