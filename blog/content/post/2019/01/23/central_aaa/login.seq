@@ -1,0 +1,8 @@
+seqdiag {
+  CLI  => "Login Service" [label = "mco login", return = "Choria Token"] {
+    "Login Service" => Okta [label = "OAuth login", return = "OAuth Token"];
+    "Login Service" => Okta [label = "Retrieve user groups", return = "Groups"];
+    "Login Service" --> "Login Service" [label = "Authorization"];
+    "Login Service" --> "Login Service" [label = "Create JWT token", note = "Embeds allowed actions list"];
+  }
+}

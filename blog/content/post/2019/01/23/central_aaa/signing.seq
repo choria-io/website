@@ -1,0 +1,9 @@
+seqdiag {
+  CLI => "Signing Service" [label = "request + token", return = "Signed Secure Request"] {
+    "Signing Service" --> "Signing Service" [label = "Validate JWT"];
+    "Signing Service" --> "Signing Service" [label = "Authorization"];
+    "Signing Service" --> "Signing Service" [label = "Set callerid"];
+    "Signing Service" => "NATS Stream" [label = "Auditing"];
+    "Signing Service" --> "Signing Service" [label = "Sign Request"];
+  }
+}
