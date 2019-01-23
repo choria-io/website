@@ -16,9 +16,11 @@ We welcome users of The Marionette Collective who wish to continue using it, we 
 
 While the Choria project builds heavily on top of the foundation laid by The Marionnette Collective this does not mean an end or even a significant hurdle for this project.
 
-Today in Puppet 5.x there is no concern everything continues to work, once Puppet 6 is released there will be a short delay until the Choria project is ready to run on Puppet 6.
+Today in Puppet 5.x there is no concern everything continues to work, Puppet 6 users are automatically updated to the [Choria Server](/docs/configuration/choria_server/), and things mostly keep working.  Though review that page for status.
 
-We are working with Puppet Inc to give items like the code, mailing lists and more a new home, this page will get further updates as details become clear.
+Puppet Inc have donated all the legacy MCollective code, this code is hosted in [Choria Legacy](https://github.com/choria-legacy) and we have made compatibility layers to allow the `mco` CLI to continue working with the Choria Server using this donated code.
+
+Choria - and MCollective via the compatability layer - is in wide use by the community, we have some work left to do but the transition is generally smooth now.
 
 For further information please contact me am on the Puppet IRC as _Volcane_ and on slack as _ripienaar_, we also have a _#choria channel on Freenode of _#choria_ on the [Puppet Slack](http://slack.puppet.com/).
 
