@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.0//EN" "http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd">
+<svg viewBox="0 0 640 724" xmlns="http://www.w3.org/2000/svg" xmlns:inkspace="http://www.inkscape.org/namespaces/inkscape" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <defs id="defs_block">
+    <filter height="1.504" id="filter_blur" inkspace:collect="always" width="1.1575" x="-0.07875" y="-0.252">
+      <feGaussianBlur id="feGaussianBlur3780" inkspace:collect="always" stdDeviation="4.2"/>
+    </filter>
+  </defs>
+  <title>blockdiag</title>
+  <desc/>
+  <rect fill="rgb(0,0,0)" height="561" style="filter:url(#filter_blur);opacity:0.7;fill-opacity:1" width="8" x="127" y="141"/>
+  <rect fill="rgb(0,0,0)" height="500" style="filter:url(#filter_blur);opacity:0.7;fill-opacity:1" width="8" x="319" y="141"/>
+  <rect fill="rgb(0,0,0)" height="65" style="filter:url(#filter_blur);opacity:0.7;fill-opacity:1" width="8" x="511" y="206"/>
+  <rect fill="rgb(0,0,0)" height="65" style="filter:url(#filter_blur);opacity:0.7;fill-opacity:1" width="8" x="511" y="336"/>
+  <polygon fill="rgb(0,0,0)" points="435,553 615,553 623,561 623,568 435,568 435,553" stroke="rgb(0,0,0)" style="filter:url(#filter_blur);opacity:0.7;fill-opacity:1"/>
+  <rect fill="rgb(0,0,0)" height="40" stroke="rgb(0,0,0)" style="filter:url(#filter_blur);opacity:0.7;fill-opacity:1" width="128" x="67" y="46"/>
+  <rect fill="rgb(0,0,0)" height="40" stroke="rgb(0,0,0)" style="filter:url(#filter_blur);opacity:0.7;fill-opacity:1" width="128" x="259" y="46"/>
+  <rect fill="rgb(0,0,0)" height="40" stroke="rgb(0,0,0)" style="filter:url(#filter_blur);opacity:0.7;fill-opacity:1" width="128" x="451" y="46"/>
+  <path d="M 128 80 L 128 712" fill="none" stroke="rgb(0,0,0)" stroke-dasharray="8 4"/>
+  <rect fill="moccasin" height="561" stroke="rgb(0,0,0)" width="8" x="124" y="135"/>
+  <path d="M 320 80 L 320 712" fill="none" stroke="rgb(0,0,0)" stroke-dasharray="8 4"/>
+  <rect fill="moccasin" height="500" stroke="rgb(0,0,0)" width="8" x="316" y="135"/>
+  <path d="M 512 80 L 512 712" fill="none" stroke="rgb(0,0,0)" stroke-dasharray="8 4"/>
+  <rect fill="moccasin" height="65" stroke="rgb(0,0,0)" width="8" x="508" y="200"/>
+  <rect fill="moccasin" height="65" stroke="rgb(0,0,0)" width="8" x="508" y="330"/>
+  <rect fill="rgb(255,255,255)" height="40" stroke="rgb(0,0,0)" width="128" x="64" y="40"/>
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="19" x="128" y="66">CLI</text>
+  <rect fill="rgb(255,255,255)" height="40" stroke="rgb(0,0,0)" width="128" x="256" y="40"/>
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="79" x="320" y="66">Login Service</text>
+  <rect fill="rgb(255,255,255)" height="40" stroke="rgb(0,0,0)" width="128" x="448" y="40"/>
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="25" x="512" y="66">Okta</text>
+  <path d="M 136 135 L 312 135" fill="none" stroke="rgb(0,0,0)"/>
+  <polygon fill="rgb(0,0,0)" points="304,131 312,135 304,139" stroke="rgb(0,0,0)"/>
+  <path d="M 328 200 L 504 200" fill="none" stroke="rgb(0,0,0)"/>
+  <polygon fill="rgb(0,0,0)" points="496,196 504,200 496,204" stroke="rgb(0,0,0)"/>
+  <path d="M 328 265 L 504 265" fill="none" stroke="rgb(0,0,0)" stroke-dasharray="4"/>
+  <polygon fill="rgb(0,0,0)" points="336,261 328,265 336,269" stroke="rgb(0,0,0)"/>
+  <path d="M 328 330 L 504 330" fill="none" stroke="rgb(0,0,0)"/>
+  <polygon fill="rgb(0,0,0)" points="496,326 504,330 496,334" stroke="rgb(0,0,0)"/>
+  <path d="M 328 395 L 504 395" fill="none" stroke="rgb(0,0,0)" stroke-dasharray="4"/>
+  <polygon fill="rgb(0,0,0)" points="336,391 328,395 336,399" stroke="rgb(0,0,0)"/>
+  <path d="M 328 460 L 416 460" fill="none" stroke="rgb(0,0,0)" stroke-dasharray="4"/>
+  <path d="M 416 460 L 416 476" fill="none" stroke="rgb(0,0,0)" stroke-dasharray="4"/>
+  <path d="M 416 476 L 328 476" fill="none" stroke="rgb(0,0,0)" stroke-dasharray="4"/>
+  <polygon fill="rgb(0,0,0)" points="336,472 328,476 336,480" stroke="rgb(0,0,0)"/>
+  <path d="M 328 554 L 416 554" fill="none" stroke="rgb(0,0,0)" stroke-dasharray="4"/>
+  <path d="M 416 554 L 416 570" fill="none" stroke="rgb(0,0,0)" stroke-dasharray="4"/>
+  <path d="M 416 570 L 328 570" fill="none" stroke="rgb(0,0,0)" stroke-dasharray="4"/>
+  <polygon fill="rgb(0,0,0)" points="336,566 328,570 336,574" stroke="rgb(0,0,0)"/>
+  <polygon fill="rgb(255,182,193)" points="432,547 612,547 620,555 620,562 432,562 432,547" stroke="rgb(0,0,0)"/>
+  <path d="M 612 547 L 612 555" fill="none" stroke="rgb(0,0,0)"/>
+  <path d="M 612 555 L 620 555" fill="none" stroke="rgb(0,0,0)"/>
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="164" x="522" y="560">Embeds allowed actions list</text>
+  <path d="M 136 635 L 312 635" fill="none" stroke="rgb(0,0,0)" stroke-dasharray="4"/>
+  <polygon fill="rgb(0,0,0)" points="144,631 136,635 144,639" stroke="rgb(0,0,0)"/>
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="55" x="167" y="133">mco login</text>
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="67" x="365" y="198">OAuth login</text>
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="67" x="470" y="263">OAuth Token</text>
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="122" x="393" y="328">Retrieve user groups</text>
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="37" x="485" y="393">Groups</text>
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="79" x="367" y="458">Authorization</text>
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="97" x="376" y="546">Create JWT token</text>
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="73" x="275" y="633">Choria Token</text>
+</svg>
