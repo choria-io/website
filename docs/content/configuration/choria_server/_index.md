@@ -71,6 +71,20 @@ mcollective_choria::config:
   security.serializer: "json"
 ```
 
+The server has lots of configuration options which can be specified by the `choria::server_config` parameter. An full example of the configuration looks like this:
+
+```yaml
+classesfile: "/opt/puppetlabs/puppet/cache/state/classes.txt"
+  rpcaudit: 1
+  plugin.rpcaudit.logfile: "/var/log/choria-audit.log"
+  plugin.yaml: "/etc/puppetlabs/mcollective/generated-facts.yaml"
+  plugin.choria.agent_provider.mcorpc.agent_shim: "/usr/bin/choria_mcollective_agent_compat.rb"
+  plugin.choria.agent_provider.mcorpc.config: "/etc/puppetlabs/mcollective/choria-shim.cfg"
+  plugin.choria.agent_provider.mcorpc.libdir: "/opt/puppetlabs/mcollective/plugins"
+  plugin.choria.middleware_hosts: "nats1.example.net:4222"
+```
+
+For a full list of configuration options, it's best to examine the choria server config struct defined [here](https://github.com/choria-io/go-choria/blob/master/config/config.go#L26-L170)
 At this point you will run the new Choria daemon, you can confirm this with *mco rpc choria_util info* and you'll see the versions, of course *ps* will also show you.
 
 The MCollective subsystem will still log to your normal *mcollective.log* and auditing will also go to the log configured and previously used for mcollective, formats of those would not have changed yet.
