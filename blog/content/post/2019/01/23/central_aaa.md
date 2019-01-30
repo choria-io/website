@@ -127,6 +127,6 @@ choria.security.request_signer.token_file = ~/.choria_token
 
 ## Upcoming work
 
-This is pretty new, I'd love to hear feedback from the community on how this looks, I will soon release a login and signer that support Okta and statically configured users as well as NATS based auditing. Today this code lives in [ripienaar/choria-centralauth](https://github.com/ripienaar/choria-centralauth/) but this is just where I am playing around.
+This is pretty new, I'd love to hear feedback from the community on how this looks, I will soon release a login and signer that support Okta and statically configured users as well as NATS based auditing. Today this code lives in [choria-io/aaasvc](https://github.com/choria-io/aaasvc) - it's an early take on this that will evolve to a production ready service.
 
 This is a very important space, I hope to work with other users who have other generic authenticator needs so we can round this out to a fully realised central auth system for Choria.
