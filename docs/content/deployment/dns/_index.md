@@ -78,3 +78,25 @@ mcollective_choria::config:
   discovery_port: 8085
   middleware_hosts: "nats1.example.net:4222,nats2.example.net:4222,nats3.example.net:4222"
 ```
+
+If you're using the choria server, you'll also need to configure the server to connect to your specific middleware:
+
+```yaml
+choria::server_config:
+  classesfile: "/opt/puppetlabs/puppet/cache/state/classes.txt"
+  rpcaudit: 1
+  plugin.rpcaudit.logfile: "/var/log/choria-audit.log"
+  plugin.yaml: "/etc/puppetlabs/mcollective/generated-facts.yaml"
+  plugin.choria.agent_provider.mcorpc.agent_shim: "/usr/bin/choria_mcollective_agent_compat.rb"
+  plugin.choria.agent_provider.mcorpc.config: "/etc/puppetlabs/mcollective/choria-shim.cfg"
+  plugin.choria.agent_provider.mcorpc.libdir: "/opt/puppetlabs/mcollective/plugins"
+  plugin.choria.puppetserver_host: "puppet1.example.net"
+  plugin.choria.puppetserver_port: 8140
+  plugin.choria.puppetca_host: "ca1.example.net"
+  plugin.choria.puppetca_port: 8140
+  plugin.choria.puppetdb_host: "pdb1.example.net"
+  plugin.choria.puppetdb_port: 8081
+  plugin.choria.discovery_host: "pdb1.example.net"
+  plugin.choria.discovery_port: 8085
+  plugin.choria.middleware_hosts: "nats1.example.net:4222,nats2.example.net:4222,nats3.example.net:4222"
+```
