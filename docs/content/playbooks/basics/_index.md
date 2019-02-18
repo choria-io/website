@@ -248,13 +248,13 @@ The Marionette Collective 2.11.4
 And you can run the playbook using a few methods:
 
 ```
-mco playbook run example::restart_puppetserver --modulepath modules --cluster alphda
+mco playbook run example::restart_puppetserver --modulepath modules --cluster alpha
 ```
 
 Some effort is made to convert from the CLI to Puppet data types but for complex inputs you will have to use a JSON input
 
 ```
-mco playbook run example::restart_puppetserver --modulepath modules --intput '{"cluster":"alpha"}'
+mco playbook run example::restart_puppetserver --modulepath modules --input '{"cluster":"alpha"}'
 ```
 
 or with larger inputs from a file:
