@@ -9,7 +9,7 @@ MCollective supports a single executable - called mco - and have a plugin type c
 
 While we have a standard generic client called _mco rpc_ to interact with your network, sometimes this standard approach does not work - perhaps you wish to add specific input munging, query databases or just display the output in a custom manner.  Some agents have utility actions that produce so much data that just dumping it to the display is not useful.  Other actions are not designed for generic interaction - they support fuller automation flows.  For all these needs you can extend the _mco_ CLI with new plugins.
 
-Interacting with the single executable system is documented in the [CLI Interaction Model](/concepts/cli/) section.
+Interacting with the single executable system is documented in the [CLI Interaction Model](/docs/concepts/cli/) section.
 
 Apart from the plumbing to hook these into the CLI you will have full access to the normal [MCollective Client](../clients/).
 
