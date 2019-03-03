@@ -35,7 +35,7 @@ metadata :name        => "service",
          :description => "Agent to manage services using the Puppet service provider",
          :author      => "R.I.Pienaar",
          :license     => "GPLv2",
-         :version     => "1.1",
+         :version     => "1.1.0",
          :url         => "https://docs.puppetlabs.com/mcollective/plugin_directory/",
          :timeout     => 60
 ```
@@ -117,7 +117,7 @@ service
 Agent to manage services using the Puppet service provider
 
       Author: R.I.Pienaar
-     Version: 1.1
+     Version: 1.1.0
      License: GPLv2
      Timeout: 60
    Home Page: https://docs.puppetlabs.com/mcollective/plugin_directory/
@@ -230,7 +230,7 @@ Meta Data:
  :author=>"R.I.Pienaar",
  :name=>"service",
  :timeout=>60,
- :version=>"1.1",
+ :version=>"1.1.0",
  :url=>"https://docs.puppetlabs.com/mcollective/plugin_directory/",
  :description=>"Agent to manage services using the Puppet service provider"}
 

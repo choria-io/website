@@ -37,7 +37,7 @@ metadata :name        => "echo",
          :description => "Echo service for MCollective",
          :author      => "R.I.Pienaar",
          :license     => "GPLv2",
-         :version     => "1.1",
+         :version     => "1.1.0",
          :url         => "https://docs.puppetlabs.com/mcollective/simplerpc/agents.html",
          :timeout     => 60
 
