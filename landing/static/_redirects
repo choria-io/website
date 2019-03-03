@@ -2,6 +2,8 @@
 /docs/ /docs/about/ 301
 /docs/deployment/nats   /docs/deployment/broker/  301
 /docs/deployment/nats/  /docs/deployment/broker/  301
+/docs/configuration/plugins   /docs/development/mcorpc/packaging/ 301
+/docs/configuration/plugins/  /docs/development/mcorpc/packaging/ 301
 /schemas/*   https://raw.githubusercontent.com/choria-io/schemas/master/:splat 301
 /mcollective /docs/about/mcollective/ 302
 
