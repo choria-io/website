@@ -1,7 +1,7 @@
 +++
-title = "Plugin Distribution"
+title = "Packaging Plugins"
 toc = true
-weight = 230
+weight = 60
 +++
 
 MCollective have many plugins, the most common ones are _agents_.
