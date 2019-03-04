@@ -22,7 +22,7 @@ Special thanks to Romain Tartière and Konrad Scherer for their contributions du
 
 Links: [Changes](https://github.com/choria-io/go-choria/compare/0.10.0...0.10.1), [Release](https://github.com/choria-io/go-choria/releases/tag/0.10.1)
 
-### Bugfixes
+#### Bugfixes
 
 On large networks - around 25 000 nodes or more - we observed some instability in the clustering of Choria Brokers, you would see log lines like these:
 
@@ -36,7 +36,7 @@ This indicates that the route connection (hence `rid` and not `cid`) between bro
 
 Links: [Changes](https://github.com/choria-io/mcollective-choria/compare/0.13.1...0.14.1), [Release](https://github.com/choria-io/mcollective-choria/releases/tag/0.14.1), [Forge](https://forge.puppet.com/choria/mcollective_choria)
 
-## Enhancements
+#### Enhancements
 
  * Add `-T` to the `federation trace` command
  * Improve error messages when a token file cannot be found
@@ -47,7 +47,7 @@ Links: [Changes](https://github.com/choria-io/mcollective-choria/compare/0.13.1.
 
 Links: [Changes](https://github.com/choria-io/mcorpc-ruby-support/compare/2.20.4...2.20.5), [Release](https://github.com/choria-io/mcorpc-ruby-support/releases/tag/2.20.5), [Gem](https://rubygems.org/gems/choria-mcorpc-support)
 
-### Bug Fixes
+#### Bug Fixes
 
  * Fix fact summaries for complex data types
 
@@ -55,14 +55,14 @@ Links: [Changes](https://github.com/choria-io/mcorpc-ruby-support/compare/2.20.4
 
 Links: [Changes](https://github.com/choria-plugins/action-policy/compare/3.0.0...3.1.0), [Forge](https://forge.puppet.com/choria/mcollective_util_actionpolicy/readme)
 
-## Enhancements
+#### Enhancements
 
  * Set `allow_unconfigured` to false by default
 
-## choria/choria module
+## Choria Puppet Module
 
 Links: [Changes](https://github.com/choria-io/puppet-choria/compare/0.12.0...0.13.0), [Release](https://github.com/choria-io/puppet-choria/releases/tag/0.13.0), [Forge](https://forge.puppet.com/choria/choria/readme)
 
-## Enhancements
+#### Enhancements
 
  * Allow the Package Cloud repo to be mirrored and a local url used when configuring the repos
