@@ -7,6 +7,8 @@ draft: false
 
 I typically release around the 20th of the month, this one was a bit delayed while I worked with the NATS project on some problems we encountered. Nothing major in these releases as I have been traveling and working on a large implementation.
 
+Some work that is not mentioned here is that I am reworking my Choria network load tester tool, this essentially allow you to use lets say 20 AWS instances to run a Choria network of 15 000 nodes.  It does this by starting multiple Choria Servers on a single node in Go routines and connecting them to the network in various formations.  This is ongoing, reach out to me if anyone has interest in this tool.  This focus is mainly to assist me in testing the upcoming NATS 2.0 release for uptake into the Choria Broker.
+
 For Puppet users there is a potential big change to look out for, Choria has a stated goal of:
 
 ```nohighlight
@@ -26,7 +28,7 @@ Links: [Changes](https://github.com/choria-io/go-choria/compare/0.10.0...0.10.1)
 
 On large networks - around 25 000 nodes or more - we observed some instability in the clustering of Choria Brokers, you would see log lines like these:
 
-```
+```nohighlight
 rid:16993 - Slow Consumer Detected: WriteDeadline of 5s Exceeded
 ```
 
