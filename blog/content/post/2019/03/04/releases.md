@@ -17,6 +17,7 @@ There was a problem though in that any modules that had no explicit policies wou
 
 Special thanks to Romain Tartière and Konrad Scherer for their contributions during this cycle.
 
+<!--more-->
 ## Choria Server 0.10.1
 
 Links: [Changes](https://github.com/choria-io/go-choria/compare/0.10.0...0.10.1), [Release](https://github.com/choria-io/go-choria/releases/tag/0.10.1)
