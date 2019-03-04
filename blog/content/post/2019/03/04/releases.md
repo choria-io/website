@@ -9,7 +9,7 @@ I typically release around the 20th of the month, this one was a bit delayed whi
 
 For Puppet users there is a potential big change to look out for, Choria has a stated goal of:
 
-```
+```nohighlight
 Choria sets up the popular Action Policy based authorization and does so in a default deny mode which means by default, no-one can make any requests
 ```
 
