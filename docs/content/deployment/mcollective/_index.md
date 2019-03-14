@@ -38,6 +38,17 @@ mcollective::client: true
 mcollective::server: false
 ```
 
+## Puppet 5
+
+Puppet 5 is the last version shipping Marionette Collective in the AIO packaging, and needs an additional data item:
+
+```yaml
+mcollective_choria::config:
+  security.serializer: "json"
+```
+
+You can enable the same Choria Server on your Puppet 5 nodes by following the steps in the [Choria Server](/docs/configuration/choria_server/) guide.
+
 ## Puppet 6
 
 With the release of Puppet 6 Puppet Inc has [deprecated Marionette Collective](https://choria.io/mcollective), Choria support Puppet 6 by enabling the Choria Server as a replacement for `mcollectived`.
@@ -46,11 +57,4 @@ With the release of Puppet 6 Puppet Inc has [deprecated Marionette Collective](h
 Puppet 6 support is available since release `0.12.0` of the `choria/choria` module, it's the first release that supports Puppet 6 and while extensive testing was done please ensure you test this upgrade in your lab first.
 {{% /notice %}}
 
-If you are running a Puppet 6 only network everything will just work, if you run a mix 5 and 6 network you have to make create an additional data item:
-
-```yaml
-mcollective_choria::config:
-  security.serializer: "json"
-```
-
-You can enable the same Choria Server on your Puppet 5 nodes by following the steps in the [Choria Server](/docs/configuration/choria_server/) guide.
+If you are running a Puppet 6 only network everything will just work.
