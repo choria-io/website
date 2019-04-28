@@ -1,7 +1,7 @@
 +++
 title = "Data Adapters"
-pre = "<b>6. </b>"
-weight = 60
+pre = "<b>7. </b>"
+weight = 70
 +++
 
 Data Adapters is a Choria technology that exists to convert data from the highly concurrent broadcast medium of Choria into formats more suitable to processing using technologies like Stream Processing.
