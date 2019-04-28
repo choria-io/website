@@ -1,0 +1,95 @@
+<svg width="384pt" height="222pt"
+ viewBox="0.00 0.00 383.97 221.60" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 217.6)">
+<title>fsm</title>
+<polygon fill="#ffffff" stroke="transparent" points="-4,4 -4,-217.6 379.9749,-217.6 379.9749,4 -4,4"/>
+<!-- unknown -->
+<g id="node1" class="node">
+<title>unknown</title>
+<ellipse fill="none" stroke="#000000" cx="156.3381" cy="-195.6" rx="46.9574" ry="18"/>
+<text text-anchor="middle" x="156.3381" y="-191.4" font-family="Times,serif" font-size="14.00" fill="#000000">unknown</text>
+</g>
+<!-- unknown&#45;&gt;unknown -->
+<g id="edge1" class="edge">
+<title>unknown&#45;&gt;unknown</title>
+<path fill="none" stroke="#000000" d="M198.2107,-203.8419C211.1533,-203.6754 221.3168,-200.9281 221.3168,-195.6 221.3168,-191.7704 216.0663,-189.2741 208.3073,-188.111"/>
+<polygon fill="#000000" stroke="#000000" points="208.4434,-184.6115 198.2107,-187.3581 207.9227,-191.5921 208.4434,-184.6115"/>
+<text text-anchor="middle" x="276.1352" y="-191.4" font-family="Times,serif" font-size="14.00" fill="#000000">variables_unknown</text>
+</g>
+<!-- idle -->
+<g id="node2" class="node">
+<title>idle</title>
+<ellipse fill="none" stroke="#000000" cx="29.3381" cy="-106.8" rx="27" ry="18"/>
+<text text-anchor="middle" x="29.3381" y="-102.6" font-family="Times,serif" font-size="14.00" fill="#000000">idle</text>
+</g>
+<!-- unknown&#45;&gt;idle -->
+<g id="edge2" class="edge">
+<title>unknown&#45;&gt;idle</title>
+<path fill="none" stroke="#000000" d="M112.7362,-188.804C80.4438,-182.7836 40.3532,-172.8855 30.1641,-159.6 24.8491,-152.6697 23.3754,-143.5856 23.6202,-134.9103"/>
+<polygon fill="#000000" stroke="#000000" points="27.1284,-134.999 24.6283,-124.7034 20.1623,-134.3109 27.1284,-134.999"/>
+<text text-anchor="middle" x="82.4251" y="-147" font-family="Times,serif" font-size="14.00" fill="#000000">variables_changed</text>
+</g>
+<!-- idle&#45;&gt;unknown -->
+<g id="edge3" class="edge">
+<title>idle&#45;&gt;unknown</title>
+<path fill="none" stroke="#000000" d="M56.2067,-109.8004C79.5241,-113.7141 112.8282,-122.6344 134.3381,-142.8 141.4442,-149.4619 146.3345,-158.77 149.6639,-167.7185"/>
+<polygon fill="#000000" stroke="#000000" points="146.4149,-169.0498 152.7945,-177.5087 153.0824,-166.9178 146.4149,-169.0498"/>
+<text text-anchor="middle" x="201.1565" y="-147" font-family="Times,serif" font-size="14.00" fill="#000000">variables_unknown</text>
+</g>
+<!-- idle&#45;&gt;idle -->
+<g id="edge5" class="edge">
+<title>idle&#45;&gt;idle</title>
+<path fill="none" stroke="#000000" d="M55.6847,-110.9089C65.8713,-111.0915 74.3381,-109.7219 74.3381,-106.8 74.3381,-104.9282 70.8633,-103.6934 65.6876,-103.0956"/>
+<polygon fill="#000000" stroke="#000000" points="65.818,-99.5982 55.6847,-102.6911 65.5351,-106.5924 65.818,-99.5982"/>
+<text text-anchor="middle" x="99.221" y="-102.6" font-family="Times,serif" font-size="14.00" fill="#000000">air_good</text>
+</g>
+<!-- idle&#45;&gt;idle -->
+<g id="edge8" class="edge">
+<title>idle&#45;&gt;idle</title>
+<path fill="none" stroke="#000000" d="M54.87,-113.2373C84.3215,-117.0239 124.1039,-114.8781 124.1039,-106.8 124.1039,-99.6054 92.548,-97.1165 64.839,-99.3332"/>
+<polygon fill="#000000" stroke="#000000" points="64.4575,-95.8539 54.87,-100.3627 65.1767,-102.8168 64.4575,-95.8539"/>
+<text text-anchor="middle" x="176.1909" y="-102.6" font-family="Times,serif" font-size="14.00" fill="#000000">variables_changed</text>
+</g>
+<!-- running -->
+<g id="node3" class="node">
+<title>running</title>
+<ellipse fill="none" stroke="#000000" cx="95.3381" cy="-18" rx="41.1548" ry="18"/>
+<text text-anchor="middle" x="95.3381" y="-13.8" font-family="Times,serif" font-size="14.00" fill="#000000">running</text>
+</g>
+<!-- idle&#45;&gt;running -->
+<g id="edge10" class="edge">
+<title>idle&#45;&gt;running</title>
+<path fill="none" stroke="#000000" d="M13.6056,-91.8425C4.068,-80.9173 -4.8201,-65.9825 3.3577,-54 9.1992,-45.4407 30.0262,-36.9393 50.3871,-30.349"/>
+<polygon fill="#000000" stroke="#000000" points="51.4558,-33.682 59.9644,-27.3689 49.376,-26.9981 51.4558,-33.682"/>
+<text text-anchor="middle" x="25.3283" y="-58.2" font-family="Times,serif" font-size="14.00" fill="#000000">air_bad</text>
+</g>
+<!-- running&#45;&gt;unknown -->
+<g id="edge4" class="edge">
+<title>running&#45;&gt;unknown</title>
+<path fill="none" stroke="#000000" d="M135.7058,-21.6055C175.7757,-27.7281 234.0615,-44.2452 254.3381,-88.8 270.6427,-124.6268 268.1082,-148.6879 260.3381,-159.6 253.6227,-169.0309 229.9593,-177.6003 206.8986,-184.0104"/>
+<polygon fill="#000000" stroke="#000000" points="205.8646,-180.6638 197.1036,-186.6217 207.6677,-187.4276 205.8646,-180.6638"/>
+<text text-anchor="middle" x="321.1565" y="-102.6" font-family="Times,serif" font-size="14.00" fill="#000000">variables_unknown</text>
+</g>
+<!-- running&#45;&gt;idle -->
+<g id="edge6" class="edge">
+<title>running&#45;&gt;idle</title>
+<path fill="none" stroke="#000000" d="M77.853,-34.4723C72.0369,-40.3639 65.7327,-47.227 60.5723,-54 54.2488,-62.2997 48.1909,-71.9796 43.1214,-80.7678"/>
+<polygon fill="#000000" stroke="#000000" points="40.0591,-79.073 38.2265,-89.5081 46.1665,-82.4934 40.0591,-79.073"/>
+<text text-anchor="middle" x="86.221" y="-58.2" font-family="Times,serif" font-size="14.00" fill="#000000">air_good</text>
+</g>
+<!-- running&#45;&gt;idle -->
+<g id="edge9" class="edge">
+<title>running&#45;&gt;idle</title>
+<path fill="none" stroke="#000000" d="M107.3112,-35.7392C112.9902,-46.5445 117.1925,-60.2528 110.3381,-70.8 100.4077,-86.0805 82.3319,-94.9274 65.7714,-100.023"/>
+<polygon fill="#000000" stroke="#000000" points="64.482,-96.7459 55.7424,-102.7351 66.3093,-103.5032 64.482,-96.7459"/>
+<text text-anchor="middle" x="166.4251" y="-58.2" font-family="Times,serif" font-size="14.00" fill="#000000">variables_changed</text>
+</g>
+<!-- running&#45;&gt;running -->
+<g id="edge7" class="edge">
+<title>running&#45;&gt;running</title>
+<path fill="none" stroke="#000000" d="M131.9725,-26.2495C144.4148,-26.2928 154.4154,-23.543 154.4154,-18 154.4154,-14.1026 149.4713,-11.5861 142.2106,-10.4505"/>
+<polygon fill="#000000" stroke="#000000" points="142.188,-6.9408 131.9725,-9.7505 141.7105,-13.9245 142.188,-6.9408"/>
+<text text-anchor="middle" x="175.4056" y="-13.8" font-family="Times,serif" font-size="14.00" fill="#000000">air_bad</text>
+</g>
+</g>
+</svg>
