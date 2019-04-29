@@ -10,14 +10,14 @@ All watchers share a common set of properties detailed below, watcher specific p
 
 |Property          |Required                    |Description|
 |------------------|----------------------------|-----------|
-|name              |<i class="fas fa-check"></i>|A unique name for the watcher|
-|type              |<i class="fas fa-check"></i>|A known type of watcher like *file* or *exec*|
-|state_match       |<i class="fas fa-check"></i>|A list of state names where this watcher is valid for|
-|fail_transition   |                            |If set this event fires on failure|
-|success_transition|                            |If set this event fires on success|
-|interval          |                            |Runs the watcher every interval, valid intervals are of the form *1s*, *1m*, *1h*|
-|announce_interval |                            |Announce the current state of the watcher regularly, valid intervals are of the form *1s*, *1m*, *1h*|
-|properties        |<i class="fas fa-check"></i>|Watcher specific settings|
+|name              |yes|A unique name for the watcher|
+|type              |yes|A known type of watcher like *file* or *exec*|
+|state_match       |yes|A list of state names where this watcher is valid for|
+|fail_transition   |   |If set this event fires on failure|
+|success_transition|   |If set this event fires on success|
+|interval          |   |Runs the watcher every interval, valid intervals are of the form *1s*, *1m*, *1h*|
+|announce_interval |   |Announce the current state of the watcher regularly, valid intervals are of the form *1s*, *1m*, *1h*|
+|properties        |yes|Watcher specific settings|
 
 ## File watcher
 
@@ -27,8 +27,8 @@ The *file* watcher observes a specific file for changes and presence. Today only
 
 |Property            |Required                            |Description|
 |--------------------|------------------------------------|-----------|
-|path                |<i class="fas fa-check"></i>        |The path to the file to watch relative to the watcher manifest directory|
-|gather_initial_state|                                    |Gathers the initial file mode, stats etc for regular announces but only perform first watch after *interval*|
+|path                |yes|The path to the file to watch relative to the watcher manifest directory|
+|gather_initial_state|   |Gathers the initial file mode, stats etc for regular announces but only perform first watch after *interval*|
 
 ### Behavior
 
@@ -48,7 +48,7 @@ The *exec* watcher supports running shell commands, it has a very basic exit cod
 
 |Property            |Required                            |Description|
 |--------------------|------------------------------------|-----------|
-|command             |<i class="fas fa-check"></i>        |The command to run relative to the watcher manifest directory|
+|command             |yes|The command to run relative to the watcher manifest directory|
 
 ### Behavior
 
