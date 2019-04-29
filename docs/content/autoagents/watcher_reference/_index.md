@@ -52,7 +52,8 @@ The *exec* watcher supports running shell commands, it has a very basic exit cod
 
 |Property            |Required                            |Description|
 |--------------------|------------------------------------|-----------|
-|command             |yes|The command to run relative to the watcher manifest directory|
+|command             |yes                                 |The command to run relative to the watcher manifest directory|
+|timeout             |                                    |How long the command is allowed to run, *10s* default|
 
 ### Behavior
 
