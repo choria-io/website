@@ -32,7 +32,7 @@ The graph below can be generated using the *choria machine graph hvac/* command 
 The manifest here describe the machine that was first presented in the concepts page, it manages a simple HVAC system based on air quality. All keys in the document here are required.
 
 {{% notice tip %}}
-A [JSON schema](https://choria.io/schemas/choria/machine/v1/manifest.json) describes these files and you can configure some editors to validate the YAML file based on that.
+A [JSON schema](https://choria.io/schemas/choria/machine/v1/manifest.json) describes these files and you can configure some editors to validate the YAML file based on that. The command `choria machine validate` can validate a *machine.yaml* against this schema.
 {{% /notice %}}
 
 The scripts called are not shown here, they simply have to exit 0 on success or 1 on failure, everything else is ignored.
@@ -65,7 +65,7 @@ transitions:
 watchers:
   # checks the hvac.json exist and if its changed, on change
   # success_transition is fired, if the file is missing
-  # fail_transition is fired. 
+  # fail_transition is fired.
   - name: variables
     type: file
     state_match: [unknown, idle, running]

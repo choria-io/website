@@ -4,6 +4,10 @@ weight = 30
 toc = true
 +++
 
+{{% notice tip %}}
+A [JSON schema](https://choria.io/schemas/choria/machine/v1/manifest.json) describes these files and you can configure some editors to validate the YAML file based on that. The command `choria machine validate` can validate a *machine.yaml* against this schema.
+{{% /notice %}}
+
 ## Common watcher properties
 
 All watchers share a common set of properties detailed below, watcher specific properties are always in the *properties* key:
