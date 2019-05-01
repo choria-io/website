@@ -50,10 +50,11 @@ The *exec* watcher supports running shell commands, it has a very basic exit cod
 
 ### Properties
 
-|Property            |Required                            |Description|
-|--------------------|------------------------------------|-----------|
-|command             |yes                                 |The command to run relative to the watcher manifest directory|
-|timeout             |                                    |How long the command is allowed to run, *10s* default|
+|Property                 |Required                            |Description|
+|-------------------------|------------------------------------|-----------|
+|command                  |yes                                 |The command to run relative to the watcher manifest directory|
+|timeout                  |                                    |How long the command is allowed to run, *10s* default|
+|suppress_success_announce|                                    |Do not publish a state JSON document after every run, useful for frequently run items. Still publish on error. Still support regular publish via `announce_interval`|
 
 ### Behavior
 
