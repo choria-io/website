@@ -39,8 +39,14 @@ The scripts called are not shown here, they simply have to exit 0 on success or 
 
 ```yaml
 name: HVAC
+
+# Must be SemVer format
 version: "1.0.0"
+
+# The state the machine starts in
 initial_state: unknown
+
+# Will wait a random period up to this many seconds before starting, defaults to 0
 splay_start: 30
 
 # Creates all the valid events this machine can receive, we do
