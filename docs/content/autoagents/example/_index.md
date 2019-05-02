@@ -41,6 +41,7 @@ The scripts called are not shown here, they simply have to exit 0 on success or 
 name: HVAC
 version: "1.0.0"
 initial_state: unknown
+splay_start: 30
 
 # Creates all the valid events this machine can receive, we do
 # not specifically need to list all the states that is inferred
@@ -113,4 +114,12 @@ You can run the machine locally on your desktop during testing using the *choria
 
 ## Running inside Choria Server
 
-This is not yet supported
+Machines are hosted within your Choria Server and are read from disk. There isn't much to configure:
+
+```ini
+plugin.choria.machine.store = /etc/choria/machines
+```
+
+On start every machine found in directories there will be started and hosted forever, they will log and publish events to the middleware.  Machines with *splay_start* set as in the example above will sleep randomly up to this many seconds before starting, if you are running for example a cron style job on a large estate this can assist with spreading the load.
+
+Updates to this directory will be detected, machines stopped and reloaded from disk on demand without restarting the Choria Server.
