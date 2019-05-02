@@ -144,16 +144,20 @@ Discovering hosts using the choria method .... 1
 
 
 example.net
-      Machine IDs: ["3c909455-505a-428f-b558-42ef91c87d38"]
-   Machine States: {"3c909455-505a-428f-b558-42ef91c87d38"=>
+      Machine IDs: ["0fc2c13a-d628-43e4-96b3-9c47e3f5e19e"]
+   Machine States: {"0fc2c13a-d628-43e4-96b3-9c47e3f5e19e"=>
                      {"name"=>"DockerExample",
                       "version"=>"0.0.1",
                       "state"=>"monitor",
                       "path"=>"/etc/choria/machine/docker",
-                      "id"=>"3c909455-505a-428f-b558-42ef91c87d38",
-                      "start_time"=>1556811907}}
-
-
+                      "id"=>"0fc2c13a-d628-43e4-96b3-9c47e3f5e19e",
+                      "start_time"=>1556832746,
+                      "available_transitions"=>[
+                        "unhealthy", 
+                        "no_manifest", 
+                        "maintenance", 
+                        "absent"
+                      ]}}
 
 Finished processing 1 / 1 hosts in 121.22 ms
 ```
@@ -165,10 +169,12 @@ You can force initiate a `Transition` by name on a specific machine, this is use
 These transition requests can of course fail - your machine might be in a state where the transition you are requesting is not valid, in that case the RPC request will fail with appropriate error state.
 
 ```nohighlight
-$ mco rpc choria_util machine_transition machine_id=3c909455-505a-428f-b558-42ef91c87d38 transition=absent
+$ mco rpc choria_util machine_transition name=DockerExample transition=resume
 Discovering hosts using the choria method .... 1
 
  * [ ============================================================> ] 1 / 1
 
 Finished processing 1 / 1 hosts in 144.41 ms
 ```
+
+In addition to `name` you can also pass `version`, `path` or even the instance ID via `instance`.  These criteria are search in an `AND` manner in case you run multiple instances of the same machine.
