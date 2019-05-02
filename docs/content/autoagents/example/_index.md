@@ -123,3 +123,46 @@ plugin.choria.machine.store = /etc/choria/machines
 On start every machine found in directories there will be started and hosted forever, they will log and publish events to the middleware.  Machines with *splay_start* set as in the example above will sleep randomly up to this many seconds before starting, if you are running for example a cron style job on a large estate this can assist with spreading the load.
 
 Updates to this directory will be detected, machines stopped and reloaded from disk on demand without restarting the Choria Server.
+
+## Interacting with hosted autonomous agents
+
+When these agents are hosted in a running Choria Server one can interact with them in 2 ways:
+
+### Request current state
+
+```nohighlight
+$ mco rpc choria_util machine_states
+Discovering hosts using the choria method .... 1
+
+ * [ ============================================================> ] 1 / 1
+
+
+example.net
+      Machine IDs: ["3c909455-505a-428f-b558-42ef91c87d38"]
+   Machine States: {"3c909455-505a-428f-b558-42ef91c87d38"=>
+                     {"name"=>"DockerExample",
+                      "version"=>"0.0.1",
+                      "state"=>"monitor",
+                      "path"=>"/etc/choria/machine/docker",
+                      "id"=>"3c909455-505a-428f-b558-42ef91c87d38",
+                      "start_time"=>1556811907}}
+
+
+
+Finished processing 1 / 1 hosts in 121.22 ms
+```
+
+### Requesting a state change
+
+You can force initiate a `Transition` by name on a specific machine, this is useful if your machine have a state where it effectively enters a maintenance mode for instance when you do not wish to have it remediate down components while you do maintenance.
+
+These transition requests can of course fail - your machine might be in a state where the transition you are requesting is not valid, in that case the RPC request will fail with appropriate error state.
+
+```nohighlight
+$ mco rpc choria_util machine_transition machine_id=3c909455-505a-428f-b558-42ef91c87d38 transition=absent
+Discovering hosts using the choria method .... 1
+
+ * [ ============================================================> ] 1 / 1
+
+Finished processing 1 / 1 hosts in 144.41 ms
+```
