@@ -60,7 +60,9 @@ You can filter these further by one or more `--type` flags.
 
 Each node hosting Machines will return their list of instances and details about each, significantly you note the current state and what are possible transition.
 
-If you are coding management tools againt this use the `id` to later interact with a specific machine or be sure to add enough identifying information since it's possible to run the same machine with the same name at different versions in the same Choria Server.
+If you are coding management tools againt this use the `id`, `name`, `version`, `path` and any combination of these to later interact with a specific machine or be sure to add enough identifying information since it's possible to run the same machine with the same name at different versions in the same Choria Server.
+
+To assist in managing a running Machine you can also see here what are available transitions in its current state.
 
 ```nohighlight
 $ mco rpc choria_util machine_states
@@ -70,22 +72,39 @@ Discovering hosts using the choria method .... 1
 
 
 example.net
-      Machine IDs: ["0fc2c13a-d628-43e4-96b3-9c47e3f5e19e"]
-   Machine States: {"0fc2c13a-d628-43e4-96b3-9c47e3f5e19e"=>
+      Machine IDs: ["143c3487-396d-4134-adba-ff0f0058e824",
+                    "e873a2ef-b55d-494f-a816-a9eb4ed9d7b8"]
+    Machine Names: ["DockerExample 0.0.1", "TestMachine 0.0.1"]
+   Machine States: {"143c3487-396d-4134-adba-ff0f0058e824"=>
                      {"name"=>"DockerExample",
                       "version"=>"0.0.1",
                       "state"=>"monitor",
                       "path"=>"/etc/choria/machine/docker",
-                      "id"=>"0fc2c13a-d628-43e4-96b3-9c47e3f5e19e",
-                      "start_time"=>1556832746,
-                      "available_transitions"=>[
+                      "id"=>"143c3487-396d-4134-adba-ff0f0058e824",
+                      "start_time"=>1556901166,
+                      "available_transitions"=> [
                         "unhealthy",
-                        "no_manifest",
                         "maintenance",
-                        "absent"
-                      ]}}
+                        "absent",
+                        "no_manifest"
+                      ]},
+                    "e873a2ef-b55d-494f-a816-a9eb4ed9d7b8"=>
+                     {"name"=>"TestMachine",
+                      "version"=>"0.0.1",
+                      "state"=>"two",
+                      "path"=>"/etc/choria/machine/test",
+                      "id"=>"e873a2ef-b55d-494f-a816-a9eb4ed9d7b8",
+                      "start_time"=>1556901167,
+                      "available_transitions"=>[]}}
 
-Finished processing 1 / 1 hosts in 121.22 ms
+
+Summary of Machine Names:
+
+     TestMachine 0.0.1 = 1
+   DockerExample 0.0.1 = 1
+
+
+Finished processing 1 / 1 hosts in 178.88 ms
 ```
 
 ### Requesting a state change
