@@ -27,7 +27,7 @@ example.net DockerExample transitioned via event deployed: deploy => monitor
 example.net DockerExample#deploy command: ./deploy.rb, previous: success ran: 0.085s
 example.net DockerExample#check_running command: ./check_running.rb, previous: success ran: 0.085s
 example.net DockerExample#monitor command: ./monitor.rb, previous: success ran: 1.352s
-````
+```
 
 #### Only Transitions
 
