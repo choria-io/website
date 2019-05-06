@@ -8,6 +8,33 @@ An Autonomous Agent consists of a directory with a file *machine.yaml* and an op
 
 In the concepts section we described a theoretical HVAC management agent, lets look how that might look as a machine.
 
+## Designing the Finite State Machine
+
+Lets try to solve the HVAC problem from our concepts page, to recap we want to have a file lets say *hvac.json* that describes in it thresholds for air quality that you read from sensors in the room. Could be humidity, temperature, co2 levels, whatever you decide. Based on these configured thresholds and the input from your sensors you want to turn the HVAC on and off.
+
+Reasoning about this we determine we have 3 possible states:
+
+ * The *hvac.json* is missing - this we'll call *unknown* state
+ * The air quality is within parameters and the HVAC should be off - this we'll call *idle* state
+ * The air quality is outside of parameters and the HVAC should be on - this we'll call the *running* state
+
+Lets think about the *transitions*, this is what triggers the HVAC to go off and on and so forth:
+
+ * If at any point the *hvac.json* goes missing we need to move to the *unknown* state, we'll trigger the *variables_unknown* state
+ * If at any point the *hvac.json* changes, we will move to idle state and measure the values, we'll trigger the *variables_changed* state to achieve this
+ * If while measuring the air quality sensors the node falls within good thresholds the *air_good* transition is fired and the HVAC moves to idle
+ * If while measure the air quality the sensors the node falls outside of good thresholds the *air_bad* transition is fired and the HVAC moves to running
+
+![HVAC Machine Transitions](../../hvac_machine_transitions.png)
+
+Lets think about the *watchers*, this is monitors you need to run to inform the system when to fire transitions:
+
+ * When in any state we need to watch the *hvac.json* file, we need to detect the file going missing or the file changing
+ * When the machine is *idle* **or** *running* we need to monitor the sensors and trigger either *air_good* or *air_bad*
+ * When the machine is in *idle* **or** *unknown* state we should keep the HVAC turned off
+ * When the machine is in *running* state we should keep the HVAC turned on
+
+
 ## Disk layout
 
 Machines are stored in directories, the example below would be stored like this:
@@ -21,11 +48,7 @@ hvac
 └── on.sh
 ```
 
-## Graph
-
-The graph below can be generated using the *choria machine graph hvac/* command based on the previous layout.
-
-<img src="/docs/hvac_fsm.svg" />
+When you use scripts in *exec* watchers or reference files in *file* watchers the paths are relative to your *machine.yaml*.  At present the only requirement is that a *machine.yaml* exist in the directory the rest are optional.
 
 ## Manifest
 
@@ -113,6 +136,14 @@ watchers:
     properties:
         command: monitor.sh
 ```
+
+## Graph
+
+The graph below can be generated using the *choria machine graph hvac/* command based on the previous layout.
+
+<img src="../../hvac_fsm.svg" />
+
+You can use this to verify the structure of your machine and what transitions are supported etc, it's in the Graphviz dot format and can be viewed using many online or offline viewers.
 
 ## Running locally
 
