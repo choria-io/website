@@ -23,7 +23,7 @@ Lets think about the *transitions*, this is what triggers the HVAC to go off and
  * If at any point the *hvac.json* goes missing we need to move to the *unknown* state, we'll trigger the *variables_unknown* state
  * If at any point the *hvac.json* changes, we will move to idle state and measure the values, we'll trigger the *variables_changed* state to achieve this
  * If while measuring the air quality sensors the node falls within good thresholds the *air_good* transition is fired and the HVAC moves to idle
- * If while measure the air quality the sensors the node falls outside of good thresholds the *air_bad* transition is fired and the HVAC moves to running
+ * If while measuring the air quality the sensors the node falls outside of good thresholds the *air_bad* transition is fired and the HVAC moves to running
 
 ![HVAC Machine Transitions](../../hvac_machine_transitions.png)
 
@@ -52,7 +52,7 @@ When you use scripts in *exec* watchers or reference files in *file* watchers th
 
 ## Manifest
 
-The manifest here describe the machine that was first presented in the concepts page, it manages a simple HVAC system based on air quality. All keys in the document here are required.
+The manifest here describe the machine we designed above, the *splay_start* item is optional, everything else is required.
 
 {{% notice tip %}}
 A [JSON schema](https://choria.io/schemas/choria/machine/v1/manifest.json) describes these files and you can configure some editors to validate the YAML file based on that. The command `choria machine validate` can validate a *machine.yaml* against this schema.
@@ -72,9 +72,9 @@ initial_state: unknown
 # Will wait a random period up to this many seconds before starting, defaults to 0
 splay_start: 30
 
-# Creates all the valid events this machine can receive, we do
-# not specifically need to list all the states that is inferred
-# from the "from" and "destination" lines.
+# Creates all the valid transitions this machine can receive, we do
+# not specifically need to list all the states as they are inferred
+# from the "from" and "destination" lines
 transitions:
   - name: variables_unknown
     from: [unknown, idle, running]
@@ -137,6 +137,10 @@ watchers:
         command: monitor.sh
 ```
 
+## Validating
+
+You can validate the *machine.yaml* by running *choria machine validate hvac* where *hvac* is the directory with your machine.
+
 ## Graph
 
 The graph below can be generated using the *choria machine graph hvac/* command based on the previous layout.
@@ -160,7 +164,3 @@ plugin.choria.machine.store = /etc/choria/machines
 On start every machine found in directories there will be started and hosted forever, they will log and publish events to the middleware.  Machines with *splay_start* set as in the example above will sleep randomly up to this many seconds before starting, if you are running for example a cron style job on a large estate this can assist with spreading the load.
 
 Updates to this directory will be detected, machines stopped and reloaded from disk on demand without restarting the Choria Server.
-
-## Interacting with hosted autonomous agents
-
-When these agents are hosted in a running Choria Server one can interact with them in 2 ways:
