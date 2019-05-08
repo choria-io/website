@@ -20,8 +20,8 @@ Reasoning about this we determine we have 3 possible states:
 
 Lets think about the *transitions*, this is what triggers the HVAC to go off and on and so forth:
 
- * If at any point the *hvac.json* goes missing we need to move to the *unknown* state, we'll trigger the *variables_unknown* state
- * If at any point the *hvac.json* changes, we will move to idle state and measure the values, we'll trigger the *variables_changed* state to achieve this
+ * If at any point the *hvac.json* goes missing we need to move to the *unknown* state, we'll trigger the *variables_unknown* transition
+ * If at any point the *hvac.json* changes, we will move to idle state and measure the values, we'll trigger the *variables_changed* transition to achieve this
  * If while measuring the air quality sensors the node falls within good thresholds the *air_good* transition is fired and the HVAC moves to idle
  * If while measuring the air quality the sensors the node falls outside of good thresholds the *air_bad* transition is fired and the HVAC moves to running
 

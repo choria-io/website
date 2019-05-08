@@ -35,3 +35,8 @@ Finally you'd write a small script that would query your sensors and determine i
 ### Events
 
 Choria has a standard set of events - alive, startup, shutdown, provisioned and more - state transitions and state announcement will publish their own event types. Dashboards will be made that can passively observe a running network of machines.
+
+### State Machine
+
+A State Machine combine *states* and *transitions* to describe every possible situation the managed item might find itself in and how it gets to that situation or state.
+

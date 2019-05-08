@@ -56,6 +56,24 @@ example.net DockerExample#monitor command: ./monitor.rb, previous: success ran: 
 
 You can filter these further by one or more `--type` flags.
 
+#### Raw JSON
+
+These events are published on the middleware as JSON, you can view these raw:
+
+{{% notice tip %}}
+JSON Schemas for all published messages exist, for example `io.choria.machine.v1.transition` would be `https://choria.io/schemas/choria/machine/v1/transition.json`
+{{% /notice %}}
+
+```nohighlight
+$ choria tool sub "choria.machine.>"
+Waiting for messages from topic choria.machine.> on nats://example:4222
+
+---- 16:46:55 on topic choria.machine.watcher.exec.state
+{"protocol":"io.choria.machine.watcher.exec.v1.state","identity":"example.net","id":"79933942-6f5e-4cff-95e9-24ee1604bd9b","version":"0.0.1","timestamp":1557326815541428330,"type":"exec","machine":"DockerExample","name":"check_running","command":"./check_running.rb","previous_outcome":"success","previous_run_time":62199712}
+```
+
+State transitions are published on `choria.machine.transition` topic while watcher states are published on, for example, `choria.machine.watcher.file.state` where you replace *file* with the watcher type. Above example using `choria.machine.>` watches all events.
+
 ### Request current state
 
 Each node hosting Machines will return their list of instances and details about each, significantly you note the current state and what are possible transition.
