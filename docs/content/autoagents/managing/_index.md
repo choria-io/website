@@ -4,7 +4,7 @@ weight = 30
 toc = true
 +++
 
-Running instances of Choria Autonomous Agents can be managed via the normal Choria RPC interface, this feature will be expanded a lot in the future right now its quite limited.
+Running instances of Choria Autonomous Agents can be observed using the events they publish in JSON - and we provide a utility to assist with that - additionally they can be managed via the normal Choria RPC interface, this feature will be expanded a lot in the future right now its quite limited.
 
 ### Watching the real time events and transitions
 
