@@ -17,8 +17,9 @@ Unfortunately there are number of draw backs to this:
 
 Mark Burgess has a little anecdote about this, the Mayor of a city does not constantly tell every street sweeper where and how to do their job, the sweepers are trained to do their thing on their own and so a city scales by applying this concept on every level.
 
-For years I have tried to build some form of autonomous agent that let us describe a system being managed and it will constantly be managed. The conceptual component is a Finite State Machine - nothing new about this - but I always had concerns about visibility and operability. Recent advances in tools like Prometheus but also my own work in events from the Choria daemons have made this much more viable.
+For years I have tried to build some form of autonomous agent that let us describe a system being managed and it will constantly be managed. The conceptual component is a [Finite State Machine](https://en.wikipedia.org/wiki/Finite-state_machine) - nothing new about this - but I always had concerns about visibility and operability. Recent advances in tools like Prometheus but also my own work in events from the Choria daemons have made this much more viable.
 
+<!--more-->
 ## Use Cases
 
 There are many typical use cases for such a Choria Autonomous Agent (aka Choria Machine or just Machine), you might already have something like this in your container scheduler or even the thermostat control of your HVAC system at home.
