@@ -5,6 +5,13 @@ tags: ["machines"]
 draft: false
 ---
 
+Today we're launching a significant new feature that allow you to create a kind of automation that run on your nodes and do not need RPC interactions to initiate actions.
+
+These run forever and continuously interact with your node, they keep working if the node is disconnected from the middleware and do not require a central component to function.
+
+This release is a feature preview release, there are significant short comings like it's too hard today to get content on the nodes. We are launching this feature very early to solicit feedback and ideas to help us prioritize future work.
+
+## Overview
 The typical orchestration that people have done with MCollective or Choria has always taken the form of a conductor that tells the fleet what to do every step of the way.
 
 This works fine for a lot of things especially if you use features like Sub Collectives to create isolated network-near groups where you run a daemon that orchestrates just the little cluster. It's work so well in fact that this has always just been acceptable.
