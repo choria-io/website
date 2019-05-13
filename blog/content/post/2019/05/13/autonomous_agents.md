@@ -2,7 +2,7 @@
 title: "Autonomous Agents"
 date: 2019-05-13T13:00:00+01:00
 tags: ["machines"]
-draft: true
+draft: false
 ---
 
 The typical orchestration that people have done with MCollective or Choria has always taken the form of a conductor that tells the fleet what to do every step of the way.
