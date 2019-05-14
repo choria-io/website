@@ -6,6 +6,10 @@ weight = 50
 
 Autonomous Agents allow you to create agents that can run on any node continuously without the need to initiate actions via RPC calls.
 
+{{% notice tip %}}
+This feature is available since *Choria Server 0.11.0*
+{{% /notice %}}
+
 {{% notice warning %}}
 This is a preview level feature, we're including to seek community feedback on a MVP level feature set
 {{% /notice %}}
