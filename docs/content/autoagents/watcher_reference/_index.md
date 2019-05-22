@@ -55,10 +55,11 @@ The *exec* watcher supports running shell commands, it has a very basic exit cod
 |command                  |yes                                 |The command to run relative to the watcher manifest directory|
 |timeout                  |                                    |How long the command is allowed to run, *10s* default|
 |suppress_success_announce|                                    |Do not publish a state JSON document after every run, useful for frequently run items. Still publish on error. Still support regular publish via `announce_interval`|
+|environment              |                                    |A list of custom environment variables to set in the form `VAR=val`|
 
 ### Behavior
 
-An exec watcher will at *interval* times run the command specified with a few machine specific environment variables set.
+An exec watcher will at *interval* times run the command specified with a few machine specific environment variables set in addition to any set using `environment`.
 
 |Variable              |Description|
 |----------------------|-----------|
