@@ -1,8 +1,8 @@
 ---
 title: "Autonomous Agents"
-date: 2019-05-13T13:00:00+01:00
+date: 2019-05-13T9:00:00+01:00
 tags: ["machines"]
-draft: false
+draft: true
 ---
 
 Today we're launching a significant new feature that allow you to create a kind of automation that run on your nodes and do not need RPC interactions to initiate actions. We call it *Choria Autonomous Agents* or *Choria Machine*, it's available as a preview feature in *Choria Server 0.11.0*
@@ -71,7 +71,8 @@ name: ContainerManager
 version: 1.0.0
 initial_state: unknown
 
-# How the machine move between states, also declares the valid states: unknown, monitor, deploy
+# How the machine move between states, also declares
+# the valid states: unknown, monitor, deploy
 transitions:
  - name: absent
    from: [unknown, monitor, deploy]
@@ -118,7 +119,7 @@ watchers:
       command: ./check_running.rb
 ```
 
-This will run forever and manage the container, you can observe it working on the CLI or programmatically - here we killed the running container and it was remediated:
+This will run forever and manage the container, you can observe it working on the CLI or programmatically - here we killed the running container and it was remedied:
 
 ```nohighlight
 $ choria machine watch
