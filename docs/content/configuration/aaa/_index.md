@@ -86,6 +86,8 @@ And you can request custom certificate names on the CLI:
 $ mco choria request_cert --certname bob
 ```
 
+You can then instruct the CLI to use that other cert using `export MCOLLECTIVE_CERTNAME=bob`.
+
 ### Revoking access
 
 Public certificates are distributed automatically but will never be removed.  To remove them you have to manually arrange for the files to be deleted from all nodes, perhaps using Puppet, before a new one can be distributed.  These live in */etc/puppetlabs/puppet/choria_security/public_certs*.
