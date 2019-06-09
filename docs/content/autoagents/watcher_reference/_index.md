@@ -59,7 +59,7 @@ The *exec* watcher supports running shell commands, it has a very basic exit cod
 
 ### Behavior
 
-An exec watcher will at *interval* times run the command specified with a few machine specific environment variables set in addition to any set using `environment`.
+An exec watcher will at *interval* times run the command specified with a few machine specific environment variables set in addition to any set using `environment`. Since version 0.11.1 when the interval is not set the the command will run only on transitions.
 
 |Variable              |Description|
 |----------------------|-----------|
@@ -85,7 +85,7 @@ This feature is available since *Choria Server 0.11.1*
 
 ### Behavior
 
-The schedules specified is a list of times when the scheduler will be in success transition. The fields are like crontab(5), supports ranges, special characters and predefined schedules like `@daily`, see [robfib/cron](https://godoc.org/github.com/robfig/cron) section *CRON Expression Format* for what we'd understand.  We do not support the seconds field.
+The schedules specified is a list of times when the scheduler will be in success transition, at the end of the trigger time + duration it will fire a fail transition. The fields are like crontab(5), supports ranges, special characters and predefined schedules like `@daily`, see [robfib/cron](https://godoc.org/github.com/robfig/cron) section *CRON Expression Format* for what we'd understand.  We do not support the seconds field.
 
 ```yaml
  - name: scheduler
