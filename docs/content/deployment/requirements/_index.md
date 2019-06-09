@@ -6,7 +6,7 @@ toc = true
 
 ## Deployment Overview
 
-Deploying MCollective with Choria is broken into the following main steps that the menu on the left guides you through:
+Deploying Choria is broken into the following main steps that the menu on the left guides you through:
 
   * Decide on your desired Choria Broker middleware topology and deploy it
   * If required configure DNS records or manual host locations
@@ -21,8 +21,7 @@ To make it to the end of this guide you will need to be able to effect root leve
 
 ### Required
 
-  * You must use Puppet 5 or 6 deployed using the Puppet Inc AIO packages - the one called _puppet-agent_.
-  * If you want to use Playbooks you must use Puppet 5.4.0 at least
+  * You must use Puppet 6 deployed using the Puppet Inc AIO packages - the one called _puppet-agent_.
   * You must be using a Puppet Master based setup, typically using _puppetserver_
   * You need to run middleware, Choria has it's own Choria Broker that supports RedHat 5, 6, 7, Debian Stretch and Ubuntu Xenial or Bionic
   * Your certnames must match your FQDNs - the default

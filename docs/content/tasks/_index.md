@@ -26,12 +26,6 @@ Choria provides support for Puppet Tasks to the Open Source Community, it provid
   * A _mco tasks_ command that behaves like a typical mcollective utility
   * Tasks can be used from your ruby code or playbooks using the _bolt\_tasks_ agent
 
-## Requirements
-
-  * Your client and all your nodes must run Puppet 5.4.0 at least.
-  * You must have a version 5.1 or newer Puppet Server where your code is hosted, tasks are downloaded from here
-  * You must have Choria 0.7.0 or newer
-
 ## Demonstration
 
 The pages in this section will provide a thorough reference for this feature, you can also watch a video showcasing the capabilities of Puppet Tasks in Choria
