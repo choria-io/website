@@ -32,6 +32,7 @@ $nodes = choria::discover("shell",
 |limit|Accept only this many nodes from the discovery source, if more are found, discard the excess ones|`limit => 10`|
 |test|When true performs a *mco rpc rpcutil ping* against the discovered nodes to ensure they are operational|`test => true`|
 |uses|Use MCollective to audit the discovered nodes and ensure the stated agents conform to the SemVer specification given|
+|empty_ok|Typically when no nodes are found an error is raised, you might want to retry discovery till you find a node, this enables that (since 0.16.0)|`empty_ok => true`|
 
 ## MCollective Nodes
 
