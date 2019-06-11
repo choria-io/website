@@ -63,8 +63,9 @@ An exec watcher will at *interval* times run the command specified with a few ma
 
 |Variable              |Description|
 |----------------------|-----------|
-|*NACHINE_WATCHER_NAME*|The *name* of the watcher being run|
-|*NACHINE_NAME*        |The *name* of the machine being run|
+|*MACHINE_WATCHER_NAME*|The *name* of the watcher being run|
+|*MACHINE_NAME*        |The *name* of the machine being run|
+|*PATH*                |Includes the machine directory as last entry|
 
 The command is run with current directory set to the directory where the *machine.yaml* is, when the command exits *0* a *success_transition* fires, when it exits *!0* a *fail_transition* fires. Both cases publish an event announcing the execution.
 
