@@ -16,7 +16,7 @@ All watchers share a common set of properties detailed below, watcher specific p
 |------------------|----------------------------|-----------|
 |name              |yes|A unique name for the watcher|
 |type              |yes|A known type of watcher like *file* or *exec*|
-|state_match       |yes|A list of state names where this watcher is valid for|
+|state_match       |no |A list of state names where this watcher is valid for|
 |fail_transition   |   |If set this event fires on failure|
 |success_transition|   |If set this event fires on success|
 |interval          |   |Runs the watcher every interval, valid intervals are of the form *1s*, *1m*, *1h*|
@@ -59,7 +59,7 @@ The *exec* watcher supports running shell commands, it has a very basic exit cod
 
 ### Behavior
 
-An exec watcher will at *interval* times run the command specified with a few machine specific environment variables set in addition to any set using `environment`. Since version 0.11.1 when the interval is not set the the command will run only on transitions.
+An exec watcher will at *interval* times run the command specified with a few machine specific environment variables set in addition to any set using `environment`. Since version 0.11.1 when the interval is not set or set to 0 the the command will run only on transitions.
 
 |Variable              |Description|
 |----------------------|-----------|
