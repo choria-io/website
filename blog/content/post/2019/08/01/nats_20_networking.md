@@ -2,7 +2,7 @@
 title: "NATS 2.0 Based Broker"
 date: 2019-08-01T9:00:00+01:00
 tags: ["nats", "network"]
-draft: true
+draft: false
 ---
 
 It's been a few months since our last releases - usually we release monthly but there's been a delay, today we'll give you some background on why.
