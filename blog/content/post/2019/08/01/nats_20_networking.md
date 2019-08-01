@@ -27,9 +27,13 @@ Read on for the gory details!
 
 ## Accounts
 
-NATS 2.0 allow you to create something akin to a chain or trust in x509. There are a number of entities to think about:
+NATS 2.0 allow you to create something akin to a chain or trust in x509.
 
- 1. The *Operator* runs the network, this is kind of like a Root CA, who controls the operator can create new networks or allow new entities into the multi tenant network.
+Once this is enabled all clients connecting to the network needs credentials and all clients belong to an account. You can have just one account that's fine, but if you have many they are securely isolated.
+
+There are a number of entities to think about:
+
+ 1. The *Operator* runs the network, this is kind of like a Root CA, who controls the entire network. An operator can create new networks or allow new entities into the multi tenant network.
  1. An *Account* in Choria would be something like a business unit, or a data center or a business group.
  1. A *Client* belongs to an *Account* and represents each managed machine or Choria client.
 
@@ -37,7 +41,7 @@ Connections made by a *client* are authenticated using a credential, the credent
 
 Configuring accounts in Choria is quite easy:
 
-```
+```nohighlight
 plugin.choria.network.operator_account = OPS
 plugin.choria.network.system_account = ADWJVSUSEVC2GHL5GRATN2LOEOQOY2E6Z2VXNU3JEIK6BDGPWNIW3AXF
 ```
@@ -52,9 +56,11 @@ When issuing the client credential you can embed in them access lists, in Choria
 
 The Choria Provisioner will support issuing credentials for Clients with appropriate access lists embedded. It will support joining unprovisioned machines into a specific account and so forth.
 
+There are some additional things we can support if we find a good use case like expiry times, payload sizes and message counts.
+
 ## Cross account communication
 
-You can enable cross account communication, this will be used in Choria for node registration data.  You could have 10 accounts (business units, tenants etc) but you might want to receive centrally all their metadata to store etc.
+You can enable cross account communication, this will be used in Choria for node registration data and our current Data Adapters will support these.  You could have 10 accounts (business units, tenants etc) but you might want to receive centrally all their metadata to store etc.
 
 One can embed in the accounts rules allowing the registration data published by *node1* in account *Acme* to be received by user *cmdb* in account *OPS*.  Thus a single pool of data processors can serve any number of tenant accounts without having to provision per account data processors.
 
@@ -62,7 +68,7 @@ One can embed in the accounts rules allowing the registration data published by 
 
 ### Gateways
 
-Choria Broker supports clustering really easily with automatic support for TLS and everything.  The clusters being NATS based forms a full mesh networking and so we think a sweet spot for these size wise is below 5 nodes.
+Choria Broker supports clustering really easily with automatic support for TLS and everything.  The clusters being NATS based forms a full mesh networking and so we think a sweet spot for these size wise is below 5 nodes. They are optimized for a LAN and should not span WAN links.
 
 Gateways allow you to create a connection between 2 Clusters and traffic will leave the local cluster only when necessary based on interest.
 
@@ -72,7 +78,7 @@ Gateways let us do the same, are multi tenant aware and transparent to the appli
 
 You will soon be able to link 2 isolated networks *NewYork* and *Tokyo* together as simple as this:
 
-```
+```nohighlight
 plugin.choria.network.gateway_port = 7001
 plugin.choria.network.gateway_name = NewYork
 plugin.choria.network.gateway_remotes = Tokyo,NewYork
@@ -88,7 +94,7 @@ Further information about Gateways are in the [NATS documentation](https://nats-
 
 Imagine you have different networks for 2 business units and they are hosted on the same Choria Broker in different accounts. You would want to enroll new nodes into the correct network but prior to enrollment you need to isolate these unenrolled machines.
 
-When you provision a new node without yet any certificates etc you will need to connect to the provisioning network in the clear since you do not yet have TLS certificates. The provisioning process is designed to be secure even in the clear.
+When you provision a new node without yet any certificates etc you will need to connect to the provisioning network in the clear since you do not yet have TLS certificates. The provisioning process is designed to be secure even in the clear. But the problem is how to join these unknown machines to a specific account that lives in a TLS secured Broker cluster?
 
 Leaf nodes allow you to set up a Choria Broker that could have a different authentication method - no TLS for example - and would force all connections to it into an isolated network like a VLAN would. The Leaf node would connect to your cluster and from there allow access to everything in the cluster that is in the account the leaf node belongs to.
 
@@ -96,7 +102,7 @@ This is ideal for the provisioning scenario above or for allowing remote RPC cli
 
 You will soon be able to add a Leaf Node to a Choria Network quite easily, here we connect to the OPS remote using a file with credentials and the all connections to the leafnode will be forced into the account:
 
-```
+```nohighlight
 plugin.choria.network.leafnode_port	= 7002
 plugin.choria.network.leafnode_remotes = OPS
 plugin.choria.network.leafnode_remote.OPS.url = c1.ops.example.net:7002
@@ -110,8 +116,10 @@ Further information about Leaf nodes are in the [NATS documentation](https://nat
 
 If you enable a System Account in your Choria Network Broker as above you will be able to passively observe the network using a NATS client, for example:
 
-```
+```nohighlight
 $ choria tool sub "$SYS.ACCOUNT.*.CONNECT"
 ```
 
 Will show notifications of every connection received on every account.  There's a wealth of events published by the Broker, see more at the [NATS Documentation](https://nats-io.github.io/docs/sys_accounts/sys_accounts.html).
+
+Using this we can create observability tools that create live graphs of connections on a per account basis or CLI tools to actively observe the state of the network.
