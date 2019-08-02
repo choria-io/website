@@ -2,7 +2,7 @@
 title: "Autonomous Agents"
 date: 2019-05-13T9:00:00+01:00
 tags: ["machines"]
-draft: true
+draft: false
 ---
 
 Today we're launching a significant new feature that allow you to create a kind of automation that run on your nodes and do not need RPC interactions to initiate actions. We call it *Choria Autonomous Agents* or *Choria Machine*, it's available as a preview feature in *Choria Server 0.11.0*
@@ -26,7 +26,7 @@ Unfortunately there are number of draw backs to this:
 
 Mark Burgess has a little anecdote about this, the Mayor of a city does not constantly tell every street sweeper where and how to do their job, the sweepers are trained to do their thing on their own and so a city scales by applying this concept on every level.
 
-For years I have tried to build some form of autonomous agent that let us describe a system being managed and it will constantly be managed. The conceptual component is a [Finite State Machine](https://en.wikipedia.org/wiki/Finite-state_machine) - nothing new about this - but I always had concerns about visibility and operability. Recent advances in tools like Prometheus but also my own work in events from the Choria daemons have made this much more viable.
+For years I have tried to build some form of autonomous agent that let us describe a system being managed and it will constantly be managed. The conceptual component is a [Finite State Machine](https://en.wikipedia.org/wiki/Finite-state_machine) - nothing new about this - but I always had concerns about visibility and operability. Recent advances in tools like Prometheus, but also my own work in events from the Choria daemons, have made this much more viable.
 
 I think of this a bit like a Kubernetes Operator but for anything in any environment.
 

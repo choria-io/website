@@ -13,7 +13,7 @@ The major feature is around security, NATS is now multi tenant capable which mea
 
 Additionally there have been a huge shift in networking capabilities allowing new ways to form super clusters and to extend your broker foot print globally. This will allow us to look toward other models of federation rather than our own Federation Brokers.
 
-If you read further you will find much have changed and many new features are available, however for the typical use case nothing has to change.  Everything keep working and even old clients and agents will continue to function.  If you do not use these features or do not need them, there is nothing new.
+If you read further you will find much have changed and many new features are available, however for the typical use case nothing has to change.  **Everything keeps working and even old clients and agents will continue to function with no configuration of behaviour change**.  If you do not use these features or do not need them, there is nothing new.
 
 The challenge for us in integrating NATS 2.0 into the Choria Network Broker is to map these new capabilities onto Choria use cases and make them configurable in a way that make it comfortable within Choria. 
 
@@ -38,6 +38,8 @@ There are a number of entities to think about:
  1. A *Client* belongs to an *Account* and represents each managed machine or Choria client.
 
 Connections made by a *client* are authenticated using a credential, the credential belongs to an account and any client within an account can communicate with each other.
+
+This is the underlying feature that all the rest is built on. It allows you to offer Choria as a service with many tenants cohabiting, it allows data isolation for stronger auditing features and better global networks. By connecting our CA, our Provisioning, our over the air updates and automatic user enrollment to this we can build a next generation secure orchestration platform suitable for building cloud backplanes.
 
 Configuring accounts in Choria is quite easy:
 
@@ -65,6 +67,10 @@ You can enable cross account communication, this will be used in Choria for node
 One can embed in the accounts rules allowing the registration data published by *node1* in account *Acme* to be received by user *cmdb* in account *OPS*.  Thus a single pool of data processors can serve any number of tenant accounts without having to provision per account data processors.
 
 ## Networking Improvements
+
+The networking improvements below are all compatible with Accounts/Multi Tenancy and our adoption is to support a massive global scale network like you would need for a managed IoT network consisting of millions or tens of millions of devices.
+
+I hope to publish a few more posts soon showing scenarios where you would use these features. These were not built by Choria, they are core NATS features, you can use them via NATS 2.0 standalone to build your own tools as well.
 
 ### Gateways
 
