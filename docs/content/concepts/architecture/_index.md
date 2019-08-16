@@ -29,7 +29,7 @@ Servers do not need additional open ports, nothing will listen for connections, 
 
 ## Clients
 
-A Choria Client is any piece of software that can request servers perform some action. Typically you will interact with Choria using the *mco* CLI tool but there is also a rich API allowing you to write automated systems in Ruby of Golang.
+A Choria Client is any piece of software that can request servers perform some action. Typically you will interact with Choria using the *mco* CLI tool but there is also a rich API allowing you to write automated systems in Ruby or Golang.
 
 Each client has it's own unique SSL certificate, typically signed by your Puppet CA.
 
