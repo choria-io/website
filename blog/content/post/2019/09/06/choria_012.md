@@ -36,6 +36,9 @@ There is now an implementation of the much loved/hated `mco rpc` written in pure
  * The `-j` flag still produce JSON but the JSON format has changed and become much more useful, now including stats and aggregates
  * DDL declared aggregates are supported but only `summary`, `boolean_summary` and `average`. These plugins were written in Ruby and cannot be called from Go. The above 3 should cover 90% of real world use.
  * Various outputs are slightly changed and now displays valid JSON where sensible
+ * Short versions of some options like `--ln` for `--limit-nodes` are gone due to limitations in my CLI framework, few other small CLI flag changes
+ * The `--display` flag now supports `none` in addition to past flags
+ * `--verbose` will respect the DDL display hints and `--display`
 
 Other than that it's 1:1 compatible, if I missed any command line flags that you use in the old one please contact me.
 
