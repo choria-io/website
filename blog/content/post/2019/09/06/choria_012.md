@@ -34,7 +34,7 @@ The `go buildinfo` command now shows all the dependencies compiled into the bina
 There is now an implementation of the much loved/hated `mco rpc` written in pure Go. It is nearly 1:1 feature compatible with the following notable differences:
 
  * The `-j` flag still produce JSON but the JSON format has changed and become much more useful, now including stats and aggregates
- * DDL declared aggregates are supported but only `summary`, `boolean_summary`, `chart` and `average`. These plugins were written in Ruby and cannot be called from Go. The above 3 should cover 90% of real world use.
+ * DDL declared aggregates are supported but only `summary`, `boolean_summary`, `chart` and `average`. These plugins were written in Ruby and cannot be called from Go. The above 3 should cover 90% of real world use and the `chart` one is new
  * Various outputs are slightly changed and now displays valid JSON where sensible
  * Short versions of some options like `--ln` for `--limit-nodes` are gone due to limitations in my CLI framework, few other small CLI flag changes
  * The `--display` flag now supports `none` in addition to past flags
