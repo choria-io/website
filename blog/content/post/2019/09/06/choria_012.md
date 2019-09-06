@@ -34,7 +34,7 @@ The `go buildinfo` command now shows all the dependencies compiled into the bina
 There is now an implementation of the much loved/hated `mco rpc` written in pure Go. It is nearly 1:1 feature compatible with the following notable differences:
 
  * The `-j` flag still produce JSON but the JSON format has changed and become much more useful, now including stats and aggregates
- * DDL declared aggregates are supported but only `summary`, `boolean_summary` and `average`. These plugins were written in Ruby and cannot be called from Go. The above 3 should cover 90% of real world use.
+ * DDL declared aggregates are supported but only `summary`, `boolean_summary`, `chart` and `average`. These plugins were written in Ruby and cannot be called from Go. The above 3 should cover 90% of real world use.
  * Various outputs are slightly changed and now displays valid JSON where sensible
  * Short versions of some options like `--ln` for `--limit-nodes` are gone due to limitations in my CLI framework, few other small CLI flag changes
  * The `--display` flag now supports `none` in addition to past flags
@@ -47,6 +47,40 @@ Other than that it's 1:1 compatible, if I missed any command line flags that you
 Other than that, it's incredibly fast above you can see a old `mco rpc` vs this new one on the same nodes in a real time comparison, wow.  The ruby `mco rpc` would do a directed request of `rpcutil#ping` in about 30 seconds on 40k nodes.  The `choria req` does it in 2 seconds.
 
 As it's compiled into the choria `binary` it has no external requirements.
+
+I mentioned the `chart` aggregate, as with other aggregate plugins it gives you a birds eye view of your results, it's probably quite a niche one but here it is showing me my total resource counts across my fleet:
+
+```
+Summary of Total Resources:
+
+  730  ┤                  ╭─╮
+  693  ┤                  │ │
+  656  ┤                  │ │
+  620  ┼╮                ╭╯ │
+  583  ┤╰──╮             │  │
+  547  ┤   │             │  ╰╮       ╭╮           ╭─────────────╮
+  510  ┤   │     ╭╮     ╭╯   │      ╭╯╰╮         ╭╯             ╰╮
+  473  ┤   ╰╮    ││     │    │      │  ╰╮       ╭╯               ╰╮
+  437  ┤    │   ╭╯│     │    │      │   ╰─────╮╭╯                 ╰
+  400  ┤    │   │ ╰╮   ╭╯    │     ╭╯         ╰╯
+  363  ┤    ╰╮  │  │   │     ╰╮    │
+  327  ┤     │ ╭╯  ╰╮ ╭╯      │    │
+  290  ┤     │ │    │ │       │   ╭╯
+  253  ┤     ╰╮│    │╭╯       │   │
+  217  ┤      ╰╯    ╰╯        │   │
+  180  ┤                      ╰───╯
+```
+
+Immediately I have a idea that I have some nodes with really very low resource counts (I should probably investigate that can't be right), and some high ones, I do not know which ones or how many but I can dig into this:
+
+```
+$ choria rpc puppet last_run_summary -j | jq -r '.replies|.[]|select(.data.total_resources < 200)|.sender'
+dev10.example.net
+dev11.example.net
+dev12.example.net
+```
+
+By using the new easier to use JSON output and `jq` I could find out what were the weird nodes.
 
 I do wish to revisit the default RPC client and make it a much more user friendly experience, unfortunately I think my Go tooling is not quite up to the task yet.  For now this gets us going.
 
