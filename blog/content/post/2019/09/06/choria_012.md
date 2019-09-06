@@ -50,7 +50,7 @@ As it's compiled into the choria `binary` it has no external requirements.
 
 I mentioned the `chart` aggregate, as with other aggregate plugins it gives you a birds eye view of your results, it's probably quite a niche one but here it is showing me my total resource counts across my fleet:
 
-```
+```nohighlight
 Summary of Total Resources:
 
   730  ┤                  ╭─╮
@@ -73,8 +73,9 @@ Summary of Total Resources:
 
 Immediately I have a idea that I have some nodes with really very low resource counts (I should probably investigate that can't be right), and some high ones, I do not know which ones or how many but I can dig into this:
 
-```
-$ choria rpc puppet last_run_summary -j | jq -r '.replies|.[]|select(.data.total_resources < 200)|.sender'
+```nohighlight
+$ choria rpc puppet last_run_summary -j | \
+       jq -r '.replies|.[]|select(.data.total_resources < 200)|.sender'
 dev10.example.net
 dev11.example.net
 dev12.example.net
