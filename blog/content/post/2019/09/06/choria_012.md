@@ -34,14 +34,18 @@ The `go buildinfo` command now shows all the dependencies compiled into the bina
 There is now an implementation of the much loved/hated `mco rpc` written in pure Go. It is nearly 1:1 feature compatible with the following notable differences:
 
  * The `-j` flag still produce JSON but the JSON format has changed and become much more useful, now including stats and aggregates
- * DDL decalred aggregates are support but only `summary`, `boolean_summary` and `average`. These plugins were written in Ruby and cannot be called from Go. The above 3 should cover 90% of real world use.
+ * DDL declared aggregates are supported but only `summary`, `boolean_summary` and `average`. These plugins were written in Ruby and cannot be called from Go. The above 3 should cover 90% of real world use.
  * Various outputs are slightly changed and now displays valid JSON where sensible
 
 Other than that it's 1:1 compatible, if I missed any command line flags that you use in the old one please contact me.
 
-Other than that, it's incredibly fast.  The ruby `mco rpc` would do a directed request of `rpcutil#ping` in about 30 seconds on 40k nodes.  The `choria req` does it in 2 seconds.
+![faaaast](rpcclient.gif)
+
+Other than that, it's incredibly fast above you can see a old `mco rpc` vs this new one on the same nodes in a real time comparison, wow.  The ruby `mco rpc` would do a directed request of `rpcutil#ping` in about 30 seconds on 40k nodes.  The `choria req` does it in 2 seconds.
 
 As it's compiled into the choria `binary` it has no external requirements.
+
+I do wish to revisit the default RPC client and make it a much more user friendly experience, unfortunately I think my Go tooling is not quite up to the task yet.  For now this gets us going.
 
 ## pkcs11 Support
 
