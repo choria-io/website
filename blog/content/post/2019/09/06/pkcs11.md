@@ -16,6 +16,8 @@ pkcs11 stands for "Public Key Cryptography Standard #11". It's a set of standard
 
 You may be compelled to use it due to the environment you work in. Yubikeys and CACs are being used more and more in large-scale environments. But it's a good idea to investigate the use of these things if you already aren't. The power of HSMs is that the sensitive cryptographic material is generated on the hardware and never leaves it. So instead of opening your private key file and signing hashes with it, you're handing the hash to your Yubikey, which signs it and returns the data. There are compliance advantages too (because of the stronger security). Some HSMs are FIPS-compliant, which some computing environments require.
 
+<!--more-->
+
 ## How do I get started using pkcs11?
 
 The following example is for an OS X/Linux environment. Let's go over how you might setup a yubikey (a brand of HSM) to be used with Choria. `ykman` is a utility that you will have to download to follow along.
