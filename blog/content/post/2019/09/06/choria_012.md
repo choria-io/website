@@ -21,13 +21,11 @@ While we do not yet have a full fleshed out documented story for how we'll use a
 
 This is a huge step forward for our future scalability needs and as always this has been tested extensively on 50 000 nodes.
 
-## Go 1.13
+## pkcs11 Support
 
-We now compile the releases with Go 1.13, we support `go mod` and as a side effect we cannot support RHEL 5 anymore, those releases are dropped.
+Thanks to the tireless efforts of Paul Tittle the security system now supports pkcs11.  This means you can authenticate to the network using your Yubikey and other HSM. At present this is only available in the Golang client libraries (and so also the new rpc client).
 
-## Dependency Visibility
-
-The `go buildinfo` command now shows all the dependencies compiled into the binary including their versions.  Because we use go 1.13 these are verified using their checksum database during builds.
+There's a fantastic blog introducing this feature written by Paul: [New pkcs11 Security Provider](../pkcs11).
 
 ## Vast improvements to the Go client library
 
@@ -100,11 +98,15 @@ I do wish to revisit the default RPC client and make it a much more user friendl
 
 The `choria ping --graph` output is now using the same graph widget rather than the old tiny sparkline.
 
-## pkcs11 Support
+## Go 1.13
 
-Thanks to the tireless efforts of Paul Tittle the security system now supports pkcs11.  This means you can authenticate to the network using your Yubikey and other HSM. At present this is only available in the Golang client libraries (and so also the new rpc client).
+We now compile the releases with Go 1.13, we support `go mod` and as a side effect we cannot support RHEL 5 anymore, those releases are dropped.
 
-There's a fantastic blog introducing this feature written by Paul: [New pkcs11 Security Provider](../pkcs11).
+## Dependency Visibility
+
+The `go buildinfo` command now shows all the dependencies compiled into the binary including their versions.  Because we use go 1.13 these are verified using their checksum database during builds.
+
+This would be of particular interest to people in enterprise environments who wish to audit their dependencies, now you have a simple way to extract the exact versions of every dependency in Choria and it would be correct if your own builds and plugins also supports `go mod` like when you use my tooling to build custom packages and binaries.
 
 ## Agent Activation changes
 
