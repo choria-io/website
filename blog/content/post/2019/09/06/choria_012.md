@@ -85,11 +85,13 @@ By using the new easier to use JSON output and `jq` I could find out what were t
 
 I do wish to revisit the default RPC client and make it a much more user friendly experience, unfortunately I think my Go tooling is not quite up to the task yet.  For now this gets us going.
 
+The `choria ping --graph` output is now using the same graph widget rather than the old tiny sparkline.
+
 ## pkcs11 Support
 
-Thanks to the tireless efforts of Paul Tittle the security system now supports pkcs11.  This means you can authenticate to the network using your Yubikey and other HSM.
+Thanks to the tireless efforts of Paul Tittle the security system now supports pkcs11.  This means you can authenticate to the network using your Yubikey and other HSM. At present this is only available in the Golang client libraries (and so also the new rpc client).
 
-There's a fantastic blog introducing this feature: **TODO**
+There's a fantastic blog introducing this feature: [New pkcs11 Security Provider](../pkcs11).
 
 ## Agent Activation changes
 
