@@ -29,12 +29,25 @@ We now compile the releases with Go 1.13, we support `go mod` and as a side effe
 
 The `go buildinfo` command now shows all the dependencies compiled into the binary including their versions.  Because we use go 1.13 these are verified using their checksum database during builds.
 
+## Vast improvements to the Go client library
+
+The [Go Client](https://godoc.org/github.com/choria-io/mcorpc-agent-provider/mcorpc/client) and the [Go DDL](https://godoc.org/github.com/choria-io/mcorpc-agent-provider/mcorpc/ddl/agent) had huge improvements which makes it now a full featured client capable of doing everything the Ruby one could do including the more meta things driven by the DDL.
+
+ * Supports limiting targets by number, percentage in random or first modes with repeatable selections by giving a seed
+ * Supports calculating aggregates and includes `summary`, `average` and `chart` aggregators
+ * Added callbacks to communicate with the calling library about discovery, limits etc to facilitate better user feedback
+ * Supports parsing `input` in DDLs
+ * Supports validating data against the DDL including data types and validators `shellsafe`, `ipv4address`, `ipv6address`, `ipaddress` and arbitrary regex
+ * Supports converting a `map[string]string` of inputs into `map[string]interface{}` where every key is validated and values have the correct types based on the DDL.  Meaning JSON encoding will do the right things
+
+We'll soon add a section of documentation detailing how to use all these features, the new `choria req` CLI uses this (see below).
+
 ## A new RPC client
 
 There is now an implementation of the much loved/hated `mco rpc` written in pure Go. It is nearly 1:1 feature compatible with the following notable differences:
 
  * The `-j` flag still produce JSON but the JSON format has changed and become much more useful, now including stats and aggregates
- * DDL declared aggregates are supported but only `summary`, `boolean_summary`, `chart` and `average`. These plugins were written in Ruby and cannot be called from Go. The above 3 should cover 90% of real world use and the `chart` one is new
+ * DDL declared aggregates are supported
  * Various outputs are slightly changed and now displays valid JSON where sensible
  * Short versions of some options like `--ln` for `--limit-nodes` are gone due to limitations in my CLI framework, few other small CLI flag changes
  * The `--display` flag now supports `none` in addition to past flags
