@@ -3,6 +3,7 @@ title: "New pkcs11 Security Provider"
 date: 2019-09-06T9:00:00+01:00
 tags: ["pkcs11", "security"]
 draft: false
+author: Paul Tittle
 ---
 
 The latest release of Choria will have a new security provider, called `pkcs11`! This blog post will go over how to use it in various configurations. But first, a review of what pkcs11 is and how it's useful.
