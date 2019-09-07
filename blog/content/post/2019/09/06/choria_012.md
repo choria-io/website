@@ -104,7 +104,7 @@ The `choria ping --graph` output is now using the same graph widget rather than 
 
 Thanks to the tireless efforts of Paul Tittle the security system now supports pkcs11.  This means you can authenticate to the network using your Yubikey and other HSM. At present this is only available in the Golang client libraries (and so also the new rpc client).
 
-There's a fantastic blog introducing this feature: [New pkcs11 Security Provider](../pkcs11).
+There's a fantastic blog introducing this feature written by Paul: [New pkcs11 Security Provider](../pkcs11).
 
 ## Agent Activation changes
 

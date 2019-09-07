@@ -3,6 +3,7 @@ title: "New pkcs11 Security Provider"
 date: 2019-09-06T9:00:00+01:00
 tags: ["pkcs11", "security"]
 draft: false
+author: Paul Tittle
 ---
 
 The latest release of Choria will have a new security provider, called `pkcs11`! This blog post will go over how to use it in various configurations. But first, a review of what pkcs11 is and how it's useful.
@@ -14,6 +15,8 @@ pkcs11 stands for "Public Key Cryptography Standard #11". It's a set of standard
 ## Why should I use pkcs11?
 
 You may be compelled to use it due to the environment you work in. Yubikeys and CACs are being used more and more in large-scale environments. But it's a good idea to investigate the use of these things if you already aren't. The power of HSMs is that the sensitive cryptographic material is generated on the hardware and never leaves it. So instead of opening your private key file and signing hashes with it, you're handing the hash to your Yubikey, which signs it and returns the data. There are compliance advantages too (because of the stronger security). Some HSMs are FIPS-compliant, which some computing environments require.
+
+<!--more-->
 
 ## How do I get started using pkcs11?
 
