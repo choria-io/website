@@ -42,23 +42,13 @@ metadata :name        => "service",
 
 It's fairly obvious what these all do, _:timeout_ is how long the MCollective daemon will let the threads run.
 
-## Required versions
-
-You can indicate which is the lowest version of MCollective needed to use a plugin.  Plugins that do not meet the requirement can not be used.
-
-```ruby
-requires :mcollective => "2.0.0"
-```
-
-You should add this right after the metadata section in the DDL
-
 ## Actions, Input and Output
 
 Defining inputs and outputs is the hardest part, below first the _status_ action:
 
 ```ruby
 action "status", :description => "Gets the status of a service" do
-    display :always  # supported in 0.4.7 and newer only
+    display :always
 
     input :service,
           :prompt      => "Service Name",
@@ -72,7 +62,8 @@ action "status", :description => "Gets the status of a service" do
     output :status,
            :description => "The status of service",
            :display_as  => "Service Status",
-           :default     => "unknown status"
+           :default     => "unknown status",
+           :type        => :string
 end
 ```
 
@@ -98,7 +89,8 @@ Finally the service agent has 3 almost identical actions - _start_, _stop_ and _
         output :status,
                :description => "The status of service after #{act}",
                :display_as  => "Service Status",
-               :default     => "unknown status"
+               :default     => "unknown status",
+               :type        => :string
     end
 end
 ```
@@ -145,6 +137,7 @@ ACTIONS:
            status:
               Description: The status of service after restart
                Display As: Service Status
+                     Type: string
 ```
 
 ### Optional Inputs
@@ -153,7 +146,7 @@ The input block has a mandatory _:optional_ field, when true it would be ok if a
 
 ### Types of Input
 
-As you see above the input block has _:type_ option, types can be _:string_, _:list_, _:boolean_, _:integer_, _:float_ or _:number_
+As you see above the input block has _:type_ option, types can be _:string_, _:list_, _:boolean_, _:integer_, _:float_,  _:number_, _:hash_ or _:array_
 
 #### :string type
 
@@ -195,6 +188,14 @@ The value input should be a floating point number like _1.0_ but not _1_.
 #### :number type
 
 The value input should be an integer or a floating point number.
+
+#### :hash type
+
+The value has to be a valid hash with string keys
+
+### :array type
+
+The value has to be a array
 
 ### Accessing the DDL
 

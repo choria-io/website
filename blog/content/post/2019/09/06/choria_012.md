@@ -37,6 +37,8 @@ The [Go Client](https://godoc.org/github.com/choria-io/mcorpc-agent-provider/mco
  * Supports parsing `input` in DDLs
  * Supports validating data against the DDL including data types and validators `shellsafe`, `ipv4address`, `ipv6address`, `ipaddress` and arbitrary regex
  * Supports converting a `map[string]string` of inputs into `map[string]interface{}` where every key is validated and values have the correct types based on the DDL.  Meaning JSON encoding will do the right things
+ * Supports type hints on output sections of agent DDLs
+ * Supports applying defaults to both inputs and outputs
 
 We'll soon add a section of documentation detailing how to use all these features, the new `choria req` CLI uses this (see below).
 
@@ -50,6 +52,7 @@ There is now an implementation of the much loved/hated `mco rpc` written in pure
  * Short versions of some options like `--ln` for `--limit-nodes` are gone due to limitations in my CLI framework, few other small CLI flag changes
  * The `--display` flag now supports `none` in addition to past flags
  * `--verbose` will respect the DDL display hints and `--display`
+ * When a DDL declares inputs of type `hash` or `array` the CLI will accept JSON as arguments and automatically parse it into the right complex format
 
 Other than that it's 1:1 compatible, if I missed any command line flags that you use in the old one please contact me.
 
