@@ -2,7 +2,7 @@
 title: "Choria Server and Broker 0.12.0"
 date: 2019-09-09T9:00:00+01:00
 tags: ["releases"]
-draft: true
+draft: false
 ---
 
 The next releases will start coming in over the next week or three, we're getting going with quite a major release for the Choria Server and Broker and a few related packages, I'll introduce some of the changes here today.
