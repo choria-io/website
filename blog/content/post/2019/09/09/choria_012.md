@@ -1,6 +1,6 @@
 ---
 title: "Choria Server and Broker 0.12.0"
-date: 2019-09-06T9:00:00+01:00
+date: 2019-09-09T9:00:00+01:00
 tags: ["releases"]
 draft: true
 ---
