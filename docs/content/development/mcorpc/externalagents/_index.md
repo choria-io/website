@@ -13,7 +13,7 @@ This is a brand new feature and subject to change and quite possibly have some b
 
 ### File Layout
 
-An external agent can be written in any language and the related files go in the same directory as other Ruby agents, here is a basic`helloworld` agent on disk in `/opt/puppetlabs/mcollective/plugins/mcollective/agent`:
+An external agent can be written in any language and the related files go in the same directory as other Ruby agents, here is a basic *helloworld* agent on disk in `/opt/puppetlabs/mcollective/plugins/mcollective/agent`:
 
 ```nohighlight
 -rwxr-xr-x 1 root root 315 Sep 12 11:18 helloworld
@@ -99,11 +99,11 @@ The `CHORIA_EXTERNAL_REQUEST` file will look like this:
 
 Few things to note here:
 
- * `requestid` is unique per request and will appear in audit logs and elsewhere
- * `callerid` will have been verified by the security system so you can rely on this being valid
- * `msgtime` is seconds since 1970 in UTC timezone
- * `body.data` is free form data, typically key=val of whatever the client sent
- * `body.data` will have been verified subject to the DDL validations, data types and default values set as appropriate
+ * *requestid* is unique per request and will appear in audit logs and elsewhere
+ * *callerid* will have been verified by the security system so you can rely on this being valid
+ * *msgtime* is seconds since 1970 in UTC timezone
+ * *body.data* is free form data, typically key=val of whatever the client sent
+ * *body.data* will have been verified subject to the DDL validations, data types and default values set as appropriate
 
 Your reply should be written to `CHORIA_EXTERNAL_REPLY` and must look like this:
 
@@ -117,7 +117,7 @@ Your reply should be written to `CHORIA_EXTERNAL_REPLY` and must look like this:
 }
 ```
 
-The `statuscode` is standard MCollective Protocol status codes:
+The *statuscode* is standard MCollective Protocol status codes:
 
 |Status Code|Description|Exception Class|
 |-----------|-----------|---------------|
@@ -128,7 +128,7 @@ The `statuscode` is standard MCollective Protocol status codes:
 |4|Invalid data|InvalidRPCData|
 |5|Other error|UnknownRPCError|
 
-And `data` is free form data being sent back to the client.  Note however the data too will be validated against the DDL output section, defaults will be set and more.
+And *data* is free form data being sent back to the client.  Note however the data too will be validated against the DDL output section, defaults will be set and more.
 
 ## Helper Libraries
 
