@@ -3,7 +3,7 @@ title = "External Agents"
 weight = 21
 +++
 
-As of version 0.12.1 of the Choria Server we support something called `External Agents` that let you write agents hosted by the Choria Server in any language.  These agents are forked on demand and receive the request in a temporary file and write their reply in a temporary file as JSON.
+As of version *0.12.1* of the Choria Server we support something called `External Agents`, these let you write agents hosted by the Choria Server in any language.  These agents are forked on demand and receive the request in a temporary file and write their reply in a temporary file as JSON.
 
 {{% notice tip %}}
 This is a brand new feature and subject to change and quite possibly have some bugs!
@@ -43,13 +43,13 @@ The working directory will be your OS temporary directory.
 
 ### Logging
 
-Any output your agent produce on STDOUT is logged at INFO level on the server.  Any STDERR output is logged as ERROR level on the server.
+Any output your agent produce on *STDOUT* is logged at *INFO* level on the server.  Any *STDERR* output is logged as *ERROR* level on the server.
 
 ## Activation
 
 At server start your agent will be called with a activation check, this gives you the chance to verify your dependencies and decide if the agent should be active on the particular node.
 
-The `CHORIA_EXTERNAL_PROTOCOL` will be set to `horia:mcorpc:external_activation_check:1`, you should only respond to activation checks when this is set.
+The `CHORIA_EXTERNAL_PROTOCOL` will be set to `choria:mcorpc:external_activation_check:1`, you should only respond to activation checks when this is set.
 
 The `CHORIA_EXTERNAL_REQUEST` file will look like this:
 

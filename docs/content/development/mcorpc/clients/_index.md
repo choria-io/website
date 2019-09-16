@@ -24,7 +24,7 @@ The client consists of helper methods that you use as a [Ruby Mixin][RubyMixin] 
 * Tools to help you print results
 * Tools to print stats
 * Tools to construct your own filters
-* Behaviour consistent with the standard [CLI Interaction Model](/concepts/cli/)
+* Behavior consistent with the standard [CLI Interaction Model](/concepts/cli/)
 
 We'll write a client for the _Helloworld_ agent that you saw in the Introduction section.
 
