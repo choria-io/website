@@ -45,6 +45,10 @@ The working directory will be your OS temporary directory.
 
 Any output your agent produce on *STDOUT* is logged at *INFO* level on the server.  Any *STDERR* output is logged as *ERROR* level on the server.
 
+### Distribution
+
+These modules can be packaged and distributed using the standard [Plugin Packaging](../packaging) for Puppet.
+
 ## Activation
 
 At server start your agent will be called with a activation check, this gives you the chance to verify your dependencies and decide if the agent should be active on the particular node.
