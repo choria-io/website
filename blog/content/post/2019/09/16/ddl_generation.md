@@ -11,12 +11,6 @@ I have some plans to improve the situation, as much as we reasonably can, the fi
 
 <!--more-->
 
-## Editing JSON DDL files
-
-Our JSON DDL files are described in a [JSON Schema](http://choria.io/schemas/mcorpc/ddl/v1/agent.json) schema and many editors support this.  If you configure your editor to associate it with our files you get nice code completion, descriptions of keys and validation.
-
-![completion](completion.png)
-
 ## Generating DDL files
 
 First we now support interactively generating DDL files, you can see this in action below. It will ask questions, explain what the options mean and just generally guide you through the process of adding actions, inputs and outputs.
@@ -24,6 +18,12 @@ First we now support interactively generating DDL files, you can see this in act
 <script id="asciicast-268302" src="https://asciinema.org/a/268302.js" async></script>
 
 You access this with the command `choria tool generate ddl package.json package.ddl`.
+
+## Editing JSON DDL files
+
+Our JSON DDL files are described in a [JSON Schema](http://choria.io/schemas/mcorpc/ddl/v1/agent.json) schema and many editors support this.  If you configure your editor to associate it with our files you get nice code completion, descriptions of keys and validation.
+
+![completion](completion.png)
 
 ## Conversion from JSON to Ruby
 
