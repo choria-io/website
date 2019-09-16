@@ -1,7 +1,7 @@
 ---
 title: "Generating DDL Files"
 date: 2019-09-16T9:00:00+01:00
-tags: ["releases"]
+tags: ["ddl", "ux"]
 draft: false
 ---
 
