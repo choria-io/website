@@ -12,6 +12,10 @@ In the past packaging was done via RPM or Deb packages, this was extremely limit
 
 Choria includes a packager that turns a common MCollective plugin into a Puppet Module like the [Puppet Agent one](https://forge.puppet.com/choria/mcollective_agent_puppet).  It supports packaging plugins in the typical layout you might see in our official plugins, a good example is the [Puppet Agent](https://github.com/choria-plugins/puppet-agent) and others in the [Choria Plugins](https://github.com/choria-plugins/) organisation.
 
+{{% notice tip %}}
+You need to have the Puppet Development Kit installed locally for this to work
+{{% /notice %}}
+
 You can package your own modules in this manner:
 
 ```bash
