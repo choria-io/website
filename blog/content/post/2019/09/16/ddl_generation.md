@@ -5,7 +5,7 @@ tags: ["ddl", "ux"]
 draft: false
 ---
 
-DDL files have been a utter bane of existence for MCollective users - and since Choria provide a compatability layer likewise for Choria users. It's not limited to Choria though most remote invocation systems have these kinds of files and honestly they are all horrible - think WSDL, OpenAPI/Swagger etc, editing and maintaining any of these is really horrible.
+DDL files have been a utter bane of existence for MCollective users - and since Choria provide a compatability layer likewise for Choria users. It's not limited to Choria though most remote invocation systems have these kinds of files and honestly they are all horrible - think WSDL, OpenAPI/Swagger etc, editing and maintaining any of these is really sub optimal.
 
 I have some plans to improve the situation, as much as we reasonably can, the first of which will land in our next release - `0.12.1` - which revolves around generating these files interactively.
 
