@@ -16,9 +16,11 @@ The DDL is used in various scenarios:
 * Module repositories can use the meta data to display a standard view of available modules to assist a user in picking the right ones.
 * The server will validate incoming requests prior to sending it to agents
 
-{{% notice warning %}}
-This section of the documentation have recently been migrated from the old mcollective documentation, we are still in the process of verifying every example works in modern mcollective.  If you find any issues please get in touch.
-{{% /notice %}}
+## Generating your own
+
+As of version `0.12.1` of the Choria Server you can use a guided utility to create both the JSON and Ruby format DDL files, you can also convert JSON ones to Ruby using the `choria tool generate ddl example.json example.ddl`, if the `example.json` already exist it will offer converting it into a Ruby one.
+
+The JSON DDL files contain JSON Schemas which when correctly setup in your editor will give you context sensitive help, tab completion and more.
 
 ## Examples
 
