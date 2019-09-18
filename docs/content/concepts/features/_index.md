@@ -14,7 +14,7 @@ icon = "<b>1. </b>"
 
 ## Developer Features
 
-  * Write your own Agents that expose new Actions unique to your environment and interact with them from Playbooks, CLI and your own custom Clients.
+  * Write your own Agents that expose new Actions unique to your environment in any language and interact with them from Playbooks, CLI and your own custom Clients.
   * [Embed a Choria Server into your own Golang software](https://github.com/ripienaar/embedded-choria-sample#readme) to create a fast and secure management backplane for any software
   * [Embed a Choria Server into your IoT platform](https://github.com/ripienaar/choriapi) to create a secure data access layer and life cycle management
   * Create highly scalable data pipe lines with node data being processed through Stream Processors like NATS Streaming using Choria Data Adapters, ideal for IoT or managing very large geo diverse server estates
