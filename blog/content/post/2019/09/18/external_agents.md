@@ -31,7 +31,9 @@ In the last 3 weeks we addressed most of these missing features in the pure go d
  * We have a `action_policy` plugin thats 1:1 compatible except for compound statements (planned)
  * We can generate ruby DDLs from JSON ones
 
-This has been a huge push in features. So at this point if we add new ways to write agents they would get all these features for free and suddenly the prospect of doing just that is a lot more palatable. But why stop at supporting a specific language like `tengo`? Why not support all languages - especially with new movement in things like `webasm`?
+You'll see we are making deliberate choices about what we support here rather than expose a 100 extension points to the user - over extendibility was a real problem in the past - we now favour a batteries included approach where what people need is always available, new validators or aggregators would be via PR submission to the Go code and everyone benefit.
+
+Above features represent a huge push in features, at this point if we add new ways to write agents they would get all these features for free and suddenly the prospect of doing just that is a lot more palatable. But why stop at supporting a specific language like `tengo`? Why not support all languages - especially with new movement in things like `webasm`?
 
 That's exactly what I did in a new feature called `External Agents` and it will be available in the next release, read on for the full details.
 
