@@ -130,6 +130,8 @@ Finished processing 1 / 1 hosts in 507.08144ms
 
 ## Status
 
-As I mentioned this will be in the next release which will come out soon, we have some testing and validation to do and specifically I will not enable the new `action_policy` initially by default while things settle and any bugs get squashed.
+As I mentioned these feature will be in the next release which will come out soon (nightly builds already have it), we have some testing and validation to do and specifically I will not enable the new `action_policy` initially by default while things settle and any bugs get squashed.
+
+Full documentation for the feature can be found on our website: [External Agents](https://choria.io/docs/development/mcorpc/externalagents/).
 
 I am excited about the capability this brings and hopefully it will help people get going with higher order management using their own tech choices and not ones the Choria project prescribe.
