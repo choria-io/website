@@ -7,7 +7,7 @@ draft: false
 
 MCollective has for a long time been extendible using purely Ruby means. This was fine in an earlier age where it seemed Ruby was going to rule the ops space but turned out that isn't how things ended up, and even then there were lots of real interest in extending it using Python for example.
 
-In the last 2 weeks this conversation came up again and in many respects the situation was worse now since the new Choria Server being written in Go is not extendible by external plugins, we supported the old Ruby ones but that was it. We had plans to support [Tengo](https://github.com/d5/tengo) and [Yaegi](https://blog.containo.us/announcing-yaegi) as ways to add agents to Choria but neither of those got past POC.
+In the last 2 weeks this conversation came up again and in many respects the situation was worse now since the new Choria Server, being written in Go, is not extendible by external plugins, we supported the old Ruby agents but that was it. We had plans to support [Tengo](https://github.com/d5/tengo) and [Yaegi](https://blog.containo.us/announcing-yaegi) as ways to add agents to Choria but neither of those got past POC.
 
 There were major hurdles to actually doing this in the new Go system:
 
@@ -19,7 +19,7 @@ There were major hurdles to actually doing this in the new Go system:
  * have no DDL validators
  * have no way to set default data in requests
 
-These missing features all worked fine for the ruby agents though - since the MCollective compatability layer would just start up a subset of old MCollective on demand and so gain access to its versions of all of the above features.  We did not need any of it.
+These missing features all worked fine for the Ruby agents though - since the MCollective compatability layer would just start up a subset of old MCollective on demand and so gain access to its versions of all of the above features.  We did not need any of it.
 
 In the last 3 weeks we addressed most of these missing features in the pure go daemon:
 
@@ -31,9 +31,9 @@ In the last 3 weeks we addressed most of these missing features in the pure go d
  * We have a `action_policy` plugin thats 1:1 compatible except for compound statements (planned)
  * We can generate ruby DDLs from JSON ones
 
-You'll see we are making deliberate choices about what we support here rather than expose a 100 extension points to the user - over extendibility was a real problem in the past - we now favour a batteries included approach where what people need is always available, new validators or aggregators would be via PR submission to the Go code and everyone benefit.
+You'll notice we are making deliberate choices about what we support here rather than expose a 100 extension points to the user - over extendibility was a real problem in the past - we now favour a batteries included approach where what people need is always available, new validators or aggregators would be via PR submission to the Go code and everyone benefit.
 
-Above features represent a huge push in features, at this point if we add new ways to write agents they would get all these features for free and suddenly the prospect of doing just that is a lot more palatable. But why stop at supporting a specific language like `tengo`? Why not support all languages - especially with new movement in things like `webasm`?
+Above points represent a huge push in features, at this point if we add new ways to write agents they would get all these features for free and suddenly the prospect of doing just that is a lot more palatable. But why stop at supporting a specific language like `tengo`? Why not support all languages - especially with new movement in things like `webasm`?
 
 That's exactly what I did in a new feature called `External Agents` and it will be available in the next release, read on for the full details.
 
@@ -51,13 +51,13 @@ Your code will never be called for requests that fail DDL validation or AAA cont
 
 They integrate with the Choria Server logging - any output on `STDOUT` is logged at `INFO` level while `STDERR` output is logged `ERROR` level.
 
-It supports an activation check allowing your agent to ensure that all dependencies it needs is available - or indeed if this is an appropriate machine to expose a given feature.
+It supports an activation check allowing your agent to ensure that all dependencies it needs are available - or indeed if this is an appropriate machine to expose a given feature.
 
 ## Example
 
 Lets make a simple `echo` agent that can echo back a message sent to it.
 
-Our agent will respond to a single action `ping` which takes a string input `message`. It will reply with the same string `message` and a integer `timestamp`.
+Our agent will respond to a single action `ping` which takes a string input `message`. It will reply with the same string `message` and a integer `timestamp`. Ie. callable by `choria req echo ping message="hello world"`.
 
 Now we'll create a simple agent in Ruby, here I am not using any helpers or library to make it easier, we anticipate the community will provide a few and indeed a [Python one](https://github.com/optiz0r/py-mco-agent) is already being written by the community.
 
@@ -117,7 +117,7 @@ $ ls -l ripienaar-mcollective_agent_echo-1.0.0.tar.gz
 Once installed using the usual method, it's accessible as here:
 
 ```nohighlight
-$ choria req helloworld ping message=hello
+$ choria req echo ping message=hello
 Discovering nodes .... 1
 
 1 / 1    0s [====================================================================] 100%
