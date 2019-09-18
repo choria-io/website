@@ -109,7 +109,7 @@ You'd stick these in a work directory `echo/agent`:
 Then package it using `mco plugin package`:
 
 ```nohighlight
-$ mco plugin package --format aiomodulepackage --vendor ripienaar
+$ mco plugin package --vendor ripienaar
 Completed building module for mcollective_agent_echo
 $ ls -l ripienaar-mcollective_agent_echo-1.0.0.tar.gz
 ```

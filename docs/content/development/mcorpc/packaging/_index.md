@@ -20,7 +20,7 @@ You can package your own modules in this manner:
 
 ```bash
 $ cd youragent
-$ mco plugin package --format aiomodulepackage --vendor yourco
+$ mco plugin package --vendor yourco
 ```
 
 This will produce a Puppet module that you can install using Choria by adding it to the list of plugins to manage:

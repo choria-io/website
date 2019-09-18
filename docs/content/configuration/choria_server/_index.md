@@ -10,25 +10,20 @@ The *Choria Server* is a replacement for the old *mcollectived* daemon.  This ne
 If your node runs Puppet 6 it will already be running the Choria Server
 {{% /notice %}}
 
-{{% notice warning %}}
-Today this server is in Beta / Preview, we've done extensive testing on the agents Choria provide but please use with caution.  We make this early version available to solicit feedback from the community
-{{% /notice %}}
-
 This guide will help you replace the *mcollectived* with a new *choria server*.
 
 ## Status
 
 The aim is to do the bulk of things that the old *mcollectived* did, it might do some things a bit different and downgrade some capabilities but it is hoped to be a smooth path forward.  Current list of short comings / issues are below, please get in touch should you find any more:
 
-  * You must be on a very recent version of Puppet Agent 5.0
-  * Compound Filters used in discovery - those with _-S_ - do not work today, the server logs a error message.  However you can use them in action policy rules without a problem.  Planned before GA.
+  * Compound Filters used in discovery - those with _-S_ - do not work today, the server logs a error message.
   * To use an agent with this daemon you have to repackage it using the latest _mco plugin package_. This ensures that the Ruby language DDL files are translated into portable JSON
   * Agents like the ones that load Puppet - service, package, puppet - are a bit slower by around 1 second per invocation due to _require "puppet"_ being very slow.
   * If you rely on registration in the *mcollectived* you will need to migrate that to our newer format which is much more flexible and scalable (but not yet documented)
   * It is available for Debian 9, Ubuntu LTS, Enterprise Linux 5-7 from the Choria Package Repositories.  No Windows support yet.
   * Agents written in Go - *rpcutil* and *choria_info* - cannot be limited using the policy system and does not produce audit logs.  Planned before GA.
   * To communicate with this daemon you have to configure your client to be JSON pure.  Ruby *mcollectived* supports JSON mode too so you can run a mix mode network, but JSON mode has a few issues today:
-    * If you had custom agents and clients that sends data types other than JSON primitives they will stop working
+  * If you had custom agents and clients that sends data types other than JSON primitives they will stop working
 
 Thanks to not keeping the whole Puppet in memory it is a lot lighter on your environment:
 
