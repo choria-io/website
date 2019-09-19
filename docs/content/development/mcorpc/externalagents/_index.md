@@ -31,7 +31,7 @@ Communication from the Choria Server to your agent is done via files on disk and
 |--------|-------|
 |CHORIA_EXTERNAL_REQUEST|The path to where the JSON request data is found|
 |CHORIA_EXTERNAL_REPLY|The path where your agent should write JSON reply data|
-|CHORIA_EXTERNAL_PROTOCOL|Indicating if this is a request (choria:mcorpc:external_request:1) or activation (choria:mcorpc:external_activation_check:1) message|
+|CHORIA_EXTERNAL_PROTOCOL|Indicating if this is a request (io.choria.mcorpc.external.v1.rpc_request) or activation (io.choria.mcorpc.external.v1.rpc_reply) message|
 
 Your agent will also be called with 3 arguments:
 
@@ -53,13 +53,14 @@ These modules can be packaged and distributed using the standard [Plugin Packagi
 
 At server start your agent will be called with a activation check, this gives you the chance to verify your dependencies and decide if the agent should be active on the particular node.
 
-The `CHORIA_EXTERNAL_PROTOCOL` will be set to `choria:mcorpc:external_activation_check:1`, you should only respond to activation checks when this is set.
+The `CHORIA_EXTERNAL_PROTOCOL` will be set to `io.choria.mcorpc.external.v1.activation_request`, you should only respond to activation checks when this is set.
 
 The `CHORIA_EXTERNAL_REQUEST` file will look like this:
 
 ```json
 {
-  "protocol": "choria:mcorpc:external_activation_check:1",
+  "$schema": "https://choria.io/schemas/mcorpc/external/v1/activation_request.json",
+  "protocol": "io.choria.mcorpc.external.v1.activation_request",
   "agent": "helloworld"
 }
 ```
@@ -76,13 +77,14 @@ Any reply not in this format or non 0 exit code from your code will result in th
 
 ## Requests
 
-Once activated any requests sent to your agent will result in `CHORIA_EXTERNAL_PROTOCOL` set to `choria:mcorpc:external_request:1`.
+Once activated any requests sent to your agent will result in `CHORIA_EXTERNAL_PROTOCOL` set to `io.choria.mcorpc.external.v1.rpc_request`.
 
 The `CHORIA_EXTERNAL_REQUEST` file will look like this:
 
 ```json
 {
- "protocol": "choria:mcorpc:external_request:1",
+ "$schema": "https://choria.io/schemas/mcorpc/external/v1/rpc_request.json",
+ "protocol": "io.choria.mcorpc.external.v1.rpc_request",
  "agent": "helloworld",
  "action": "ping",
  "requestid": "034c527089f746248822ada8a145f499",

@@ -73,11 +73,11 @@ req = JSON.parse(File.read(ENV["CHORIA_EXTERNAL_REQUEST"]))
 case ENV["CHORIA_EXTERNAL_PROTOCOL"]
 
 # we always activate
-when "choria:mcorpc:external_activation_check:1"
+when "io.choria.mcorpc.external.v1.activation_request"
   File.open(ENV["CHORIA_EXTERNAL_REPLY"], "w") {|f| f.print JSON.dump("activate" => true)}
 
 # this is our reply as described
-when "choria:mcorpc:external_request:1"
+when "io.choria.mcorpc.external.v1.rpc_request"
   rep = {
     "statuscode" => 0,
     "statusmsg" => "OK",
