@@ -82,7 +82,7 @@ when "io.choria.mcorpc.external.v1.rpc_request"
     "statuscode" => 0,
     "statusmsg" => "OK",
     "data" => {
-        "message" => req["body"]["data"]["message"],
+        "message" => req["data"]["message"],
         "timestamp" => Time.now.utc.to_i
     }
   }

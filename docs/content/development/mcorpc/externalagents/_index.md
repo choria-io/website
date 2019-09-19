@@ -83,23 +83,19 @@ The `CHORIA_EXTERNAL_REQUEST` file will look like this:
 
 ```json
 {
- "$schema": "https://choria.io/schemas/mcorpc/external/v1/rpc_request.json",
- "protocol": "io.choria.mcorpc.external.v1.rpc_request",
- "agent": "helloworld",
- "action": "ping",
- "requestid": "034c527089f746248822ada8a145f499",
- "senderid": "dev1.devco.net",
- "callerid": "choria=rip.mcollective",
- "collective": "mcollective",
- "ttl": 60,
- "msgtime": 1568281519,
- "body": {
-   "agent": "helloworld",
-   "action": "ping",
-   "data": {
-     "msg": "hello"
-   }
- }
+  "$schema": "https://choria.io/schemas/mcorpc/external/v1/rpc_request.json",
+  "protocol": "io.choria.mcorpc.external.v1.rpc_request",
+  "agent": "helloworld",
+  "action": "ping",
+  "requestid": "034c527089f746248822ada8a145f499",
+  "senderid": "dev1.devco.net",
+  "callerid": "choria=rip.mcollective",
+  "collective": "mcollective",
+  "ttl": 60,
+  "msgtime": 1568281519,
+  "data": {
+    "msg": "hello"
+  }
 }
 ```
 
@@ -108,8 +104,8 @@ Few things to note here:
  * *requestid* is unique per request and will appear in audit logs and elsewhere
  * *callerid* will have been verified by the security system so you can rely on this being valid
  * *msgtime* is seconds since 1970 in UTC timezone
- * *body.data* is free form data, typically key=val of whatever the client sent
- * *body.data* will have been verified subject to the DDL validations, data types and default values set as appropriate
+ * *data* is free form data, typically key=val of whatever the client sent
+ * *data* will have been verified subject to the DDL validations, data types and default values set as appropriate
 
 Your reply should be written to `CHORIA_EXTERNAL_REPLY` and must look like this:
 
