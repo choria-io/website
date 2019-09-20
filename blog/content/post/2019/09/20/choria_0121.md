@@ -1,6 +1,6 @@
 ---
 title: "September 2019 Releases"
-date: 2019-09-20T9:00:00+01:00
+date: 2019-09-20T9:09:00+01:00
 tags: ["releases"]
 draft: false
 ---
