@@ -1,6 +1,6 @@
 ---
 title: "September 2019 Releases"
-date: 2019-09-20T9:09:00+01:00
+date: 2019-09-20T09:00:00+01:00
 tags: ["releases"]
 draft: false
 ---
@@ -62,7 +62,7 @@ Links: [Changes](https://github.com/choria-io/mcollective-choria/compare/0.15.0.
  * Allow playbook node sets to declare zero discovered hosts is ok with *empty_ok*
  * Switch to using JSON format by default
 
-### Bug Fixes
+### Bug Fixes
 
  * Improve puppetdb SRV lookup port resolution
 
