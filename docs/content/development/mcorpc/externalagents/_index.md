@@ -30,6 +30,7 @@ Communication from the Choria Server to your agent is done via files on disk and
 |Variable|Meaning|
 |--------|-------|
 |CHORIA_EXTERNAL_REQUEST|The path to where the JSON request data is found|
+|CHORIA_EXTERNAL_CONFIG|The path to the configuration file specific to this agent in the `plugin.d` directory|
 |CHORIA_EXTERNAL_REPLY|The path where your agent should write JSON reply data|
 |CHORIA_EXTERNAL_PROTOCOL|Indicating if this is a request (io.choria.mcorpc.external.v1.rpc_request) or activation (io.choria.mcorpc.external.v1.rpc_reply) message|
 
@@ -137,3 +138,4 @@ And *data* is free form data being sent back to the client.  Note however the da
 We hope to see helper libraries for various languages from the community, we'll maintain a list of some here:
 
  * [Python](https://github.com/optiz0r/py-mco-agent) - Contributed by Ben Roberts as part of working on the early POC
+ * [Golang](https://github.com/choria-io/go-external-agent) - Dependency free Golang package, part of the Choria project
