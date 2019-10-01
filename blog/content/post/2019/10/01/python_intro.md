@@ -1,6 +1,6 @@
 ---
 title: "External Python Agents"
-date: 2019-09-23T9:09:00+01:00
+date: 2019-10-01T9:09:00+01:00
 tags: ["external", "python"]
 draft: true
 author: Ben Roberts
