@@ -8,6 +8,8 @@ author: Ben Roberts
 
 The latest release of Choria includes support for external agents, so now writing agents in any language is possible. For those of us who prefer to use Python to manage our systems, we have a new library, [py-mco-agent](https://github.com/optiz0r/py-mco-agent) which is intended to make it as simple as possible to write Choria agents. The simplest possible agent can be written with just a few lines of code.
 
+<!--more-->
+
 ## Shortest Python example
 
 ```python
