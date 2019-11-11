@@ -12,10 +12,6 @@ Using it you get a very fast discovery workflow but without the awareness of whi
 
 ## Requirements
 
-There are 2 modes of deployment for you to choose from depending on your security needs:
-
-### Clients communicate directly with PuppetDB
-
 Your MCollective _client_ machine needs to be able to communicate with PuppetDB on its SSL port. The client will use the same certificates that was created using *mco choria request_cert* so you don't need to do anything with the normal Puppet client-tools config, though you might find setting those up helpful.
 
 {{% notice warning %}}
@@ -81,6 +77,10 @@ $ mco puppet status --dm=choria
 ```
 
 By passing _--dm=choria_ to MCollective commands you enable this discovery method just for the duration of that command.  This is a good way to test the feature before enabling it by default.
+
+{{% notice tip %}}
+"Original" mcollective discovery mode can be invoked by passing _--dm=mc_ option.
+{{% /notice %}}
 
 You can set this discovery method to be your default by adding the following hiera data:
 
