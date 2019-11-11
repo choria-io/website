@@ -78,6 +78,10 @@ $ mco puppet status --dm=choria
 
 By passing _--dm=choria_ to MCollective commands you enable this discovery method just for the duration of that command.  This is a good way to test the feature before enabling it by default.
 
+{{% notice tip %}}
+"Original" mcollective discovery mode can be invoked by passing _--dm=mc_ option.
+{{% /notice %}}
+
 You can set this discovery method to be your default by adding the following hiera data:
 
 ```yaml
