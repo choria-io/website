@@ -12,10 +12,6 @@ Using it you get a very fast discovery workflow but without the awareness of whi
 
 ## Requirements
 
-There are 2 modes of deployment for you to choose from depending on your security needs:
-
-### Clients communicate directly with PuppetDB
-
 Your MCollective _client_ machine needs to be able to communicate with PuppetDB on its SSL port. The client will use the same certificates that was created using *mco choria request_cert* so you don't need to do anything with the normal Puppet client-tools config, though you might find setting those up helpful.
 
 {{% notice warning %}}
