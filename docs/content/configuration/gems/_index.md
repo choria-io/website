@@ -44,6 +44,7 @@ Note that this example requires an enterprise linux host with the necessary RPM 
    find /tmp/gems/cache -name '*.gem' | xargs -rn1 -I {} fpm \
    --description "Packaged puppet Gem: {}" \
    --gem-gem "/opt/puppetlabs/puppet/bin/gem" \
+   --no-gem-env-shebang \
    --gem-package-name-prefix "puppet-gem" \
    -s gem \
    -t rpm {}
