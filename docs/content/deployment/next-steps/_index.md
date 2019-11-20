@@ -261,14 +261,14 @@ The official documentation is a good resource for usage details:
   * Read about [Choria Playbooks](/docs/playbook) to write higher order orchestration scripts than the CLI provides
   * Read about [Puppet Tasks](/docs/tasks/) that provides a way to gain access to much more shared capabilities from the Puppet Forge
   * I strongly suggest you read about [using the mcollective CLI](../../concepts/cli)
-  * Read about [filtering which hosts to act on](https://docs.puppet.com/mcollective/reference/ui/filters.html)
+  * Read about [filtering which hosts to act on](https://choria.io/docs/concepts/cli/#selecting-request-targets-using-filters)
   * Read about [managing Puppet](https://forge.puppet.com/choria/mcollective_agent_puppet) though note the setup steps are already completed
   * Read about [managing packages](https://forge.puppet.com/choria/mcollective_agent_package) though note the setup steps are already completed
   * Read about [managing services](https://forge.puppet.com/choria/mcollective_agent_service) though note the setup steps are already completed
   * Read about [managing files](https://forge.puppet.com/choria/mcollective_agent_filemgr) and this setup too is already completed
 
 These plugins that manage Service, Package, Puppet and Files are just plugins for Choria.  You can write your own plugins,
-deploy them and interact with them. There is an [official guide about this](https://docs.puppet.com/mcollective/simplerpc/agents.html).
+deploy them and interact with them. There is an [official guide about this](https://choria.io/docs/development/).
 
 If you do write your own plugins Choria helps you [package your plugins](../../configuration/plugins/) as Puppet modules like the ones we
 just installed, sharable on the Forge.
