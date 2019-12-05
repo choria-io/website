@@ -13,6 +13,8 @@ Since then adoption of this format has exploded - a whole bunch of companies and
 
 So for us the time is ripe to adjust the format of our events to support CloudEvents 1.0. As of the next release of the Choria Server the Life Cycle events and Autonomous Agent Events are all been transitioned to CloudEvents format.
 
+<!--more-->
+
 In short a Cloud Event is a small bit of standard fluff that encapsulate a project specific event, here's an example startup event before CloudEvents:
 
 ```json
