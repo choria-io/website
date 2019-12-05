@@ -16,7 +16,7 @@ class{"choria::broker":
   adapters => {
     "node_data" => {
       "stream"  => {
-        "type"      => "natsstream",
+        "type"      => "nats_stream",
         "clusterid" => "prod_1",
         "topic"     => "node_data",
         "workers"   => 10,
