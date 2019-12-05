@@ -21,14 +21,14 @@ class{"choria::broker":
     "node_data" => {
       "stream"  => {
         "type"      => "jetstream",
-        "topic"     => "node_data",
+        "topic"     => "choria.node_metadata",
         "workers"   => 10,
         "servers"   => [
           "js1.example.net:4222",
         ]
       },
       "ingest" => {
-        "topic"    => "choria.node_metadata",
+        "topic"    => "choria.discovery",
         "protocol" => "request",
         "workers"  => 10
       }
@@ -46,17 +46,17 @@ You have to create a `message set` in your JetStream that match the above, here 
 ```nohighlight
 $ jsm add
 Enter the following information
-Name: choria_discovery
+Name: choria_fleet_metadata
 Subjects: choria.node_metadata
 Limits (msgs, bytes, age): -1 -1 1w
 Storage: file
 Received response of "+OK"
 ```
 
-After a while you'll start seeing messages if you configured your nodes to publish their metadata to `choria.node_metadata`:
+After a while you'll start seeing messages if you configured your nodes to publish their metadata to `choria.discovery`:
 
 ```nohighlight
-$ jsm info choria_discovery
+$ jsm info choria_fleet_metadata
 Messages: 2
 Bytes:    12 kB
 FirstSeq: 1
