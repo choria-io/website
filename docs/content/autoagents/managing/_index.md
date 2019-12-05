@@ -61,7 +61,7 @@ You can filter these further by one or more `--type` flags.
 These events are published on the middleware as JSON, you can view these raw:
 
 {{% notice tip %}}
-JSON Schemas for all published messages exist, for example `io.choria.machine.v1.transition` would be `https://choria.io/schemas/choria/machine/v1/transition.json`
+JSON Schemas for all published messages exist, for example `io.choria.machine.v1.transition` would be `https://choria.io/schemas/choria/machine/v1/transition.json`, the messages are in the data field of [CloudEvents](https://cloudevents.io) messages.
 {{% /notice %}}
 
 ```nohighlight
