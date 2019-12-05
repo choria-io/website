@@ -79,8 +79,9 @@ classesfile: "/opt/puppetlabs/puppet/cache/state/classes.txt"
   plugin.choria.middleware_hosts: "nats1.example.net:4222"
 ```
 
-For a full list of configuration options, it's best to examine the choria server config struct defined [here](https://github.com/choria-io/go-choria/blob/master/config/config.go#L26-L170)
-At this point you will run the new Choria daemon, you can confirm this with *mco rpc choria_util info* and you'll see the versions, of course *ps* will also show you.
+For a full list of configuration options, it's best to examine the main choria server config struct defined [here](https://github.com/choria-io/go-config/blob/master/config.go) and the choria plugin struct defined [here](https://github.com/choria-io/go-config/blob/master/choria.go).
+
+At this point you will be running the new Choria daemon. You can confirm this with *mco rpc choria_util info* and you'll see the versions - of course *ps* will also show you.
 
 The MCollective subsystem will still log to your normal *mcollective.log* and auditing will also go to the log configured and previously used for mcollective, formats of those would not have changed yet.
 
