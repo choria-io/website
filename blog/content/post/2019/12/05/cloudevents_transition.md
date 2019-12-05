@@ -1,6 +1,6 @@
 ---
 title: "Transitioning Events to CloudEvents"
-date: 2019-10-01T9:09:00+01:00
+date: 2019-12-05T9:09:00+01:00
 tags: ["lifecycle", "events", "machines"]
 draft: false
 ---
