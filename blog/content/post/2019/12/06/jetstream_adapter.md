@@ -14,7 +14,7 @@ Support for JetStream will be in the nightly build tonight and a release will be
 Read on for some background on the why and how.
 
 <!--more-->
-## About Adapters
+## About Adapters
 
 Choria Adapters allow you to receive data from Choria nodes and - after security validation - republish it into other technologies like Streaming Servers. You would traditionally use this for fleet metadata but should you embed Choria into your IoT devices or use something like our [Backplane](https://github.com/choria-io/go-backplane) you can emit any data you want onto the Choria network which would then be adapted to other systems.
 
@@ -24,7 +24,7 @@ At present we support receiving node metadata from a fleet of nodes and placing 
 
 Using these two tools I've built a system that will maintain a real time view of 100s of thousands of fleet nodes with 5 minute resolution including node down detection in a highly distributed and stable manner.
 
-## JetStream
+## JetStream
 
 NATS Streaming is a separate product from the core NATS server and has it's own client libraries and turns the model on the head a bit which have always made it a bit weird to explain to others. 
 
