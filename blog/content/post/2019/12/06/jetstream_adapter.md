@@ -33,3 +33,9 @@ The NATS team have for a long time now been working on a next generation server 
 Yesterday it was [announce that JetStream has entered Tech Preview Status](https://github.com/nats-io/nats-server/blob/jetstream/jetstream/README.md) so to assist with testing it I added an adapter that will let Choria place data in it using the same model as with NATS Streaming today.
 
 Basic configuration and behavior is familiar to those using the NATS Streaming adapter today, see the [official documentation](https://choria.io/docs/adapters/jetstream/) for details, see also the general [Overview of Choria Adapters](https://choria.io/docs/adapters/).
+
+## Next Steps
+
+We'll test this and as things stabalize add support for it to our Stream Replicator and also streaming based [Prometheus federation system](https://github.com/choria-io/prometheus-streams).
+
+With this being a core technology in NATS server it's conceivable that we will add the ability to access it in the Choria Brokers to create a more tightly contained Choria system that expose these capabilities.  I'm especially interested in the job queue behavior for some future plans I have for Choria.
