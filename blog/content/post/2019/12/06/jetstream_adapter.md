@@ -34,7 +34,7 @@ Yesterday it was [announce that JetStream has entered Tech Preview Status](https
 
 Basic configuration and behavior is familiar to those using the NATS Streaming adapter today, see the [official documentation](https://choria.io/docs/adapters/jetstream/) for details, see also the general [Overview of Choria Adapters](https://choria.io/docs/adapters/).
 
-## Next Steps
+## Next Steps
 
 We'll test this and as things stabalize add support for it to our Stream Replicator and also streaming based [Prometheus federation system](https://github.com/choria-io/prometheus-streams).
 
