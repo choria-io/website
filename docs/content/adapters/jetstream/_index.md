@@ -67,12 +67,15 @@ LastSeq:  2
 
 MCollective have traditionally supported publishing Registration messages into the broadcast network of MCollective. While this was useful it was very hard to process as the data tended to be highly concurrent and quite lossy.
 
-The data that is received on the Choria side is kept as is and republished to the NATS Stream in the following format:
+The data that is received on the Choria side is kept as is and republished to JetStream in the following format:
 
 ```json
 {
+  "protocol": "choria:adapters:jetstream:output:1",
   "data": "...the data received exactly as it was received....",
   "sender": "web1.ldn.example.net",
   "time": "2018-03-03T14:49:17Z"
 }
 ```
+
+You can find a JSON Schema for this in our [Schemas Repository](https://choria.io/schemas/choria/adapters/jetstream/v1/output.json).

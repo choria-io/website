@@ -52,6 +52,8 @@ The data that is received on the Choria side is kept as is and republished to th
 }
 ```
 
+You can find a JSON Schema for this in our [Schemas Repository](https://choria.io/schemas/choria/adapters/natsstream/v1/output.json).
+
 ## Choria Stream Replicator
 
 The data is created to be specifically compatible with the [Choria Stream Replicator](https://github.com/choria-io/stream-replicator), using this tool combined with NATS Streaming and this Adapter you can create a metadata processing pipeline of tremendous scale capable of spanning the globe.
