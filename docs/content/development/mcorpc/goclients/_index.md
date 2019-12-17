@@ -5,9 +5,9 @@ weight = 11
 
 We have a [Golang RPC library](https://godoc.org/github.com/choria-io/mcorpc-agent-provider/mcorpc/client) that's similar in spirit to the Ruby client library while being more idiomatic Golang and more suitable to long running large scale automation tasks.  Use this if you want to write some form of long running never ending automated system or scale to very large fleets.
 
-By it's nature it's more verbose and more involved to use - while the Ruby one is optimised for short quick scripts.
+By it's nature it's more verbose and more involved to use - while the Ruby one is optimized for short quick scripts.
 
-In this guide we will not focus on the above library rather we'll look at a new ability to generate Go clients from DDL files.
+In this guide we will not focus on the above library rather we'll look at a new ability to generate Go clients from DDL files that are much more focused and easier to use for a single agent.
 
 ## Generated Clients
 
@@ -136,13 +136,13 @@ Lets look at a few key items about this code.
 
 ### Setup
 
-Here we do the basic setup, config loading, finding the network, security etc. In this case I am panic'ing on any error:
+Here we do the basic setup, config loading, finding the network, security etc. In this case I am panicing on any error:
 
 ```golang
 pc := p.Must()
 ```
 
-We can also pass in various options and do more traditional error handling.  Some other options is *Logger(l *logrus.Entry)* and *Discovery()* which will show later.
+We can also pass in various options and do more traditional error handling.  Some other options are *Logger()* and *Discovery()* which will show later.
 
 ```golang
 pc, err := p.New(p.ConfigFile("~/.puppet_client.conf"))
