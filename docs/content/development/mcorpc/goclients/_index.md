@@ -165,13 +165,13 @@ The godoc comments it the definitive document, but here are a few of the options
 |Option|Description|
 |------|-----------|
 |`OptionReset()`|Put this first to reset all the options from previous calls else they are sticky|
-|`OptionFactFilter(...string)`|One or more fact filters, matches the behavior of *-F` on the CLI|
+|`OptionFactFilter(...string)`|One or more fact filters, matches the behavior of *-F* on the CLI|
 |`OptionCollective(string)`|The name of the sub collective to target, matches *-T* on the CLI|
 |`OptionInBatches(size, sleep int)`|Performs the task in batches with a specific sleep, *--batch* and *--batch-sleep* on the CLI|
-|`OptionDiscoveryTimeout(time.Duration)`|How long to wait for discovery, matched *--discovery-timeout` or *--dt* on the CLI|
+|`OptionDiscoveryTimeout(time.Duration)`|How long to wait for discovery, matched *--discovery-timeout* or *--dt* on the CLI|
 |`OptionLimitSize(string)`|Limit the request to a subset of nodes like *10* or *20%*, matches *--limit* on the CLI|
-|`OptionLimitMethod(string)`|How to pick the random set *random` or *first*, no CLI equivalent but settable in the config|
-|`OptionLimitSeed(int64)`|When using *random` method this lets you initialize the random number, set to the same number for predictable select|
+|`OptionLimitMethod(string)`|How to pick the random set *random* or *first*, no CLI equivalent but settable in the config|
+|`OptionLimitSeed(int64)`|When using *random* method this lets you initialize the random number, set to the same number for predictable select|
 
 ### Actions and Inputs
 
