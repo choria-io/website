@@ -237,7 +237,7 @@ $nodes.choria::in_groups_of(10) |$n| {
 
 ## Validating Playbook syntax
 
-You can use the standard Puppet CLI to validate your Playbook syntax if you pass *--tags* like `puppet parser validate --tasks playbook.pp`
+You can use the standard Puppet CLI to validate your Playbook syntax if you pass *--tasks* like `puppet parser validate --tasks playbook.pp`
 
 ## Documentation using Puppet Strings
 
