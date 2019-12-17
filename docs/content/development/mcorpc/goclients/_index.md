@@ -17,7 +17,7 @@ As you might be aware every Agent has a DDL file that describes the agent - all 
 This capability is available as of version *0.14.0* of Choria
 {{% /notice %}}
 
-## Preparing your DDL
+## Preparing your DDL
 
 The generator will handle almost all existing agent DDLs, however in the past we did not support or enforce data types for the output items from agents. This makes it extremely hard to create fully usable clients for static languages like Golang.
 
@@ -212,7 +212,7 @@ The *ResultDetails()* gives you access to *Sender() string*, *OK() bool*, *Statu
 
 Finally you can call *res.HashMap()* which will give you a *map[string]interface{}* of the whole result structure.
 
-### Statistics
+### Statistics
 
 At the end of the call the result will hold some statistics, here we show nodes that did not respond:
 
@@ -257,24 +257,23 @@ func (f *FlatFileDiscovery) Reset() {}
 
 func (f *FlatFileDiscovery) Discover(ctx context.Context, _ ChoriaFramework, _ []FilterFunc) ([]string, error) {
     file, err := os.Open(f.nodesFile)
-        if err != nil {
-            return []string{}, err
-        }
-        defer file.Close()
-
-        found := []string{}
-        scanner := bufio.NewScanner(file)
-        for scanner.Scan() {
-            found = append(found, strings.TrimSpace(scanner.Text()))
-        }
-
-        err = scanner.Err()
-        if err != nil {
-            return []string{}, err
-        }
-
-        return found, nil
+    if err != nil {
+        return []string{}, err
     }
+    defer file.Close()
+
+    found := []string{}
+    scanner := bufio.NewScanner(file)
+    for scanner.Scan() {
+        found = append(found, strings.TrimSpace(scanner.Text()))
+    }
+
+    err = scanner.Err()
+    if err != nil {
+        return []string{}, err
+    }
+
+    return found, nil
 }
 ```
 
