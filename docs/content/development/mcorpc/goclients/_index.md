@@ -25,11 +25,11 @@ The generator will handle almost all existing agent DDLs, however in the past we
 
 We've recently added optional type hints to outputs in DDLs and I strongly suggest you take a look at the DDL files you're intending to use and add output hints. You should also review the code and ensure that the output types don't vary, if an item vary and you cannot fix that scenario then leave it untyped so Go will give you *interface{}* instances which you can then handle via *reflect*.
 
-Here's a sample fixup I did of the class [puppet agent](https://github.com/choria-plugins/puppet-agent/pull/41/files) as an example.
+Here's a sample fixup I did of the class [puppet agent](https://github.com/choria-plugins/puppet-agent/pull/41/files) as an example, it's easier than it sounds!
 
 ## Generating the client
 
-We'll look at building a custom utility to do what *mco rpc puppet disable message="testing golang" -W customer=acme* does, but using the new Go generated client, we'll also show how to do things like batching and finally custom discovery.
+We'll look at building a custom utility to do what `mco rpc puppet disable message="testing golang" -W customer=acme` does, but using the new Go generated client, we'll also show how to do things like batching and finally custom discovery.
 
 ```nohighlight
 $ mkdir -p puppet/disable
@@ -79,7 +79,7 @@ require (
 
 ## Writing a *puppet disable* tool
 
-The generate API has methods for every action, every input and output, allows you to write custom discovery plugins and more.
+The generated API has methods for every action, every input and output, allows you to write custom discovery plugins and more.
 
 Here's a basic *disable* tool, while this has some niceties missing like progress bars and custom configs it shows that setting up and getting going is really easy and even this code will comfortably scale to 50 000 nodes or more:
 
@@ -94,41 +94,38 @@ import (
 )
 
 func panicIfErr(err error) {
-	if err != nil {
-		panic(err)
-	}
+    if err != nil {
+        panic(err)
+    }
 }
 
 func disable(ctx context.Context) error {
-	// instance of puppet client, panics if fails
-	// uses default choria config path as setup by the modules
-	pc := p.Must()
+    // instance of puppet client, panics if fails
+    // uses default choria config path as setup by the modules
+    pc := p.Must()
 
-	// disables puppet with a custom message and custom filter
-	res, err := pc.OptionFactFilter("customer=acme").Disable().Message("testing golang").Do(ctx)
-	panicIfErr(err)
+    // disables puppet with a custom message and custom filter
+    res, err := pc.OptionFactFilter("customer=acme").Disable().Message("testing golang").Do(ctx)
+    panicIfErr(err)
 
-	res.EachOutput(func(r *p.DisableOutput) {
-		if r.ResultDetails().OK() {
-			fmt.Printf("OK: %-40s: enabled: %v\n", r.ResultDetails().Sender(), r.Enabled())
-		} else {
-			fmt.Printf("!!: %-40s: message: %s\n", r.ResultDetails().Sender(), r.ResultDetails().StatusMessage())
-		}
-	})
+    res.EachOutput(func(r *p.DisableOutput) {
+        if r.ResultDetails().OK() {
+            fmt.Printf("OK: %-40s: enabled: %v\n", r.ResultDetails().Sender(), r.Enabled())
+        } else {
+            fmt.Printf("!!: %-40s: message: %s\n", r.ResultDetails().Sender(), r.ResultDetails().StatusMessage())
+        }
+    })
 
-	nr := res.Stats().NoResponseFrom()
-	if len(nr) > 0 {
-		fmt.Printf("No responses received from %d hosts", len(nr))
-	}
+    nr := res.Stats().NoResponseFrom()
+    if len(nr) > 0 {
+        fmt.Printf("No responses received from %d hosts", len(nr))
+    }
 
-	return nil
+    return nil
 }
 
 func main() {
-	err := disable(context.Background())
-	if err != nil {
-		panic(err)
-	}
+    panicIfErr(disable(context.Background()))
 }
 ```
 
@@ -165,13 +162,13 @@ The godoc comments it the definitive document, but here are a few of the options
 |Option|Description|
 |------|-----------|
 |`OptionReset()`|Put this first to reset all the options from previous calls else they are sticky|
-|`OptionFactFilter(...string)`|One or more fact filters, matches the behavior of *-F` on the CLI|
+|`OptionFactFilter(...string)`|One or more fact filters, matches the behavior of *-F* on the CLI|
 |`OptionCollective(string)`|The name of the sub collective to target, matches *-T* on the CLI|
 |`OptionInBatches(size, sleep int)`|Performs the task in batches with a specific sleep, *--batch* and *--batch-sleep* on the CLI|
-|`OptionDiscoveryTimeout(time.Duration)`|How long to wait for discovery, matched *--discovery-timeout` or *--dt* on the CLI|
+|`OptionDiscoveryTimeout(time.Duration)`|How long to wait for discovery, matched *--discovery-timeout* or *--dt* on the CLI|
 |`OptionLimitSize(string)`|Limit the request to a subset of nodes like *10* or *20%*, matches *--limit* on the CLI|
-|`OptionLimitMethod(string)`|How to pick the random set *random` or *first*, no CLI equivalent but settable in the config|
-|`OptionLimitSeed(int64)`|When using *random` method this lets you initialize the random number, set to the same number for predictable select|
+|`OptionLimitMethod(string)`|How to pick the random set *random* or *first*, no CLI equivalent but settable in the config|
+|`OptionLimitSeed(int64)`|When using *random* method this lets you initialize the random number, set to the same number for predictable select|
 
 ### Actions and Inputs
 
