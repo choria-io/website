@@ -178,7 +178,7 @@ In the example we have this:
 res, err := pc.OptionFactFilter("customer=acme").Disable().Message("testing golang").Do(ctx)
 ```
 
-Here we are invoking the *Disable()* action, it has no mandatory inputs.  If it for example *message* was required then the function would have been *Disable(message string)*.  In this case though *message* is optional thus you call *Disable().Message("optional message")*, you can chain in all other optional inputs in the same manner.
+Here we are invoking the *Disable()* action, it has no mandatory inputs.  If for example *message* was required then the function would have been *Disable(message string)*.  In this case though *message* is optional thus you call *Disable().Message("optional message")*, you can chain in all other optional inputs in the same manner.
 
 ### Outputs
 
@@ -253,8 +253,11 @@ type FlatFileDiscovery struct {
 
 // Reset is there to clear caches, we don't cache here so noop
 func (f *FlatFileDiscovery) Reset() {}
+func (f *FlatFileDiscovery) Discover(ctx context.Context, _ ChoriaFramework, filter []FilterFunc) ([]string, error) {
+    if len(filter) > 0 {
+        return []string{}, errors.New("Flat file discovery does not support filters")
+    }
 
-func (f *FlatFileDiscovery) Discover(ctx context.Context, _ ChoriaFramework, _ []FilterFunc) ([]string, error) {
     file, err := os.Open(f.nodesFile)
     if err != nil {
         return []string{}, err
