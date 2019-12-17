@@ -227,19 +227,19 @@ A wealth of information is available, the interface for the stats can be seen he
 
 ```golang
 type Stats interface {
-	Agent() string
-	Action() string
-	All() bool
-	NoResponseFrom() []string
-	UnexpectedResponseFrom() []string
-	DiscoveredCount() int
-	DiscoveredNodes() *[]string
-	FailCount() int
-	OKCount() int
-	ResponsesCount() int
-	PublishDuration() (time.Duration, error)
-	RequestDuration() (time.Duration, error)
-	DiscoveryDuration() (time.Duration, error)
+    Agent() string
+    Action() string
+    All() bool
+    NoResponseFrom() []string
+    UnexpectedResponseFrom() []string
+    DiscoveredCount() int
+    DiscoveredNodes() *[]string
+    FailCount() int
+    OKCount() int
+    ResponsesCount() int
+    PublishDuration() (time.Duration, error)
+    RequestDuration() (time.Duration, error)
+    DiscoveryDuration() (time.Duration, error)
 }
 ```
 
