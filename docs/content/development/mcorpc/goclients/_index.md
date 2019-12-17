@@ -14,20 +14,20 @@ In this guide we will not focus on the above library rather we'll look at a new 
 As you might be aware every Agent has a DDL file that describes the agent - all it's actions, inputs, outputs, aggregation methods and validations. As of a recent improvement these DDL files now contain enough that highly usable clients can be generated for static languages like Golang.
 
 {{% notice tip %}}
-This capability is available as of version `0.14.0` of Choria
+This capability is available as of version *0.14.0* of Choria
 {{% /notice %}}
 
 ## Preparing your DDL
 
 The generator will handle almost all existing agent DDLs, however in the past we did not support or enforce data types for the output items from agents. This makes it extremely hard to create fully usable clients for static languages like Golang.
 
-We've recently added optional type hints to outputs in DDLs and I strongly suggest you take a look at the DDL files you're intending to use and add output hints. You should also review the code and ensure that the output types don't vary, if an item vary and you cannot fix that scenario then leave it untyped so Go will give you `interface{}` instances which you can then handle via `reflect`.
+We've recently added optional type hints to outputs in DDLs and I strongly suggest you take a look at the DDL files you're intending to use and add output hints. You should also review the code and ensure that the output types don't vary, if an item vary and you cannot fix that scenario then leave it untyped so Go will give you *interface{}* instances which you can then handle via *reflect*.
 
 Here's a sample fixup I did of the class [puppet agent](https://github.com/choria-plugins/puppet-agent/pull/41/files) as an example.
 
 ## Generating the client
 
-We'll look at building a custom utility to do what `mco rpc puppet disable message="testing golang" -W customer=acme` does, but using the new Go generated client.
+We'll look at building a custom utility to do what *mco rpc puppet disable message="testing golang" -W customer=acme* does, but using the new Go generated client, we'll also show how to do things like batching and finally custom discovery.
 
 ```nohighlight
 $ mkdir -p puppet/disable
@@ -52,7 +52,7 @@ INFO[0000] Writing client/logging.go
 INFO[0000] Writing client/doc.go
 ```
 
-Here the `/.../puppet.json` is a path to the DDL, often this would be in `/opt/puppetlabs/mcollective/plugins/mcollective/agent/puppet.json`.
+Here the */.../puppet.json* is a path to the DDL, often this would be in */opt/puppetlabs/mcollective/plugins/mcollective/agent/puppet.json*.
 
 This creates the client, lets initialize go mod:
 
@@ -75,11 +75,11 @@ require (
 )
 ```
 
-## Writing a `puppet disable` tool
+## Writing a *puppet disable* tool
 
 The generate API has methods for every action, every input and output, allows you to write custom discovery plugins and more.
 
-Here's a basic `disable` tool, while this has some niceties missing like progress bars and custom configs it shows that setting up and getting going is really easy and even this code will comfortably scale to 50 000 nodes or more:
+Here's a basic *disable* tool, while this has some niceties missing like progress bars and custom configs it shows that setting up and getting going is really easy and even this code will comfortably scale to 50 000 nodes or more:
 
 ```golang
 package main
@@ -142,7 +142,7 @@ Here we do the basic setup, config loading, finding the network, security etc. I
 pc := p.Must()
 ```
 
-We can also pass in various options and do more traditional error handling.  Some other options is `Logger(l *logrus.Entry)` and `Discovery()` which will show later.
+We can also pass in various options and do more traditional error handling.  Some other options is *Logger(l *logrus.Entry)* and *Discovery()* which will show later.
 
 ```golang
 pc, err := p.New(p.ConfigFile("~/.puppet_client.conf"))
@@ -156,20 +156,20 @@ In the example we have this:
 res, err := pc.OptionFactFilter("customer=acme").Disable().Message("testing golang").Do(ctx)
 ```
 
-Here the `OptionFactFilter()` is a RPC framework option thats applicable to any RPC call and not related to any specific agent.
+Here the *OptionFactFilter()* is a RPC framework option thats applicable to any RPC call and not related to any specific agent.
 
 The godoc comments it the definitive document, but here are a few of the options you'd have:
 
 |Option|Description|
 |------|-----------|
 |`OptionReset()`|Put this first to reset all the options from previous calls else they are sticky|
-|`OptionFactFilter(...string)`|One or more fact filters, matches the behavior of `-F` on the CLI|
-|`OptionCollective(string)`|The name of the sub collective to target, matches `-T` on the CLI|
-|`OptionInBatches(size, sleep int)`|Performs the task in batches with a specific sleep, `--batch` and `--batch-sleep` on the CLI|
-|`OptionDiscoveryTimeout(time.Duration)`|How long to wait for discovery, matched `--discovery-timeout` or `--dt` on the CLI|
-|`OptionLimitSize(string)`|Limit the request to a subset of nodes like `10` or `20%`, matches `--limit` on the CLI|
-|`OptionLimitMethod(string)`|How to pick the random set `random` or `first`, no CLI equivalent but settable in the config|
-|`OptionLimitSeed(int64)`|When using `random` method this lets you initialize the random number, set to the same number for predictable select|
+|`OptionFactFilter(...string)`|One or more fact filters, matches the behavior of *-F` on the CLI|
+|`OptionCollective(string)`|The name of the sub collective to target, matches *-T* on the CLI|
+|`OptionInBatches(size, sleep int)`|Performs the task in batches with a specific sleep, *--batch* and *--batch-sleep* on the CLI|
+|`OptionDiscoveryTimeout(time.Duration)`|How long to wait for discovery, matched *--discovery-timeout` or *--dt* on the CLI|
+|`OptionLimitSize(string)`|Limit the request to a subset of nodes like *10* or *20%*, matches *--limit* on the CLI|
+|`OptionLimitMethod(string)`|How to pick the random set *random` or *first*, no CLI equivalent but settable in the config|
+|`OptionLimitSeed(int64)`|When using *random` method this lets you initialize the random number, set to the same number for predictable select|
 
 ### Actions and Inputs
 
@@ -179,18 +179,18 @@ In the example we have this:
 res, err := pc.OptionFactFilter("customer=acme").Disable().Message("testing golang").Do(ctx)
 ```
 
-Here we are invoking the `Disable()` action, it has no mandatory inputs.  If it for example `message` was required then the function would have been `Disable(message string)`.  In this case though `message` is optional thus you call `Disable().Message("optional message")`, you can chain in all other optional inputs in the same manner.
+Here we are invoking the *Disable()* action, it has no mandatory inputs.  If it for example *message* was required then the function would have been *Disable(message string)*.  In this case though *message* is optional thus you call *Disable().Message("optional message")*, you can chain in all other optional inputs in the same manner.
 
 ### Outputs
 
-The `disable` action has 2 outputs - `enabled` and `status`.  In the Puppet Agent DDL I specified their data types so the method signatures are:
+The *disable* action has 2 outputs - *enabled* and *status*.  In the Puppet Agent DDL I specified their data types so the method signatures are:
 
 ```golang
 func (d *DisableOutput) Enabled() bool
 func (d *DisableOutput) Status() string
 ```
 
-If one of these did not have type hints the return type would have been `interface{}` and you'd need to figure that out yourself. Some types like `hash` can not be turned into structures automatically so they would be `map[string]interface{}`.
+If one of these did not have type hints the return type would have been *interface{}* and you'd need to figure that out yourself. Some types like *hash* can not be turned into structures automatically so they would be *map[string]interface{}*.
 
 ### Results
 
@@ -208,9 +208,9 @@ res.EachOutput(func(r *p.DisableOutput) {
 })
 ```
 
-The `ResultDetails()` gives you access to `Sender() string`, `OK() bool`, `StatusMessage() string` and `StatusCode() StatusCode`, these map to the similar things in the standard RPC libraries.
+The *ResultDetails()* gives you access to *Sender() string*, *OK() bool*, *StatusMessage() string* and *StatusCode() StatusCode*, these map to the similar things in the standard RPC libraries.
 
-Finally you can call `res.HashMap()` which will give you a `map[string]interface{}` of the whole result structure.
+Finally you can call *res.HashMap()* which will give you a *map[string]interface{}* of the whole result structure.
 
 ### Statistics
 
