@@ -3,11 +3,13 @@ title = "Go Clients"
 weight = 11
 +++
 
-We have a [Golang RPC library](https://godoc.org/github.com/choria-io/mcorpc-agent-provider/mcorpc/client) that's similar in spirit to the Ruby client library while being more idiomatic Golang and more suitable to long running large scale automation tasks.  Use this if you want to write some form of long running never ending automated system or scale to very large fleets.
+We have a [Golang RPC library](https://godoc.org/github.com/choria-io/mcorpc-agent-provider/mcorpc/client) that's similar in spirit to the Ruby client library while being more idiomatic Golang and more suitable to long running large scale automation tasks.  Use this if you want to write some form of long running never ending automated system or scale to very large fleets. This library can interact with any Choria RPC Agent based on their DDL, you do not need to generate any code or stubs. A very good example of this library in use is the code for the `choria tool req` utility.
 
 By it's nature it's more verbose and more involved to use - while the Ruby one is optimized for short quick scripts.
 
-In this guide we will not focus on the above library rather we'll look at a new ability to generate Go clients from DDL files that are much more focused and easier to use for a single agent.
+Recently we added the ability to generate focussed clients for Choria RPC Agents that are very easy to use and yields quite easy to read code. These generated clients use the above mentioned client library so they are scalable to huge fleets and suitable for use in lond running orchestration systems.
+
+This guide will focus on these generated clients. You're encouraged to consider them first when looking at interacting with your fleet from Go.
 
 ## Generated Clients
 
