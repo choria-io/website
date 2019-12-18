@@ -19,6 +19,8 @@ As you might be aware every Agent has a DDL file that describes the agent - all 
 This capability is available as of version *0.14.0* of Choria
 {{% /notice %}}
 
+We have a video explainer of this feature which you can access on [YouTube](https://www.youtube.com/watch?v=oVYAWePAHow).
+
 ## Preparing your DDL
 
 The generator will handle almost all existing agent DDLs, however in the past we did not support or enforce data types for the output items from agents. This makes it extremely hard to create fully usable clients for static languages like Golang.
@@ -163,6 +165,8 @@ The godoc comments it the definitive document, but here are a few of the options
 |------|-----------|
 |`OptionReset()`|Put this first to reset all the options from previous calls else they are sticky|
 |`OptionFactFilter(...string)`|One or more fact filters, matches the behavior of *-F* on the CLI|
+|`OptionClassFilter(...string)`|One or more class filters, matches the behavior of *-C* on the CLI|
+|`OptionIdentityFilter(...string)`|One or more identity filters, matches the behavior of *-I* on the CLI|
 |`OptionCollective(string)`|The name of the sub collective to target, matches *-T* on the CLI|
 |`OptionInBatches(size, sleep int)`|Performs the task in batches with a specific sleep, *--batch* and *--batch-sleep* on the CLI|
 |`OptionDiscoveryTimeout(time.Duration)`|How long to wait for discovery, matched *--discovery-timeout* or *--dt* on the CLI|
