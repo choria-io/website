@@ -52,7 +52,7 @@ allow {
 }
 ```
 
-The context this will run in is our centralized AAA system [Choria Centralized AAA](https://github.com/choria-io/aaasvc). This system gets an unsigned request and signs it on behalf of the user. Effectively providing centralization of authentication, authorization and auditing - something that's a bit weird for Choria, but as you can see allow for some very expressive policies.
+The context this will run in is our centralized AAA system [Choria Centralized AAA](https://choria.io/blog/post/2019/01/23/central_aaa/). This system gets an unsigned request and signs it on behalf of the user. Effectively providing centralization of authentication, authorization and auditing - something that's a bit weird for Choria, but as you can see allow for some very expressive policies.
 
 Here for example I ensure a user can do deploys in production but only in one very specific scenario - only in one country and only one app component.  To do this we inspect the filters assigned to the request, the input arguments to the action and things like the Sub Collective.  These are all parts that were never available to any authorizer so this is a great addition.
 
