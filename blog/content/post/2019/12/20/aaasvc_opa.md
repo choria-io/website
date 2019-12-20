@@ -1,6 +1,6 @@
 ---
 title: "Open Policy Agent in AAA Service"
-date: 2019-12-07T09:00:00+01:00
+date: 2019-12-20T09:00:00+01:00
 tags: ["security", "opa"]
 draft: false
 ---
