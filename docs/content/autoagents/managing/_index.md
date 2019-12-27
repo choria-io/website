@@ -4,7 +4,7 @@ weight = 30
 toc = true
 +++
 
-Running instances of Choria Autonomous Agents can be observed using the events they publish in JSON - and we provide a utility to assist with that - additionally they can be managed via the normal Choria RPC interface, this feature will be expanded a lot in the future right now its quite limited.
+Running instances of Choria Autonomous Agents can be observed using the events they publish in JSON - and we provide a utility to assist with that - additionally they can be managed via the normal Choria RPC interface, this feature will be expanded a lot in the future right now it's quite limited.
 
 ### Watching the real time events and transitions
 
@@ -127,7 +127,7 @@ Finished processing 1 / 1 hosts in 178.88 ms
 
 ### Requesting a state change
 
-You can force initiate a `Transition` by name on a specific machine, this is useful if your machine have a state where it effectively enters a maintenance mode for instance when you do not wish to have it remediate down components while you do maintenance.
+You can force initiate a `Transition` by name on a specific machine, this is useful if your machine has a state where it effectively enters a maintenance mode for instance when you do not wish to have it remediate down components while you do maintenance.
 
 These transition requests can of course fail - your machine might be in a state where the transition you are requesting is not valid, in that case the RPC request will fail with appropriate error state.
 
@@ -140,4 +140,4 @@ Discovering hosts using the choria method .... 1
 Finished processing 1 / 1 hosts in 144.41 ms
 ```
 
-In addition to `name` you can also pass `version`, `path` or even the instance ID via `instance`.  These criteria are search in an `AND` manner in case you run multiple instances of the same machine.
+In addition to `name` you can also pass `version`, `path` or even the instance ID via `instance`.  These criteria are searched in an `AND` manner in case you run multiple instances of the same machine.

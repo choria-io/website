@@ -41,7 +41,7 @@ Many adapters can be hosted in a single Choria Broker.
 
 ## JetStream Setup
 
-You have to create a `message set` in your JetStream that match the above, here we create one that keeps messages for a week:
+You have to create a `message set` in your JetStream that matches the above, here we create one that keeps messages for a week:
 
 ```nohighlight
 $ jsm add
@@ -65,7 +65,7 @@ LastSeq:  2
 
 ## Data Formats
 
-MCollective have traditionally supported publishing Registration messages into the broadcast network of MCollective. While this was useful it was very hard to process as the data tended to be highly concurrent and quite lossy.
+MCollective has traditionally supported publishing Registration messages into the broadcast network of MCollective. While this was useful it was very hard to process as the data tended to be highly concurrent and quite lossy.
 
 The data that is received on the Choria side is kept as is and republished to JetStream in the following format:
 

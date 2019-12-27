@@ -21,7 +21,7 @@ Each *Choria::TaskResult* has the following properties you can use:
 
 |Property / Method|Type|Description|
 |-----------------|----|-------|
-|host             |Choria::Node   |The hostname this result apply to|
+|host             |Choria::Node   |The hostname this result applies to|
 |result           |Data           |The data that was returned from the task, this depends on the type of task|
 |error            |Optional[Error]|A Puppet standard Error object if the task failed|
 |ok               |Boolean        |If the task was successful, always true when `fail_ok` is given|
@@ -62,7 +62,7 @@ If you return these from a plan - or the last statement in your plan is a *chori
 
 ## Nodes on the CLI
 
-Generally nodes come from node sets but you can also use a input to mimic a node set to some extend.
+Generally nodes come from node sets but you can also use an input to mimic a node set to some extent.
 
 ```puppet
 plan example::cli_nodes (
@@ -162,7 +162,7 @@ In this example your *$nodes* is an array or strings, the *example::update* retu
 
 ## Utility Functions and Playbooks
 
-These playbooks tend to be made up of a lot of basic building blocks.  For example I find I often need to disable Puppet and wait for them to idle, lets look how we can make this reusable.
+These playbooks tend to be made up of a lot of basic building blocks.  For example I find I often need to disable Puppet and wait for them to idle, let's look how we can make this reusable.
 
 ```puppet
 plan example::puppet::disable_and_wait (

@@ -10,15 +10,15 @@ In addition to the usual procedure definitions we also keep meta data about auth
 The DDL is used in various scenarios:
 
 * The user can access it in the form of a human readable help page
-* User interfaces can access it in a way that facilitate auto generation of user interfaces
-* The RPC client auto configures and use appropriate timeouts in waiting for responses
+* User interfaces can access it in a way that facilitates auto generation of user interfaces
+* The RPC client auto configures and uses appropriate timeouts in waiting for responses
 * Before sending a call over the network inputs get validated so we do not send unexpected data to remote nodes.
 * Module repositories can use the meta data to display a standard view of available modules to assist a user in picking the right ones.
 * The server will validate incoming requests prior to sending it to agents
 
 ## Generating your own
 
-As of version `0.12.1` of the Choria Server you can use a guided utility to create both the JSON and Ruby format DDL files, you can also convert JSON ones to Ruby using the `choria tool generate ddl example.json example.ddl`, if the `example.json` already exist it will offer converting it into a Ruby one.
+As of version `0.12.1` of the Choria Server you can use a guided utility to create both the JSON and Ruby format DDL files, you can also convert JSON ones to Ruby using the `choria tool generate ddl example.json example.ddl`, if the `example.json` already exists it will offer converting it into a Ruby one.
 
 The JSON DDL files contain JSON Schemas which when correctly setup in your editor will give you context sensitive help, tab completion and more.
 
@@ -73,7 +73,7 @@ As you see we can define all the major components of input and output parameters
 
 For agents the reply structures are pre-populated with all the defined outputs, if no default is supplied a default of nil will be set.
 
-By default mcollective only show data from actions that failed, the _display_ line above tells it to always show the results.  Possible values are _:ok_, _:failed_ (the default behavior) and _:always_.
+By default mcollective only shows data from actions that failed, the _display_ line above tells it to always show the results.  Possible values are _:ok_, _:failed_ (the default behavior) and _:always_.
 
 Finally the service agent has 3 almost identical actions - _start_, _stop_ and _restart_ - below we use a simple loop to define them all in one go.
 

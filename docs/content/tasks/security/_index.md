@@ -3,7 +3,7 @@ title = "Security"
 weight = 300
 +++
 
-Choria integrate Puppet Tasks tightly with it's AAA (Authentication, Authorization and Auditing) suite, this section will introduce you to the features of each.
+Choria integrates Puppet Tasks tightly with its AAA (Authentication, Authorization and Auditing) suite, this section will introduce you to the features of each.
 
 ## Authorization
 
@@ -16,7 +16,7 @@ The agent have a number of actions, you generally will give people access to all
 |download|Downloads a Puppet Task into a local cache|
 |run\_and\_wait|Runs a Puppet Task that was previously downloaded, wait for it to finish|
 |run\_no\_wait|Runs a Puppet Task that was previously downloaded do not wait for it to finish|
-|task\_status|Request the status of a previously ran task|
+|task\_status|Request the status of a previously run task|
 
 If you give someone access to _download_, _run\_and\_wait_ and _run\_no\_wait_ they can initiate and run tasks, you can give someone access to _task\_status_ only to view statuses.
 

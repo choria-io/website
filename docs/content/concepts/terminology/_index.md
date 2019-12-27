@@ -5,11 +5,11 @@ toc = true
 icon = "<b>3. </b>"
 +++
 
-As with most modern complex systems Choria has it's own verbiage, this page attempts to define the terminology we use when discussing or writing about Choria.
+As with most modern complex systems Choria has its own verbiage, this page attempts to define the terminology we use when discussing or writing about Choria.
 
 ## Action
 
-[Agents](#agent) expose tasks, we call these tasks actions. Each agent like a exim queue management agent might expose many tasks like *mailq*, *rm*, *retry* etc. These are al actions provided by an agent.
+[Agents](#agent) expose tasks, we call these tasks actions. Each agent like an exim queue management agent might expose many tasks like *mailq*, *rm*, *retry* etc. These are all actions provided by an agent.
 
 ## Agent
 
@@ -55,13 +55,13 @@ Delivered as part of the *choria* single binary.
 
 ## Choria Network Broker
 
-A managed instance of the [NATS.io](https://nats.io) Server, capable of serving 50 000 or more connection on a single compute node.
+A managed instance of the [NATS.io](https://nats.io) Server, capable of serving 50 000 or more connections on a single compute node.
 
 Delivered as part of the *choria* single binary.
 
 ## Client
 
-Software that produce commands for servers to process, typically this would be a computer with the client package installed and someone using the commands like *mco package* to interact with Agents.
+Software that produces commands for servers to process, typically this would be a computer with the client package installed and someone using the commands like *mco package* to interact with Agents.
 
 ## Connector
 
@@ -79,13 +79,13 @@ Discreet bits of information about your nodes. Examples could be the domain name
 
 ## Federation
 
-Federation in distributed systems is typically software that combines isolated systems into one larger system.  Choria supports Federation allowing you to build a combined Federated Collective that have as it's members many isolated Collectives.
+Federation in distributed systems is typically software that combines isolated systems into one larger system.  Choria supports Federation allowing you to build a combined Federated Collective that have as its members many isolated Collectives.
 
 See [Federations of Collectives](../../federation)
 
 ## Marionette Collective / MCollective
 
-A Orchestration System written by the author of Choria and sold to Puppet Inc. This system was included in Puppet since 2009 and sunset in late 2018.
+An Orchestration System written by the author of Choria and sold to Puppet Inc. This system was included in Puppet since 2009 and sunset in late 2018.
 
 Choria builds on many of the ideas, modernizes a lot of the concepts and provide a compatibility framework for MCollective agents while looking towards the future.
 
@@ -105,7 +105,7 @@ Code that lives inside the server and takes on roles like security, connection h
 
 ## Registration
 
-A process where the Choria Server publish on a regular basis data from a node, this could be metadata or in a IoT setting data like temperature, humidity and pressure.
+A process where the Choria Server publishes on a regular basis data from a node, this could be metadata or in an IoT setting data like temperature, humidity and pressure.
 
 ## Server
 
@@ -119,7 +119,7 @@ A Remote Procedure Call system built on top of MCollective.  Choria provides a c
 
 ## Subcollective
 
-A server can belong to many Collectives. A Subcollective is a Collective that only a subset of a full collectives nodes belong to.
+A server can belong to many Collectives. A Subcollective is a Collective that only a subset of a full collective's nodes belong to.
 
 Subcolllectives are used to partition networks and to control broadcast domains in high traffic networks.
 

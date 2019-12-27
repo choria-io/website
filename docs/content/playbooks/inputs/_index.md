@@ -46,6 +46,6 @@ plan example::slack (
 }
 ```
 
-Here we mark the *$api_key* as optional and if it's given we store it into the *~/.plans.rc*, if not given we attempt to read it fro the same file.  This way you only have to provide it once and future runs of the playbook will reuse it.  The same can be done with other persistent stores like *consul* and *etcd* in which case it could be team wide behavior.
+Here we mark the *$api_key* as optional and if it's given we store it into the *~/.plans.rc*, if not given we attempt to read it from the same file.  This way you only have to provide it once and future runs of the playbook will reuse it.  The same can be done with other persistent stores like *consul* and *etcd* in which case it could be team wide behavior.
 
 [Data Stores](../data/) are an advanced topic and covered extensively in the dedicated [Data Stores](../data/) page.

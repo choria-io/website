@@ -20,7 +20,7 @@ Multiple mutators can be run in the same Choria instance.
 
 ## Dynamically control security settings
 
-Lets look at a plugin that detects the presence of all the PKI related files and only enable PKI Security and TLS if everything is present. While I would not recommend this it would be helpful in a phased migration from a insecure to a secure network or allowing the same package to function in zones where you do not have or want a CA system.
+Let's look at a plugin that detects the presence of all the PKI related files and only enable PKI Security and TLS if everything is present. While I would not recommend this it would be helpful in a phased migration from a insecure to a secure network or allowing the same package to function in zones where you do not have or want a CA system.
 
 ### Mutator
 

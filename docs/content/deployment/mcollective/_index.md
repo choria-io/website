@@ -10,7 +10,7 @@ In MCollective terminology a _client_ is one you manage your network from - wher
 
 ## Every node
 
-All nodes should have the _choria-mcollective_ module on them, by default every node becomes a MCollective Server ready to be managed via MCollective:
+All nodes should have the _choria-mcollective_ module on them, by default every node becomes an MCollective Server ready to be managed via MCollective:
 
 {{% notice tip %}}
 The choria/mcollective_choria module has a number of [dependencies](https://forge.puppet.com/choria/mcollective_choria/dependencies), if you use R10k to manage environments please be sure to fetch all dependencies.

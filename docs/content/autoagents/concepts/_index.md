@@ -10,7 +10,7 @@ Autonomous Agents (also Choria Machines) are implemented as [Finite State Machin
 
 ### State
 
-A state is a named stable state the machine can find itself in. If you are managing the room air quality using a HVAC system you would have states *unknown*, *idle* and *running*.
+A state is a named stable state the machine can find itself in. If you are managing the room air quality using an HVAC system you would have states *unknown*, *idle* and *running*.
 
 ### Transitions
 
@@ -38,5 +38,5 @@ Choria has a standard set of events - alive, startup, shutdown, provisioned and 
 
 ### State Machine
 
-A State Machine combine *states* and *transitions* to describe every possible situation the managed item might find itself in and how it gets to that situation or state.
+A State Machine combines *states* and *transitions* to describe every possible situation the managed item might find itself in and how it gets to that situation or state.
 

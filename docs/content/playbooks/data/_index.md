@@ -134,7 +134,7 @@ mcollective_choria::gem_dependencies:
   "etcdv3": "0.6.0"
 ```
 
-The Etcd store requires you to have a [Etcd Agent](https://coreos.com/etcd/docs/latest/) instance running.  Configuring a Etcd cluster is out of scope for this guide.
+The Etcd store requires you to have a [Etcd Agent](https://coreos.com/etcd/docs/latest/) instance running.  Configuring an Etcd cluster is out of scope for this guide.
 
 Using this Data Store you can store, read and delete data in the Etcd store.
 
@@ -158,7 +158,7 @@ $ds = {
 }
 ```
 
-This type of store exist to make it easy for users to integrate existing data stores into the playbooks using just a shell command.
+This type of store exists to make it easy for users to integrate existing data stores into the playbooks using just a shell command.
 
 The options are:
 
@@ -240,4 +240,4 @@ Any contents in the block will only execute if the lock could be held.  It does 
 
 There will be timeout for how long at most it will wait to get a lock, set using the *timeout* option when creating the data store.
 
-When it makes sense the data store will create the lock in a way that should the playbook die, machine dies or other unexpected thing the lock will timeout after a period configurable using the *ttl* option when creating the data store.
+When it makes sense the data store will create the lock in a way that should the playbook die, machine die or other unexpected thing the lock will timeout after a period configurable using the *ttl* option when creating the data store.

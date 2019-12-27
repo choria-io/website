@@ -7,16 +7,16 @@ Choria Server supports a Provisioning Mode where it will start up with a specifi
 
 The problem with provisioning is that you have to connect somewhere where there is a provisioner. You can imagine, for example, if you have 30 data centers you might want to provision regionally to each DC. You could make it so that you always arrange for lets say *choria-provision.$dc.example.net* resolving as *choria-provision* but what if you have many different kinds of network or do not have the ability to influence DNS in this manner? A simple static build time configuration does not work.
 
-Choria therefore let you plug your own logic into it where you can resolve things however you wish.  You can do FQDN parsing, or call out to your cloud provider API, or speak to something like Consul or etcd to do service discovery. This plugin is called a *Provisioning Target* and we'll show you how to build a basic one.
+Choria therefore lets you plug your own logic into it where you can resolve things however you wish.  You can do FQDN parsing, or call out to your cloud provider API, or speak to something like Consul or etcd to do service discovery. This plugin is called a *Provisioning Target* and we'll show you how to build a basic one.
 
 ## File based hints
 
-Lets write a Provisioning Target that reads */etc/dc.json* and construct a provisioning name using that information:
+Let's write a Provisioning Target that reads */etc/dc.json* and construct a provisioning name using that information:
 
 The interface you need to implement is *provtarget.TargetResolver*, it looks like this ([godoc](https://godoc.org/github.com/choria-io/go-choria/provtarget)):
 
 ```go
-// TargetResolver is capable of resolving the target brokers for provisioning into list of strings in the format host:port
+// TargetResolver is capable of resolving the target brokers for provisioning into lists of strings in the format host:port
 type TargetResolver interface {
 	// Name the display name that will be shown in places like `choria buildinfo`
 	Name() string
@@ -26,7 +26,7 @@ type TargetResolver interface {
 }
 ```
 
-That's pretty easy, lets write a small provider.
+That's pretty easy, let's write a small provider.
 
 It's important that these resolvers should retry more or less forever - or perhaps fall back to a static value.  Any number of things can prevent this from working and you would not want your unprovisioned servers to exit and remain unprovisioned. So we retry forever with a backoff based sleep between tries.
 
@@ -95,7 +95,7 @@ func resolve(log *logrus.Entry) (targets []string, err error) {
 }
 ```
 
-We need to provide the usual *plugin.Pluggable* so lets add that:
+We need to provide the usual *plugin.Pluggable* so let's add that:
 
 ```go
 package acme

@@ -15,26 +15,26 @@ Using it you get a very fast discovery workflow but without the awareness of whi
 Your MCollective _client_ machine needs to be able to communicate with PuppetDB on its SSL port. The client will use the same certificates that was created using *mco choria request_cert* so you don't need to do anything with the normal Puppet client-tools config, though you might find setting those up helpful.
 
 {{% notice warning %}}
-Giving people access to PuppetDB in this manner will allow them to do all kinds of thing with your data as there are no ACL features in PuppetDB, consider carefully who you allow to connect to PuppetDB on any port.
+Giving people access to PuppetDB in this manner will allow them to do all kinds of things with your data as there are no ACL features in PuppetDB, consider carefully who you allow to connect to PuppetDB on any port.
 {{% /notice %}}
 
 ## Using
 
 In general you can just go about using MCollective as normal after configuring it (see below).  All your usual filters like _-I_, _-C_, _-W_ etc all work as normal.
 
-Your discovery should take a fraction of a second rather than the usual 2 seconds or more and will reflect what PuppetDB thinks it should be out there.
+Your discovery should take a fraction of a second rather than the usual 2 seconds or more and will reflect what PuppetDB thinks should be out there.
 
 {{% notice tip %}}
 Fact dot notation is supported from version 0.0.29 and newer
 {{% /notice %}}
 
-An additional benefit of this plugin is that you can use the new dot notation for using sctructured facts directly in discovery filters:
+An additional benefit of this plugin is that you can use the new dot notation for using structured facts directly in discovery filters:
 
 ```bash
 $ mco find -W "os.distro.id!=CentOS"
 ```
 
-The dot notation is parsed by PuppetDB itself so you restricted to it's behaviours.
+The dot notation is parsed by PuppetDB itself so you are restricted to its behaviours.
 
 
 ### PQL
@@ -53,7 +53,7 @@ You can construct very complex queries that can match even to the level of speci
 $ mco find -I "pql:inventory[certname] { resources { type = 'User' and title = 'rip' and parameters.ensure = 'present'}}"
 ```
 
-PQL queries comes in all forms, there are many examples at the Puppet docs. Though you should note that you must ensure you only ever return the certname as in the above example.
+PQL queries come in all forms, there are many examples at the Puppet docs. Though you should note that you must ensure you only ever return the certname as in the above example.
 
 If you configure the Puppet Client Tools (see below) you can test these queries on the CLI:
 

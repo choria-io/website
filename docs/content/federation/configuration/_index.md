@@ -107,7 +107,7 @@ The full reference of Federation related configuration options can be seen below
 
 ## Choria Client in the Federation
 
-The only real additional configuration you should do is to tell it about all the default Federation Brokers with you can do in Hiera:
+The only real additional configuration you should do is to tell it about all the default Federation Brokers which you can do in Hiera:
 
 ```yaml
 mcollective::client_config:

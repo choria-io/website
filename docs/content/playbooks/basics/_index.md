@@ -3,7 +3,7 @@ title = "Basic Playbook"
 weight = 400
 +++
 
-Lets consider a basic Playbook used to restart Puppet Server and PuppetDB in a clean safe way.  Restarting Puppet Server is quite involved as you want to ensure not to interrupt the normal operations of things, so first we gracefully stop all the agents that might currently be using Puppet and then restart Puppet Server + PuppetDB followed by a Puppet run orchestrated in batches.
+Let's consider a basic Playbook used to restart Puppet Server and PuppetDB in a clean safe way.  Restarting Puppet Server is quite involved as you want to ensure not to interrupt the normal operations of things, so first we gracefully stop all the agents that might currently be using Puppet and then restart Puppet Server + PuppetDB followed by a Puppet run orchestrated in batches.
 
 {{% notice tip %}}
 If you just want to dive in and get your hands dirty review the [Tips and Patterns](../tips/) section which explains where to place Playbooks and show you much more detail
@@ -29,7 +29,7 @@ On failure further slack notifications will be sent.
 
 To complete this task we write 2 playbooks, one that does the work without any error handling and one to run the other with the Slack error and success handling.
 
-This playbook is on purpose verbose, in reality you would make smaller playbooks and re-using them or using Puppet functions to make small utilities to do common tasks - like we did with the `example::slack` one here.
+This playbook is on purpose verbose, in reality you would make smaller playbooks and re-use them or use Puppet functions to make small utilities to do common tasks - like we did with the `example::slack` one here.
 
 ```puppet
 plan example::restart_puppetserver_no_error_handling (
@@ -209,7 +209,7 @@ plan acme::slack (
 }
 ```
 
-You can run this playbook through the CLI, but lets look at help first, you can see our inputs are provided via *--cluster* or as json.
+You can run this playbook through the CLI, but let's look at help first, you can see our inputs are provided via *--cluster* or as json.
 
 ```bash
 $ mco playbook run example::restart_puppetserver --modulepath modules --help

@@ -4,7 +4,7 @@ weight = 110
 toc = true
 +++
 
-Choria has it's own broker that is based on the excellent [NATS.io](https://nats.io/) broker.  It's very fast, light weight, is easy to configure and monitor.
+Choria has its own broker that is based on the excellent [NATS.io](https://nats.io/) broker.  It's very fast, lightweight, is easy to configure and monitor.
 
   * TLS out of the box using your Puppet Agent certificates, accepting only nodes signed by Puppet CA
   * Handles 50 000 MCollective connections per node - can be increased with a custom build

@@ -6,11 +6,11 @@ toc = true
 
 An Autonomous Agent consists of a directory with a file *machine.yaml* and an optional set of support scripts and more.
 
-In the concepts section we described a theoretical HVAC management agent, lets look how that might look as a machine.
+In the concepts section we described a theoretical HVAC management agent, let's look how that might look as a machine.
 
 ## Designing the Finite State Machine
 
-Lets try to solve the HVAC problem from our concepts page, to recap we want to have a file lets say *hvac.json* that describes in it thresholds for air quality that you read from sensors in the room. Could be humidity, temperature, co2 levels, whatever you decide. Based on these configured thresholds and the input from your sensors you want to turn the HVAC on and off.
+Let's try to solve the HVAC problem from our concepts page, to recap we want to have a file, let's say *hvac.json*, that describes in it thresholds for air quality that you read from sensors in the room. Could be humidity, temperature, CO2 levels, whatever you decide. Based on these configured thresholds and the input from your sensors you want to turn the HVAC on and off.
 
 Reasoning about this we determine we have 3 possible states:
 
@@ -18,7 +18,7 @@ Reasoning about this we determine we have 3 possible states:
  * The air quality is within parameters and the HVAC should be off - this we'll call *idle* state
  * The air quality is outside of parameters and the HVAC should be on - this we'll call the *running* state
 
-Lets think about the *transitions*, this is what triggers the HVAC to go off and on and so forth:
+Let's think about the *transitions*, this is what triggers the HVAC to go off and on and so forth:
 
  * If at any point the *hvac.json* goes missing we need to move to the *unknown* state, we'll trigger the *variables_unknown* transition
  * If at any point the *hvac.json* changes, we will move to idle state and measure the values, we'll trigger the *variables_changed* transition to achieve this
@@ -52,7 +52,7 @@ When you use scripts in *exec* watchers or reference files in *file* watchers th
 
 ## Manifest
 
-The manifest here describe the machine we designed above, the *splay_start* item is optional, everything else is required.
+The manifest here describes the machine we designed above, the *splay_start* item is optional, everything else is required.
 
 {{% notice tip %}}
 A [JSON schema](https://choria.io/schemas/choria/machine/v1/manifest.json) describes these files and you can configure some editors to validate the YAML file based on that. The command `choria machine validate` can validate a *machine.yaml* against this schema.
@@ -93,7 +93,7 @@ transitions:
     destination: running
 
 watchers:
-  # checks the hvac.json exist and if its changed, on change
+  # checks the hvac.json exist and if it's changed, on change
   # success_transition is fired, if the file is missing
   # fail_transition is fired.
   - name: variables
@@ -126,7 +126,7 @@ watchers:
     properties:
         command: on.sh
 
-  # monitors the air, exits with 0 if the air is good and 1 if its bad
+  # monitors the air, exits with 0 if the air is good and 1 if it's bad
   - name: monitor
     type: exec
     state_match: [idle, running]

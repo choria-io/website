@@ -5,7 +5,7 @@ weight = 40
 
 ## Overview
 
-MCollective supports a single executable - called mco - and have a plugin type called application that lets you create applications for this single executable.
+MCollective supports a single executable - called mco - and has a plugin type called application that lets you create applications for this single executable.
 
 While we have a standard generic client called _mco rpc_ to interact with your network, sometimes this standard approach does not work - perhaps you wish to add specific input munging, query databases or just display the output in a custom manner.  Some agents have utility actions that produce so much data that just dumping it to the display is not useful.  Other actions are not designed for generic interaction - they support fuller automation flows.  For all these needs you can extend the _mco_ CLI with new plugins.
 
@@ -14,7 +14,7 @@ Interacting with the single executable system is documented in the [CLI Interact
 Apart from the plumbing to hook these into the CLI you will have full access to the normal [MCollective Client](../clients/).
 
 {{% notice warning %}}
-This section of the documentation have recently been migrated from the old mcollective documentation, we are still in the process of verifying every example works in modern mcollective.  If you find any issues please get in touch.
+This section of the documentation has recently been migrated from the old mcollective documentation, we are still in the process of verifying every example works in modern mcollective.  If you find any issues please get in touch.
 {{% /notice %}}
 
 ## Basic Application
@@ -113,7 +113,7 @@ option :message,
 
 #### Argument data types
 
-CLI arguments can be forced to a specific type, we also have some additional special types that the default ruby option parser cant handle on its own.
+CLI arguments can be forced to a specific type, we also have some additional special types that the default ruby option parser can't handle on its own.
 
 You can force data to be of type String, Integer etc:
 
@@ -156,11 +156,11 @@ option :count,
   :validate       => Proc.new {|val| val < 10 ? true : "The message count has to be below 10" }
 ```
 
-Should the supplied value be 10 or more a error message will be displayed.
+Should the supplied value be 10 or more an error message will be displayed.
 
 #### Disabling standard sections of arguments
 
-By default every Application get all the RPC options enabling filtering, discovery etc.  In some cases this is undesirable so we let users disable those.
+By default every Application gets all the RPC options enabling filtering, discovery etc.  In some cases this is undesirable so we let users disable those.
 
 ```ruby
 class MCollective::Application::Echo<MCollective::Application

@@ -5,7 +5,7 @@ weight = 11
 
 We have a [Golang RPC library](https://godoc.org/github.com/choria-io/mcorpc-agent-provider/mcorpc/client) that's similar in spirit to the Ruby client library while being more idiomatic Golang and more suitable to long running large scale automation tasks.  Use this if you want to write some form of long running never ending automated system or scale to very large fleets. This library can interact with any Choria RPC Agent based on their DDL, you do not need to generate any code or stubs. A very good example of this library in use is the code for the [choria req](https://github.com/choria-io/go-choria/blob/master/cmd/req.go) utility.
 
-By it's nature it's more verbose and more involved to use - while the Ruby one is optimized for short quick scripts.
+By its nature it's more verbose and more involved to use - while the Ruby one is optimized for short quick scripts.
 
 Recently we added the ability to generate focussed clients for Choria RPC Agents that are very easy to use and yields quite easy to read code. These generated clients use the above mentioned client library so they are scalable to huge fleets and suitable for use in lond running orchestration systems.
 
@@ -13,7 +13,7 @@ This guide will focus on these generated clients. You're encouraged to consider 
 
 ## Generated Clients
 
-As you might be aware every Agent has a DDL file that describes the agent - all it's actions, inputs, outputs, aggregation methods and validations. As of a recent improvement these DDL files now contain enough that highly usable clients can be generated for static languages like Golang.
+As you might be aware every Agent has a DDL file that describes the agent - all its actions, inputs, outputs, aggregation methods and validations. As of a recent improvement these DDL files now contain enough that highly usable clients can be generated for static languages like Golang.
 
 {{% notice tip %}}
 This capability is available as of version *0.14.0* of Choria
@@ -25,7 +25,7 @@ We have a video explainer of this feature which you can access on [YouTube](http
 
 The generator will handle almost all existing agent DDLs, however in the past we did not support or enforce data types for the output items from agents. This makes it extremely hard to create fully usable clients for static languages like Golang.
 
-We've recently added optional type hints to outputs in DDLs and I strongly suggest you take a look at the DDL files you're intending to use and add output hints. You should also review the code and ensure that the output types don't vary, if an item vary and you cannot fix that scenario then leave it untyped so Go will give you *interface{}* instances which you can then handle via *reflect*.
+We've recently added optional type hints to outputs in DDLs and I strongly suggest you take a look at the DDL files you're intending to use and add output hints. You should also review the code and ensure that the output types don't vary, if an item varies and you cannot fix that scenario then leave it untyped so Go will give you *interface{}* instances which you can then handle via *reflect*.
 
 Here's a sample fixup I did of the class [puppet agent](https://github.com/choria-plugins/puppet-agent/pull/41/files) as an example, it's easier than it sounds!
 

@@ -5,7 +5,7 @@ weight = 30
 
 Choria communicates almost exclusively over the middleware, this document describes the target names and messages you might find on the middleware. You might use this for debuging or learning purposes using the `choria tool pub` and `choria tool sub` commands.
 
-The Choria broker is a managed instance of the [NATS Server](https://github.com/nats-io/gnatsd), target syntax shown here matches the standards it support.
+The Choria broker is a managed instance of the [NATS Server](https://github.com/nats-io/gnatsd), target syntax shown here matches the standards it supports.
 
 ## Core RPC Messages
 
@@ -24,7 +24,7 @@ These are namespaced on *collective* allowing one to make something like a VLAN 
 
 ### Federated
 
-Federation is a router between different networks, when a client makes a request it publishes to a specific address instead of the usual ones, the Federation Broker will then publish to the above targets on the users behalf.
+Federation is a router between different networks, when a client makes a request it publishes to a specific address instead of the usual ones, the Federation Broker will then publish to the above targets on the user's behalf.
 
 Likewise replies are received on a different target and the Federation Broker will send them to the usual client locations on the servers behalf.
 

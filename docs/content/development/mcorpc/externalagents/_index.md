@@ -6,7 +6,7 @@ weight = 21
 As of version *0.12.1* of the Choria Server we support something called `External Agents`, these let you write agents hosted by the Choria Server in any language.  These agents are forked on demand and receive the request in a temporary file and write their reply in a temporary file as JSON.
 
 {{% notice tip %}}
-This is a brand new feature and subject to change and quite possibly have some bugs!
+This is a brand new feature and subject to change and quite possibly has some bugs!
 {{% /notice %}}
 
 ## Overview
@@ -21,7 +21,7 @@ An external agent can be written in any language and the related files go in the
 -rw-r--r-- 1 root root 915 Sep 12 10:40 helloworld.json
 ```
 
-Both the [DDL](../ddl/) files are required and can be generated using the new `choria tool generate ddl helloworld.json helloworld.ddl` utility.
+Both the [DDL](../ddl/) and JSON files are required and can be generated using the new `choria tool generate ddl helloworld.json helloworld.ddl` utility.
 
 ### Communication Protocols
 
@@ -44,7 +44,7 @@ The working directory will be your OS temporary directory.
 
 ### Logging
 
-Any output your agent produce on *STDOUT* is logged at *INFO* level on the server.  Any *STDERR* output is logged as *ERROR* level on the server.
+Any output your agent produces on *STDOUT* is logged at *INFO* level on the server.  Any *STDERR* output is logged as *ERROR* level on the server.
 
 ### Distribution
 
@@ -52,7 +52,7 @@ These modules can be packaged and distributed using the standard [Plugin Packagi
 
 ## Activation
 
-At server start your agent will be called with a activation check, this gives you the chance to verify your dependencies and decide if the agent should be active on the particular node.
+At server start your agent will be called with an activation check, this gives you the chance to verify your dependencies and decide if the agent should be active on the particular node.
 
 The `CHORIA_EXTERNAL_PROTOCOL` will be set to `io.choria.mcorpc.external.v1.activation_request`, you should only respond to activation checks when this is set.
 

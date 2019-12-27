@@ -6,7 +6,7 @@ toc = true
 
 Node Sets are how you tell the playbook about groups of nodes that exist on your network, today you can use MCollective Discovery, PQL Queries, YAML files, Shell Scripts and Terraform outputs to create the node sets.
 
-In all cases the node sets must produce a list of *certnames* that will match what MCollective expect in cases where you want to use MCollective based tasks.  In future task types will be pluggable and you just have to produce whatever node sets your type of task needs.
+In all cases the node sets must produce a list of *certnames* that will match what MCollective expects, in cases where you want to use MCollective based tasks.  In the future task types will be pluggable and you just have to produce whatever node sets your type of task needs.
 
 ## Common Node Set options
 
@@ -48,7 +48,7 @@ $nodes = choria::discover(
 )
 ```
 
-You can also make it explicit that this is a *mcollective* type discovery:
+You can also make it explicit that this is an *mcollective* type discovery:
 
 ```puppet
 $nodes = choria::discover("mcollective",
@@ -77,7 +77,7 @@ The *rpcutil* agent above in the *uses* section is specified as needing version 
 
 ## YAML Nodes
 
-A YAML file is supported as a input format, it can have groups inside it like the example here:
+A YAML file is supported as an input format, it can have groups inside it like the example here:
 
 ```yaml
 web_servers:

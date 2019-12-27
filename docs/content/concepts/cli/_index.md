@@ -10,7 +10,7 @@ interact with a single executable called *mco* which has a number of
 sub-commands, arguments and flags.
 
 Choria, being MCollective compatible, relies on the MCollective CLI toolkit
-for it's interactions, if you've previously used MCollective it should be
+for its interactions, if you've previously used MCollective it should be
 very familiar.
 
 {{% notice tip %}}
@@ -394,7 +394,7 @@ $ mco ping -S "((customer=acme and environment=staging) or environment=developme
 
 The above example shows a scenario where the development environment is
 usually labeled *development* but one customer has chosen to use
-*staging*. You want to find all machines in those customer's
+*staging*. You want to find all machines in those customers'
 environments that match the class *apache*. This search would be
 impossible using the previously shown methods, but the above command
 uses *-S* to allow the use of boolean operators such as *and* and *or*

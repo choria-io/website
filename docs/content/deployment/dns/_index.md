@@ -45,7 +45,7 @@ _mcollective-discovery._tcp            IN  SRV 10  0 8085  puppetdb1.example.net
 
 ## Custom Domain
 
-By default these SRV records will be looked for in your machines _domain_ fact, but you can customize this by creating data in your _Hiera_:
+By default these SRV records will be looked for in your machine's _domain_ fact, but you can customize this by creating data in your _Hiera_:
 
 ```yaml
 mcollective_choria::config:

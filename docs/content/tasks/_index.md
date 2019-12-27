@@ -18,12 +18,12 @@ Choria provides support for tasks as a new first class agent type, accessible ov
 
 Choria provides support for Puppet Tasks to the Open Source Community, it provides a strong enterprise focussed workflow with the following features:
 
-  * Tasks are downloaded from the Puppet Server to the nodes. You have a single point of code management and it's not 100s of admins home directory
+  * Tasks are downloaded from the Puppet Server to the nodes. You have a single point of code management and it's not 100s of admins' home directories
   * Does not need SSH or direct access to nodes
   * Individual Tasks are subject to Role Based Access Control using the standard Action Policy
   * Individual Task invocations are audited using the standard Choria Auditing
   * Tasks run in the background and are suitable for long running actions like system updates
-  * A _mco tasks_ command that behaves like a typical mcollective utility
+  * An _mco tasks_ command that behaves like a typical mcollective utility
   * Tasks can be used from your ruby code or playbooks using the _bolt\_tasks_ agent
 
 ## Demonstration

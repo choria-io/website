@@ -12,20 +12,20 @@ Deploying Choria is broken into the following main steps that the menu on the le
   * If required configure DNS records or manual host locations
   * Configure MCollective using the [choria/choria](https://forge.puppet.com/choria/choria) module
   * Create your first users and their authorization rules
-  * Explore the features Choria enable and read about the overall operation of MCollective on the official website with links this guide provide
+  * Explore the features Choria enables and read about the overall operation of MCollective on the official website with links this guide provides
   * Sign up for the [community](https://groups.google.com/forum/#!forum/choria-users) to receive updates about the project
 
 There are a few optional additional features you can enable.
 
-To make it to the end of this guide you will need to be able to effect root level changes to all your nodes via Puppet and Hiera.  You might have to change your your firewalls and DNS.
+To make it to the end of this guide you will need to be able to effect root level changes to all your nodes via Puppet and Hiera.  You might have to change your firewalls and DNS.
 
 ### Required
 
   * You must use Puppet 6 deployed using the Puppet Inc AIO packages - the one called _puppet-agent_.
   * You must be using a Puppet Master based setup, typically using _puppetserver_
-  * You need to run middleware, Choria has it's own Choria Broker that supports RedHat 5, 6, 7, Debian Stretch and Ubuntu Xenial or Bionic
+  * You need to run middleware, Choria has its own Choria Broker that supports RedHat 5, 6, 7, Debian Stretch and Ubuntu Xenial or Bionic
   * Your certnames must match your FQDNs - the default
-  * You need the [choria/choria](https://forge.puppet.com/choria/choria) module and all it's dependencies
+  * You need the [choria/choria](https://forge.puppet.com/choria/choria) module and all its dependencies
 
 ### Optional
 
