@@ -11,7 +11,7 @@ This feature is available since *Choria Server 0.11.0*
 {{% /notice %}}
 
 {{% notice warning %}}
-This is a preview level feature, we're including to seek community feedback on a MVP level feature set
+This is a preview level feature, we're including to seek community feedback on an MVP level feature set
 {{% /notice %}}
 
 ## Use Cases
@@ -22,7 +22,7 @@ These are not designed to replace entire systems like Puppet, below we have some
 
 ### HVAC
 
-You could have systems that monitor the air quality of a room and a air conditioner to improve the quality of the air in the room.  You do not wish to run these continuously, perhaps you built them using a few Raspberry PI.
+You could have systems that monitor the air quality of a room and an air conditioner to improve the quality of the air in the room.  You do not wish to run these continuously, perhaps you built them using a few Raspberry PI.
 
 You'd have a sensor or set of sensors that monitor the air quality and a network enabled switch to start and stop your HVAC.
 
@@ -36,7 +36,7 @@ An Autonomous Agent could watch these files and execute the command every 4 hour
 
 ### Container Management
 
-You have a manifest that describe a container and it's desired tag:
+You have a manifest that describes a container and its desired tag:
 
 ```json
 {
@@ -48,12 +48,12 @@ You have a manifest that describe a container and it's desired tag:
 You want the system to continuously monitor this file and:
 
  * Watch for changes to the file
- * Trigger a deploy of the container at this version if that is not whats running
+ * Trigger a deploy of the container at this version if that is not what's running
  * Continuously monitor the health of the container
  * Remediate the container by restarting it should the health check fail
  * Should the manifest change at any time, redeploy the container to the new desired version
 
- A Autonomous Agent could describe these interactions and the integration with docker could be shell scripts, ruby scripts or anything else like Ansible.
+ An Autonomous Agent could describe these interactions and the integration with docker could be shell scripts, ruby scripts or anything else like Ansible.
 
 ### Cluster Management
 

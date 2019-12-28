@@ -3,7 +3,7 @@ title = "Ruby Clients"
 weight = 10
 +++
 
-As pointed out in the Introduction page you can use the _mco rpc_ CLI to call agents and it will do it's best to print results in a sane way.  When
+As pointed out in the Introduction page you can use the _mco rpc_ CLI to call agents and it will do its best to print results in a sane way.  When
 this is not enough you can write your own clients.
 
 This guide shows you how to use the Client API to interact with MCollective RPC agents.  This API can be used as here in standalone scripts but you can also apply the knowledge documented here to create [new sub commands](../applications/) like _mco yourapp_ for when you wish to have entirely custom UIs above those that the one-size-fits-all _mco rpc_ provides.
@@ -56,7 +56,7 @@ $ hello.rb
 Finished processing 44 hosts in 375.57 ms
 ```
 
-While it ran you would have seen a little progress bar and then just the summary line.  The idea is that if you're talking to a 1000 machine there's no point in seeing a thousand _OK_, you only want to see what failed and this is exactly what happens here, you're only seeing errors and since there were none, no results are shown.
+While it ran you would have seen a little progress bar and then just the summary line.  The idea is that if you're talking to 1000 machines there's no point in seeing a thousand _OK_, you only want to see what failed and this is exactly what happens here, you're only seeing errors and since there were none, no results are shown.
 
 If you run it with _--verbose_ you'll see a line of text for every host and also a larger summary of results.  Running with _--display all_ will show all results with a normal summary.
 
@@ -78,7 +78,7 @@ printrpc mc.echo(:msg => "Welcome to MCollective RPC")
 printrpcstats
 ```
 
-To call a specific action you have to do _mc.echo_ this calls the _echo_ action, we pass a _:msg_ parameter into it with the string we want echo'd back.  The parameters will differ from action to action.  It returns a array of the results that you can print any way you want, we'll show that later.
+To call a specific action you have to do _mc.echo_ this calls the _echo_ action, we pass a _:msg_ parameter into it with the string we want echoed back.  The parameters will differ from action to action.  It returns an array of the results that you can print any way you want, we'll show that later.
 
 _printrpc_ and _printrpcstats_ are functions used to print the results and stats respectively.
 
@@ -137,7 +137,7 @@ report = stats.report
 nr = stats.no_response_report
 ```
 
-_report_ will now have the text that would have been displayed by 'printrpcstats' you can also use _no\_response\_report_ to get report text for just the list of hosts that didnt respond.
+_report_ will now have the text that would have been displayed by 'printrpcstats' you can also use _no\_response\_report_ to get report text for just the list of hosts that didn't respond.
 
 If you didn't want to just print the results out to STDOUT you can also get them back as just text:
 
@@ -160,7 +160,7 @@ printrpc mc.echo(:msg => "Welcome to MCollective RPC")
 
 You can set other filters like _agent\_filter_, _identity\_filter_ and _compound\_filter_.
 
-The _fact\_filter_ method supports a few other forms in adition to above:
+The _fact\_filter_ method supports a few other forms in addition to above:
 
 ```ruby
 mc.fact_filter "country=uk"
@@ -260,7 +260,7 @@ printrpc mc.echo(:msg => "Welcome to MCollective RPC")
 
 ## Only sending requests to a subset of discovered nodes
 
-By default all nodes that get discovered will get the request.  This isn't always desirable maybe you want to deploy only to a random subset of hosts or maybe you have a service exposed over MCollective that you want to treat as a HA service and so only speak with one host that provides the functionality.
+By default all nodes that get discovered will get the request.  This isn't always desirable maybe you want to deploy only to a random subset of hosts or maybe you have a service exposed over MCollective that you want to treat as an HA service and so only speak with one host that provides the functionality.
 
 You can limit the hosts to talk to either using a number or a percentage, the code below shows both:
 
@@ -492,9 +492,9 @@ options =  MCollective::Util.default_options
 client = rpcclient("test", {:options => options})
 ```
 
-This will create a RPC client for the agent test without any options parsing at all.
+This will create an RPC client for the agent test without any options parsing at all.
 
-To set options like discovery timeout and so forth you will need use either the client utilities or manipulate the hash upfront, the client utility methods is the best.   The code below sets the discovery timeout in a way that does not require you to know any internal structures or the content of the options hash.
+To set options like discovery timeout and so forth you will need tp use either the client utilities or manipulate the hash upfront, the client utility method is the best.   The code below sets the discovery timeout in a way that does not require you to know any internal structures or the content of the options hash.
 
 ```ruby
 options =  MCollective::Util.default_options
@@ -509,7 +509,7 @@ Using this method of creating custom options hashes mean we can make internal ch
 
 Usually this section will not apply to you.  The client libraries support sending a request without waiting for a reply.  This could be useful if you want to clean yum caches but don't really care if it actually happens everywhere.
 
-You will loose these abilities:
+You will lose these abilities:
 
  * Knowing if your request was received by any agents
  * Any stats about processing times etc
@@ -517,10 +517,10 @@ You will loose these abilities:
 
 The above should make it clear already that this is a limited use case, it's essentially a broadcast request with no feedback loop.
 
-The code below will send a request to the _runonce_ action for an agent _puppetd_, once the request is dispatched I will have no idea if it got handled etc, my code will just continue onwards.
+The code below will send a request to the _runonce_ action for an agent _puppet_, once the request is dispatched I will have no idea if it got handled etc, my code will just continue onwards.
 
 ```ruby
-p = rpcclient("puppetd")
+p = rpcclient("puppet")
 
 p.identity_filter "your.example.net"
 reqid = p.runonce(:forcerun => true, :process_results => false)

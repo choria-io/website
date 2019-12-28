@@ -9,7 +9,7 @@ The CLI tools have extensive *--help* output which will not be reproduced here, 
 
 ### Execution Flow
 
-With the default Puppet Tasks runner from Puppet Inc the tasks are copied from your shell to remote nodes and ran there.  The flow in Choria is significantly different so I will show the steps that are followed when you execute a Task
+With the default Puppet Tasks runner from Puppet Inc the tasks are copied from your shell to remote nodes and run there.  The flow in Choria is significantly different so I will show the steps that are followed when you execute a Task
 
   * The metadata is fetched from your Puppet Server and the CLI is created
   * Inputs are validated against the task signature
@@ -48,7 +48,7 @@ Use mco task <TASK> to see task help
 Pass option --detail to see task descriptions
 ```
 
-Passing _--detail_ will request their descriptions, but please note that due to short comings in the Puppet API this is quite slow as a REST request has to be made for every task.
+Passing _--detail_ will request their descriptions, but please note that due to shortcomings in the Puppet API this is quite slow as a REST request has to be made for every task.
 
 You can view details about one specific task:
 
@@ -238,9 +238,9 @@ $ mco tasks status 45250c07824f5922be68468d08f6b76c --json -I node1.example.net 
 
 In the examples above it was kind of annoying to keep typing the hostname via _-I_, and it would not work really if you had many nodes or wanted to address only nodes that completed a task (or not).
 
-Choria provides a discovery data source that expose a lot of data about a task to the MCollective discovery system.
+Choria provides a discovery data source that exposes a lot of data about a task to the MCollective discovery system.
 
-Lets see what data the plugin provides and then we'll use what we saw to run a command on all nodes where a previous one failed:
+Let's see what data the plugin provides and then we'll use what we saw to run a command on all nodes where a previous one failed:
 
 ```nohighlight
 $ mco plugin doc data/bolt_task
@@ -341,7 +341,7 @@ As of version 0.9.0 of the *choria/choria* module you can use Tasks from within 
 
 ### Running a Task
 
-The integration is intended to be used by other Playbooks, lets look at using the [Package Task](https://forge.puppet.com/puppetlabs/package) to retrieve the version of the *puppet-agent* package:
+The integration is intended to be used by other Playbooks, let's look at using the [Package Task](https://forge.puppet.com/puppetlabs/package) to retrieve the version of the *puppet-agent* package:
 
 ```puppet
 plan acme::agent_status () {
@@ -405,7 +405,7 @@ Result:
      }
 ```
 
-The *choria::tasks::run* playbooks supports options for batching requests and more, please review the comments in it's code.
+The *choria::tasks::run* playbook supports options for batching requests and more, please review the comments in its code.
 
 This is a normal task invocation, so you could for example use *mco tasks status ca87087b91f950b6a226dd52d33f7c42* to later look at this task from the CLI.
 

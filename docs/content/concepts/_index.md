@@ -59,7 +59,7 @@ The system is part complete end user solution via features like its rich Playboo
 
 In addition to basic interactive orchestration Choria provides a ever growing feature list for the systems builder where you can embed Choria capabilities into your software at compile time allowing for custom management backplanes to be built and in the IoT world custom life cycle and secure data exfil.
 
-Choria has a very strong focus on use in the Enterprise. Every aspect of Choria is integrated with core AAA functionality with industry standard PKI Authentication, rich RBAC based Authorization and detailed Auditing.  It's communication medium does not require any direct-to-node connection from a user like using SSH, instead it relies on a very performant and scalable middleware system. Nodes connect out, no listening ports on your servers.
+Choria has a very strong focus on use in the Enterprise. Every aspect of Choria is integrated with core AAA functionality with industry standard PKI Authentication, rich RBAC based Authorization and detailed Auditing.  Its communication medium does not require any direct-to-node connection from a user like using SSH, instead it relies on a very performant and scalable middleware system. Nodes connect out, no listening ports on your servers.
 
 Using Choria you can start managing your packages, service and Puppet agents within this hour, write expressive playbooks using the Puppet DSL and, if you wish, in time join others who have built entire PaaS on top of Choria at their core using its framework.
 

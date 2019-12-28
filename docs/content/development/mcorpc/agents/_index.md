@@ -6,7 +6,7 @@ weight = 20
 MCollective RPC works because it makes a lot of assumptions about how you write agents, we'll try to capture those assumptions here and show you how to apply them to our Echo agent.
 
 {{% notice warning %}}
-This section of the documentation have recently been migrated from the old mcollective documentation, we are still in the process of verifying every example works in modern mcollective.  If you find any issues please get in touch.
+This section of the documentation has recently been migrated from the old mcollective documentation, we are still in the process of verifying every example works in modern mcollective.  If you find any issues please get in touch.
 {{% /notice %}}
 
 ## Conventions regarding Incoming Data
@@ -137,7 +137,7 @@ end
 
 As you see from the echo example our input is easy to get to by just looking in *request*, this would be a Hash of exactly what was sent in by the client in the original request.
 
-The request object is in instance of *MCollective::RPC::Request*, you can also gain access to the following:
+The request object is an instance of *MCollective::RPC::Request*, you can also gain access to the following:
 
 |Property|Description|
 |--------|-----------|
@@ -375,7 +375,7 @@ You can in theory send off new messages over the connector maybe for auditing or
 
 Called at the end of processing just before the response gets sent to the middleware.
 
-This gets run outside of the main exception handling block of the agent so you should handle any exceptions you could raise yourself.  The reason  it is outside of the block is so you'll have access to even status codes set by the exception handlers.  If you do raise an exception it will just be passed onto the runner and processing will fail.
+This gets run outside of the main exception handling block of the agent so you should handle any exceptions you could raise yourself.  The reason it is outside of the block is so you'll have access to even status codes set by the exception handlers.  If you do raise an exception it will just be passed onto the runner and processing will fail.
 
 ## Agent Configuration
 

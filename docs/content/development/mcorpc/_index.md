@@ -20,7 +20,7 @@ It provides the following:
 We've provided full tutorials on [Writing RPC Clients](clients/) and [Agents](agents/). Numerous full featured examples can be found in our [GitHub Project dedicated to plugins](https://github.com/choria-plugins).
 
 
-A bit of code probably says more than lots of English, so here's a simple hello world Agent, it just echo's back everything you send it in the _:msg_ argument:
+A bit of code probably says more than lots of English, so here's a simple hello world Agent, it just echoes back everything you send it in the _:msg_ argument:
 
 ```ruby
 module MCollective

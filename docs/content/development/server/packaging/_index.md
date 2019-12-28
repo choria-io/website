@@ -7,7 +7,7 @@ The packaging used to build the open source Choria builds can also be used to bu
 
 ## Build Specification
 
-Every Choria build needs a build specification, below we'll show one that build a custom Choria called acme-choria with custom paths and settings. This file goes into `packager/buildspec.yaml`.
+Every Choria build needs a build specification, below we'll show one that builds a custom Choria called acme-choria with custom paths and settings. This file goes into `packager/buildspec.yaml`.
 
 ```yaml
 ---
@@ -97,7 +97,7 @@ acme:
 
 ## Additional Plugins
 
-If you have any plugins to include in the resulting build you create `packaging/user_plugins.yaml`, in this example we link in a the [Choria Provisioning Agent](https://github.com/choria-io/provisioning-agent).
+If you have any plugins to include in the resulting build you create `packaging/user_plugins.yaml`, in this example we link in the [Choria Provisioning Agent](https://github.com/choria-io/provisioning-agent).
 
 ```yaml
 ---
@@ -118,7 +118,7 @@ There are a few variables you can use to adjust things for what packages to buil
 |BUILD|Which build to execute, here we need to run the *acme* build|
 |PACKAGES|Which packages to build, we'd need to say we want the *el7_64* and the *bionic_64*|
 
-So to build full set of packages and binaries we do:
+So to build a full set of packages and binaries we do:
 
 ```bash
 $ VERSION=1.2.3-acme BUILD=acme PACKAGES=el7_64,bionic_64 rake build
@@ -130,7 +130,7 @@ Or just the binaries
 $ VERSION=1.2.3-acme BUILD=acme rake build
 ```
 
-In my build where I fetch my own agents and add additional bits and rename the packages I use the Rakefile below to drive this process, it's a bit messy and inevitably yours will look differently.
+In my build where I fetch my own agents and add additional bits and rename the packages I use the Rakefile below to drive this process, it's a bit messy and inevitably yours will look different.
 
 ```ruby
 require "tmpdir"

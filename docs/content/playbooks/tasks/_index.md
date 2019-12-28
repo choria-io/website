@@ -78,7 +78,7 @@ An assertion like `summary.resources.failed_to_restart=0` against the `puppet.la
 
 You can create even more complex assertions like `applying=false and enabled=true and daemon_present=true` should you want to do complex matches.
 
-Full details about the JGrep assertion language can be found on it's site [jgrep.org](http://jgrep.org/).
+Full details about the JGrep assertion language can be found on its site [jgrep.org](http://jgrep.org/).
 
 On the CLI you can test these queries:
 

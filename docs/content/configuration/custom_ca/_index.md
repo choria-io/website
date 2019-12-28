@@ -6,7 +6,7 @@ weight = 270
 
 While Choria is configured by default to use the Puppet CA the system does support custom Certificate Authorities including intermediaries.  You can use any software to produce these certificates as long as they make compliant x509 certificates.
 
-This section will guide you through the creation of a layered CA setup for a Choria network using the [Cloudflare's PKI toolkit](https://cfssl.org/).
+This section will guide you through the creation of a layered CA setup for a Choria network using [Cloudflare's PKI toolkit](https://cfssl.org/).
 
 {{% notice tip %}}
 This is support from Choria Server 0.9.0 and the the mcollective-choria module version 0.12.1
@@ -16,8 +16,8 @@ This is support from Choria Server 0.9.0 and the the mcollective-choria module v
 
 This guide will cover the following:
 
- * Creating a *Example Root CA* that is used to sign a per datacentre intermediate CA
- * Creating a *London CA* and a *New York CA* that issues certificates in each datacentre
+ * Creating an *Example Root CA* that is used to sign a per datacentre intermediate CA
+ * Creating a *London CA* and a *New York CA* that issue certificates in each datacentre
  * Create user certificates in each datacentre and configure Choria CLI
  * Configure individual servers in each datacentre
 
@@ -35,7 +35,7 @@ What this guide will not cover:
 
 ## Root Certificate Authority
 
-In PKI the Root CA is your main CA that you generally keep offline on something like a USB stick or encrypted somewhere.  You use it to generate new Intermediate Certificate Authorities - in our example each data center is a Intermediate CA.  It is very important that you protect this secret.  If it's compromised,  your entire chain of trust will be broken.  An intermediate CA will help reduce the scope of the damage.
+In PKI the Root CA is your main CA that you generally keep offline on something like a USB stick or encrypted somewhere.  You use it to generate new Intermediate Certificate Authorities - in our example each data center is an Intermediate CA.  It is very important that you protect this secret.  If it's compromised,  your entire chain of trust will be broken.  An intermediate CA will help reduce the scope of the damage.
 
 The data center then deploys a Certificate Authority bundle that declares the chain of trust and states which Certificate Authorities are to be trusted by a particular node.
 
@@ -46,7 +46,7 @@ Here we will create our Root Certificate Authority using CFSSL, this involves a 
 
 ### Initialize the CA
 
-CFSSL works by reading JSON files that represents the certificate requests etc, lets create one describing our Root CA:
+CFSSL works by reading JSON files that represent the certificate requests etc, let's create one describing our Root CA:
 
 Create `csr_root.json`:
 
@@ -83,7 +83,7 @@ You should see files `root_ca.csr`(certificate signing request), `root_ca.pem`(p
 
 ### Signing Policy
 
-We need to state what the policy this CA will follow when signing new Certificate Authorities, this we will do using the file `intermediate_ca_signing.json`:
+We need to state the policy this CA will follow when signing new Certificate Authorities, this we will do using the file `intermediate_ca_signing.json`:
 
 ```json
 {
@@ -111,7 +111,7 @@ The *ca_constraint* key is to prevent the intermediate certificate from being ab
 
 ## London Intermediate CA
 
-Each DC will need to generate a CSR that will be processed by the Root CA.  This signing process creates a chain of trust from the client and server certificates, combined with the intermediate CA, to the root CA.  As mentioned with the root CA private key, the intermediate CA private keys should be protected to the policies of your organization has for any important PKI infrastructure(ie offline if possible, encrypted if not).
+Each DC will need to generate a CSR that will be processed by the Root CA.  This signing process creates a chain of trust from the client and server certificates, combined with the intermediate CA, to the root CA.  As mentioned with the root CA private key, the intermediate CA private keys should be protected to the policies that your organization has for any important PKI infrastructure (ie offline if possible, encrypted if not).
 
 We'll do the following:
 
@@ -124,7 +124,7 @@ I will show how to do this for London, you can just repeat this process for othe
 
 ### Create the London CA
 
-Lets create `london_ca_csr.json`:
+Let's create `london_ca_csr.json`:
 
 ```json
 {
@@ -147,7 +147,7 @@ Lets create `london_ca_csr.json`:
 }
 ```
 
-Here we are describing the signing request for the London CA that has a validity of 10 years.  Lets create the key and x509 csr:
+Here we are describing the signing request for the London CA that has a validity of 10 years.  Let's create the key and x509 csr:
 
 ```
 cfssl gencert -initca london_ca_csr.json | cfssljson -bare london_ca
@@ -224,7 +224,7 @@ The [Choria Server Provisioner](https://github.com/choria-io/provisioning-agent)
 
 #### Creating the CSR
 
-Every node will need a certificate matching its _fqdn_, lets create the CSR for the server, first the JSON request in `/etc/choria/ssl/csr.json`:
+Every node will need a certificate matching its _fqdn_, let's create the CSR for the server, first the JSON request in `/etc/choria/ssl/csr.json`:
 
 ```json
 {
@@ -276,7 +276,7 @@ plugin.security.file.cache = /etc/choria/ssl/cache
 
 ## User Certificates
 
-Just as nodes need to be able to identify their identities so should every distinct user who access Choria.  To enroll a user we need more or less the same things as the node needed above:
+Just as nodes need to be able to identify their identities so should every distinct user who accesses Choria.  To enroll a user we need more or less the same things as the node needed above:
 
  * Creating the private key and CSR
  * Signing it in the data center CA
@@ -326,7 +326,7 @@ You should also grab the `bundle.pem` and place this in `/home/alice/.choria.d/s
 
 ### Validating chain of trust
 
-The `openssl` command can by used to validate the chain of trust.  For the above example:
+The `openssl` command can be used to validate the chain of trust.  For the above example:
 
 ```bash
 openssl verify -CAfile bundle.pem certificate.pem

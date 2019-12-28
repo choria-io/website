@@ -13,7 +13,7 @@ Using Choria an Open Source Puppet user can be up and running with a scalable, c
 
 The Choria Project safe guards the investment users have made in The Marionette Collective through a compatibility framework capable of running mcollective agents.
 
-Review the [Key Concepts](../concepts) section to discover what you can do with Choria, it's Architecture and detailed overview of the project.
+Review the [Key Concepts](../concepts) section to discover what you can do with Choria, its architecture and detailed overview of the project.
 
 If you just wish to get your hands dirty and experience Choria first-hand please see our [Vagrant Demo](https://github.com/choria-io/vagrant-demo).
 

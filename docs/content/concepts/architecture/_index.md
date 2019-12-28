@@ -7,7 +7,7 @@ icon = "<b>1. </b>"
 
 ## The Choria Components
 
-Choria is a client-server model system. A **Server** expose a set of APIs that allow clients to manage the server - think install a package, get the status of a service or trigger a Puppet run. A **Client** instructs one or 10s of thousands of servers to perform one of the actions that they expose via their API.
+Choria is a client-server model system. A **Server** exposes a set of APIs that allow clients to manage the server - think install a package, get the status of a service or trigger a Puppet run. A **Client** instructs one or 10s of thousands of servers to perform one of the actions that they expose via their API.
 
 The architecture of Choria is based around three main components: servers, clients, and the middleware broker.
 
@@ -21,7 +21,7 @@ These servers primarily host **Agents** that make up the APIs that the server ex
 
 Each agent has a number of **Actions**, imagine an agent dedicated to package management might have *install*, *update*, *remove* and *status*.  These are all **Actions**.
 
-Each Choria Server has a unique SSL certificate, typically - and by default - it uses the ones Puppet create and manage as part of its life cycle.
+Each Choria Server has a unique SSL certificate, typically - and by default - it uses the ones Puppet creates and manages as part of its life cycle.
 
 Nodes perform Authentication Authorization and Auditing on every request.
 
@@ -31,7 +31,7 @@ Servers do not need additional open ports, nothing will listen for connections, 
 
 A Choria Client is any piece of software that can request servers perform some action. Typically you will interact with Choria using the *mco* CLI tool but there is also a rich API allowing you to write automated systems in Ruby or Golang.
 
-Each client has it's own unique SSL certificate, typically signed by your Puppet CA.
+Each client has its own unique SSL certificate, typically signed by your Puppet CA.
 
 We have a generic client called *mco rpc* that constructs a user interface dynamically using the introspection abilities exposed from Choria, but one might also write custom clients - often called *applications* - to create custom user interfaces when the auto generated one is not suited.
 

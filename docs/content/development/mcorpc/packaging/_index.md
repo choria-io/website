@@ -4,7 +4,7 @@ toc = true
 weight = 60
 +++
 
-MCollective have many plugins, the most common ones are _agents_.
+MCollective has many plugins, the most common ones are _agents_.
 
 In the past packaging was done via RPM or Deb packages, this was extremely limited requiring extra work to make configuration modules and of course only worked on those operating systems.
 
@@ -38,7 +38,7 @@ Use this to add additional files like functions, tasks and plans into your modul
 
 ## Plugin Configuration
 
-Many MCollective plugins have extensive configuration, some times Server and Client side.
+Many MCollective plugins have extensive configuration, sometimes Server and Client side.
 
 The _choria-mcollective_ module lets you configure any setting in any plugin via _Hiera_ data, here's an example of configuring the Puppet one:
 

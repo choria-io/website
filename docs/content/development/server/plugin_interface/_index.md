@@ -22,7 +22,7 @@ type Pluggable interface {
 }
 ```
 
-And you need a function your package thar produce an instance of the above interface:
+And you need a function in your package that produces an instance of the above interface:
 
 ```go
 func ChoriaPlugin() plugin.Pluggable

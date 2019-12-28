@@ -14,11 +14,11 @@ In the past there was no choice but to run such a single distributed Middleware 
 
 Below you can see an overview of a Federation of Collectives.  The locations *london*, *tokyo* and *new york* are completely standalone and isolated from a Middleware Perspective.
 
-The central Middleware act as a management location where all the Collectives are Federated into one.  The Collectives can not communicate with each other but the Federation can communicate with them all thus creating a safe way to manage Development and Production without exposing Production to Development.
+The central Middleware acts as a management location where all the Collectives are Federated into one.  The Collectives can not communicate with each other but the Federation can communicate with them all thus creating a safe way to manage Development and Production without exposing Production to Development.
 
 ![Federation of Collectives](../choria_federation.png)
 
-The Federation Brokers are a share-nothing architecture. They are completely stateless and scales horizontally and vertically.
+The Federation Brokers are a share-nothing architecture. They are completely stateless and scale horizontally and vertically.
 
 ## Benefits
 

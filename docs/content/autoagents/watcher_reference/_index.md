@@ -36,13 +36,13 @@ The *file* watcher observes a specific file for changes and presence. Today only
 
 ### Behavior
 
-A file watcher will at *interval* times do a *mtime* check on the file.
+A file watcher will at *interval* times do an *mtime* check on the file.
 
 If the file is missing a *fail_transition* event fires and an announcement is made.
 
 If the file has changed since the previous run a *success_transition* event fires and an announcement is made. This means the first check would set the initial state after which changes are detected.  You could by setting *gather_initial_state* have the system gather initial file state on startup so the first regular watch would detect a change.
 
-If the file have not changed nothing is published on every check, however a regular state announce can be done by setting *announce_interval*.
+If the file has not changed nothing is published on every check, however a regular state announce can be done by setting *announce_interval*.
 
 ## Exec watcher
 
@@ -106,4 +106,4 @@ The schedules specified is a list of times when the scheduler will be in success
 
 The scheduler above will switch on daily at 8am, 12pm and 5pm but also at 8pm on Saturdays and Sundays.  It will stay on for a hour.
 
-If the machine transitions into a eligable *state_match* while a schedule is started it will immediately fire the *success_transition*.  If Choria starts up in the middle of a scheduled period it will be ignored and the next schedule will trigger.  Overlapping schedules is supported.
+If the machine transitions into an eligible *state_match* while a schedule is started it will immediately fire the *success_transition*.  If Choria starts up in the middle of a scheduled period it will be ignored and the next schedule will trigger.  Overlapping schedules is supported.
