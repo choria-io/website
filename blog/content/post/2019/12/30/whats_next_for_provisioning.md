@@ -101,6 +101,7 @@ As I said this is step one in a long road, short term we'll:
  * Perhaps rename some of the keys in the JWT to be more spec compliant
  * Give the `choria/choria` module the ability to not manage `server.conf` so you can install plugins etc with Puppet but handle core config with provisioner
  * Hand in hand with the above change `choria/choria` will allow placing the JWT on the nodes
+ * Embed Open Policy Agent into the Server Provisioner to add arbitrary control around the provisioning process
 
 Longer term:
 
@@ -110,7 +111,8 @@ Longer term:
   * Choria AAA Service to give users access to the network managed in this manner
   * Dashboards for Provisioning, AAA and Lifecycle event Tallys
   * A shell for interacting with the fleet using the `mco login` flow
-  * Move some of the Ruby agents into the binary
-  * Deliver all the rest of the Ruby agents as part of the RubyGem
+* Move some of the Ruby agents into the binary
+* Deliver all the rest of the Ruby agents as part of the RubyGem
+
 
 Once we have these ticked off basically you'll have a Puppet free setup.
