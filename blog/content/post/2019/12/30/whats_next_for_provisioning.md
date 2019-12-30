@@ -94,7 +94,7 @@ JWT Token provisioning.jwt
 
 If you have previously created your own provisioning agent, custom builds or used the `buildsettings.yaml` to compile these options into your Choria Server this will continue to function. But this gives a smaller touch way to enable this.
 
-## Next Steps
+## Next Steps
 
 As I said this is step one in a long road, short term we'll:
 
