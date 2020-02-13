@@ -15,7 +15,7 @@ First we'll publish a generated configuration reference in [CONFIGURATION.md](ht
 
 As of the upcoming version of Choria Server you'll be able to query the CLI for any setting using regular expressions. The list will show descriptions, data types, validation rules, default values, deprecation hints and URLs to additional information.
 
-![choria tool config](cli.png)
+![choria tool config](/blog/post/2020/02/13/configuration/cli.png)
 
 And get a list:
 
