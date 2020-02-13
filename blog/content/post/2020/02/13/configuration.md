@@ -15,37 +15,7 @@ First we'll publish a generated configuration reference in [CONFIGURATION.md](ht
 
 As of the upcoming version of Choria Server you'll be able to query the CLI for any setting using regular expressions. The list will show descriptions, data types, validation rules, default values, deprecation hints and URLs to additional information.
 
-```nohighlight
-$ choria tool config security
-Configuration item: plugin.choria.security.certname_whitelist
-
-║    Data Type: comma_split
-║      Default: \.mcollective$,\.choria$
-║
-║ Patterns of certificate names that are allowed to be clients
-╙─
-
-Configuration item: plugin.choria.security.serializer
-
-║   Deprecated: yes
-║    Data Type: string
-║   Validation: enum=json,yaml
-║      Default: json
-║
-║ Undocumented
-╙─
-
-Configuration item: plugin.security.pkcs11.slot
-
-║         URL: https://choria.io/blog/post/2019/09/09/pkcs11/
-║    Data Type: integer
-║
-║ When using the pkcs11 security provider, the slot to use in the
-║ device
-╙─
-
-....
-```
+![choria tool config](cli.png)
 
 And get a list:
 
