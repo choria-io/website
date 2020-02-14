@@ -1,6 +1,6 @@
 ---
 title: "Rego policies for Choria Server"
-date: 2020-01-12T09:00:00+07:00
+date: 2020-02-14T09:00:00+07:00
 tags: ["security", "opa", "rego", "actionpolicy"]
 draft: true
 ---
@@ -66,6 +66,7 @@ Within the policy, the following fields are present as input:
 
 This capability has been released with in [v0.13.1](https://github.com/choria-io/go-choria/releases/tag/v0.13.1), however it is still experimental.  There are [additional capabilities of Open Policy Agent](https://www.openpolicyagent.org/docs/latest/external-data/) which we have not enabled as of this writing.
 
-If you're using the puppet modules to deploy choria and mcollective, you'll soon be able to specify the [`rego_policy_source`](https://github.com/choria-io/puppet-mcollective/blob/e82bd050ba4586089ac7091bb4b658a2bc4805b9/manifests/module_plugin.pp#L95) parameter to deploy a a managed policy file, on a per-agent basis.
+Additionally, if you're using the puppet modules to deploy choria and mcollective, as of [v0.10.3](https://forge.puppet.com/choria/mcollective/readme) you can specify [`rego_policy_source`](https://github.com/choria-io/puppet-mcollective/blob/e82bd050ba4586089ac7091bb4b658a2bc4805b9/manifests/module_plugin.pp#L95) parameter to deploy a a managed policy file, on a per-agent basis.  A default rego policy is included to ensure that default-deny semantics are shipped, for a secure by default posture.
 
 To enable rego policy processing, you set the `rpcauthprovider` to `rego_policy`.  During development of policies, you can either change the `loglevel` to `debug`, or set the `plugin.regopolicy.tracing` configuration value to `true`.  This will provide enhanced information about policies and evaluations in the logs.
+
