@@ -2,7 +2,8 @@
 title: "Rego policies for Choria Server"
 date: 2020-02-14T09:00:00+07:00
 tags: ["security", "opa", "rego", "actionpolicy"]
-draft: true
+draft: false
+author: Vincent Janelle
 ---
 
 [Open Policy Agent](https://www.openpolicyagent.org/) is a CNCF incubating project that allow you to define Policy as code. It's widely used in various projects like Istio, Kubernetes and more.
