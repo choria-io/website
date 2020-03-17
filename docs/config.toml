@@ -4,6 +4,9 @@ theme = "hugo-theme-learn"
 title = "Choria Orchestrator"
 googleAnalytics = "UA-10152852-12"
 
+[markup.goldmark.renderer]
+  unsafe= true
+
 [outputs]
   home = [ "HTML", "RSS", "JSON"]
 

@@ -5,6 +5,9 @@ theme = "beautifulhugo"
 googleAnalytics = "UA-10152852-12"
 disqusShortname = "choria-io"
 
+[markup.goldmark.renderer]
+   unsafe= true
+
 [Params]
   homeTitle = "Choria Blog"
   subtitle = "Adventures in large scale orchestration"
