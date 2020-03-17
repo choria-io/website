@@ -127,4 +127,4 @@ Consuming and graphing these can provide valuable insight into the flows and per
 
 ## Conclusion
 
-This brings us to the end of Part 2 in our series, we've seen the significant patterns of message flows NATS support and had a quick tour of security, observability and more.  Tomorrow we'll look at some code and design a basic system using some of these techniques.
+This brings us to the end of Part 2 in our series, we've seen the significant patterns of message flows NATS support and had a quick tour of security, observability and more.  Tomorrow we'll interact with NATS using its CLI tools and explore these patterns interactively.
