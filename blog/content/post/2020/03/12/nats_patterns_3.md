@@ -47,12 +47,17 @@ To do the following demos you will need a few shells running, I suggest using `t
 
 A refresher that Pub/Sub is the pattern where one Producer publish a message, and all consumers receive it, this is the most basic pattern in NATS.
 
+![](/blog/mom/pub-sub.png)
+
 <script id="asciicast-8V8PZvhZYnBI8e3xo2Xc3eBbC" src="https://asciinema.org/a/8V8PZvhZYnBI8e3xo2Xc3eBbC.js?autoplay=0&size=small" async></script>
 
 Here, using the `nats` utility, we did a basic Subscribe on multiple consumers and Published a message to them all.  Things to note:
 
  * The Producer has no idea how many listeners there are, it has to do no additional work to scale to more consumers
  * The Consumers can scale and change their subscribe patterns and get only the messages that they specifically care for
+ * We do not need to think in terms of addresses, we think about the type of message and conventions for where they live
+ * Our Producer do not need to keep state of who its subsribers are like webhook based systems, this is all outsourced to the Middleware
+ * The entire architecture is decoupled and non prescriptive
 
 In Go this would be quite simple to do:
 
@@ -75,6 +80,8 @@ nc.Publish("demo.hello", []byte{"hello world"})
 
 We know how to deliver a message to all consumers; let's see about making a queue group that allows us to share our workload in a cluster.
 
+![](/blog/mom/queue-grp.png)
+
 <script id="asciicast-Bycsu10BItgEMuwlv89aQX0vJ" src="https://asciinema.org/a/Bycsu10BItgEMuwlv89aQX0vJ.js?autoplay=0&size=small" async></script>
 
 Here we demonstrated the creation of a queue group `grp1` but also how the queued mode and the normal Pub/Sub mode can co-habit, but also that the Message Producer requires no change from our previous demo.
@@ -93,6 +100,8 @@ nc.QueueSubscribe("demo.hello", "grp1", func(m *nats.Msg) {
 ### Requests expecting a Reply
 
 Next, we explore a service, still using the NATS CLI to set up a Highly Available and Load Shared service that responds to service requests, in less than 1 minute :-)
+
+![](/blog/mom/weather-service.png)
 
 <script id="asciicast-3ZGdZCz4AGJ0mW2IRxhOqV1Sf" src="https://asciinema.org/a/3ZGdZCz4AGJ0mW2IRxhOqV1Sf.js?autoplay=0&size=small" async></script>
 

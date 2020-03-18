@@ -50,7 +50,7 @@ Where possible the behaviour between the Producer and the Consumer is decoupled 
 
 Pub/Sub messages aka a Stream in NATS Core terminology is a unidirectional flow of messages out of a Producer to any number of Consumers. Every Consumer who subscribes to the subject gets a copy of the messages; typically, there are no replies from the recipients back to the Producer.
 
-![](pub-sub.png)
+![](/blog/mom/pub-sub.png)
 
 A key point here is that the Producer does not know how these messages are consumed. The Producer decides to publish messages on a subject like `STOCK.NASDAQ.AAPL` and 1 or many subscribers get the messages.
 
@@ -60,7 +60,7 @@ This pattern is suitable when implementing the observer pattern, any consumer wh
 
 The previous pattern had every consumer receiving every message, this is fine for many kinds of use cases, but if you wanted to process these messages in a scalable manner, you might want to run your service over multiple instances and have each message consumed by one instance in the cluster of services.
 
-![](queue-grp.png)
+![](/blog/mom/queue-grp.png)
 
 Here we demonstrate that a group of Consumers agree on a group name - _grp1_ - and use that when subscribing to the subject.  The NATS Server delivers the messages to the consumers in a round-robin manner, each receiving one of the messages.
 
@@ -70,7 +70,7 @@ It's important to note that the choice to receive the messages in a Pub/Sub mann
 
 The final pattern allows one to implement an interactive service. The Client becomes a Consumer on a temporary subject like *_INBOX.XXX* and Produce a message to the Service on *WEATHER.SERVICE*. The Produced message have a _reply-to_ set asking the Service to send the result to *_INBOX.XXX*.  The Service parses the request and sends the reply to the Client. The Client unsubscribes from the INBOX.
 
-![](weather-service.png)
+![](/blog/mom/weather-service.png)
 
 Here the Client has to know this is the pattern to use and has to do some setup.
 
@@ -105,7 +105,7 @@ Managing the security between the various roles isn't done in your code, it's a 
 
 In the case of the Request/Reply Service pattern, when using multiple accounts, a service can be set to have observability traces published about the flows of messages.
 
-![](latency.png)
+![](/blog/mom/latency.png)
 
 Here 4 latency dimensions are tracked, latency samples are published to NATS and look like this:
 

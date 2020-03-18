@@ -19,7 +19,7 @@ Today the prevailing architecture of choice is HTTP based, and it's demonstrably
  
 In a Serverless and Microservices architecture, we rely on API Gateways and Service Meshes quite a lot. The primary purpose for these is to provide routing from client to server. All communication to services gets routed via this layer.
 
-![](service-mesh-overview.png)
+![](/blog/mom/service-mesh-overview.png)
 
 Here we have a (very) simplistic view of an HTTP based service in a modern Microservice architecture. 
 
@@ -38,7 +38,7 @@ There are many infrastructure components to manage here. You're constrained in y
 ### Middleware Based
 
 The alternative is to use messaging between your services, here rather than per-request connections that each need to be authenticated, authorized etc., we create long-running connections to a central service - that may or may not live in your Container Orchestrator - and use a naming convention for finding and accessing services. This single long-running (optionally) TLS connection is used for bi-directional traffic and can carry many Subjects of data concurrently.
-![](mom-overview.png) 
+![](/blog/mom/mom-overview.png) 
 
 The Middleware is purpose-built software that routes messages between named endpoints like `ORDERS.created` called Subjects and often supports wildcards like `ORDERS.*`. The analogue to an HTTP request that expects a response is to set up a short-lived subscription called in INBOX and send a message to `ORDERS.create` asking it to send its reply to `_INBOX.xxxx` which is a unique subject. This communication happens over the single long-running TCP connection.
 
