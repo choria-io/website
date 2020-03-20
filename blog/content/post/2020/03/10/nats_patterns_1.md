@@ -5,9 +5,9 @@ tags: ["nats", "development", "architecture"]
 draft: false
 ---
 
-Back in 2011, I wrote a series of posts on [Common Messaging Patterns Using Stomp](https://www.devco.net/archives/2011/12/11/common-messaging-patterns-using-stomp.php); these posts were very popular, I figured it's time for a bit of refresh focusing on NATS - the Middleware Choria uses as it's messaging transport.
+Back in 2011, I wrote a series of posts on [Common Messaging Patterns Using Stomp](https://www.devco.net/archives/2011/12/11/common-messaging-patterns-using-stomp.php); these posts were very popular, I figured it's time for a bit of refresh focusing on [NATS](https://nats.io) - the Middleware Choria uses as it's messaging transport.
 
-Today there are 2 prevailing architectures in Microservices based infrastructure - HTTP based and Middleware based Microservices. I'll do a quick overview of the two patterns highlighting some of the pros and cons here; first, we look at the more familiar HTTP based and then move to Middleware based. In a follow-up post, we'll explore the Middleware communication patterns in detail and show some code.
+Today there are 2 prevailing architectures in Microservices based infrastructure - HTTP based and Middleware based Microservices. I'll do a quick overview of the two patterns highlighting some of the pros and cons here; first, we look at the more familiar HTTP based and then move to Middleware based. In follow-up posts, we'll explore the Middleware communication patterns in detail and show some code.
 
 Note though the context here is not to say one is better than the other or to convince you to pick a particular style, I am also not exhaustively comparing the systems - that would be impossible to do well.
 
@@ -58,7 +58,7 @@ I pointed out that the Service Meshes can be very resource hungry and made of ma
 
 Both these designs have definite pros and cons; I've tried to highlight some of those in the preceding sections. 
 
-I don't want to say which is better; I think right this instant HTTP based designs are the winner for Microservices architecture as they hold the mind share. 
+I don't want to say which is better; I think right this instant HTTP based designs are the winner, in terms of adoption, for Microservices architecture as they hold the mind share. 
 
 Middleware based is a different way of doing things, and your development teams might need to learn a bit more - but in my opinion in the bigger picture you're not going to spend less time learning weird new things with either of these systems and running an extensive network of either is hard work.
  
