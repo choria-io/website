@@ -84,9 +84,9 @@ We know how to deliver a message to all consumers; let's see about making a queu
 
 <script id="asciicast-Bycsu10BItgEMuwlv89aQX0vJ" src="https://asciinema.org/a/Bycsu10BItgEMuwlv89aQX0vJ.js?autoplay=0&size=small" async></script>
 
-Here we demonstrated the creation of a queue group `grp1` but also how the queued mode and the normal Pub/Sub mode can co-habit, but also that the Message Producer requires no change from our previous demo.
+Here we demonstrated the creation of a queue group `grp1` but also how the queued mode and the normal Pub/Sub mode can co-habit while the Message Producer requires no change from our previous demo.
 
-In Go our producer would be the same, here is a queue group consumer:
+In Go our Producer would be the same as in the previous example, here is a queue group Consumer:
 
 ```go
 // consumer

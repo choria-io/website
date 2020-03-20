@@ -22,11 +22,11 @@ So we'll look if we can build a log forwarder and receiver that meet these crite
 
 We'll use Go for this but the NATS ecosystem support over 30 languages today, you're spoiled for choice.
 
-![](/blog/mom/log-pipeline-overview.png)
-
 <!--more-->
 
-We'll start with a simple log tail and publishing tool. Tailing logs is quite a difficult problem, especially when you consider log rotations, restarts and more.  For a system like this, you'll need to remember the position you got to and continue on restart. We'll punt on some of this a bit and use an Open Source [Tail Library](https://godoc.org/github.com/hpcloud/tail) to build this; it does not have automatic continuation after restart so we'll skip that feature.
+We'll start with a simple log tail and publishing tool. Tailing logs is quite a difficult problem, especially when you consider log rotations, restarts and more.  For a system like this, you'll need to remember the position you got to and continue on restart. We'll punt on some of this a bit and use an Open Source [Tail Library](https://godoc.org/github.com/hpcloud/tail) to build this; it does not have automatic continuation after restart so we'll skip that feature. But that is ok as the focus is the NATS architecture.
+
+![](/blog/mom/log-pipeline-overview.png)
 
 On the NATS side, we'll publish to a configurable subject, we'll support reconnecting on disconnections and in general try to be resilient - but for sure more is needed than we'd implement. 
 
@@ -71,7 +71,7 @@ And finally, on the consumer we use a Go channel and `ChanSubscribe()` to put th
 
 Again we outsource the hard work of rotating logs and deleting old logs to a package, we could make more of this configurable, but we're staying focused on the NATS bits here.
  
-Below you'll see the whole program expanded with reading config from the environment and more. The source code seen here can be browsed directly on [GitHub @ripienaar fshipper](https://github.com/ripienaar/fshipper/tree/post4).
+Below you'll see the whole program expanded with reading config from the environment and more. The source code seen here can be browsed directly on [GitHub @ripienaar fshipper tag post4](https://github.com/ripienaar/fshipper/tree/post4).
 
 ## Getting Connected
 
