@@ -1,6 +1,6 @@
 ---
 title: "NATS Messaging - Part 1"
-date: 2020-03-10T09:00:00+01:00
+date: 2020-03-23T09:00:00+01:00
 tags: ["nats", "development", "architecture"]
 draft: false
 ---
@@ -23,7 +23,7 @@ In a Serverless and Microservices architecture, we rely on API Gateways and Serv
 
 Here we have a (very) simplistic view of an HTTP based service in a modern Microservice architecture. 
 
-Container Orchestrators like Kubernetes hosts and schedule Containers. Container Scheduling tasks creates events that a Discovery database, like Consul, consume to build a route map. These maps contain lists of containers belonging to a service and what - dynamically chosen - ports are listening on those containers. The API Gateway uses this information to create a routing table used to map incoming request to backend microservice. Proxy requests to the Microservice get initiated based on the route map entries.
+Container Orchestrators like Kubernetes hosts and schedule Containers. Container Scheduling tasks create events that a Discovery database, like Consul, consume to build a route map. These maps contain lists of containers belonging to a service and what - dynamically chosen - ports are listening on those containers. The API Gateway uses this information to create a routing table used to map incoming requests to backend microservice. Proxy requests to the Microservice get initiated based on the route map entries.
 
 Typically these API Gateways direct not just your external traffic but also your internal traffic. Here should the `Order Create` service need to communicate to the `Order Dispatch` service it would do so via the Gateway.
 
@@ -31,22 +31,23 @@ Some Service Mesh products are distributed services running as a side-cars to ea
 
 The Service Mesh takes care of addressing, rolling upgrades, metrics, tracing and more. Typically this is a big multi-component service that scales horizontally.
 
-Things get more complicated when you want to do Events to multiple recipients or implement observer Patterns; you have to make webhook registrations and make many HTTP requests or build long-running HTTP poll systems which start to resemble a Broker in many ways. HTTP/2 is efficient and reuse long-running connections. Still, there is a marked cost of creating and tearing down HTTPS connections.
+Things get more complicated when you want to do Events to multiple recipients or implement observer Patterns; you have to make webhook registrations and make many HTTP requests or build long-running HTTP poll systems which start to resemble a Broker in many ways. HTTP/2 is efficient and reuses long-running connections. Still, there is a marked cost of creating and tearing down HTTPS connections.
 
 There are many infrastructure components to manage here. You're constrained in your choices because the Service Mesh layer integrates with your Container Orchestrator, and this is a complicated service made up of many moving parts to manage. HTTP however is a widely adopted protocol supported by almost any language. You don't need a Service Mesh in development; they are more or less invisible to you, make HTTP calls as you've always done.
 
 ### Middleware Based
 
-The alternative is to use messaging between your services, here rather than per-request connections that each need to be authenticated, authorized etc., we create long-running connections to a central service - that may or may not live in your Container Orchestrator - and use a naming convention for finding and accessing services. This single long-running (optionally) TLS connection is used for bi-directional traffic and can carry many Subjects of data concurrently.
+The alternative is to use messaging between your services, here rather than per-request connections that each need to be authenticated, authorized etc., we create long-running connections to a central entity - that may or may not live in your Container Orchestrator - and use a naming convention for finding and accessing services. This single long-running (optionally) TLS connection is used for bi-directional traffic and can carry many subjects of data concurrently.
+
 ![](/blog/mom/mom-overview.png) 
 
 The Middleware is purpose-built software that routes messages between named endpoints like `ORDERS.created` called Subjects and often supports wildcards like `ORDERS.*`. The analogue to an HTTP request that expects a response is to set up a short-lived subscription called in INBOX and send a message to `ORDERS.create` asking it to send its reply to `_INBOX.xxxx` which is a unique subject. This communication happens over the single long-running TCP connection.
 
-NATS supports multi-tenancy, where each service (each uniquely coloured line) is a separate account that gets authenticated once. The accounts agree on definitions of what traffic can flow between them. If the `Order Create` service needs to communicate with the `Order Dispatch` service, this has to be agreed by both and only this traffic can flow.
+NATS supports multi-tenancy, where each service (each uniquely coloured line) is a separate account that gets authenticated once. The accounts agree on policies of what traffic can flow between them. If the `Order Create` service needs to communicate with the `Order Dispatch` service, this has to be agreed by both and only this traffic can flow.
 
 There is no service Discovery service, no Container Orchestrator integration; you're not coupled to a Container Orchestrator or even to a single cluster. Here the `Order Audit` service may or may not be in the same cluster, and it shows how a listen-only service can subscribe to all related traffic for an audit log - assuming other accounts agree to this.  
 
-Scaling any of the services is a matter of starting a new instance; nothing else has to be aware that this new instance started. The Middleware delivers traffic to the new instance as needed; new instances can run in the same cluster or remote clusters. Geographic inter-cluster failover happens automatically. However, since the Middleware does not integrate tightly with your platform, it does not get involved with things like phased upgrades of your services.
+Scaling any of the services is a matter of starting a new instance; nothing else has to be aware that this new instance started. The Middleware delivers traffic to the new instance as needed; new instances can run in the same cluster or remote clusters. Geographic intra-cluster failover happens automatically. However, since the Middleware does not integrate tightly with your platform, it does not get involved with things like phased upgrades of your services.
 
 This architecture is message orientated and supports 3 main patterns: a specific instance receiving a message in a 1:1 manner, round-robin load sharing within a service or 1:n broadcasts to all services who have interest in the data. This architecture is inherently well suited to evented systems and observer patterns - but as we'll see also a good fit for request/reply patterns along with the same design as HTTP requests. 
 
@@ -56,7 +57,7 @@ I pointed out that the Service Meshes can be very resource hungry and made of ma
 
 ## Conclusion
 
-Both these designs have definite pros and cons; I've tried to highlight some of those in the preceding sections. 
+Both of these designs have definite pros and cons; I've tried to highlight some of those in the preceding sections. 
 
 I don't want to say which is better; I think right this instant HTTP based designs are the winner, in terms of adoption, for Microservices architecture as they hold the mind share. 
 

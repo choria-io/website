@@ -1,18 +1,18 @@
 ---
 title: "NATS Messaging - Part 4"
-date: 2020-03-13T09:00:00+01:00
+date: 2020-03-26T09:00:00+01:00
 tags: ["nats", "development", "architecture"]
-draft: false
+draft: true
 ---
 
 Previously we used the `nats` utility to explore the various patterns of messaging in NATS, today we'll write a bit of code, and in the following few posts, we'll expand this code to show how to scale it up and make it resilient.
 
-We'll write a tool that tails a log file and publish it over NATS to a receiver that writes it to a file. The intent is that several nodes use this log file Publisher and a central node Consume and save the data to a file per Publisher with log rotation in the central node.
+We'll write a tool that tails a log file and publishes it over NATS to a receiver that writes it to a file. The intent is that several nodes use this log file Publisher and a central node consume and saves the data to a file per Publisher with log rotation in the central node.
 
 I should be clear that there are already solutions to this problem, I am not saying you should solve this problem by writing your own.  It's a good learning experience, though because it's quite challenging to do right in a reliable and scalable manner.
 
  * Producers can be all over the world in many locations
- * It's challenging to scale problem as you do not always control the rate of production and have an inherent chokepoint on the central receiver
+ * It's challenging to scale problem as you do not always control the rate of production and have an inherent choke point on the central receiver
  * You do not want to lose any logs, so we probably need persistence
  * Ordering matters, there's no point in getting your logs in random order
  * Scaling consumers horizontally while having order guarantees is difficult, additionally you need to control who writes to log files
@@ -20,7 +20,7 @@ I should be clear that there are already solutions to this problem, I am not say
 
 So we'll look if we can build a log forwarder and receiver that meet these criteria, in the process we'll explore the previous sections in depth.
 
-We'll use Go for this but the NATS ecosystem support over 30 languages today, you're spoiled for choice.
+We'll use Go for this but the NATS ecosystem supports almost 40 languages today, you're spoiled for choice.
 
 <!--more-->
 
@@ -40,7 +40,7 @@ The programs are configurable using environment variables, here’s a list of al
 
 |Environment|Description|Required|Example|
 |-----------|-----------|--------|-------|
-|NATS_URL   |Servers to connect to|yes|`nats://n1.my.new:4222,nats://n2.my.net:4222`|
+|NATS_URL   |Servers to connect to|yes|`nats://n1.my.new,nats://n2.my.net`|
 |NATS_CREDS |NATS 2.0 credentials to authenticate with||`/etc/fshipper/nats.creds`|
 |NATS_CERTIFICATE|Public certificate to use for TLS||`/etc/fshipper/cert.pem`|
 |NATS_KEY|Private key to use for TLS||`/etc/fshipper/key.pem`|
@@ -49,7 +49,7 @@ The programs are configurable using environment variables, here’s a list of al
 |SHIPPER_FILE|The file to publish/consume|yes|`/var/log/system.log`|
 |SHIPPER_OUTPUT|The file to write to|yes|`/var/log/remote/system.log` or `/var/log/remote/system.log.%Y%m%d`|
 
-Here the `SHIPPER_OUTPUT` takes a pattern and it will write log lines to that, it will rotate daily and keep a weeks worth (something to make configurable ideally).
+Here the `SHIPPER_OUTPUT` takes a pattern and it will write log lines to that, it will rotate daily and keep a week's worth (something to make configurable ideally).
 
 Here is a quick tour of the main parts of the programs we'll write.  The final code is more complicated than this, but these are the essential parts.
 
@@ -92,13 +92,13 @@ Let's look at the producer; this is a stand-alone application compiled into a si
 <br>
 {{< gist ripienaar ae20c4c72c87a83bd75a3fdf805ca929 >}}
 
-That's a basic starting block for shipping the file, every time this starts it reads the file and sends it's entire contents and then follows it forever - even through log rotations. It's not perfect, but it's a start, we don't want to get lost in details of file tailing here (remember, use an off the shelve tool for real).
+That's a basic starting block for shipping the file, every time this starts it reads the file and sends it's entire contents and then follows it forever - even through log rotations. It's not perfect, but it's a start, we don't want to get lost in details of file tailing here (remember, use an off the shelf tool for real).
 
 You can test this by running the binary using `SHIPPER_FILE=/var/log/system.log SHIPPER_SUBJECT="shipper" NATS_URL="localhost:4222" ./producer` and using `nats sub shipper` to verify it works.
 
 ## Consuming log lines
 
-Let's create a Consumer. We'll listen on a subject and write everything we receive directly to a file; the file rotates daily. The consumer is a bit more complicated there's a lot of setup and `^C` handling and so forth.
+Let's create a Consumer. We'll listen on a subject and write everything we receive directly to a file; the file rotates daily. The consumer is a bit more complicated; there's a lot of setup and `^C` handling and so forth.
 
 {{< gist ripienaar 2c63f4c92c7e4d4b02a77dff2621a513 >}}
 
@@ -113,6 +113,6 @@ So this is a very basic file Tail tool and a Consumer, it has several shortcomin
 
 So basically this is far from fit for purpose, but it does show we can publish data and receive it in a reasonably robust manner, and we can get our data to a central point.
 
-There is though one nice side effect here, we mentioned how it's suitable for a 1:1 Producer to Consumer meaning your files is stored in one place only. What isn't clear is that you could start the same Consumer on another node and it will get the whole log too automatically creating redundancy in storage without any file system level syncs. A great example of the freebie benefits from using middleware for this kind of system.
+There is one nice side effect here, we mentioned how it's suitable for a 1:1 Producer to Consumer meaning your files are stored in one place only. What isn't clear is that you could start the same Consumer on another node and it will get the whole log too automatically creating redundancy in storage without any file system level syncs. A great example of the freebie benefits from using middleware for this kind of system.
 
 Next posts we'll improve this to be better suited to our stated problem.
