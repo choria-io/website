@@ -1,11 +1,11 @@
 ---
 title: "NATS Messaging - Part 3"
-date: 2020-03-12T09:00:00+01:00
+date: 2020-03-25T09:00:00+01:00
 tags: ["nats", "development", "architecture"]
-draft: false
+draft: true
 ---
 
-In our previous posts, we did a thorough introduction to messaging patterns and why you might want to use them, today lets get our hands dirty by setting up a NATS Server and using it to demonstrate these patterns.
+In our previous posts, we did a thorough introduction to messaging patterns and why you might want to use them, today let's get our hands dirty by setting up a NATS Server and using it to demonstrate these patterns.
 
 ## Setting up
 
@@ -35,7 +35,7 @@ nats://localhost:4222:
        nats://[::1]:4222: 415.944µs
 ```
 
-Above shows all you need to have a NATS Server running in development and production use is not much more complex, to be honest, once it's running this can happily serve over 50 000 Choria nodes depending on your hardware (a $40 Linode would do)
+Above shows all you need to have a NATS Server running in development and production use is not much more complex, to be honest, once it's running this can happily serve over 50,000 Choria nodes depending on your hardware (a $40 Linode would do)
 
 <!--more-->
 
@@ -45,7 +45,7 @@ To do the following demos you will need a few shells running, I suggest using `t
 
 ### Basic Pub/Sub
 
-A refresher that Pub/Sub is the pattern where one Producer publish a message, and all consumers receive it, this is the most basic pattern in NATS.
+A refresher that Pub/Sub is the pattern where one Producer publishes a message, and all consumers receive it; this is the most basic pattern in NATS and foundational to all other patterns.
 
 ![](/blog/mom/pub-sub.png)
 
@@ -55,15 +55,15 @@ Here, using the `nats` utility, we did a basic Subscribe on multiple consumers a
 
  * The Producer has no idea how many listeners there are, it has to do no additional work to scale to more consumers
  * The Consumers can scale and change their subscribe patterns and get only the messages that they specifically care for
- * We do not need to think in terms of addresses, we think about the type of message and conventions for where they live
- * Our Producer do not need to keep state of who its subsribers are like webhook based systems, this is all outsourced to the Middleware
+ * We do not need to think in terms of hosts, ips, ports or DNS names, we think about the type of message and conventions for where they live
+ * Our Producer does not need to keep state of who its subscribers are like webhook based systems, this is all outsourced to the Middleware
  * The entire architecture is decoupled and non prescriptive
 
 In Go this would be quite simple to do:
 
 ```go
 // consumer
-nc, _ := nats.Connect("localhost:4222")
+nc, _ := nats.Connect("localhost")
 
 nc.Subscribe("demo.hello", func(m *nats.Msg) {
     fmt.Prinf("Received a message: %s\n", string(m.Data))
@@ -72,7 +72,7 @@ nc.Subscribe("demo.hello", func(m *nats.Msg) {
 
 ```go
 // producer
-nc, _ := nats.Connect("localhost:4222")
+nc, _ := nats.Connect("localhost")
 nc.Publish("demo.hello", []byte{"hello world"})
 ```
 
@@ -84,13 +84,13 @@ We know how to deliver a message to all consumers; let's see about making a queu
 
 <script id="asciicast-Bycsu10BItgEMuwlv89aQX0vJ" src="https://asciinema.org/a/Bycsu10BItgEMuwlv89aQX0vJ.js?autoplay=0&size=small" async></script>
 
-Here we demonstrated the creation of a queue group `grp1` but also how the queued mode and the normal Pub/Sub mode can co-habit while the Message Producer requires no change from our previous demo.
+Here we demonstrated the creation of a queue group `grp1` but also how the queued mode and the normal Pub/Sub mode can co-habitate while the Message Producer requires no change from our previous demo.
 
 In Go our Producer would be the same as in the previous example, here is a queue group Consumer:
 
 ```go
 // consumer
-nc, _ := nats.Connect("localhost:4222")
+nc, _ := nats.Connect("localhost")
 
 nc.QueueSubscribe("demo.hello", "grp1", func(m *nats.Msg) {
     fmt.Prinf("Received a message: %s\n", string(m.Data))
@@ -108,7 +108,7 @@ Next, we explore a service, still using the NATS CLI to set up a Highly Availabl
 That was really easy and the code is not much harder, first the Service:
 
 ```go
-nc, _ := nats.Connect("localhost:4222")
+nc, _ := nats.Connect("localhost")
 
 nc.QueueSubscribe("demo.service", "grp1", func(m *nats.Msg) {
     m.Respond("hello world")
@@ -118,7 +118,7 @@ nc.QueueSubscribe("demo.service", "grp1", func(m *nats.Msg) {
 And now the Client:
 
 ```go
-nc, _ := nats.Connect("localhost:4222")
+nc, _ := nats.Connect("localhost")
 
 // we wait up to 1 second for the reply after sending 'hello'
 msg, _ := nc.Request("demo.service", []byte("hello"), time.Second)
@@ -126,10 +126,10 @@ msg, _ := nc.Request("demo.service", []byte("hello"), time.Second)
 
 That's all there is to it. 
 
-This basic pattern allows you to achieve horizontal scalable, highly available services with automatic failover between regions in a network-distance aware way and as we'll see get observability for your service performance for free.
+This basic pattern allows you to achieve horizontally scalable, highly available services with automatic failover between regions in a network-distance aware way and as we'll see we also get observability for your service performance for free.
 
 ## Conclusion
 
-Today we used the `nats` CLI tool to interact with a real running NATS Server and saw that sharing information between processes and setting up quite complicated patterns allowing for full HA, Failover and horizontally scalability was effortless.  
+Today we used the `nats` CLI tool to interact with a real running NATS Server and saw that sharing information between processes and setting up quite complicated patterns allowing for full HA, Geo aware Failover and horizontally scalability was effortless.  
 
 Next we'll look at more complicated scenarios and more code.
