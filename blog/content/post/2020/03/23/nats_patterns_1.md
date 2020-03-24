@@ -13,6 +13,11 @@ Note though the context here is not to say one is better than the other or to co
 
 Today the prevailing architecture of choice is HTTP based, and it's demonstrably a very good and very scalable choice. I want to focus on using Middleware to achieve similar outcomes and what other problems they can solve and how - the aim is to share information and not to start a product/architecture comparison debate.  
 
+## Series Index
+
+ * [Series introduction](https://master.choria.io/blog/post/2020/03/23/nats_patterns_1/)
+ * [Description of the major messaging patterns supported by NATS](https://master.choria.io/blog/post/2020/03/24/nats_patterns_2/)
+
 <!--more-->
 
 ### HTTP Based
