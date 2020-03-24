@@ -5,7 +5,7 @@ tags: ["nats", "development", "architecture"]
 draft: false
 ---
 
-Yesterday we did a light compare between HTTP and Middleware based architectures for Microservices. Today we'll start focusing on Middleware based architectures and show some detail about the why's and the patterns available to developers.
+Yesterday, in [our previous post](https://choria.io/blog/post/2020/03/23/nats_patterns_1/), we did a light compare between HTTP and Middleware based architectures for Microservices. Today we'll start focusing on Middleware based architectures and show some detail about the why's and the patterns available to developers.
 
 ## Why Middleware Based
 
