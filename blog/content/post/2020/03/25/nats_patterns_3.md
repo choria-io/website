@@ -5,7 +5,7 @@ tags: ["nats", "development", "architecture"]
 draft: false
 ---
 
-In our previous posts, we did a thorough introduction to messaging patterns and why you might want to use them, today let's get our hands dirty by setting up a NATS Server and using it to demonstrate these patterns.
+In our [previous posts](https://choria.io/blog/post/2020/03/23/nats_patterns_1/), we did a thorough introduction to messaging patterns and why you might want to use them, today let's get our hands dirty by setting up a NATS Server and using it to demonstrate these patterns.
 
 ## Setting up
 
@@ -73,7 +73,7 @@ nc.Subscribe("demo.hello", func(m *nats.Msg) {
 ```go
 // producer
 nc, _ := nats.Connect("localhost")
-nc.Publish("demo.hello", []byte{"hello world"})
+nc.Publish("demo.hello", []byte("hello world"))
 ```
 
 ### Horizontally scaled Streams
