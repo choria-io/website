@@ -33,6 +33,7 @@ Communication from the Choria Server to your agent is done via files on disk and
 |CHORIA_EXTERNAL_CONFIG|The path to the configuration file specific to this agent in the `plugin.d` directory|
 |CHORIA_EXTERNAL_REPLY|The path where your agent should write JSON reply data|
 |CHORIA_EXTERNAL_PROTOCOL|Indicating if this is a request (io.choria.mcorpc.external.v1.rpc_request) or activation (io.choria.mcorpc.external.v1.rpc_reply) message|
+|CHORIA_EXTERNAL_FACTS|The path to where a JSON snapshots of Server facts can be found.  Since Choria Server 0.14.0|
 
 Your agent will also be called with 3 arguments:
 

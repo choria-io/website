@@ -17,6 +17,7 @@ Today the prevailing architecture of choice is HTTP based, and it's demonstrably
 
  * [Series introduction](https://master.choria.io/blog/post/2020/03/23/nats_patterns_1/)
  * [Description of the major messaging patterns supported by NATS](https://master.choria.io/blog/post/2020/03/24/nats_patterns_2/)
+ * [Running NATS Server and exploring patterns from the CLI](https://master.choria.io/blog/post/2020/03/25/nats_patterns_3/)
 
 <!--more-->
 

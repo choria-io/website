@@ -62,7 +62,7 @@ The previous pattern had every consumer receiving every message, this is fine fo
 
 ![](/blog/mom/queue-grp.png)
 
-Here we demonstrate that a group of Consumers agree on a group name - _grp1_ - and use that when subscribing to the subject.  The NATS Server delivers the messages to the consumers in a round-robin manner, each receiving one of the messages.
+Here we demonstrate that a group of Consumers agree on a group name - _grp1_ - and use that when subscribing to the subject.  The NATS Server delivers the messages to the consumers in a random manner, each receiving one of the messages.
 
 It's important to note that the choice to receive the messages in a Pub/Sub manner or a Queue Group is entirely up to the subscribers. You can have many groups with each group having this behaviour and you can even have a mix of Consumer Groups and Pub/Sub consumers, the Pub/Sub ones receive all messages while the grouped ones have their messages distributed. The Producer does not need to change to facilitate this.
  
