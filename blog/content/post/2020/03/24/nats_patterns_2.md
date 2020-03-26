@@ -91,7 +91,7 @@ NATS is an _at-most-once_ based system, this means the message might be lost, bu
 
 Currently in Tech Preview is a feature called JetStream that will support _at-least-once_ delivery for messages. This means persistence can be enabled for a particular subject and Consumers can receive their messages later.  We'll take a quick look at JetStream a bit later.
 
-NATS does not support _exactly-once_ message delivery.
+NATS does not support _exactly-once_ message semantics.
  
 ## Security
 

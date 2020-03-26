@@ -2,10 +2,10 @@
 title: "NATS Messaging - Part 4"
 date: 2020-03-26T09:00:00+01:00
 tags: ["nats", "development", "architecture"]
-draft: true
+draft: false
 ---
 
-Previously we used the `nats` utility to explore the various patterns of messaging in NATS, today we'll write a bit of code, and in the following few posts, we'll expand this code to show how to scale it up and make it resilient.
+[Previously](https://choria.io/blog/post/2020/03/25/nats_patterns_3/) we used the `nats` utility to explore the various patterns of messaging in NATS, today we'll write a bit of code, and in the following few posts, we'll expand this code to show how to scale it up and make it resilient.
 
 We'll write a tool that tails a log file and publishes it over NATS to a receiver that writes it to a file. The intent is that several nodes use this log file Publisher and a central node consume and saves the data to a file per Publisher with log rotation in the central node.
 
@@ -94,7 +94,7 @@ Let's look at the producer; this is a stand-alone application compiled into a si
 
 That's a basic starting block for shipping the file, every time this starts it reads the file and sends it's entire contents and then follows it forever - even through log rotations. It's not perfect, but it's a start, we don't want to get lost in details of file tailing here (remember, use an off the shelf tool for real).
 
-You can test this by running the binary using `SHIPPER_FILE=/var/log/system.log SHIPPER_SUBJECT="shipper" NATS_URL="localhost:4222" ./producer` and using `nats sub shipper` to verify it works.
+You can test this by running the binary using `SHIPPER_FILE=/var/log/system.log SHIPPER_SUBJECT=shipper NATS_URL=localhost ./producer` and using `nats sub shipper` to verify it works.
 
 ## Consuming log lines
 
@@ -102,7 +102,7 @@ Let's create a Consumer. We'll listen on a subject and write everything we recei
 
 {{< gist ripienaar 2c63f4c92c7e4d4b02a77dff2621a513 >}}
 
-Running this like `SHIPPER_SUBJECT=shipper SHIPPER_OUTPUT=/tmp/logfile NATS_URL=localhost:4222 ./consumer` will create `/tmp/logfile-202003180000` that rotates daily.
+Running this like `SHIPPER_SUBJECT=shipper SHIPPER_OUTPUT=/tmp/logfile NATS_URL=localhost ./consumer` will create `/tmp/logfile-202003180000` that rotates daily.
 
 ## Conclusion
 
