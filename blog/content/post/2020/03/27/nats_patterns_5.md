@@ -5,7 +5,7 @@ tags: ["nats", "development", "architecture"]
 draft: true
 ---
 
-Yesterday we wrote our first end to end file tail tool and a consumer for it. It was fatally flawed though in that we could not scale it horizontally and had to run one consumer per log file. This design won't work for long.
+Yesterday we [wrote our first end to end file tail tool](https://choria.io/blog/post/2020/03/26/nats_patterns_4/) and a consumer for it. It was fatally flawed though in that we could not scale it horizontally and had to run one consumer per log file. This design won't work for long.
 
 The difficulty lies in the ordering of messages. We saw that NATS support creating consumer groups and that it load-share message handling in a random manner between available workers. The problem is if we have more than one worker, there are no longer any ordering guarantees as many workers are concurrently handling messages each processing them at different rates. We'd end up with 1 file having many writers and soon it will be shuffled.
 
@@ -116,4 +116,4 @@ Having achieved this much in very little code is quite an achievement, especiall
 
 As before I've put the full code listing on [GitHub @ripienaar fshipper tag post5](https://github.com/ripienaar/fshipper/tree/post5).
 
-The main outstanding problem here is about losing messages if we even so much as restart one of our consumers we can potentially drop 100s of messages, this is no good, which brings us to tomorrows topic of JetStream to introduce persistence into the mix.
+The main outstanding problem here is about losing messages if we even so much as restart one of our consumers we can potentially drop 100s of messages, this is no good, which brings us to next weeks topic of JetStream to introduce persistence into the mix.

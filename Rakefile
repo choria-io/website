@@ -16,7 +16,7 @@ task :build_docs do
 
   Dir.chdir(File.join(File.dirname(__FILE__), "blog")) do
     if ENV["CHORIA_BLOG_DRAFTS"]
-      sh("hugo -b %s/blog/ -D -d ../out/blog/" % ENV["CHORIA_SITE_NAME"])
+      sh("hugo -b %s/blog/ -DF -d ../out/blog/" % ENV["CHORIA_SITE_NAME"])
     else
       sh("hugo -b %s/blog/ -d ../out/blog/" % ENV["CHORIA_SITE_NAME"])
     end
