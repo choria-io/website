@@ -1,11 +1,11 @@
 ---
 title: "NATS Messaging - Part 6"
-date: 2020-03-30T09:00:00+01:00
+date: 2020-03-30T08:00:00+01:00
 tags: ["nats", "development", "architecture"]
 draft: false
 ---
 
-Last week we built a tool that supported shipping logs over NATS, and consume them on a central host.
+[Last week](https://choria.io/blog/post/2020/03/23/nats_patterns_1/) we built a tool that supported shipping logs over NATS, and consume them on a central host.
 
 ![](/blog/mom/partitioned-overview.png)
 
