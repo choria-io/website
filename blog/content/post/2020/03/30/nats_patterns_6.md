@@ -2,30 +2,30 @@
 title: "NATS Messaging - Part 6"
 date: 2020-03-30T09:00:00+01:00
 tags: ["nats", "development", "architecture"]
-draft: true
+draft: false
 ---
 
-Last week we built a tool that supported shipping logs over NATS, and that could consume them on a central host.
+Last week we built a tool that supported shipping logs over NATS, and consume them on a central host.
 
 ![](/blog/mom/partitioned-overview.png)
 
 We were able to build a horizontally scalable tool that can consume logs from thousands of hosts. What we could not solve was doing so reliably since if we stopped the Consumer, we would drop messages.
 
-I mentioned NATS does not have a persistence store today, and that one called JetStream was in the works, today I'll start a few posts looking into JetStream and show how we can leverage it to solve our problems.
+I mentioned NATS does not have a persistence store today, and that one called JetStream was in the works. Today I'll start a few posts looking into JetStream and show how we can leverage it to solve our problems.
 
 <!--more-->
-Previously NATS had a system called Nats Streaming Server - that is still in use and supported. I want to focus on the upcoming JetStream system as it's a much more natural fit into the core NATS world that we are discussing in these posts - our log shipper could have basic persistence without any code changes! Before we get there though let's look at JetStream.
+Currently, the available NATS Streaming Server sits atop core NATS and provides a level of persistence but the future is JetStream. I want to focus on JetStream system as it's a much more natural fit into the core NATS world that we are discussing in these posts - our log shipper could have basic persistence without any code changes! Before we get there though let's look at JetStream.
 
 Today JetStream is in [Tech Preview](https://github.com/nats-io/jetstream#readme), it does not yet have Clustering or Replication support, so it's a single node server. Feature-wise though it's quite complete so it's good to start prototyping around.
 
 JetStream split the Storage and Consuming of Messages into 2 significant roles:
 
- * _Stream_ - Stores data, consumes NATS subjects and store messages in a log
+ * _Stream_ - Stores data, consumes NATS subjects and stores messages in a log
  * _Consumer_ - Make messages in the stream available to clients, tracks their progress and handles redeliveries
  
 JetStream is a system that you can use to provide persistence to solve several styles of problem: buffering, reliability, work queues, audit trails and more. For our log tailer we'll mainly provide buffering of messages so that we can handle short periods of the log consumers restarting.
 
-JetStream will be delivered in the same binary as the core NATS and will require no additional external services like Consul or ZooKeeper; it's completely integrated into the NATS Core.
+JetStream will be delivered in the same binary as core NATS and will require no additional external services like Consul or ZooKeeper; it's completely integrated into the NATS Core.
 
 ## Setting up
 
@@ -53,7 +53,7 @@ This command uses the preview build and runs `nats-server -js` which starts a st
 
 ## Creating a Stream
 
-_Streams_ store messages in an appending log, just like our log files. Streams have many options for setting how big we want the Stream to grow like how old messages can be, how many messages we store, or how big the store can be. We'll keep 1 day worth of logs in the examples below which gives us plenty of time to do maintenance and other activities requiring downtime.
+_Streams_ store messages in an appending log, just like our log files. Streams have many options for setting how big we want the Stream to grow like how old messages can be, how many messages we store, or how big the store can be. We'll keep one day's worth of logs in the examples below which gives us plenty of time to do maintenance and other activities requiring downtime.
 
 A reminder that our log tailers publish on subjects like `logs.p<partition>.<hostname>` so we are going to need a stream that consumes wildcards.
 
@@ -91,20 +91,20 @@ Below we set up a basic Consumer and show that logs are in the Stream.
 
 <script id="asciicast-nRMp4OrocAkR1ZbLhulZyg9IT" src="https://asciinema.org/a/nRMp4OrocAkR1ZbLhulZyg9IT.js?autoplay=0&size=small" async></script>
 
-Above we saw we created 2 consumers each with their own view over the logs. Messages are to the consumer with no acknowledgements or retries.
+Above we created 2 consumers each with their own view over the logs. Messages are sent to the consumer with no acknowledgements or retries.
 
 ## Retries and Acknowledgements
 
 So far, having just used JetStream as a buffer with no Acks or Retries, we've kind of only solved our problem halfway.  We can go away and come back later to find logs, but there aren't many guarantees that _every single log_ is delivered. Let's look at how we can make this reliable.
 
-On the publishing side, we can not be sure our logline is received successfully at the moment; JetStream can though acknowledge receiving the message:
+On the publishing side, we can not be sure our logline is received successfully at the moment; JetStream, though, can acknowledge receiving the message:
 
 ```nohighlight
 $ nats request logs.p1.my.host "sample log line"
 11:00:56 Received on [_INBOX.hUhAF0B1hlKG0eS5HtJUrm.itQwb40A]: '+OK'
 ``` 
 
-Here we use the Request/Response pattern to publish to `logs.p1.my.host` with a fake logline, and the server responds with `+OK` after persisting the message. So if we desire delivery guarantee of logs, we can code it to support that in the shipper. I imagine this would not be for all logs, though; you might not care for every single logline.  But if you wanted to use this for shipping an audit log, you could add an option to the shipper to send a specific log in acknowledged mode and retry lines when they fail.
+Here we use the Request/Response pattern to publish to `logs.p1.my.host` with a fake logline, and the server responds with `+OK` after persisting the message. So if we desire delivery guarantee of logs, we can code it to support that in the shipper. I imagine this would not be for all logs though; you might not care for every single logline.  But if you wanted to use this for shipping an audit log, you could add an option to the shipper to send a specific log in acknowledged mode and retry lines when they fail.
 
 On the Consumer side, we have a few options:
 
@@ -113,7 +113,7 @@ On the Consumer side, we have a few options:
  * Pull a message and acknowledge it
  * Pull 100 messages and acknowledge the last, implying all pulled ones were acknowledged
 
-In general, I tend to avoid Acknowledgements on push mode ones because messages are retried by just resending them when your consumer might not be ready. Duplicates can happen, and in general, it's just a bit awkward if you expect a high number of messages. It can work well if you do your own re-ordering of messages or your processing is idempotent that duplicates and order do not matter.
+In general, I tend to avoid Acknowledgements on push mode messages because they are retried by just resending them when your consumer might not be ready. Duplicates can happen, and in general, it's just a bit awkward if you expect a high number of messages. It can work well if you do your own re-ordering of messages or your processing is idempotent so that duplicates and order do not matter.
 
 Let's look at Pull Consumers and Acknowledgements a bit:
 
@@ -123,6 +123,6 @@ In the above video, I set up a Consumer that's in Pull mode and has acknowledgem
 
 ## Conclusion
 
-Today we looked at the basic of JetStream, but we only scratched the surface. Have a look at the [Tech Preview Docs](https://github.com/nats-io/jetstream#readme) for the full picture.
+Today we looked at the basics of JetStream, but we only scratched the surface. Have a look at the [Tech Preview Docs](https://github.com/nats-io/jetstream#readme) for the full picture.
 
-As it relates to our log shipper, we saw that without any modification to the Producer, we could add persistence to the logs so we can survive restarting of Consumers. We saw that probably to get our Consumers to work reliably we'll need some modifications to their code, which is what the next post is all about.
+As it relates to our log shipper, we saw that without any modification to the Producer, we could add persistence to the logs so we can survive restarting of Consumers. We saw that in order to get our Consumers to work reliably we'll need some modifications to their code, which is what the next post is all about.
