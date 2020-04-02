@@ -1,7 +1,7 @@
 ---
 title: "NATS Messaging - Part 6"
 date: 2020-03-30T08:00:00+01:00
-tags: ["nats", "development", "architecture"]
+tags: ["nats", "development", "architecture", "jetstream"]
 draft: false
 ---
 
