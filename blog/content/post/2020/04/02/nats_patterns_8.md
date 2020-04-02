@@ -38,7 +38,9 @@ do
                     --max-age 1d \
                     --max-msg-size=-1
 done
+```
 
+```nohighlight
 $ nats str ls
 Streams:
 
@@ -144,7 +146,7 @@ Thus far, we used the same data for these steps, so let's add a variable:
 		log.Fatalf("Please set a JetStream target subject using SHIPPER_STREAM_TARGET")
 	}
 
-    // lines removed
+	// lines removed
 
 	// start consumers for every partition until ctx interrupt
 	for _, partition := range partitions() {
