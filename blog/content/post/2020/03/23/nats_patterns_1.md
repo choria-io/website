@@ -23,6 +23,7 @@ Today the prevailing architecture of choice is HTTP based, and it's demonstrably
  * [Introducing JetStream](https://choria.io/blog/post/2020/03/30/nats_patterns_6/)
  * [Interacting with the JetStream API](https://choria.io/blog/post/2020/03/31/nats_patterns_7/)
  * [Adjusting the log distribution tool for JetStream](https://choria.io/blog/post/2020/04/02/nats_patterns_8/)
+ * [Reliable delivery and Acknowledgement Patterns](https://choria.io/blog/post/2020/04/03/nats_patterns_9/)
 
 <!--more-->
 

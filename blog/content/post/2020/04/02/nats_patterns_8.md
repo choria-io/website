@@ -5,7 +5,7 @@ tags: ["nats", "development", "architecture", "jetstream"]
 draft: false
 ---
 
-In our previous post, we dived a bit into JetStream API, and how to interact with it, many people would not need to know this all to get going. The CLI or Terraform management approaches would be perfectly fine. And today we'll use the CLI rather than the API.
+[In our previous post](https://choria.io/blog/post/2020/03/31/nats_patterns_7/), we dived a bit into JetStream API, and how to interact with it, many people would not need to know this all to get going. The CLI or Terraform management approaches would be perfectly fine. And today we'll use the CLI rather than the API.
 
 In this post, we're back on our codebase, and we'll see how we might need to change the tools to support JetStream well. To be honest, I could have made some better decisions early on about the shipper design, but that gives us more opportunity to see how some apps might need to adapt.
 
