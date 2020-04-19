@@ -43,7 +43,7 @@ Links: [Changes](https://github.com/choria-io/puppet-mcollective/compare/0.13.0.
 
  * Improve formatting of node lists at the end of requests
  * Ensure agent filter is added when discovering nodes
-  
+
 ## [choria/mcollective version 0.10.4](https://forge.puppet.com/choria/mcollective)
 
 Links: [Changes](https://github.com/choria-io/puppet-mcollective/compare/0.10.3...0.10.4), [Release](https://forge.puppet.com/choria/mcollective/0.10.4/readme)
@@ -51,7 +51,7 @@ Links: [Changes](https://github.com/choria-io/puppet-mcollective/compare/0.10.3.
 ### Enhancements
 
  * Avoid Ruby specific YAML aliases
- 
+
 ## [choria/mcollective_choria version 0.17.2](https://forge.puppet.com/choria/mcollective_choria)
 
 Links: [Changes](https://github.com/choria-io/mcollective-choria/compare/0.17.1...0.17.2), [Release](https://forge.puppet.com/choria/mcollective_choria/0.17.2/readme)
@@ -62,7 +62,7 @@ Links: [Changes](https://github.com/choria-io/mcollective-choria/compare/0.17.1.
  * Improve remote request signing support
  * Correctly extract the playbook name from facts
  * Place the rpcutil DDL in the correct directory
- 
+
 ## [choria/choria version 0.16.0](https://forge.puppet.com/choria/choria)
 
 Links: [Changes](https://github.com/choria-io/puppet-choria/compare/0.15.0...0.16.0), [Release](https://forge.puppet.com/choria/choria/0.16.0/readme)
