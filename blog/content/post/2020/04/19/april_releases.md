@@ -23,7 +23,7 @@ Links: [Changes](https://github.com/choria-io/puppet-mcollective/compare/0.13.0.
 ## Enhancements
 
  * Support use selectable SSL Ciphers using `plugin.security.cipher_suites` and `plugin.security.ecc_curves`
- * Add basic Windows pacakges
+ * Add basic Windows packages
  * Support running as a Windows service
  * Support logging to Windows Event log
  * Update to CloudEvents 1.0.0
