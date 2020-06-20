@@ -81,9 +81,8 @@ This feature is available since *Choria Server 0.15.0*
 
 |Property                 |Required                            |Description|
 |-------------------------|------------------------------------|-----------|
-|*plugin*                 |yes                                 |Full path to the Nagios plugin script|
-|*timeout*                |                                    |How long plugins can run, defaults to 10 seconds. Valid values are of the form 1s, 1m, 1h|
-|*args*                   |                                    |Array of shell arguments to pass to the plugin|
+|plugin                   |yes                                 |Full path to the Nagios plugin script and it's arguments|
+|timeout                  |                                    |How long plugins can run, defaults to 10 seconds. Valid values are of the form 1s, 1m, 1h|
 
 ### Behaviour
 
