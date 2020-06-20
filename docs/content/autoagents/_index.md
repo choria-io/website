@@ -58,3 +58,12 @@ You want the system to continuously monitor this file and:
 ### Cluster Management
 
 A manager host in a small cluster could health check the entire cluster and perhaps even own scaling the cluster to desired states.  The various health checks, upgrade and downgrade flows and remediation could all be implemented as Ansible Playbooks or Bolt Plans using the Autonomous Agent simply as a scheduler and coordinator between these tools.
+
+### Monitoring
+
+Using the included `nagios` watcher one can run Nagios compatible plugins:
+
+ * Run them on a schedule
+ * Perform auto remediation when in specific states
+ * Consume `cloudevents` about check states 
+ * Expose monitoring state to Prometheus via the included `node_exporter` integration for alerting and graphing
