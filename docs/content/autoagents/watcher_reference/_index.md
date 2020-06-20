@@ -69,13 +69,94 @@ An exec watcher will at *interval* times run the command specified with a few ma
 
 The command is run with current directory set to the directory where the *machine.yaml* is, when the command exits *0* a *success_transition* fires, when it exits *!0* a *fail_transition* fires. Both cases publish an event announcing the execution.
 
+## Nagios watcher
+
+The *nagios* watcher executes Nagios compatible plugins and emits transitions `OK`, `WARNING`, `CRITICAL` and `UNKNOWN`.  This watcher can be combined with the `exec` watcher to create self healing systems that remediate when in `critical` or `warning` states.
+
+{{% notice tip %}}
+This feature is available since *Choria Server 0.15.0*
+{{% /notice %}}
+
+### Properties
+
+|Property                 |Required                            |Description|
+|-------------------------|------------------------------------|-----------|
+|*plugin*                 |yes                                 |Full path to the Nagios plugin script|
+|*timeout*                |                                    |How long plugins can run, defaults to 10 seconds. Valid values are of the form 1s, 1m, 1h|
+|*args*                   |                                    |Array of shell arguments to pass to the plugin|
+
+### Behaviour
+
+A `nagios` watcher will at `interval` times run the Nagios check and transition using `OK`, `WARNING`, `CRITICAL` and `UNKNOWN` events.
+
+If the configuration setting `plugin.choria.prometheus_textfile_directory` is set it will write metrics in a format the Prometheus Node Exporter accepts:
+
+```nohighlight
+# HELP choria_machine_nagios_watcher_status Choria Nagios Check Status
+# TYPE choria_machine_nagios_watcher_status gauge
+choria_machine_nagios_watcher_status{name="check_httpd"} 0
+choria_machine_nagios_watcher_status{name="check_bacula_db"} 0
+# HELP choria_machine_nagios_watcher_last_run_seconds Choria Nagios Check Time
+# TYPE choria_machine_nagios_watcher_last_run_seconds gauge
+choria_machine_nagios_watcher_last_run_seconds{name="check_httpd"} 1592645406
+choria_machine_nagios_watcher_last_run_seconds{name="check_bacula_db"} 1592645405
+```
+
+### Remediation
+
+Here's a full working example of a check that includes remediation and the ability to stop checks from happening for a time.  The Puppet defined type `choria::nagios_check` can be used to create this.
+
+```yaml
+name: check_httpd
+version: 1.0.0
+initial_state: unknown
+
+transitions:
+  - name: UNKNOWN
+    from: [unknown, ok, warning, critical]
+    destination: unknown
+
+  - name: OK
+    from: [unknown, ok, warning, critical]
+    destination: ok
+
+  - name: WARNING
+    from: [unknown, ok, warning, critical]
+    destination: warning
+
+  - name: CRITICAL
+    from: [unknown, ok, warning, critical]
+    destination: critical
+
+  - name: MAINTENANCE
+    from: [unknown, ok, warning, critical]
+    destination: maintenance
+
+  - name: RESUME
+    from: [maintenance]
+    destination: unknown
+
+watchers:
+  - name: check
+    type: nagios
+    interval: 10s
+    state_match: [unknown, ok, warning, critical]
+    properties:
+      plugin: /usr/lib64/nagios/plugins/check_procs -C httpd -c 1:25
+
+  - name: remediate
+    type: exec
+    state_match: [critical]
+    interval: 10m
+    properties:
+      command: /sbin/service httpd restart
+```
+
+Checks can be stopped using `mco rpc choria_util machine_transition name=check_httpd transition=MAINTENANCE` and resumed using by passing `transition=RESUME` instead.
+
 ## Scheduler watcher
 
 The *scheduler* watcher flips between success and fail states based on a set of schedules specified in a crontab like format.  Use it to enter and exit a state on a schedule and combine it with an exec watcher to run commands on a schedule.
-
-{{% notice tip %}}
-This feature is available since *Choria Server 0.11.1*
-{{% /notice %}}
 
 ### Properties
 
