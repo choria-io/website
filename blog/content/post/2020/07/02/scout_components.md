@@ -86,7 +86,7 @@ These events can be consumed into NATS JetStream for archival and processing usi
 provide an event gateway that routes them to HTTP destinations or onto systems like AWS SQS.
 
 These CloudEvents are the only communications the fleet does to the outside world and are quite light-weight. If sending
-every check we should be able to scale to 100s of thousands of nodes. If sending only failing checks - and perhaps an 
+every check we should be able to scale to 10s of thousands of nodes. If sending only failing checks - and perhaps an 
 infrequent update of current state - we'll be able to scale to 100s of thousands of failing checks on a very very large
 fleet of nodes.
 
@@ -96,9 +96,9 @@ The `nagios` Watcher can optionally write extensive state about checks into the 
 collect this data and build dashboards using Prometheus and Grafana, this naturally support alert routing using Prometheus
 Alert Manager. Scout dashboards are listed on Grafana plugin repository.
 
-This is an optional component, and the same data is available as CloudEvents and by observing the event stream
-a cluster wide state view can be constructed. Choria has a component called `tally` that might be expanded to maintain 
-a state of a managed network and expose that over an API.
+This is an optional component, and the same data is available as CloudEvents - by observing the event stream a cluster 
+wide state view can be constructed. Choria has a component called `tally` that might be expanded to maintain a state 
+of a managed network and expose that over an API.
 
 ## Central Components
 ### Choria Broker
@@ -124,8 +124,9 @@ alerts and workflows.
 
 ### JetStream
 
-JetStream is a Streaming Messaging platform that is currently in Tech Preview by [NATS](https://nats.io) and we already
-support routing the CloudEvents into it for archival and long term storage.
+[JetStream](https://github.com/nats-io/jetstream#readme) is a Streaming Messaging platform that is currently in Tech 
+Preview by [NATS](https://nats.io) and we already support routing the CloudEvents into it for archival and long term 
+storage.
 
 From there one can consume them historically or in real time to route the events to other locations. It supports Event
 Sourcing patterns and a growing list of integrations and is easily configured using Cloud Native technologies like
