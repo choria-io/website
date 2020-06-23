@@ -1,7 +1,7 @@
 ---
 title: "Introducing Choria Scout"
 date: 2020-07-01T09:00:00+01:00
-tags: ["releases"]
+tags: ["releases", "scout"]
 draft: true
 ---
 
@@ -27,8 +27,10 @@ or enable the remote execution hosting features to be a Scout user.
 ## Features
 
 As Choria is very framework focused, and really an operations integration platform at heart, I am not trying to solve
-all the problems myself but focusing on maximising the integration possibilities.  So here's first a few screenshots 
-of Dashboards and such and then I'll break down the features.
+all the problems myself but focusing on maximising the integration possibilities - we'll supply a batteries included
+system, but it will be highly interoperable with Cloud Native technologies. 
+
+So here's first a few screenshots of Dashboards and such and then I'll break down the features.
 
 ![](health-overview-small.png)
 
@@ -55,6 +57,7 @@ Current main features:
  * Supports the popular Nagios 4 exit code plugin API with Goss support planned
  * Support auto remediation of issues without any central coordination
  * Scalable to 100s of thousands of nodes
+ * Event archival and Stream Processing via NATS JetStream
  * CLI observation tools to view live results stream and force or inhibit checks
  * API to set maintenance mode for any check or force immediate checks, subject to AAA, 2FA and OPA Policies with support 
    for authentication against Okta and other enterprise systems. Ruby and Golang supported.
