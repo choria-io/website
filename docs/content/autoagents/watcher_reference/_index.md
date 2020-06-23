@@ -103,7 +103,7 @@ choria_machine_nagios_watcher_last_run_seconds{name="check_bacula_db"} 159264540
 
 ### Remediation
 
-Here's a full working example of a check that includes remediation and the ability to stop checks from happening for a time.  The Puppet defined type `choria::health_check` can be used to create this.
+Here's a full working example of a check that includes remediation and the ability to stop checks from happening for a time.  The Puppet defined type `choria::scout_check` can be used to create this.
 
 ```yaml
 name: check_httpd
