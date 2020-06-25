@@ -84,6 +84,18 @@ This feature is available since *Choria Server 0.15.0*
 |plugin                   |yes                                 |Full path to the Nagios plugin script and it's arguments|
 |timeout                  |                                    |How long plugins can run, defaults to 10 seconds. Valid values are of the form 1s, 1m, 1h|
 
+When setting the plugin one can load override data from a JSON file defined in `plugin.scout.overrides`:
+
+```yaml
+name: check_pki
+watchers:
+- name: check
+  properties:
+    plugin: '/check -W {{ o "warn" 10 }} -C {{ o "crit" 20 }}'
+```
+
+This will load the data `{"check_pki": {"warn": 15}}` from the `plugin.scout.overrides` path setting `warn` to 15 and `crit` would be 20 as there is no override.
+
 ### Behaviour
 
 A `nagios` watcher will at `interval` times run the Nagios check and transition using `OK`, `WARNING`, `CRITICAL` and `UNKNOWN` events.
