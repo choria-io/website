@@ -7,22 +7,33 @@ draft: true
 
 ## Overview
 
+We're happy to announce a new project called *Choria Scout* - a highly scalable system health monitoring framework 
+and monitoring data pipeline released under the Apache 2.0 license.
+
+Initially we support the ability to execute Nagios compatible plugins on Choria managed nodes with results sent centrally
+in a standard CloudEvents format, and optionally, integrated into Prometheus.
+
+These are framework level building blocks that will in time be used to create a full monitoring stack built on Choria 
+technologies. Checks and value overrides can already be configured using our Puppet modules. You can also use these
+building blocks to build entirely custom solutions for your own needs.
+
+Scout will be a cloud native project with central components capable of being hosted on Kubernetes and using data formats
+supported by commercial clouds and projects like KNative. It will have a focus on integration, open data exchange and
+extensibility.
+
+Despite being cloud native we will of course support monitoring anything where Choria, or the upcoming Scout agent, can
+run which includes traditional baremetal, VMs, containers and pods and small devices.
+
+## Background
+
 I recently had to refresh my infrastructure and revisited how many things are done - I now host all the Choria 
 components on Kubernetes using our WIP [helm repos](https://github.com/choria-io/helm) and as a result also had to 
-revisit monitoring for those components. Additionally I have a number of traditional hosts for nameservers, dev environment
+revisit monitoring for those components. Additionally, I have a number of traditional hosts for nameservers, dev environment
 and more.
 
-For the traditional hosts I did not find any appealing solution that's free and realised I had almost 100% of what I need 
-to build a pretty compelling monitoring platform and it will tie in nicely with the recent work I did to make Goss usable
-as a Go Package. 
-
-Today I'd like to introduce early work done in this regard, it's called *Choria Scout* and is a set of Choria Features 
-to assist in building monitoring pipelines.
-
-Current [choria.io](https://choria.io) is a distribution of Choria focused on Puppet users Scout will be a distribution
-focused on monitoring. The Puppet user focused Choria will have the Scout features and a easy way to configure them but 
-Scout will be able to self host and be tailored to the needs for monitoring agents. One should not need to use Choria
-or enable the remote execution hosting features to be a Scout user.
+For the traditional hosts I did not find any appealing solution that's released under a true Open Source basis and realised
+I had almost 100% of what I need to build a pretty compelling monitoring platform, and it will tie in nicely with the recent
+work I did to make Goss usable as a Go Package.
  
 ## Features
 
@@ -44,12 +55,12 @@ This is a life view of the Cloud Events being emitted by the system.
 ```puppet
 choria::scout_check{"check_typhon":
     plugin            => "/usr/lib64/nagios/plugins/check_procs",
-    arguments         => "-C typhon -c 1:1",
+    arguments         => '-C typhon -c {{ o "warn" 1 }}:{{ o "crit" 1 }}',
     remediate_command => "service typhon restart",
 }
 ```
 
-Above creates a check which includes auto remediation.
+Above creates a check which includes auto remediation and node specific overrides via JSON data on the node.
 
 Current main features:
 
