@@ -28,20 +28,20 @@ run which includes traditional baremetal, VMs, containers and pods and small dev
 
 I recently had to refresh my infrastructure and revisited how many things are done - I now host all the Choria 
 components on Kubernetes using our WIP [helm repos](https://github.com/choria-io/helm) and as a result also had to 
-revisit monitoring for those components. Additionally, I have a number of traditional hosts for nameservers, dev environment
-and more.
+revisit monitoring for those components. Additionally, I have a number of traditional hosts for nameservers, development
+environments and more.
 
-For the traditional hosts I did not find any appealing solution that's released under a true Open Source basis and realised
-I had almost 100% of what I need to build a pretty compelling monitoring platform, and it will tie in nicely with the recent
+For the traditional hosts I did not find any appealing free solution released under a true Open Source basis and realised
+I had almost 100% of what I need to build a compelling monitoring platform, and it will tie in nicely with the recent
 work I did to make Goss usable as a Go Package.
  
 ## Features
 
-As Choria is very framework focused, and really an operations integration platform at heart, I am not trying to solve
-all the problems myself but focusing on maximising the integration possibilities - we'll supply a batteries included
+As Choria is very framework focused - and really an operations integration platform at heart - I am not trying to solve
+all the problems myself but focusing on maximising the integration possibilities: we'll supply a batteries included
 system, but it will be highly interoperable with Cloud Native technologies. 
 
-So here's first a few screenshots of Dashboards and such and then I'll break down the features.
+So, first of all, here are a few screenshots of Dashboards and such, then I’ll break down the features.
 
 ![](health-overview-small.png)
 
@@ -50,7 +50,7 @@ and issues found.
 
 ![](machine-watch.png)
 
-This is a life view of the Cloud Events being emitted by the system.
+This is a live view of the Cloud Events being emitted by the system.
 
 ```puppet
 choria::scout_check{"check_typhon":
@@ -60,35 +60,35 @@ choria::scout_check{"check_typhon":
 }
 ```
 
-Above creates a check which includes auto remediation and node specific overrides via JSON data on the node.
+The block above creates a check which includes auto-remediation and node specific overrides via JSON data on the node.
 
 Current main features:
 
- * Checks once configured runs without any central coordination and without requiring network connections
+ * Once configured, checks run without any central coordination and without requiring network connections
  * Supports the popular Nagios 4 exit code plugin API with Goss support planned
- * Support auto remediation of issues without any central coordination
- * Scalable to 100s of thousands of nodes
+ * Support auto-remediation of issues without any central coordination
+ * Scalable to hundreds of thousands of nodes
  * Event archival and Stream Processing via NATS JetStream
- * CLI observation tools to view live results stream and force or inhibit checks
+ * CLI observation tools to view a stream of live results and force or inhibit checks
  * API to set maintenance mode for any check or force immediate checks, subject to AAA, 2FA and OPA Policies with support 
    for authentication against Okta and other enterprise systems. Ruby and Golang supported.
- * Can integrate with any other Autonomous Agent features such as cron like 5-field schedules for when checks should run
- * Alerting through the Prometheus Alert Manager with integrations to Pager Duty etc
+ * Can integrate with any other Autonomous Agent features such as cron-like 5-field schedules for when checks should run
+ * Alerting through the Prometheus Alertmanager with integrations to Pager Duty etc
  * Check results can optionally be published to Prometheus Node Exporter to enable Prometheus + Grafana for over all 
-   health, aggregate statuses and node level dashboards showing all checks and alerts for a node.
- * For non Prometheus integrations each state transition gets published as a CloudEvents v1.0 format message
+   health, aggregate statuses and node-level dashboards showing all checks and alerts for a node.
+ * For non-Prometheus integrations, each state transition gets published as a CloudEvents v1.0 format message
  * Each check result (or just problem ones) are published as CloudEvents v1.0 format messages
  * Optional configuration via Puppet
  
 Future features:
 
- * Additional related Autonomous Agent Watchers like integration into [Goss](https://github.com/aelsabbahy/goss)
+ * AAdditional related Autonomous Agent Watchers such as integration into [Goss](https://github.com/aelsabbahy/goss)
  * Check Configuration updated without Puppet utilising NATS JetStream
- * Purpose build CLI manager
+ * Purpose built CLI manager
+ * A Gateway suite to filter, modify and emit events into other systems
  * A purpose specific distribution of the features into a purpose built binary
    * Single binary install
-   * Auto enrolling of new nodes into the infrastructure including Certificate Authorities managed by 
-     Kubernetes Cert Manager
+   * Auto-enrolling of new nodes into the infrastructure including Certificate Authorities managed by Kubernetes cert-manager
    * Suitable for deploying as side cars next to microservices in Kubernetes
    * Included event router to send Cloud Events to KNative, Azure Event Grid and similar systems
 
