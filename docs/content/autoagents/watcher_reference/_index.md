@@ -81,7 +81,8 @@ This feature is available since *Choria Server 0.15.0*
 
 |Property                 |Required                            |Description|
 |-------------------------|------------------------------------|-----------|
-|plugin                   |yes                                 |Full path to the Nagios plugin script and it's arguments|
+|builtin                  |no                                  |Builtin check plugin, `heartbeat` only supported one now|
+|plugin                   |no                                  |Full path to the Nagios plugin script and it's arguments|
 |timeout                  |                                    |How long plugins can run, defaults to 10 seconds. Valid values are of the form 1s, 1m, 1h|
 
 When setting the plugin one can load override data from a JSON file defined in `plugin.scout.overrides`:
@@ -95,6 +96,8 @@ watchers:
 ```
 
 This will load the data `{"check_pki": {"warn": 15}}` from the `plugin.scout.overrides` path setting `warn` to 15 and `crit` would be 20 as there is no override.
+
+Either `plugin` or `builtin` has to be set, builtin can only be `heartbeat` at the moment.
 
 ### Behaviour
 
