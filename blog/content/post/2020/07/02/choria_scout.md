@@ -1,8 +1,8 @@
 ---
 title: "Introducing Choria Scout"
-date: 2020-07-01T09:00:00+01:00
+date: 2020-07-02T09:00:00+01:00
 tags: ["releases", "scout"]
-draft: true
+draft: false
 ---
 
 ## Overview
