@@ -11,6 +11,8 @@ we'll look a bit at what makes a Scout install and how it is built.
 In a follow up post I'll dive a bit into Autonomous Agents - an infrequently used but very powerful building block
 found in Choria.
 
+<!--more-->
+
 ## Individual Nodes
 
 On the individual node you'll have a Choria Server and whatever check plugins you need to health check your node, container,

@@ -24,6 +24,8 @@ extensibility.
 Despite being cloud native we will of course support monitoring anything where Choria, or the upcoming Scout agent, can
 run which includes traditional baremetal, VMs, containers and pods and small devices.
 
+<!--more-->
+
 ## Background
 
 I recently had to refresh my infrastructure and revisited how many things are done - I now host all the Choria 
