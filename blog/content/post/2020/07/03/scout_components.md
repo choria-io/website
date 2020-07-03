@@ -2,7 +2,7 @@
 title: "Scout Components"
 date: 2020-07-03T09:00:00+01:00
 tags: ["releases", "scout"]
-draft: true
+draft: false
 ---
 
 Yesterday I introduced a new Choria component called Scout which helps you build scalable monitoring pipelines. Today,
