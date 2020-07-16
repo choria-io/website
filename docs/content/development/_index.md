@@ -1,7 +1,7 @@
 +++
 title = "Extending Choria"
-pre = "<b>8. </b>"
-weight = 80
+pre = "<b>9. </b>"
+weight = 90
 +++
 
 This section covers various ways of writing new logic that executes on your nodes or the client side. The sections here are advanced topics, many users will find interacting with [Choria via CLI](/docs/concepts/cli/) or [Playbooks](/docs/playbooks) sufficient. For many writing a [Puppet Task](/docs/tasks) will be much easier than the model presented here.

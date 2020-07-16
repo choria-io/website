@@ -1,7 +1,7 @@
 +++
 title = "Autonomous Agents"
-pre = "<b>5. </b>"
-weight = 50
+pre = "<b>6. </b>"
+weight = 60
 +++
 
 Autonomous Agents allow you to create agents that can run on any node continuously without the need to initiate actions via RPC calls.
