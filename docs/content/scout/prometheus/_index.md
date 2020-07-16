@@ -57,7 +57,7 @@ environment but this might be a good starting point.
 
 A basic dashboard is available on the [Grafana Plugins Repository](https://grafana.com/grafana/dashboards/12676).
 
-![Scout Checks](../scout-checks.png)
+![Scout Checks](../../scout-checks.png)
 
 ## Data
 

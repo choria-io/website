@@ -14,5 +14,5 @@ googleAnalytics = "UA-10152852-12"
   description = "Documentation for the Choria Orchestrator"
   author = "R.I.Pienaar <rip@devco.net>"
   showVisitedLinks = false
-  menu = [ "about", "concepts", "tasks", "playbooks", "federation", "adapters", "development", "deployment", "configuration" ]
+  menu = [ "about", "concepts", "tasks", "playbooks", "scout", "autoagents", "federation", "adapters", "development", "deployment", "configuration" ]
   themeVariant = "choria"
