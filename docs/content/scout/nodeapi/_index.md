@@ -7,17 +7,17 @@ Each Choria managed node expose a RPC API accessible over the Choria network for
 
 Avaialble tasks include:
 
- * `checks` - listing checks
- * `trigger` - trigger an instant check
- * `maintenance` - pause regular checks for a specific check
- * `resume` - resume previously paused regular checks
+ * _checks_ - listing checks
+ * _trigger_ - trigger an instant check
+ * _maintenance_ - pause regular checks for a specific check
+ * _resume_ - resume previously paused regular checks
  
 In time we will include a CLI for interacting with these APIs, today we publish a Golang API and it's usable from the 
 CLI.
 
 ## CLI
 
-On the CLI the API can be accessed using the normal `choria req` command:
+On the CLI the API can be accessed using the normal _choria req_ command:
 
 ### Listing checks
 
@@ -111,7 +111,7 @@ func main() {
 }
 ```
 
-This is the equivalent of `choria req scout trigger check=mailq -I dev1.example.net`.
+This is the equivalent of _choria req scout trigger check=mailq -I dev1.example.net_.
 
 When run this produce the following output:
 
