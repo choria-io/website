@@ -126,15 +126,15 @@ The gossfile contents can be set via Hiera:
 
 ```yaml
 choria::scout_gossfile:
-    port:
-      tcp:22:
-        listening: true
-        ip:
-        - 0.0.0.0
-    service:
-      sshd:
-        enabled: true
-        running: true
+  port:
+    tcp:22:
+      listening: true
+      ip:
+      - 0.0.0.0
+  service:
+    sshd:
+      enabled: true
+      running: true
 ```
 
 In your gossfile the Overrides data can be used using it's templating via the _{{.Vars}}_.
