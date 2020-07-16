@@ -1,8 +1,8 @@
 ---
 title: "Introducing Choria Scout"
-date: 2020-07-01T09:00:00+01:00
+date: 2020-07-02T09:00:00+01:00
 tags: ["releases", "scout"]
-draft: true
+draft: false
 ---
 
 ## Overview
@@ -23,6 +23,8 @@ extensibility.
 
 Despite being cloud native we will of course support monitoring anything where Choria, or the upcoming Scout agent, can
 run which includes traditional baremetal, VMs, containers and pods and small devices.
+
+<!--more-->
 
 ## Background
 

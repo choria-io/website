@@ -1,8 +1,8 @@
 ---
 title: "Scout Components"
-date: 2020-07-02T09:00:00+01:00
+date: 2020-07-03T09:00:00+01:00
 tags: ["releases", "scout"]
-draft: true
+draft: false
 ---
 
 Yesterday I introduced a new Choria component called Scout which helps you build scalable monitoring pipelines. Today,
@@ -10,6 +10,8 @@ we'll look a bit at what makes a Scout install and how it is built.
 
 In a follow up post I'll dive a bit into Autonomous Agents - an infrequently used but very powerful building block
 found in Choria.
+
+<!--more-->
 
 ## Individual Nodes
 
