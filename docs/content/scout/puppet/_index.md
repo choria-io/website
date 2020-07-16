@@ -111,6 +111,34 @@ choria::scout_check{"heartbeat":
 }
 ```
 
+### Goss
+
+Scout supports running [Goss](https://github.com/aelsabbahy/goss) validations regularly and treating their outcome as
+check states.
+
+```puppet
+choria::scout_check{"goss":
+    builtin => "goss"
+}
+```
+
+The gossfile contents can be set via Hiera:
+
+```yaml
+choria::scout_gossfile:
+    port:
+      tcp:22:
+        listening: true
+        ip:
+        - 0.0.0.0
+    service:
+      sshd:
+        enabled: true
+        running: true
+```
+
+In your gossfile the Overrides data can be used using it's templating via the _{{.Vars}}_.
+
 ## Prometheus
 
 Scout can integrate with [Prometheus](https://prometheus.io/) Node Exporter, this requires the `textfile` collector path

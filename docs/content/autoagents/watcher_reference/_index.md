@@ -81,7 +81,7 @@ This feature is available since *Choria Server 0.15.0*
 
 |Property                 |Required                            |Description|
 |-------------------------|------------------------------------|-----------|
-|builtin                  |no                                  |Builtin check plugin, `heartbeat` only supported one now|
+|builtin                  |no                                  |Builtin check plugin, `heartbeat` or `goss` are supported now|
 |plugin                   |no                                  |Full path to the Nagios plugin script and it's arguments|
 |timeout                  |                                    |How long plugins can run, defaults to 10 seconds. Valid values are of the form 1s, 1m, 1h|
 
@@ -97,7 +97,7 @@ watchers:
 
 This will load the data `{"check_pki": {"warn": 15}}` from the `plugin.scout.overrides` path setting `warn` to 15 and `crit` would be 20 as there is no override.
 
-Either `plugin` or `builtin` has to be set, builtin can only be `heartbeat` at the moment.
+Either `plugin` or `builtin` has to be set, builtin can only be `heartbeat` or `goss` at the moment.
 
 ### Behaviour
 
@@ -115,6 +115,48 @@ choria_machine_nagios_watcher_status{name="check_bacula_db"} 0
 choria_machine_nagios_watcher_last_run_seconds{name="check_httpd"} 1592645406
 choria_machine_nagios_watcher_last_run_seconds{name="check_bacula_db"} 1592645405
 ```
+
+### Goss
+
+The nagios watcher can run [goss](https://github.com/aelsabbahy/goss) checks on a regular basis and publish events based on the outcome.
+
+Goss is a system allowing you to describe your system state to quite a lot of detail and it will then validate the system against that.
+
+An example `gossfile` can be seen here and is typically saved as `/etc/choria/goss.yaml` - a path configured using the `plugin.scout.goss.file` setting.
+
+```yaml
+port:
+  tcp:22:
+    listening: true
+    ip:
+    - 0.0.0.0
+  tcp6:22:
+    listening: true
+    ip:
+    - '::'
+service:
+  sshd:
+    enabled: true
+    running: true
+user:
+  sshd:
+    exists: true
+    uid: 74
+    gid: 74
+    groups:
+    - sshd
+    home: /var/empty/sshd
+    shell: /sbin/nologin
+group:
+  sshd:
+    exists: true
+    gid: 74
+process:
+  sshd:
+    running: true
+```
+
+With this content in the file, a `goss` builtin check will validate all these properties regularly.
 
 ### Remediation
 
