@@ -11,6 +11,7 @@ Avaialble tasks include:
  * _trigger_ - trigger an instant check
  * _maintenance_ - pause regular checks for a specific check
  * _resume_ - resume previously paused regular checks
+ * _goss_validate_ - performs a [goss](https://github.com/aelsabbahy/goss) validation on a node
  
 In time we will include a CLI for interacting with these APIs, today we publish a Golang API and it's usable from the 
 CLI.
@@ -69,6 +70,20 @@ $ choria req scout resume check=mailq -I dev1.example.net
 ```
 
 The `check` argument is optional, when not given all checks will be affected
+
+### Invoking Goss validations
+
+We support a `goss` builtin for running a specific goss validation regularly, but we also support adhoc validations
+via the Node API:
+
+```nohighlight
+$ choria req goss_validate file=/etc/goss.yaml vars=/etc/goss-vars.yaml
+```
+
+Here we invoke goss against `/etc/goss.yaml` with variables loaded from `/etc/goss-vars.yaml`, both these files must
+exit on the node already.
+
+In time we will add support for sending files as a byte stream from a central location for truely adhoc validations.
 
 ## Go API
 
