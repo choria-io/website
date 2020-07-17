@@ -158,3 +158,18 @@ prometheus::node_exporter::extra_options: "--collector.textfile.directory=/var/l
 And then include the `prometheus::node_exporter` class.
 
 For details about checks and alerts please refer to the dedicated Prometheus section.
+
+## Node Management API
+
+Nodes are managed using the Choria RPC protocol and AAA policies.
+
+By default you could only invoke the `check` action on the `scout` agent, this can be managed the same way the `rpcutil` and `choria_util` policies are managed via Hiera:
+
+```yaml
+mcollective::scout_policies:
+  - action: "allow"
+    actions: "checks"
+    callers: "*"
+    facts: "*"
+    classes: "*"
+```
