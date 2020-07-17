@@ -11,7 +11,7 @@ Avaialble tasks include:
  * _trigger_ - trigger an instant check
  * _maintenance_ - pause regular checks for a specific check
  * _resume_ - resume previously paused regular checks
- * _goss_validate_ - performs a [goss](https://github.com/aelsabbahy/goss) validation on a node
+ * *goss_validate* - performs a [goss](https://github.com/aelsabbahy/goss) validation on a node
  
 In time we will include a CLI for interacting with these APIs, today we publish a Golang API and it's usable from the 
 CLI.
