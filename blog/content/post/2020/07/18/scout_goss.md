@@ -1,6 +1,6 @@
 ---
 title: "Scout Goss Integration"
-date: 2020-07-18T09:17:00+01:00
+date: 2020-07-18T09:10:00+01:00
 tags: ["scout"]
 draft: false
 ---
@@ -16,6 +16,8 @@ Goss definitions are written in YAML or JSON and supports Go templating for cust
 This model is well suited for the purposes of monitoring since you can write really in depth sets of validations and treat them as a single unit.
 
 Goss is written in Go, very fast and thanks to a lot of work I did recently embeddable in other software.
+
+<!--more-->
 
 Here's an example Goss specification:
 
@@ -51,12 +53,12 @@ process:
     running: true
 ```
 
-You can see we are able to check many types of server resource and combine them into one test. If we combined this with remediation
+You can see we are able to check many types of server resource and combine them into one test. If we combined this with remediation, 
 and the ability to run this continuously or adhoc we can have a nice framework to build something powerful.
 
 ## Scout Integration
 
-Today Scout is configurable from within Puppet, in our next release which should come next week, we will release Goss support.
+Today Scout is configurable from within Puppet, we shipped Goss support in the release announced today.
 
 I've set things up so you can use the Hierarchical data from Hiera to create your Goss specification:
 
@@ -76,7 +78,8 @@ choria::scout_gossfile:
       running: true
 ```
 
-This is automatically deep merged in Puppet - you can have layers in your hierarchy contribute checks to have unique sets of checks for various parts of your fleet.
+This is automatically deep merged in Puppet - you can have layers in your hierarchy contribute checks to have unique sets 
+of checks for various parts of your fleet.
 
 With this done, we can now schedule a regular check using goss:
 
@@ -100,8 +103,8 @@ OK: OK: Count: 5, Failed: 0, Duration: 0.067s|checks=5;; failed=0;; runtime=0.06
 
 ## Adhoc tests
 
-In our next release we will also ship a `scout` agent to all nodes, this can be used to trigger checks, set maintenance etc
-but also to run adhoc Goss validations.
+We also shipped a `scout` agent to all nodes, this can be used to trigger checks, set maintenance etc but also to run 
+adhoc Goss validations.
 
 ![goss_validate action](goss_action.png)
 
