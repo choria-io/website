@@ -8,12 +8,19 @@ be gathered in real time or stored in our - currently preview - Streaming server
 
 ## Observing
 
-We will soon add CLI utilities to view the events in a friendly manner, for now our generic event integrations can be
-used to see the events.
+Choria includes tools already for viewing events produced by the Autonomous Agent and we are adding some Scout specific
+tools that focus on this particular use case.
 
 ### Status Events
 
-These are events published for every single check that gets done:
+We have an initial Scout watch tool that can observe the real time event stream and also retrieve history from our
+Technology Preview streaming technology.
+
+Here invoked with `choria scout watch --identity dev1.devco.net`
+
+![Scout Watch](../../scout-watch.png)
+
+Previously we added generic Autonomous Agent event viewers, those too can show Scout events:
 
 ```
 $ choria machine watch
