@@ -6,6 +6,8 @@ weight = 50
 
 ## Introduction
 
+![Scout Logo](/ChoriaScout-logo-horizotal-color-25pc.jpg)
+
 Choria Scout is an effort to create a Monitoring Framework that builds on the capabilities of the Choria framework to 
 create a modern, scalable and free cloud native monitoring system.
 
