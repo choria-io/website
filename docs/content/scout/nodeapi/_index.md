@@ -73,7 +73,7 @@ dev1.example.net
 Finished processing 1 / 1 hosts in 1s
 ```
 
-The `status` field - not shown here - holds the full [io.choria.machine.watcher.nagios.v1.state](https://choria.io/schemas/choria/machine/watcher/nagios/v1/state_notification.json) document for each check.
+The `status` field - not shown here - holds the full [io.choria.machine.watcher.nagios.v1.state](https://choria.io/schemas/choria/machine/watcher/nagios/v1/state.json) document for each check.
 
 ### Triggering checks
 
