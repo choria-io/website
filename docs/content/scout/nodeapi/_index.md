@@ -5,18 +5,48 @@ weight = 40
 
 Each Choria managed node expose a RPC API accessible over the Choria network for managing the checks on the node.
 
-Avaialble tasks include:
+Available actions include:
 
- * _checks_ - listing checks
- * _trigger_ - trigger an instant check
- * _maintenance_ - pause regular checks for a specific check
- * _resume_ - resume previously paused regular checks
+ * *checks* - listing checks
+ * *trigger* - trigger an instant check
+ * *maintenance* - pause regular checks for a specific check
+ * *resume* - resume previously paused regular checks
  * *goss_validate* - performs a [goss](https://github.com/aelsabbahy/goss) validation on a node
  
-In time we will include a CLI for interacting with these APIs, today we publish a Golang API and it's usable from the 
+In time, we will include a CLI for interacting with these APIs, today we publish a Golang API and it's usable from the 
 CLI.
 
-## CLI
+## CLI Utilities
+
+A number of utilities have been developed to assist with interacting with the Scout nodes. These utilities are built
+using the API documented below.
+
+### Node Status
+
+```nohighlight
+$ choria scout status dev1.example.net
++-----------------------+-------+------------+-------------------------------+
+| NAME                  | STATE | LAST CHECK | HISTORY                       |
++-----------------------+-------+------------+-------------------------------+
+| mailq                 | OK    | 1m20s      | OK OK OK OK                   |
+| ntp_peer              | OK    | 1m32s      | OK OK OK OK OK OK OK OK OK OK |
+| pki                   | OK    | 2m28s      | OK OK OK OK OK OK OK OK OK OK |
+| puppet_failures       | OK    | 2m3s       | OK OK OK OK WA WA CR CR OK OK |
+| puppet_run            | OK    | 24s        | OK OK OK                      |
+| swap                  | OK    | 4m23s      | OK OK OK OK OK OK OK          |
+| zombieprocs           | OK    | 2m23s      | OK OK OK OK OK OK OK OK OK OK |
+| goss                  | OK    | 3m12s      | OK OK OK                      |
+| heartbeat             | OK    | 57s        | OK OK OK OK OK OK OK OK OK OK |
++-----------------------+-------+------------+-------------------------------+
+```
+
+This retrieves the live status from the *dev1.example.net* node and shows up to 10 historical values for each check,
+these are retrieved directly from the node and does not require any central storage. The oldest check status is on the
+left of the *History* column.
+
+Here we can see the *puppet_failures* check went into **WARNING** then **CRITICAL** before recovering.
+
+## RPC CLI
 
 On the CLI the API can be accessed using the normal _choria req_ command:
 
@@ -36,12 +66,14 @@ dev1.example.net
                  "name": "mailq",
                  "start_time": 1594911784,
                  "state": "OK",
-                 "version": "1.0.0"
+                 "status": {.....}
               }
            ]
 
 Finished processing 1 / 1 hosts in 1s
 ```
+
+The `status` field - not shown here - holds the full [io.choria.machine.watcher.nagios.v1.state](https://choria.io/schemas/choria/machine/watcher/nagios/v1/state_notification.json) document for each check.
 
 ### Triggering checks
 

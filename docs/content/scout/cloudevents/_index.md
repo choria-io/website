@@ -40,18 +40,18 @@ $ choria tool sub choria.machine.watcher.nagios.state
 {
   "data": {
     "protocol": "io.choria.machine.watcher.nagios.v1.state",
-    "identity": "dev1.devco.net",
-    "id": "57e1a6c3-b4e8-4cb6-a893-d9c7ccb0d595",
+    "identity": "dev1.example.net",
+    "id": "3901412f-7453-440f-bee0-19301e059a6d",
     "version": "1.0.0",
-    "timestamp": 1594916155,
+    "timestamp": 1595879087,
     "type": "nagios",
     "machine": "check_mailq",
     "name": "check",
-    "plugin": "/usr/lib64/nagios/plugins/check_mailq -M exim -w {{ o \"warn\" 5 }} -c {{ o \"crit\" 10 }}",
+    "plugin": "/usr/lib64/nagios/plugins/check_mailq -M exim -w 5 -c 10",
     "status": "OK",
     "status_code": 0,
     "output": "OK: mailq (0) is below threshold (5/10)|unsent=0;5;10;0",
-    "check_time": 1594916155,
+    "check_time": 1595879087,
     "perfdata": [
       {
         "unit": "",
@@ -59,31 +59,59 @@ $ choria tool sub choria.machine.watcher.nagios.state
         "value": 0
       }
     ],
-    "runtime": 0.036097902,
+    "runtime": 0.041653168,
     "history": [
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0
+      {
+        "execute": "2020-07-27T18:34:47.059023977Z",
+        "status": 0,
+        "perfdata": [
+          {
+            "unit": "",
+            "label": "unsent",
+            "value": 0
+          }
+        ]
+      },
+      {
+        "execute": "2020-07-27T18:39:47.058776768Z",
+        "status": 0,
+        "perfdata": [
+          {
+            "unit": "",
+            "label": "unsent",
+            "value": 0
+          }
+        ]
+      },
+      {
+        "execute": "2020-07-27T18:44:47.058770221Z",
+        "status": 0,
+        "perfdata": [
+          {
+            "unit": "",
+            "label": "unsent",
+            "value": 0
+          }
+        ]
+      },
+      {
+        "execute": "2020-07-27T18:49:47.058799245Z",
+        "status": 0,
+        "perfdata": [
+          {
+            "unit": "",
+            "label": "unsent",
+            "value": 0
+          }
+        ]
+      }
     ]
   },
-  "id": "9613d3d3-927a-4659-9b24-c1578d93212c",
+  "id": "ca330f1c-4d75-4688-86d4-6e6775672f79",
   "source": "io.choria.machine",
   "specversion": "1.0",
-  "subject": "dev1.devco.net",
-  "time": "2020-07-16T16:15:55Z",
+  "subject": "dev1.example.net",
+  "time": "2020-07-27T19:44:47Z",
   "type": "io.choria.machine.watcher.nagios.v1.state"
 }
 ```
