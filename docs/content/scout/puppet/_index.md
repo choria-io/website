@@ -79,6 +79,23 @@ The data can be set in Hiera:
 
 The `warn` key will be fretched from a Hash matching the check name.
 
+### Annotations
+
+You can add annotations to checks, these annotations are a `Hash[String, String]` map and will be sent with in events
+produced by Choria.
+
+These can later be used for event routing and so forth.
+
+```puppet
+choria::scout_check{"mailq":
+    plugin             => "/usr/lib64/nagios/plugins/check_mailq",
+    arguments          => "-M exim -w 5 -c 10",
+    annotations        => {
+      "contact" => "ops@example.net"
+    }
+}
+```
+
 ### Remediation
 
 Remediation is supported by running a supplied command when the check is in a specific state. The remediation command is
