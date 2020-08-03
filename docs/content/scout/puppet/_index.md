@@ -86,6 +86,15 @@ produced by Choria.
 
 These can later be used for event routing and so forth.
 
+Node level annotations can be set in Hiera, these apply to all checks on the node:
+
+```yaml
+choria::scout_annotations:
+    environment: development
+```
+
+Check specific ones are set per checks, these are merged with the node ones - and will override the node ones.
+
 ```puppet
 choria::scout_check{"mailq":
     plugin             => "/usr/lib64/nagios/plugins/check_mailq",
@@ -94,6 +103,13 @@ choria::scout_check{"mailq":
       "contact" => "ops@example.net"
     }
 }
+```
+
+With both these set the combined annotations for this check would be:
+
+```yaml
+environment: development
+contact: ops@example.net
 ```
 
 ### Remediation
