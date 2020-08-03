@@ -46,6 +46,24 @@ left of the *History* column.
 
 Here we can see the *puppet_failures* check went into **WARNING** then **CRITICAL** before recovering.
 
+## Trigger, Maintenance and Resume checks
+
+Checks can be triggered for immediate check, placed in maintenance which prevents further checks and scheduled for new
+checks after maintenance from the CLI.
+
+```nohighlight
+$ choria scout maintenance --check check_pki
+Discovering nodes .... 27
+
+27 / 27    0s [====================================================================] 100%
+
+Placed 27 checks into maintenance mode on 27 nodes
+
+Finished processing 27 / 27 hosts in 847.020668ms
+```
+
+Options exist to select nodes based on Choria filters, limit which checks and so forth, see `--help` of these commands.
+
 ## RPC CLI
 
 On the CLI the API can be accessed using the normal _choria req_ command:
