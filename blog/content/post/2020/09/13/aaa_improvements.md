@@ -56,7 +56,8 @@ and replies of other clients thus gaining valuable intel.
 NATS does not have a concept of private subject, so we use the AAA Service JWT token to determine the Choria
 identity of the client that connects. Using this identity we establish a private namespace where replies from
 the fleet back to the client will be sent, this reply subject is only accessible to the individual caller id
-as issued by the AAA Service.
+as issued by the AAA Service. Together with other ACLs this locks the whole network down and prevents passive
+snooping on requests or replies.
 
 ## Configuration
 
