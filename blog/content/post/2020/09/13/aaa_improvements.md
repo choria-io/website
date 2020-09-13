@@ -6,12 +6,12 @@ draft: false
 ---
 
 Choria introduced a [Centralized AAA](https://choria.io/blog/post/2019/01/23/central_aaa/) model in 2019
-that elevate the need for managing certificates of every user and allow you to integrate Choria into 
+that alleviate the need for managing certificates of every user and allow you to integrate Choria into 
 your enterprise identity providers for Authentication, Auditing and Authorization.
 
 For controlled environments this model is a huge boom, but there was one annoying thing - the need to still
-issue a TLS certificate to communicate with Choria Brokers. These certificates do not form part of the 
-security model of Choria but was nonetheless required to exist, you could share them but that was 
+issue a TLS certificate to communicate with Choria Brokers. In this mode, these certificates do not form part 
+of the security model of Choria but was nonetheless required to exist, you could share them but that was 
 frowned upon.
 
 In our next release we will introduce a new broker type that significantly simplifies the AAA security
@@ -34,7 +34,7 @@ mTLS secured Choria environment.
 We connect a Leafnode to the existing Choria Brokers which also uses mTLS to verify itself into the 
 Choria network.
 
-This Leafnode though is configured to accept anonymous TLS connection - it does not require any certificate
+This Leafnode though is configured to accept anonymous TLS connections - it does not require any certificate
 to be presented by the client and does no verification.
 
 Usually this would, correctly, raise a number of concerns such as giving unverified clients access to the
