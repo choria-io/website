@@ -37,19 +37,22 @@ Discovering nodes .... 2
 
 2 / 2    0s [====================================================================] 100%
 
-+------------------+--------+------------------+-------+------+--------+----------+------------+---------+
-| SENDER           | ARCH   | ENSURE           | EPOCH | NAME | OUTPUT | PROVIDER | RELEASE    | VERSION |
-+------------------+--------+------------------+-------+------+--------+----------+------------+---------+
-| dev2.example.net | x86_64 | 5.0.2-34.el7_8.2 | 0     | zsh  |        | yum      | 34.el7_8.2 | 5.0.2   |
-| dev1.example.net | x86_64 | 5.0.2-34.el7_8.2 | 0     | zsh  |        | yum      | 34.el7_8.2 | 5.0.2   |
-+------------------+--------+------------------+-------+------+--------+----------+------------+---------+
++------------------+--------+------------------+-------+------+----------+------------+---------+
+| SENDER           | ARCH   | ENSURE           | EPOCH | NAME | PROVIDER | RELEASE    | VERSION |
++------------------+--------+------------------+-------+------+----------+------------+---------+
+| dev2.example.net | x86_64 | 5.0.2-34.el7_8.2 | 0     | zsh  | yum      | 34.el7_8.2 | 5.0.2   |
+| dev1.example.net | x86_64 | 5.0.2-34.el7_8.2 | 0     | zsh  | yum      | 34.el7_8.2 | 5.0.2   |
++------------------+--------+------------------+-------+------+----------+------------+---------+
 ```
 
 We improved generated Go clients significantly by allowing them to have typical progress bars, `choria req` like result
 formatting, result parsing helpers, improved logging and faster discovery.  These features are show cased in the new 
 `choria scout` commands that are built entirely by using abilities of the generated clients. We also significantly 
 simplified the code for `choria req` by using the same features.
-   
+
+We have nice menu based zsh completion, you can generate a completion script using `choria completion --zsh`, we're
+looking for a contributor who can build a nice moden bash based completion script as our old one is a bit long in the tooth.
+
 Shout out to Romain Tartière and Mike Newton for their contribution
 
 <!--more-->
