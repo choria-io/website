@@ -210,6 +210,75 @@ watchers:
 
 Checks can be stopped using `mco rpc choria_util machine_transition name=check_httpd transition=MAINTENANCE` and resumed using by passing `transition=RESUME` instead.
 
+## Home Kit watcher
+
+The `homekit` watcher creates an Apple Home Kit Button resource that can be activated from iOS devices and Siri. When the button is pressed on a `success_transition` is fired and when off a `fail_transition`.
+
+This watcher requires write access to a `homekit` directory within the machine directory to store state.
+
+### Properties
+
+|Property                 |Required |Description|
+|-------------------------|---------|-----------|
+|pin                      |yes      |The pin to enter when adding the button to Home App|
+|serial_number            |         |The serial number to report to Home Kit|
+|model                    |         |The model to report to Home Kit, defaults to `Autonomous Agent`|
+|setup_id                 |         |A Home Kit set up id to report|
+|initial                  |         |The initial state of the button, either `on` or `off`|
+|on_when                  |         |When the machine is in any of these states the button will be reported as `on` to Home Kit|
+|off_when                 |         |When the machine is in any of these states the button will be reported as `off` to Home Kit|
+|disable_when             |         |When the machine is in any of these states the Home Kit integration will shut down and the button will be unreachable|
+
+### Behavior
+
+This creates an Apple Home Kit button reported as `Extractor`, it will be a simple on/off style button that fires `success_transition` when pressed on and `fail_transition` when pressed off.
+
+When another watcher, or external RPC event, transitions the machine to different states this button can flip to on or off dependant on the states listed in `on_when` and `off_when`.
+
+```yaml
+- name: extractor
+  type: homekit
+  state_match:
+    - unknown
+    - "on"
+    - "off"
+    - 2hours_on
+    - 2hours_off
+  success_transition: override_on
+  fail_transition: override_off
+  properties:
+    pin: "12345679"
+    on_when: [2hours_on, "on"]
+    off_when: [2hours_off, unknown, "off"]
+    disable_when: [pause]
+```
+
+## Timer watcher
+
+The `timer` watcher starts a timer when the state machine transitions into a state that it's matched on and emits a transition event when the timer end.
+
+This can be used to create systems like a maintenance window that automatically expire.
+
+### Properties
+
+|Property                 |Required                            |Description|
+|-------------------------|------------------------------------|-----------|
+|timer                    |yes                                 |How long the timer should run for, triggers `fail_transition` at the end of the timer|
+
+### Behavior
+
+The timer will start whenever the machine enters a state listed in `state_match`, once the timer reach the end it will trigger `success_transition` if set. If, while active, the machine transitions from one state in `state_match` to another also in `state_match` the timer will reset.
+
+```yaml
+- name: 2hours_off_timer
+  type: timer
+  success_transition: override_ends
+  state_match:
+  - 2hours_off
+  properties:
+    timer: 2h 
+```
+
 ## Scheduler watcher
 
 The *scheduler* watcher flips between success and fail states based on a set of schedules specified in a crontab like format.  Use it to enter and exit a state on a schedule and combine it with an exec watcher to run commands on a schedule.

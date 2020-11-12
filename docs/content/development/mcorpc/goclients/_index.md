@@ -213,7 +213,18 @@ res.EachOutput(func(r *p.DisableOutput) {
 
 The *ResultDetails()* gives you access to *Sender() string*, *OK() bool*, *StatusMessage() string* and *StatusCode() StatusCode*, these map to the similar things in the standard RPC libraries.
 
-Finally you can call *res.HashMap()* which will give you a *map[string]interface{}* of the whole result structure.
+You can call *res.HashMap()* which will give you a *map[string]interface{}* of the whole result structure. We have helpers to parse the results into Go structures:
+
+```go
+    res.EachOutput(func(r *p.DisableOutput) {
+        if r.ResultDetails().OK() {
+            fmt.Printf("OK: %-40s: enabled: %v\n", r.ResultDetails().Sender(), r.Enabled())
+        } else {
+            fmt.Printf("!!: %-40s: message: %s\n", r.ResultDetails().Sender(), r.ResultDetails().StatusMessage())
+        }
+    })
+
+```
 
 ### Statistics
 
