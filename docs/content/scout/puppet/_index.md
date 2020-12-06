@@ -22,7 +22,7 @@ The basic check is a Nagios compatible plugin, meaning the exit code is meaningf
 |2        |CRITICAL|The plugin detected that either the service was not running or it was above some "critical" threshold|
 |3        |UNKNOWN|Invalid command line arguments were supplied to the plugin or low-level failures internal to the plugin (such as unable to fork, or open a tcp socket) that prevent it from performing the specified operation. Higher-level errors (such as name resolution errors, socket timeouts, etc) are outside of the control of plugins and should generally NOT be reported as UNKNOWN states.|
 
-Additionally, we attempt to parse well formed Nagios Performance data.
+Additionally, we attempt to parse well-formed Nagios Performance data.
 
 A basic Nagios based check can be configured like this:
 
@@ -171,6 +171,58 @@ choria::scout_gossfile:
 ```
 
 In your gossfile the Overrides data can be used using it's templating via the _{{.Vars}}_.
+
+## Metrics
+
+As seen above the basic Nagios compatible Check does parse perfdata, it does not though emit these onto graphs. We might
+do that in time but it's quite complex to do that with Prometheus since Prometheus has very limited data type and units 
+support compared to Nagios perfdata.
+
+So we added a Scout specific metric type that plays well with Prometheus, later we'll do some work to handle most perfdata
+as well.
+
+Here is an example of metrics from my IoT plugs:
+
+```nohighlight
+$ kasa-plug --plug plug1.example.net energy --choria
+{
+  "labels": {
+    "address": "plug1.example.net",
+    "alias": "Plug",
+    "model": "HS110(UK)"
+  },
+  "metrics": {
+    "current_amp": 2.4739999771118164,
+    "on_seconds": 2693,
+    "power_state": 1,
+    "power_watt": 581.6829833984375,
+    "total_watt": 27.46299934387207,
+    "voltage_volt": 236.36199951171875
+  }
+}
+```
+
+Here we have `labels` that's a hash of strings and `metrics` that's a hash of 64bit floats. Choria can run the command
+regularly, parse the JSON result and pass that onto Prometheus for graphing. Labels supplied by the plugin can be augmented
+or replaced by ones configured in Scout.
+
+```puppet
+choria::scout_metric{"plug1":
+  metric => "kasa",
+  command => "/usr/local/bin/kasa-plug",
+  arguments => "--plug plug1.example.net energy --choria",
+  interval => "1m",
+  labels => {
+    "location" => $facts["location"]
+  }
+}
+```
+
+This adds a metric configuration that will produce data in the `choria_machine_metric_watcher_kasa_current_amp` Prometheus
+statistic, labels will be those from the check with the additional `location` one added. This way you can poll many IoT Plugs
+and have them all emit the same metrics using the typical label based model of Prometheus to differentiate.
+
+If the Prometheus integration is enabled, see below, this data will be polled by Prometheus.
 
 ## Prometheus
 
