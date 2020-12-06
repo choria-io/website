@@ -222,6 +222,19 @@ This adds a metric configuration that will produce data in the `choria_machine_m
 statistic, labels will be those from the check with the additional `location` one added. This way you can poll many IoT Plugs
 and have them all emit the same metrics using the typical label based model of Prometheus to differentiate.
 
+Like checks these can also be added via hiera:
+
+```yaml
+choria::scout_metrics:
+  plug1:
+    metric: kasa
+    command: /usr/local/bin/kasa-plug
+    arguments: --plug plug1.example.net energy --choria
+    interval: 1m
+    labels:
+      location: "%{facts.location}"
+```
+
 If the Prometheus integration is enabled, see below, this data will be polled by Prometheus.
 
 ## Prometheus
