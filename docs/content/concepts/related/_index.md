@@ -52,20 +52,3 @@ A video demonstrating this capability can be seen below:
 
 <iframe width="840" height="473" src="https://www.youtube.com/embed/7sGHf55_OQM" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 
-## Go Libraries
-
-We maintain a number of Go libraries, some might be useful in your use cases
-
-### go-security
-
-The [go-security](https://godoc.org/github.com/choria-io/go-security) library currently contains a Puppet and File based security provider used by Choria Server, Stream Replicator and Prometheus Streams.  The library can enroll in a Puppet CA.  In the future we will support other CA's like Vault.
-
-### go-validator
-
-The [go-validator](https://godoc.org/github.com/choria-io/go-validator) has a few basic data validators for things systems tools might need like ip addresses etc. It's used by `go-confkey` to do validation of the Choria config files.
-
-It can be used with any Go struct.
-
-### go-confkey
-
-Parsing the MCollective configuration into Go structures is kind of complex as it supports several different ways of creating lists, numbers etc, it has defaults and Environment based overrides.  The [go-confkey](https://godoc.org/github.com/choria-io/go-confkey) library can be used to parse any `key=val` based configuration format with data conversions and input validation.

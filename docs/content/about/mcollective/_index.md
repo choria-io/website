@@ -22,20 +22,8 @@ Puppet Inc have donated all the legacy MCollective code, this code is hosted in 
 
 Choria - and MCollective via the compatability layer - is in wide use by the community, we have some work left to do but the transition is generally smooth now.
 
-For further information please contact me am on the Puppet IRC as _Volcane_ and on slack as _ripienaar_, we also have a _#choria channel on Freenode of _#choria_ on the [Puppet Slack](http://slack.puppet.com/).
+For further information please contact me am on the Puppet IRC as _Volcane_ and on slack as _ripienaar_, _#choria_ on the [Puppet Slack](http://slack.puppet.com/) and [GitHub Discussions](https://github.com/choria-io/general/discussions).
 
 ## Source Code
 
 Source code for legacy Marionette Collective projects was donated to Choria by Puppet Inc, archival copies of the code is in the [Choria Legacy](https://github.com/choria-legacy) project.  Of these legacy projects a number of plugins are being maintained and evolved, see the [Choria Plugins](https://github.com/choria-plugins/) project for those.
-
-## Timeline
-
-|Date|Event|
-|----|-----|
-|2018/04/24|[Preview of The Choria Server](/docs/configuration/choria_server/) released that replaces _mcollectived_|
-|2018/07/15|Key documents from the _mcollective_ project adopted detailing usage of the RPC framework|
-|2018/07/17|Official deprecation by Puppet Inc|
-|2018/07/25|#choria created on Freenode|
-|Fall 2018|Target date for Puppet 6 and removal of _mcollective_ libraries from _puppet-agent_|
-|2018/11/19|Puppet Inc officially hand over all _mcollective_ related code, hosted in [Choria Legacy](https://github.com/choria-legacy)|
-|2018/12/01|Initial Choria releases that support Puppet 6|

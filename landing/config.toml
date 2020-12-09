@@ -24,5 +24,5 @@ googleAnalytics = "UA-10152852-12"
 
 [[params.social]]
     title = "community"
-    url = "https://groups.google.com/forum/#!forum/choria-users"
+    url = "https://github.com/choria-io/general/discussions"
     button = "primary"

@@ -17,6 +17,15 @@ Review the [Key Concepts](../concepts) section to discover what you can do with 
 
 If you just wish to get your hands dirty and experience Choria first-hand please see our [Vagrant Demo](https://github.com/choria-io/vagrant-demo).
 
+## Community
+
+Choria users can be found in a few places:
+
+ * `#choria` channel on [Slack](https://puppetcommunity.slack.com/)
+ * [GitHub Discussions](https://github.com/choria-io/general/discussions)
+ * [Google Groups](https://groups.google.com/forum/#!forum/choria-users)
+ * [Choria Blog](https://choria.io/blog)
+
 ## Status
 
 This system is production ready but under active development.  At various fronts we are working to replace reliance on Puppet Agent and legacy MCollective, the project lives on [GitHub](https://github.com/choria-io).
