@@ -267,7 +267,7 @@ This can be used to create systems like a maintenance window that automatically 
 
 ### Behavior
 
-The timer will start whenever the machine enters a state listed in `state_match`, once the timer reach the end it will trigger `success_transition` if set. If, while active, the machine transitions from one state in `state_match` to another also in `state_match` the timer will reset.
+The timer will start whenever the machine enters a state listed in `state_match`, once the timer reach the end it will trigger `fail_transition` if set. If, while active, the machine transitions from one state in `state_match` to another also in `state_match` the timer will reset.
 
 ```yaml
 - name: 2hours_off_timer

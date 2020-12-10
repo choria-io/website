@@ -10,10 +10,6 @@ Autonomous Agents allow you to create agents that can run on any node continuous
 This feature is available since *Choria Server 0.11.0*
 {{% /notice %}}
 
-{{% notice warning %}}
-This is a preview level feature, we're including to seek community feedback on an MVP level feature set
-{{% /notice %}}
-
 ## Use Cases
 
 These agents are designed to run continuously for the life of the Choria Server where they manage the node or environment the node runs in.
