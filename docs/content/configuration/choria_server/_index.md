@@ -49,8 +49,6 @@ On all your nodes where you wish to run the new service:
 ```yaml
 choria::server: true
 choria::manage_package_repo: true
-mcollective::service_ensure: stopped
-mcollective::service_enable: false
 ```
 
 On all nodes including those that are pure MCollective and your clients:
