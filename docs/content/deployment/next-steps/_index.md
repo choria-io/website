@@ -26,39 +26,46 @@ Active Choria configuration:
 
 The active configuration used in Choria comes from using Puppet AIO defaults, querying SRV
 records and reading configuration files.  The below information shows the completely resolved
-configuration that will be used when running Choria commands
+configuration that will be used when running MCollective commands
 
 MCollective related:
 
- MCollective Version: 2.9.1
-  Client Config File: /etc/puppetlabs/mcollective/client.cfg
-  Active Config File: /etc/puppetlabs/mcollective/client.cfg
-   Plugin Config Dir: /etc/puppetlabs/mcollective/plugin.d
-   Using SRV Records: true
-          SRV Domain: dev.example.net
-  Middleware Servers: nats1.example.net:4222, nats2.example.net:4222, nats3.example.net:4222
+    MCollective Version: 2.21.1
+         Choria Version: 0.19.0
+     Client Config File: /etc/puppetlabs/mcollective/client.cfg
+     Active Config File: /etc/puppetlabs/mcollective/client.cfg
+      Plugin Config Dir: /etc/puppetlabs/mcollective/plugin.d
+      Using SRV Records: true
+              Federated: false
+             SRV Domain: example.com
+               NATS NGS: false
+     Middleware Servers: puppet.example.com:4222
 
 Puppet related:
 
-       Puppet Server: puppet1.example.net:8140
-     PuppetCA Server: puppet1.example.net:8140
-     PuppetDB Server: puppet1.example.net:8140
+       Puppet Server: puppet.example.com:8140
+     PuppetCA Server: puppet.example.com:8140
+     PuppetDB Server: puppet.example.com:8081
+     Discovery Proxy: not using a proxy
       Facter Command: /opt/puppetlabs/bin/facter
-       Facter Domain: example.net
+       Facter Domain: example.com
 
-SSL setup:
+Security setup:
 
      Valid SSL Setup: yes
+   Security Provider: puppet
             Certname: rip.mcollective
        SSL Directory: /home/rip/.puppetlabs/etc/puppet/ssl (found)
   Client Public Cert: /home/rip/.puppetlabs/etc/puppet/ssl/certs/rip.mcollective.pem (found)
   Client Private Key: /home/rip/.puppetlabs/etc/puppet/ssl/private_keys/rip.mcollective.pem (found)
              CA Path: /home/rip/.puppetlabs/etc/puppet/ssl/certs/ca.pem (found)
             CSR Path: /home/rip/.puppetlabs/etc/puppet/ssl/certificate_requests/rip.mcollective.pem (found)
+      Public Cert CN: rip.mcollective (match)
 
 Active Choria configuration settings as found in configuration files:
 
-              choria.srv_domain: dev.example.net
+  choria.security.serializer: json
+           choria.srv_domain: example.com
 
 ```
 
@@ -71,49 +78,66 @@ about which middleware server they used in the case of clusters:
 ```nohighlight
 $ mco rpc choria_util info
 
-Discovering hosts using the choria method .... 3
+Discovering hosts using the mc method for 2 second(s) .... 47
 
- * [ ============================================================> ] 1 / 1
+ * [ ============================================================> ] 47 / 47
 
 
 
-Summary of Client Flavour:
+Summary of Choria Version:
 
-   nats-pure = 3
+   choria 0.18.0 = 42
+   choria 0.14.0 = 3
+   choria 0.17.0 = 2
 
-Summary of Client Version:
+Summary of Middleware Client Flavour:
 
-   0.2.0 = 3
+   nats.go go1.14.10 = 42
+    nats.go go1.14.2 = 3
+    nats.go go1.14.9 = 2
+
+Summary of Middleware Client Library Version:
+
+   1.11.0 = 44
+    1.9.2 = 3
 
 Summary of Connected Broker:
 
-   nats://puppet1.example.net:4222 = 1
-   nats://puppet2.example.net:4222 = 2
+   nats://puppet.example.com:4222 = 47
+
+Summary of Connector TLS:
+
+   true = 47
+
+Summary of Protocol Secure:
+
+   true = 47
 
 Summary of SRV Domain:
 
-   example.net = 2
+   example.com = 47
 
 Summary of SRV Used:
 
-   true = 1
+   true = 47
 
 
-Finished processing 3 / 3 hosts in 228.40 ms
+Finished processing 47 / 47 hosts in 666.77 ms
+
 ```
 
-Here we observe 3 nodes with 1 connected to *puppet1.example.net:4222* and 2 connected to *puppet2.example.net:4222*.  Add *--display always* for much more details.
+Here we observe 47 nodes, some nodes have older components than others but all are connected to *puppet.example.com:4222*.  Add *--display always* for much more details.
 
 From the shell you set up the user in lets check the version of _puppet-agent_ installed on your nodes:
 
 ```nohighlight
 $ mco package status puppet-agent
 
- * [ ============================================================> ] 15 / 15
+ * [ ============================================================> ] 3 / 3
 
-                 dev1.example.net: puppet-agent-1.8.0-1.el7.x86_64
-                 dev2.example.net: puppet-agent-1.8.0-1.el7.x86_64
-                 dev3.example.net: puppet-agent-1.8.0-1.el7.x86_64
+                 dev1.example.net: puppet-agent-6.19.1-1.el7.x86_64
+                 dev2.example.net: puppet-agent-6.19.1-1.el7.x86_64
+                 dev3.example.net: puppet-agent-6.19.1-1.el7.x86_64
 
 Summary of Arch:
 
@@ -121,7 +145,7 @@ Summary of Arch:
 
 Summary of Ensure:
 
-   1.8.0-1.el7 = 3
+   6.19.1-1.el7 = 3
 
 
 Finished processing 3 / 3 hosts in 71.63 ms
@@ -140,43 +164,41 @@ $ mco inventory dev1.example.net
 Inventory for dev1.example.net:
 
    Server Statistics:
-                      Version: 2.9.1
-                   Start Time: 2016-12-16 21:35:20 +0100
-                  Config File: /etc/puppetlabs/mcollective/server.cfg
-                  Collectives: de_collective, mcollective
+                      Version: 0.18.0
+                   Start Time: 2020-11-25 10:21:12 -1000
+                  Config File: /etc/choria/server.conf
+                  Collectives: mcollective
               Main Collective: mcollective
-                   Process ID: 13127
-               Total Messages: 12
-      Messages Passed Filters: 12
-            Messages Filtered: 0
+                   Process ID: 27374
+               Total Messages: 339
+      Messages Passed Filters: 291
+            Messages Filtered: 48
              Expired Messages: 0
-                 Replies Sent: 11
-         Total Processor Time: 35.85 seconds
-                  System Time: 16.33 seconds
+                 Replies Sent: 0
+         Total Processor Time: 0 seconds
+                  System Time: 0 seconds
 
    Agents:
-      discovery       filemgr         package
-      puppet          rpcutil         service
+      bolt_tasks      choria_util     discovery
+      filemgr         nettest         package
+      puppet          rpcutil         scout
+      service         unix
 
    Data Plugins:
-      agent           collective      fact
-      fstat           puppet          resource
-      service
+      No data plugins installed
 
    Configuration Management Classes:
-    mcollective                           mcollective::config
-    mcollective::facts                    mcollective::packager
-    mcollective::plugin_dirs              mcollective::service
-    mcollective_agent_filemgr             mcollective_agent_iptables
-    mcollective_agent_package             mcollective_agent_puppet
-    mcollective_agent_puppetca            mcollective_agent_service
-    mcollective_choria                    mcollective_util_actionpolicy
+    choria                               choria::broker
+    choria::broker::config               choria::broker::service
+    choria::config                       choria::install
+    choria::repo                         choria::scout_checks
+    choria::service
 
    Facts:
-      aio_agent_version => 1.8.0
+      aio_agent_version => 6.19.1
       architecture => x86_64
-      augeas => {"version"=>"1.4.0"}
-      augeasversion => 1.4.0
+      augeas => {"version"=>"1.12.0"}
+      augeasversion => 1.12.0
       ...
 ```
 
@@ -186,7 +208,7 @@ You can get a quick report of values for some fact (add -v for node names):
 $ mco facts aio_agent_version
 Report for fact: aio_agent_version
 
-        1.8.0                                    found 3 times
+        6.19.1                                   found 3 times
 
 Finished processing 3 / 3 hosts in 18.61 ms
 ```
