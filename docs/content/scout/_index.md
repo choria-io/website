@@ -28,6 +28,7 @@ Scout is a work in progress, today it features:
  * Framework level features in Choria Server that can run Nagios checks and perform remediation
  * Integration with [Goss](https://github.com/aelsabbahy/goss) for regular deep node inspection
  * Integration into the popular Prometheus system to publish check overview state
+ * Metric plugins that expose data to Prometheus, Nagios perfdata support planned
  * Publishes CNCF CloudEvents format messages about check statuses
  * Configurable using Puppet
  * Highly Scalable to 10s of thousands of nodes

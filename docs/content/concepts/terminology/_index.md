@@ -21,6 +21,10 @@ They can be written in Ruby via the MCollective Compatibility Framework or in Go
 
 A log kept by the RPC framework of all actions performed on a server
 
+## Autonomous Agent
+
+[Autonomous Agent](../../autoagents) are Finite State Machines that are hosted by Choria on your managed nodes, they run continuously and can react to changes on your fleet or manage external devices such as HVAC, Lights or more.
+
 ## Authentication
 
 The process of securely identifying a user using PKI
@@ -58,6 +62,10 @@ Delivered as part of the *choria* single binary.
 A managed instance of the [NATS.io](https://nats.io) Server, capable of serving 50 000 or more connections on a single compute node.
 
 Delivered as part of the *choria* single binary.
+
+## Choria Scout
+
+[Scout](../../scout) is a project currently in R&D that will deliver a full feature, secure and highly scalable monitoring system using Choria technologies.
 
 ## Client
 

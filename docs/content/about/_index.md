@@ -15,19 +15,24 @@ The Choria Project safe guards the investment users have made in The Marionette 
 
 Review the [Key Concepts](../concepts) section to discover what you can do with Choria, its architecture and detailed overview of the project.
 
+Additionally, for non-Puppet users Choria introduce new concepts in the IoT space such as ability to host Finite State Machines to manage anything unattended
+
+Choria as an ecosystem is under active development - a full featured monitoring system based on Choria is being developed.
+
 If you just wish to get your hands dirty and experience Choria first-hand please see our [Vagrant Demo](https://github.com/choria-io/vagrant-demo).
 
 ## Community
 
 Choria users can be found in a few places:
 
- * `#choria` channel on [Slack](https://puppetcommunity.slack.com/)
  * [GitHub Discussions](https://github.com/choria-io/general/discussions)
- * [Google Groups](https://groups.google.com/forum/#!forum/choria-users)
  * [Choria Blog](https://choria.io/blog)
+ * `#choria` channel on [Slack](https://puppetcommunity.slack.com/)
 
 ## Status
 
-This system is production ready but under active development.  At various fronts we are working to replace reliance on Puppet Agent and legacy MCollective, the project lives on [GitHub](https://github.com/choria-io).
+This system is production ready but under active development. The project lives on [GitHub](https://github.com/choria-io).
 
 Extensive performance testing has been done that showed the system to be stable at over 100 000 nodes.  Getting to 50 000 nodes is easily achievable using a single middleware compute node.
+
+New features such as [Choria Scout](../scout) and [Autonomous Agents](../autoagents) are under active R&D 

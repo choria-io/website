@@ -6,7 +6,7 @@ weight = 30
 
 ## Introduction
 
-Puppet Tasks are new containers for commands, much like Choria Agents they have metadata that can describe their inputs and outputs and they are distributed using the Puppet Forge.
+Puppet Tasks are containers for commands, much like Choria Agents they have metadata that can describe their inputs and outputs and they are distributed using the Puppet Forge.
 
 These can be much easier to write than Choria Agents as their metadata is very light weight and can progressively become more complex as your needs grow.  Tasks can be written using any Programming Language.
 

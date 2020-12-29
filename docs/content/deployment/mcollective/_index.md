@@ -1,25 +1,25 @@
 +++
-title = "MCollective"
+title = "Choria"
 weight = 130
 toc = true
 +++
 
-Configuring MCollective with Choria is generally very simple and involves just including 1 module and setting some Hiera data, it takes care of the entire process for you.
+Configuring Choria is generally very simple and involves just including 1 module and setting some Hiera data, it takes care of the entire process for you.
 
-In MCollective terminology a _client_ is one you manage your network from - where you run _mco_ commands - and a _server_ is a node being managed.
+In Choria terminology a _client_ is one you manage your network from - where you run _mco_ commands - and a _server_ is a node being managed.
 
 ## Every node
 
-All nodes should have the _choria-mcollective_ module on them, by default every node becomes an MCollective Server ready to be managed via MCollective:
+All nodes should have the _choria_mcollective_ module on them, by default every node becomes an Choria Server ready to be managed via Choria:
 
 {{% notice tip %}}
-The choria/mcollective_choria module has a number of [dependencies](https://forge.puppet.com/choria/mcollective_choria/dependencies), if you use R10k to manage environments please be sure to fetch all dependencies.
+The choria/choria module has a number of [dependencies](https://forge.puppet.com/choria/choria/dependencies), if you use R10k to manage environments please be sure to fetch all dependencies.
 {{% /notice %}}
 
 
 ```puppet
 node "server1.example.net" {
-  include mcollective
+  include choria
 }
 ```
 
@@ -35,5 +35,5 @@ If you wish to have Client Only machines, you can disable the server on them:
 
 ```yaml
 mcollective::client: true
-mcollective::server: false
+choria::server: false
 ```

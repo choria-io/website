@@ -52,3 +52,6 @@ A video demonstrating this capability can be seen below:
 
 <iframe width="840" height="473" src="https://www.youtube.com/embed/7sGHf55_OQM" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 
+## Helm Charts
+
+As part of the Scout project we are working on a fully [Kubernetes hosted solution](https://github.com/choria-io/helm) that's independent of Puppet. It auto enrolls nodes, auto configures them and manage their life cycle completely without needing any external components. 

@@ -69,56 +69,41 @@ help for the *rpc* application:
 
 ```nohighlight
 $ mco rpc --help
-Generic RPC agent client application
+usage: choria req [<flags>] <agent> <action> [<args>...]
 
-Usage: mco rpc [options] [filters] --agent <agent> --action <action> [--argument <key=val> --argument ...]
-Usage: mco rpc [options] [filters] <agent> <action> [<key=val> <key=val> ...]
+Performs a RPC request against the Choria network
 
-Application Options
-        --no-results, --nr           Do not process results, just send request
-    -a, --agent AGENT                Agent to call
-        --action ACTION              Action to call
-        --arg, --argument ARGUMENT   Arguments to pass to agent
+Flags:
+      --help                  Show context-sensitive help (also try --help-long and --help-man).
+      --version               Show application version.
+  -d, --debug                 Enable debug logging
+      --config=FILE           Config file to use
+  -F, --wf=WF ...             Match hosts with a certain fact
+  -C, --wc=WC ...             Match hosts with a certain configuration management class
+  -A, --wa=WA ...             Match hosts with a certain Choria agent
+  -I, --wi=WI ...             Match hosts with a certain Choria identity
+  -W, --with=FILTER ...       Combined classes and facts filter
+      --limit=LIMIT           Limits request to a set of targets eg 10 or 10%
+      --limit-seed=SEED       Seed value for deterministic random limits
+      --batch=SIZE            Do requests in batches
+      --batch-sleep=SECONDS   Sleep time between batches
+  -T, --target=TARGET         Target a specific sub collective
+      --workers=3             How many workers to start for receiving messages
+      --nodes=NODES           List of nodes to interact with
+      --np                    Disable the progress bar
+  -j, --json                  Produce JSON output only
+      --table                 Produce a Table output of successful responses
+  -v, --verbose               Enable verbose output
+      --display=DISPLAY       Display only a subset of results (ok, failed, all, none)
+      --discovery-timeout=SECONDS
+                              Timeout for doing discovery
+      --dm=DM                 Sets a discovery method (broadcast, choria)
+  -o, --output-file=FILENAME  Filename to write output to
 
-RPC Options
-        --np, --no-progress          Do not show the progress bar
-    -1, --one                        Send request to only one discovered nodes
-        --batch SIZE                 Do requests in batches
-        --batch-sleep SECONDS        Sleep time between batches
-        --limit-seed NUMBER          Seed value for deterministic random batching
-        --limit-nodes, --ln, --limit COUNT
-                                     Send request to only a subset of nodes, can be a percentage
-    -j, --json                       Produce JSON output
-        --display MODE               Influence how results are displayed. One of ok, all or failed
-    -c, --config FILE                Load configuration from file rather than default
-    -v, --verbose                    Be verbose
-    -h, --help                       Display this screen
-
-Common Options
-    -T, --target COLLECTIVE          Target messages to a specific sub collective
-        --dt, --discovery-timeout SECONDS
-                                     Timeout for doing discovery
-    -t, --timeout SECONDS            Timeout for calling remote agents
-    -q, --quiet                      Do not be verbose
-        --ttl TTL                    Set the message validity period
-        --reply-to TARGET            Set a custom target for replies
-        --dm, --disc-method METHOD   Which discovery method to use
-        --do, --disc-option OPTION   Options to pass to the discovery method
-        --nodes FILE                 List of nodes to address
-        --publish_timeout TIMEOUT    Timeout for publishing requests to remote agents.
-        --threaded                   Start publishing requests and receiving responses in threaded mode.
-        --sort                       Sort the output of an RPC call before processing.
-        --connection-timeout TIMEOUT Set the timeout for establishing a connection to the middleware
-
-Host Filters
-    -W, --with FILTER                Combined classes and facts filter
-    -S, --select FILTER              Compound filter combining facts and classes
-    -F, --wf, --with-fact fact=val   Match hosts with a certain fact
-    -C, --wc, --with-class CLASS     Match hosts with a certain config management class
-    -A, --wa, --with-agent AGENT     Match hosts with a certain agent
-    -I, --wi, --with-identity IDENT  Match hosts with a certain configured identity
-
-The Marionette Collective 2.12.1
+Args:
+  <agent>   The agent to invoke
+  <action>  The action to invoke
+  [<args>]  Arguments to pass to the action in key=val format
 ```
 
 The *help* first shows a basic overview of the command line syntax
@@ -331,11 +316,11 @@ A key capability of Choria is fast discovery of network resources.
 Discovery rules are written using *filters*.  For example:
 
 ```nohighlight
-$ mco rpc service status service=httpd -S "environment=development or customer=acme"
+$ mco rpc service status service=httpd -W "environment=development customer=acme"
 ```
 
 This shows a filter rule that limits the RPC request to being run on
-machines that are either in the Puppet environment *development* or
+machines that are both in the Puppet environment *development* and
 belong to the Customer *acme*.
 
 Filtering can be based on *facts*, the presence of a *Configuration
@@ -382,7 +367,10 @@ Note: You can use a shortcut to combine Class and Fact filters:
 $ mco ping -W "/apache/ location=uk"
 ```
 
+<!--
 ### Complex *Compound* or *Select* Queries
+
+**NOTE** Currently these are not supported in Choria Server, they might return in time.
 
 While the above examples are easy to enter, they are limited in that
 they can only combine filters additively. If you want to create searches
@@ -463,6 +451,7 @@ $ mco rpc package status package=mcollective -j|jgrep "data.properties.ensure=2.
 
 Choria results can also be filtered using the opensource gem,
 jgrep. Choria data output is fully compatible with jgrep.
+-->
 
 ## Using with PuppetDB
 
@@ -478,7 +467,7 @@ $ puppet query "inventory { facts.os.name = 'CentOS' }"| mco rpc puppetd runonce
 
 This will run Puppet on all CentOS machines
 
-Additionally Choria includes a discovery plugin that can communicate directly
+Additionally, Choria includes a discovery plugin that can communicate directly
 with PuppetDB for you so you do not need to learn PQL.  Read about this plugin
 in the Optional Configuration section.
 
@@ -493,7 +482,16 @@ $ mco rpc package status package=puppet-agent -I choria0.choria -v
 .
 .
 choria0.choria                          : OK
-    {:output=>nil,     :epoch=>"0",     :arch=>"x86_64",     :ensure=>"5.5.1-1.el7",     :version=>"5.5.1",     :provider=>"yum",     :name=>"puppet-agent",     :release=>"1.el7"}
+   {
+      "arch": "x86_64",
+      "ensure": "6.17.0-1.el7",
+      "epoch": "0",
+      "name": "puppet-agent",
+      "output": null,
+      "provider": "yum",
+      "release": "1.el7",
+      "version": "6.17.0"
+   }
 ```
 
 
@@ -501,25 +499,48 @@ This data can also be returned in JSON format:
 
 ```nohighlight
 $ mco rpc package status package=puppet-agent -I choria0.choria -j
-[
-  {
-    "agent": "package",
-    "action": "status",
-    "sender": "choria0.choria",
-    "statuscode": 0,
-    "statusmsg": "OK",
-    "data": {
-      "output": null,
-      "epoch": "0",
-      "arch": "x86_64",
-      "ensure": "5.5.1-1.el7",
-      "version": "5.5.1",
-      "provider": "yum",
-      "name": "puppet-agent",
-      "release": "1.el7"
-    }
-  }
-]
+{
+   "agent": "package",
+   "action": "status",
+   "replies": [
+      {
+         "sender": "choria0.choria",
+         "statuscode": 0,
+         "statusmsg": "OK",
+         "data": {
+            "arch": "x86_64",
+            "ensure": "6.17.0-1.el7",
+            "epoch": "0",
+            "name": "puppet-agent",
+            "output": null,
+            "provider": "yum",
+            "release": "1.el7",
+            "version": "6.17.0"
+         }
+      }
+   ],
+   "request_stats": {
+      "requestid": "4df150d6aa304e969e0380f82979a4b2",
+      "no_responses": [],
+      "unexpected_responses": [],
+      "discovered": 1,
+      "failed": 0,
+      "ok": 1,
+      "responses": 1,
+      "publish_time": 264426137,
+      "request_time": 2705429581,
+      "discover_time": 309677895,
+      "start_time_utc": "2020-12-29T19:24:12.017857117Z"
+   },
+   "summaries": {
+      "arch": {
+         "x86_64": 1
+      },
+      "ensure": {
+         "6.17.0-1.el7": 1
+      }
+   }
+}
 ```
 
 ## Error Messaging
@@ -529,28 +550,12 @@ string:
 
 ```nohighlight
 % mco rpc rpcutil foo
-rpc failed to run: Attempted to call action foo for rpcutil but it's not declared in the DDL (MCollective::DDLValidationError)
-```
-
-By default only an abbreviated error string is shown that  provides some
-insight into the nature of the problem.  For more details, add the *-v*
-flag to show a full stack trace:
-
-```nohighlight
-% mco rpc rpcutil foo -v
-rpc failed to run: Attempted to call action foo for rpcutil but it's not declared in the DDL (MCollective::DDLValidationError)
-        from /usr/lib/ruby/site_ruby/1.8/mcollective/ddl.rb:303:in `validate_rpc_request'
-        from /usr/lib/ruby/site_ruby/1.8/mcollective/rpc/client.rb:218:in `method_missing'
-        from /home/rip/.mcollective.d/lib/mcollective/application/rpc.rb:133:in `send'
-        from /home/rip/.mcollective.d/lib/mcollective/application/rpc.rb:133:in `main'
-        from /usr/lib/ruby/site_ruby/1.8/mcollective/application.rb:283:in `run'
-        from /usr/lib/ruby/site_ruby/1.8/mcollective/applications.rb:23:in `run'
-        from /usr/bin/mco:20
+FATA[0000] Could not run Choria: unknown action rpcutil#foo
 ```
 
 ## Exit codes
 
-When *mco* finishes, it generates an exit code. The returned exit code depends on the nature of the issue:
+When *mco* or *choria* finishes, it generates an exit code. The returned exit code depends on the nature of the issue:
 
 |Exit Code|Description|
 |---------|-----------|

@@ -10,8 +10,6 @@ At this point you should have a working Choria set up with your user able to do 
 
 The community is where you can go to get support should you have any problems installing or using the software or just want to discuss ideas or concerns with other users.
 
-We have a mailing list for users that will also receive notifications of updates to the modules and so forth. The group is hosted on [Google Groups, you can sign up here](https://groups.google.com/forum/#!forum/choria-users).
-
 For more interactive comms I am on the Puppet IRC as _Volcane_ and on slack as _ripienaar_, we also have a _#choria_ channel on the [Puppet Slack](http://slack.puppet.com/) and [GitHub Discussions](https://github.com/choria-io/general/discussions).
 
 If you wish to file a ticket about anything here or improve something you can do so in [choria-io/general](https://github.com/choria-io/general) where it will be triaged.
@@ -269,7 +267,7 @@ Finished processing 3 / 3 hosts in 28.27 ms
 
 ## Further reading
 
-There is much to learn about MCollective, at this point if all worked you'll have a setup
+There is much to learn about Choria, at this point if all worked you'll have a setup
 that is secured by using TLS on every middleware connection and every user securely identified
 and authorized via the Puppet SSL certificates with auditing and logging.
 
