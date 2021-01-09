@@ -12,7 +12,7 @@ Using it you get a very fast discovery workflow but without the awareness of whi
 
 ## Requirements
 
-Your MCollective _client_ machine needs to be able to communicate with PuppetDB on its SSL port. The client will use the same certificates that was created using *mco choria request_cert* so you don't need to do anything with the normal Puppet client-tools config, though you might find setting those up helpful.
+Your MCollective _client_ machine needs to be able to communicate with PuppetDB on its SSL port. The client will use the same certificates that was created using *choria enroll* so you don't need to do anything with the normal Puppet client-tools config, though you might find setting those up helpful.
 
 {{% notice warning %}}
 Giving people access to PuppetDB in this manner will allow them to do all kinds of things with your data as there are no ACL features in PuppetDB, consider carefully who you allow to connect to PuppetDB on any port.

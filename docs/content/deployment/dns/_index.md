@@ -59,7 +59,7 @@ If you have to you can configure these locations manually by creating _Hiera_ da
 
 {{% notice tip %}}
 At the moment there is some redundancy and confusion between mcollective and choria modules, we will merge this into one soon but kept it this way to disrupt users as little as possible
-{{% /notice }}
+{{% /notice %}}
 
 ```yaml
 mcollective_choria::config:

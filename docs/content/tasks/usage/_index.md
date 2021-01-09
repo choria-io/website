@@ -42,7 +42,7 @@ Known tasks in the production environment
   exec                                 gcompute::instance                   gcompute::reset
   gcompute::snapshot                   gcontainer::resize                   gpubsub::publish
   gsql::clone                          gsql::passwd                         gstorage::upload
-  mcollective_agent_bolt_tasks::ping   puppet_conf
+  choria::ping                         puppet_conf
 
 Use mco task <TASK> to see task help
 Pass option --detail to see task descriptions

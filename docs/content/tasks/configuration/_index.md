@@ -72,18 +72,18 @@ You can therefore use _puppet module_, _r10k_ or _librarian puppet_ to place you
 A test task is included in the _mcollective\_agent\_bolt\_tasks_ module, you can verify the functionality of your network using it:
 
 ```nohighlight
-$ mco tasks run mcollective_agent_bolt_tasks::ping --message "hello world"
-Retrieving task metadata for task mcollective_agent_bolt_tasks::ping from the Puppet Server
-Attempting to download and run task mcollective_agent_bolt_tasks::ping on 33 nodes
+$ mco tasks run choria::ping --message "hello world"
+Retrieving task metadata for task choria::ping from the Puppet Server
+Attempting to download and run task choria::ping on 33 nodes
 
 Downloading and verifying 1 file(s) from the Puppet Server to all nodes: ✓  33 / 33
-Running task mcollective_agent_bolt_tasks::ping and waiting up to 60 seconds for it to complete
+Running task choria::ping and waiting up to 60 seconds for it to complete
 
 
 
 Summary for task 884525e46b015b0789e57c019cd5f990
 
-                       Task Name: mcollective_agent_bolt_tasks::ping
+                       Task Name: choria::ping
                           Caller: choria=rip.mcollective
                        Completed: 33
                          Running: 0
@@ -107,7 +107,7 @@ node1.example.net
 
 Summary for task 884525e46b015b0789e57c019cd5f990
 
-                       Task Name: mcollective_agent_bolt_tasks::ping
+                       Task Name: choria::ping
                           Caller: choria=rip.mcollective
                        Completed: 33
                          Running: 0

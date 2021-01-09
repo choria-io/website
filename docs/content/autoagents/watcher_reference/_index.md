@@ -313,3 +313,79 @@ The schedules specified is a list of times when the scheduler will be in success
 The scheduler above will switch on daily at 8am, 12pm and 5pm but also at 8pm on Saturdays and Sundays.  It will stay on for a hour.
 
 If the machine transitions into an eligible *state_match* while a schedule is started it will immediately fire the *success_transition*.  If Choria starts up in the middle of a scheduled period it will be ignored and the next schedule will trigger.  Overlapping schedules is supported.
+
+## Metric watcher
+
+The *metric* watcher periodically run a command and publish metrics found in its output to Prometheus. Both a Choria specific metric format and Nagios Perfdata is supported.
+
+### Properties
+
+|Property                 |Required                            |Description|
+|-------------------------|------------------------------------|-----------|
+|command                  |yes                                 |Path to the command to run to retrieve the metric|
+|interval                 |yes                                 |Go duration for how frequently to gather metrics|
+|labels                   |no                                  |key=value pairs of strings of additional labels to add to gathered metrics|
+
+## Behaviour
+
+The plugin supports 2 data formats, one Choria specific one and the commonly used Nagios Perfdata format. 
+
+If you're writing your own gathering scripts we suggest the Choria format.
+
+The watcher will at `interval` run the `command` and create Prometheus data. The labels from the specific output is augmented by `labels`, the `labels` given here will override those from the `command`.
+
+### Choria Metric Format
+
+Given output as seen here the following metrics will be produced - we added an additional label `home` in the watcher properties, the watcher is called `kasa`:
+
+```json
+{
+  "labels": {
+    "alias": "Geyser",
+    "id": "xxx",
+    "model": "HS110(UK)"
+  },
+  "metrics": {
+    "current_amp": 0.020999999716877937,
+    "on_seconds": 0,
+    "power_state": 0,
+    "power_watt": 0,
+    "total_watt": 0.3330000042915344,
+    "voltage_volt": 239.38099670410156
+  }
+}
+```
+
+```nohighlight
+# HELP choria_machine_metric_watcher_kasa_power_watt Choria Metric
+# TYPE choria_machine_metric_watcher_kasa_power_watt gauge
+choria_machine_metric_watcher_kasa_power_watt{alias="geyser",id="xxx",model="hs110(uk)",location="home"} 0.000000
+# HELP choria_machine_metric_watcher_kasa_total_watt Choria Metric
+# TYPE choria_machine_metric_watcher_kasa_total_watt gauge
+choria_machine_metric_watcher_kasa_total_watt{alias="geyser",id="xxx",model="hs110(uk)",location="home"} 0.333000
+# HELP choria_machine_metric_watcher_kasa_voltage_volt Choria Metric
+# TYPE choria_machine_metric_watcher_kasa_voltage_volt gauge
+choria_machine_metric_watcher_kasa_voltage_volt{alias="geyser",id="xxx",model="hs110(uk)",location="home"} 237.123001
+# HELP choria_machine_metric_watcher_kasa_choria_runtime_seconds Choria Metric
+# TYPE choria_machine_metric_watcher_kasa_choria_runtime_seconds gauge
+choria_machine_metric_watcher_kasa_choria_runtime_seconds{id="xxx",model="hs110(uk)",location="home",alias="geyser"} 0.148666
+# HELP choria_machine_metric_watcher_kasa_current_amp Choria Metric
+# TYPE choria_machine_metric_watcher_kasa_current_amp gauge
+choria_machine_metric_watcher_kasa_current_amp{alias="geyser",id="xxx",model="hs110(uk)",location="home"} 0.021000
+# HELP choria_machine_metric_watcher_kasa_on_seconds Choria Metric
+# TYPE choria_machine_metric_watcher_kasa_on_seconds gauge
+choria_machine_metric_watcher_kasa_on_seconds{alias="geyser",id="xxx",model="hs110(uk)",location="home"} 0.000000
+# HELP choria_machine_metric_watcher_kasa_power_state Choria Metric
+# TYPE choria_machine_metric_watcher_kasa_power_state gauge
+choria_machine_metric_watcher_kasa_power_state{location="home",alias="geyser",id="xxx",model="hs110(uk)"} 0.000000
+```
+
+### Nagios Metric Format
+
+The Nagios format takes standard Perfdata format as seen here:
+
+```nohighlight
+OK: last run 24 minutes ago with 0 failed resources 0 failed events and currently enabled|time_since_last_run=1491s;1;1;0 failed_resources=0;;;0 failed_events=0;;;0 last_run_duration=59.67;;;0
+```
+
+This will produce output as above for metrics `choria_machine_metric_watcher_puppet_time_since_last_run` and so forth.

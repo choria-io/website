@@ -83,7 +83,7 @@ mcollective_choria::config:
 And you can request custom certificate names on the CLI:
 
 ```bash
-$ mco choria request_cert --certname bob
+$ choria enroll --certname bob
 ```
 
 You can then instruct the CLI to use that other cert using `export MCOLLECTIVE_CERTNAME=bob`.

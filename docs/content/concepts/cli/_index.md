@@ -73,6 +73,19 @@ usage: choria req [<flags>] <agent> <action> [<args>...]
 
 Performs a RPC request against the Choria network
 
+Replies are shown according to DDL rules or --display, replies can also be filtered using an expression language that will entirely remove them from the returned result.
+
+  # remove all ok results, only errors are in the output and json
+  --filter-replies 'IsOK()'
+
+  # remove all puppet status replies where the machines are idling
+  --filter-replies '!IsOK() || Data("idling")'
+
+  # remove all replies where the last value of the array matches
+  --filter-replies 'Data("array.@reverse.0")=="last_item"'
+
+The Data() function here uses gjson Path Syntax.
+
 Flags:
       --help                  Show context-sensitive help (also try --help-long and --help-man).
       --version               Show application version.
@@ -99,6 +112,7 @@ Flags:
                               Timeout for doing discovery
       --dm=DM                 Sets a discovery method (broadcast, choria)
   -o, --output-file=FILENAME  Filename to write output to
+      --filter-replies=EXPR   Filter replies using a expr filter
 
 Args:
   <agent>   The agent to invoke
@@ -367,91 +381,6 @@ Note: You can use a shortcut to combine Class and Fact filters:
 $ mco ping -W "/apache/ location=uk"
 ```
 
-<!--
-### Complex *Compound* or *Select* Queries
-
-**NOTE** Currently these are not supported in Choria Server, they might return in time.
-
-While the above examples are easy to enter, they are limited in that
-they can only combine filters additively. If you want to create searches
-with more complex boolean logic use the *-S* switch. For example:
-
-```nohighlight
-$ mco ping -S "((customer=acme and environment=staging) or environment=development) and /apache/"
-```
-
-The above example shows a scenario where the development environment is
-usually labeled *development* but one customer has chosen to use
-*staging*. You want to find all machines in those customers'
-environments that match the class *apache*. This search would be
-impossible using the previously shown methods, but the above command
-uses *-S* to allow the use of boolean operators such as *and* and *or*
-so you can easily build the logic of the search.
-
-The *-S* switch also allows for negative matches using *not* or *!*:
-
-```nohighlight
-$ mco ping -S "environment=development and !customer=acme"
-$ mco ping -S "environment=development and not customer=acme"
-```
-
-### Filtering Using Data Plugins
-
-Custom data plugins can also be used to create complex filters:
-
-```nohighlight
-$ mco ping -S "fstat('/etc/hosts').md5=/baa3772104/ and environment=development"
-```
-
-This will search for the md5 hash of a specific file with matches
-restricted to the *development* environment.  Note that as before,
-regular expressions can also be used.
-
-As with agents, you can also discover which plugins are available for
-use:
-
-```nohighlight
-$ mco plugin doc
-
-Please specify a plugin. Available plugins are:
-
-Agents:
-  .
-  .
-
-Data Queries:
-  agent                     Meta data about installed MColletive Agents
-  bolt_task                 Information about past Bolt Task
-  collective                Collective membership
-  fact                      Structured fact query
-  fstat                     Retrieve file stat data for a given file
-  nettest                   Checks if connecting to a host on a specified port is possible
-  package                   Checks the status of a package
-  process                   Checks if a process matching a supplied pattern is present
-  puppet                    Information about Puppet agent state
-  resource                  Information about Puppet managed resources
-  service                   Checks the status of a service
-```
-
-For information on the input these plugins take and  output they provide
-use the *mco plugin doc fstat* command.
-
-Currently, each data function can only accept one input while matches
-are restricted to a single output field per invocation.
-
-## Chaining RPC Requests
-
-The *rpc* application can chain commands one after the other. The
-example below uses the *package* agent to find machines with a specific
-version of mcollective and then schedules Puppet runs on those machines:
-
-```nohighlight
-$ mco rpc package status package=mcollective -j|jgrep "data.properties.ensure=2.0.0-6.el6" |mco rpc puppetd runonce
-```
-
-Choria results can also be filtered using the opensource gem,
-jgrep. Choria data output is fully compatible with jgrep.
--->
 
 ## Using with PuppetDB
 
@@ -470,6 +399,24 @@ This will run Puppet on all CentOS machines
 Additionally, Choria includes a discovery plugin that can communicate directly
 with PuppetDB for you so you do not need to learn PQL.  Read about this plugin
 in the Optional Configuration section.
+
+## Tabular format 
+
+The *rpc* application defaults to a human friendly format, you can activate an 
+alternative format that is a table of data:
+
+```nohighlight
+mco rpc package status package=puppet-agent -I choria0.choria --table
+Discovering nodes using the choria method ....1
+
+1 / 1    0s [====================================================================] 100%
+
++----------------+--------+--------------+-------+--------------+--------+----------+---------+---------+
+| SENDER         | ARCH   | ENSURE       | EPOCH | NAME         | OUTPUT | PROVIDER | RELEASE | VERSION |
++----------------+--------+--------------+-------+--------------+--------+----------+---------+---------+
+| choria0.choria | x86_64 | 6.17.0-1.el7 | 0     | puppet-agent |        | yum      | 1.el7   | 6.17.0  |
++----------------+--------+--------------+-------+--------------+--------+----------+---------+---------+
+```
 
 ## Seeing the Raw Data
 
@@ -542,6 +489,73 @@ $ mco rpc package status package=puppet-agent -I choria0.choria -j
    }
 }
 ```
+
+## Filtering results
+
+{{% notice tip %}}
+This is an experimental feature and subject to change
+{{% /notice %}}
+
+When using the *rpc* application you can perform additional filtering of the results, this will exclude a specific result from the returned results if it matches a filter. 
+
+The filter is using the [expr](https://github.com/antonmedv/expr) language to match against an individual reply. And we support [GJSON Path Syntax](https://github.com/tidwall/gjson/blob/master/SYNTAX.md) for accessing data in the reply.
+
+If we wanted to remove all failing results, and those where Puppet is idling from a Puppet Status query we can do this by combining these:
+
+```nohighlight
+$ choria rpc puppet status --filter-replies '!IsOK() || D("idling")' -j
+Discovering nodes using the choria method ....27
+
+27 / 27    3s [====================================================================] 100%
+
+example.net
+         Applying: true
+   Daemon Running: true
+     Lock Message:
+          Enabled: true
+           Idling: false
+         Last Run: 1610185758
+          Message: Currently applying a catalog; last completed run 1 minutes 02 seconds ago
+   Since Last Run: 62
+           Status: applying a catalog
+
+Summary of Applying:
+
+   true: 1
+
+Summary of Idling:
+
+   false: 1
+
+Summary of Status:
+
+   applying a catalog: 1
+
+
+Finished processing 27 / 27 hosts in 5.672902928s
+```
+
+The query `!IsOK() || D("idling")` is checking the individual reply status code based on the table below and then accessing the `idling` data item in the result - a boolean.
+
+There is a few things to note here.
+
+ * 27 nodes were discovered, and we received 27 replies
+ * all but 1 reply were filtered out by the expression
+ * the reply summaries consider only those replies that were not filtered out
+
+These kinds of queries have to always return a boolean value.
+
+Within the expression we have a few functions, more might be added later:
+
+|Function|Description|
+|--------|-----------|
+|`IsOK()`  |If the status code is `mcorpc.OK` (0)|
+|`IsAborted()`|If the status code is `mcorpc.Aborted` (1)|
+|`IsUnknownAction()`|If the status code is `mcorpc.UnknownAction` (2)|
+|`IsMissingData()`|If the status code is `mcorpc.MissingData` (3)|
+|`IsInvalidData()`|If the status code is `mcorpc.InvalidData` (4)|
+|`IsUnknownError()`|If the status code is `mcorpc.UnknownError` (5)|
+|`D(q string)`|Queries the reply data using GJSON Path Syntax|
 
 ## Error Messaging
 
