@@ -503,59 +503,67 @@ The filter is using the [expr](https://github.com/antonmedv/expr) language to ma
 If we wanted to remove all failing results, and those where Puppet is idling from a Puppet Status query we can do this by combining these:
 
 ```nohighlight
-$ choria rpc puppet status --filter-replies '!IsOK() || D("idling")' -j
+$ choria rpc puppet status --filter-replies 'ok() && data("idling")' -j
 Discovering nodes using the choria method ....27
 
 27 / 27    3s [====================================================================] 100%
 
 example.net
-         Applying: true
+         Applying: false
    Daemon Running: true
      Lock Message:
           Enabled: true
-           Idling: false
-         Last Run: 1610185758
-          Message: Currently applying a catalog; last completed run 1 minutes 02 seconds ago
-   Since Last Run: 62
-           Status: applying a catalog
+           Idling: true
+         Last Run: 1610223559
+          Message: Currently idling; last completed run 25 minutes 03 seconds ago
+   Since Last Run: 1503
+           Status: idling
 
 Summary of Applying:
 
-   true: 1
+   false: 1
 
 Summary of Idling:
 
-   false: 1
+   true: 1
 
 Summary of Status:
 
-   applying a catalog: 1
-
+   idling: 1
 
 Finished processing 27 / 27 hosts in 5.672902928s
 ```
 
-The query `!IsOK() || D("idling")` is checking the individual reply status code based on the table below and then accessing the `idling` data item in the result - a boolean.
+The query `ok() && data("idling")` is checking the individual reply status code based on the table below and then accessing the `idling` data item in the result - a boolean.
 
 There is a few things to note here.
 
  * 27 nodes were discovered, and we received 27 replies
- * all but 1 reply were filtered out by the expression
+ * only 1 matched the filter
  * the reply summaries consider only those replies that were not filtered out
 
 These kinds of queries have to always return a boolean value.
+
+Within the expression we have a few variables:
+
+|Variable|Description|
+|--------|-----------|
+|`msg`   |The Statusmsg of the RPC reply|
+|`code`  |The Statuscode of the RPC reply as an integer|
 
 Within the expression we have a few functions, more might be added later:
 
 |Function|Description|
 |--------|-----------|
-|`IsOK()`  |If the status code is `mcorpc.OK` (0)|
-|`IsAborted()`|If the status code is `mcorpc.Aborted` (1)|
-|`IsUnknownAction()`|If the status code is `mcorpc.UnknownAction` (2)|
-|`IsMissingData()`|If the status code is `mcorpc.MissingData` (3)|
-|`IsInvalidData()`|If the status code is `mcorpc.InvalidData` (4)|
-|`IsUnknownError()`|If the status code is `mcorpc.UnknownError` (5)|
-|`D(q string)`|Queries the reply data using GJSON Path Syntax|
+|`ok()`  |If the status code is `mcorpc.OK` (0)|
+|`aborted()`|If the status code is `mcorpc.Aborted` (1)|
+|`unknown_action()`|If the status code is `mcorpc.UnknownAction` (2)|
+|`missing_data()`|If the status code is `mcorpc.MissingData` (3)|
+|`invalid_data()`|If the status code is `mcorpc.InvalidData` (4)|
+|`unknown_error()`|If the status code is `mcorpc.UnknownError` (5)|
+|`data(query)`|Queries the reply data using GJSON Path Syntax|
+|`include(hay, needle)`|Looks for needle in an array|
+
 
 ## Error Messaging
 
