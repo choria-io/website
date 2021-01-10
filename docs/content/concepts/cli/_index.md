@@ -381,6 +381,44 @@ Note: You can use a shortcut to combine Class and Fact filters:
 $ mco ping -W "/apache/ location=uk"
 ```
 
+## Complex Compound or Select Queries
+
+{{% notice tip %}}
+This is an experimental feature and subject to change
+{{% /notice %}}
+
+While the above examples are easy to enter, they are limited in that they can only combine filters additively. If you want to create searches with more complex boolean logic use the -S switch. For example:
+
+```nohighlight
+$ mco ping -S '((with("customer=acme") && with("environment=staging") || with("environment=development")) && with("/apache/")'
+```
+
+The above example shows a scenario where the development environment is usually labeled development but one customer has chosen to use staging. You want to find all machines in those customers' environments that match the class apache. This search would be impossible using the previously shown methods, but the above command uses -S to allow the use of boolean operators such as and and or so you can easily build the logic of the search.
+
+A more complex example can be seen here:
+
+```nohighlight
+with('apache') and                              # class or agent 'apache'
+  with('/t?sting/') and                         # class or agent regex match 't?sting'
+  with('fnumber=1.2') and                       # fact fnumber with a float value equals 1.2
+  fact('nested.string') matches('h?llo') and    # lookup a fact 'nested.string' and regex match it with 'h?llo'
+  include(fact('sarray'), '1') and              # check if the 'sarray' fact - a array of strings - include a value '1'
+  include(fact('iarray'), 1)                    # check if the 'iarray' fact - a array of ints - include a value 1
+```
+
+These expressions are built using [expr](https://github.com/antonmedv/expr/blob/master/docs/Language-Definition.md), the tables below show the variables and functions available.
+
+|Variable|Description|
+|--------|-----------|
+|`agents`|List of known agents|
+|`classes`|List of classes this machine belongs to|
+|`facts`|Facts for the machine as raw JSON|
+
+|Function|Description|
+|--------|-----------|
+|`with`  |Equivalent of a `-W` filter - class and fact matches combined|
+|`fact`  |Retrieves a fact from the nested fact data using [GJSON path syntax](https://github.com/tidwall/gjson/blob/master/SYNTAX.md)|
+|`include`|Checks if an array includes a specific element|
 
 ## Using with PuppetDB
 
@@ -496,7 +534,7 @@ $ mco rpc package status package=puppet-agent -I choria0.choria -j
 This is an experimental feature and subject to change
 {{% /notice %}}
 
-When using the *rpc* application you can perform additional filtering of the results, this will exclude a specific result from the returned results if it matches a filter. 
+When using the *rpc* application you can perform additional filtering of the results, this will include only returned results if they matches a filter. This is a pure client side filter, all the data still has to arrive at the client and be processed before being removed. 
 
 The filter is using the [expr](https://github.com/antonmedv/expr) language to match against an individual reply. And we support [GJSON Path Syntax](https://github.com/tidwall/gjson/blob/master/SYNTAX.md) for accessing data in the reply.
 
