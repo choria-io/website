@@ -399,7 +399,7 @@ A more complex example can be seen here:
 
 ```nohighlight
 with('apache') and                              # class or agent 'apache'
-  with('/t?sting/') and                         # class or agent regex match 't?sting'
+  with('/t.sting/') and                         # class or agent regex match 't.sting'
   with('fnumber=1.2') and                       # fact fnumber with a float value equals 1.2
   fact('nested.string') matches('h.llo') and    # lookup a fact 'nested.string' and regex match it with 'h.llo'
   include(fact('sarray'), '1') and              # check if the 'sarray' fact - a array of strings - include a value '1'

@@ -10,10 +10,6 @@ This guide shows you how to use the Client API to interact with MCollective RPC 
 
 We'll walk through building a ever more complex example of Hello World here that you saw in the introduction section.
 
-{{% notice tip %}}
-A [Golang client](https://godoc.org/github.com/choria-io/mcorpc-agent-provider/mcorpc/client) is in progress, early releases are available today.
-{{% /notice %}}
-
 ## The Basic Client
 
 The client consists of helper methods that you use as a [Ruby Mixin][RubyMixin] in your own code, it provides:
