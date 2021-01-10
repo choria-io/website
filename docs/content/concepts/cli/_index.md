@@ -401,18 +401,22 @@ A more complex example can be seen here:
 with('apache') and                              # class or agent 'apache'
   with('/t?sting/') and                         # class or agent regex match 't?sting'
   with('fnumber=1.2') and                       # fact fnumber with a float value equals 1.2
-  fact('nested.string') matches('h?llo') and    # lookup a fact 'nested.string' and regex match it with 'h?llo'
+  fact('nested.string') matches('h.llo') and    # lookup a fact 'nested.string' and regex match it with 'h.llo'
   include(fact('sarray'), '1') and              # check if the 'sarray' fact - a array of strings - include a value '1'
   include(fact('iarray'), 1)                    # check if the 'iarray' fact - a array of ints - include a value 1
 ```
 
-These expressions are built using [expr](https://github.com/antonmedv/expr/blob/master/docs/Language-Definition.md), the tables below show the variables and functions available.
+These expressions are built using [expr](https://github.com/antonmedv/expr/blob/master/docs/Language-Definition.md) and [GJSON path syntax](https://github.com/tidwall/gjson/blob/master/SYNTAX.md). 
+
+Within the expressions we have defined some variables:
 
 |Variable|Description|
 |--------|-----------|
 |`agents`|List of known agents|
 |`classes`|List of classes this machine belongs to|
 |`facts`|Facts for the machine as raw JSON|
+
+And we made a few functions available:
 
 |Function|Description|
 |--------|-----------|
