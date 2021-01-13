@@ -1,6 +1,6 @@
 ---
 title: "January 2021 Releases"
-date: 2021-01-13T09:00:00+01:00
+date: 2021-01-13T01:00:00+01:00
 tags: ["releases"]
 draft: false
 ---
@@ -13,7 +13,9 @@ In addition to these changes we also have some pretty amazing additions to the C
 
 Read on for the background and details of what's to come.
 
-Special thanks to Tim Meusel, Vincent Janelle, Vladislav Kuspits and Romain Tartière for their contributions in this release.
+On the community side we've set up a [GitHub Discussions](https://github.com/choria-io/general/discussions) group for those who are not keen on signing up to Slack.
+
+Special thanks to Tim Meusel, Vincent Janelle, Vadym Chepkov, Vladislav Kuspits and Romain Tartière for their contributions in this release.
 
 <!--more-->
 ## WARNING
@@ -46,7 +48,7 @@ Todays releases starts this process by making a number of big changes. These wil
 
  * MCollective plugins, DDLs etc are stored in `/opts/puppetlabs/mcollective/plugins/mcollective`. **As of this release files not managed by Puppet in this directory will be purged (after being filebucketed)**. This will help us prepare to move them to their own directory in the next release. If you place files there out of Puppet I suggest you [package them into modules](https://choria.io/docs/development/mcorpc/packaging/).
  * Configuration is moved from `/etc/puppetlabs/mcollective` to `/etc/choria`. We will try to purge from the old location, but you might have some left over there that can be removed
- * 50+ files from the `mcollective_choria` module was moved into the Gem, these will be purged from the libdir. `choria-mcorpc-support` version `2.23.1` will the lowest version we support.
+ * 50+ files from the `mcollective_choria` module was moved into the Gem, these will be purged from the libdir. `choria-mcorpc-support` version `2.23.2` will the lowest version we support.
  * With an eye to retiring the `mcollective_agent_bolt_tasks` module we moved the `mcollective_agent_bolt_tasks::ping` task to `choria::ping`
 
 We have a number of `mco <command>` commands that are considered Core to MCollective - `inventory`, `choria_util`, `rpc` and more - we have reimplemented a number of these in the Go binary and in an effort to minimise the number of overlapping implementations some changes are being made here:
@@ -97,13 +99,11 @@ Both of these features are experimental and will only be 100% solid once Data pl
  * Ignore case when matching against configuration management classes
  * Add a `choria_status` Nagios builtin allowing Choria to health checks from Scout
  * Avoid listening and registering with mDNS when Homekit is not used
- * Add `choria inventory`
  * Create Go clients for `rpcutil`, `scout` and `choria_util` in `go-choria/client`
  * Add a PuppetDB discovery method
  * Add `--dm` to the `choria req` command to switch discovery method
  * rpc client will now honor the `DefaultDiscoveryMethod` setting for all clients
  * Generated clients has a PuppetDB name source
- * Add `choria discover` aka `choria find`
  * Report the certificate fingerprint when doing `choria enroll` for Puppet CA
  * `choria ping` now calculates times from publish to reply-received and reports connection setup and security overhead separately
  * Support the `color` option in more places and disable it on Windows
@@ -111,6 +111,7 @@ Both of these features are experimental and will only be 100% solid once Data pl
  * Basic support for Data plugin DDLs
  * Support `expr` based compound filters with `-S`
  * Improve consistency of discovery related cli options
+ * Add `choria facts`, `choria inventory` and `choria discover` aka `choria find`
 
 ## Bug Fixes
 
@@ -127,9 +128,9 @@ Links: [Changes](https://github.com/choria-plugins/puppet-agent/compare/2.3.3...
  * Add `--skip_tags` option
  * Have `-E` be a short version of `--environment`
 
-## [choria-mcorpc-support gem version 2.23.1](https://rubygems.org/gems/choria-mcorpc-support)
+## [choria-mcorpc-support gem version 2.23.3](https://rubygems.org/gems/choria-mcorpc-support)
 
-Links: [Changes](https://github.com/choria-io/mcorpc-ruby-support/compare/2.22.1...2.23.2), [Release](https://rubygems.org/gems/choria-mcorpc-support/versions/2.23.1)
+Links: [Changes](https://github.com/choria-io/mcorpc-ruby-support/compare/2.22.1...2.23.3), [Release](https://rubygems.org/gems/choria-mcorpc-support/versions/2.23.3)
 
 ### Enhancements
 
@@ -137,7 +138,7 @@ Links: [Changes](https://github.com/choria-io/mcorpc-ruby-support/compare/2.22.1
  * Do not log deprecation warnings in configuration
  * Update rake, rspec, mocha, rubocop, modernise code style and test style
  * Support redirecting an application to an external command
- * Redirect `mco rpc` and `mco inventory`
+ * Redirect `mco rpc`, `mco facts` and `mco inventory`
  * Import `mcollective-choria` ruby code base
  * Allow tasks to run as another user
  * Remove `mco choria request_cert` in favor of `choria enroll`
@@ -167,7 +168,7 @@ Links: [Changes](https://github.com/choria-io/puppet-choria/compare/0.20.0...0.2
  * Manage additional directories that's required for the move of configuration to `/etc/choria`
  * Relocation configuration to `/etc/choria`
  * Retire support for Compound filters in the ruby shim
- * Fix NATS Streaming Server data adpater type
+ * Fix NATS Streaming Server data adapter type
 
 ## [choria/mcollective version 0.13.0](https://forge.puppet.com/choria/mcollective)
 
@@ -180,17 +181,7 @@ Links: [Changes](https://github.com/choria-io/puppet-mcollective/compare/0.13.0.
  * Relocate configuration into `/etc/choria`
  * Remove `mcollective::package`
 
-## [choria/mcollective_choria version 0.17.3](https://forge.puppet.com/choria/mcollective_choria)
-
-This repository [https://github.com/choria-io/mcollective-choria](https://github.com/choria-io/mcollective-choria) is being archived after its contents were merged into the Ruby gem and 2 small standalone modules were created.
-
-### Enhancements
-
- * Cache private keys to avoid prompting many times in batch operations for passphrases
- * Support tasks with multiple files
- * Fix PuppetDB discovery for `choria::service`
-
-## [choria/mcollective_choria version 0.19.0](https://github.com/choria-plugins/mcollective_choria/)
+## [choria/mcollective_choria version 0.20.0](https://github.com/choria-plugins/mcollective_choria/)
 
 This is a new module with a few support files that used to be in `mcollective-choria`, it replaces the previous `choria/mcollective_choria` one. Being in a separate repository r10k and similar tools can now install the entire Choria module suite at arbitrary hashes.
 
@@ -199,6 +190,6 @@ This is a new module with a few support files that used to be in `mcollective-ch
  * Perform package installs for all OSes of the MCORPC Ruby Support libraries
  * Support Puppet 7
 
-## [choria/mcollective_agent_bolt_tasks 0.19.0](https://github.com/choria-plugins/tasks-agent)
+## [choria/mcollective_agent_bolt_tasks 0.20.0](https://github.com/choria-plugins/tasks-agent)
 
 This is a new module with a few support files that used to be in `mcollective-choria`, it replaces the previous `choria/mcollective_agent_bolt_tasks` one. Being in a separate repository r10k and similar tools can now install the entire Choria module suite at arbitrary hashes.
