@@ -22,7 +22,7 @@ Special thanks to Tim Meusel, Vincent Janelle, Vadym Chepkov, Vladislav Kuspits 
 
 I'll start with a warning, this is a big change. Many files will be deleted from the lib dirs, many new files will be made. We're changing a default that will remove many unmanaged files.
 
-You have to test this release in pre-release or staging, we did our best, we found many upgrade issues in development but we cannot anciticpate every possible scenario.  Please test thoroughly.
+You have to test this release in pre-release or staging, we did our best, we found many upgrade issues in development but we cannot anticipate every possible scenario.  Please test thoroughly.
 
 ## Background
 
@@ -55,7 +55,7 @@ We have a number of `mco <command>` commands that are considered Core to MCollec
 
  * `mco rpc` will now automatically invoke `choria req` (aka `choria rpc`)
  * `mco inventory` will now automatically invoke `choria inventory`
- * We created a `mco find` equivalent in choria called `choria discover` (aka `choria find`) but not redirected this as it's an important debugging tool pf the core behaviors.
+ * We created a `mco find` equivalent in choria called `choria discover` (aka `choria find`) but not redirected this as it's an important debugging tool of the core behaviors.
  * `mco choria_util request_cert` will error and instruct you to use `choria enroll` instead
  * The Go system got a PuppetDB discovery system and will honor the configuration of default discovery method, the `--dm` flag was added a few places to allow you to choose as before. 
  
