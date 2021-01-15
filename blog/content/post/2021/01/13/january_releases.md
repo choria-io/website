@@ -1,6 +1,6 @@
 ---
 title: "January 2021 Releases"
-date: 2021-01-13T01:00:00+01:00
+date: 2021-01-13T00:00:00+01:00
 tags: ["releases"]
 draft: false
 ---
@@ -55,6 +55,7 @@ We have a number of `mco <command>` commands that are considered Core to MCollec
 
  * `mco rpc` will now automatically invoke `choria req` (aka `choria rpc`)
  * `mco inventory` will now automatically invoke `choria inventory`
+ * `mco facts` will now automatically invoke `choria facts`
  * We created a `mco find` equivalent in choria called `choria discover` (aka `choria find`) but not redirected this as it's an important debugging tool of the core behaviors.
  * `mco choria_util request_cert` will error and instruct you to use `choria enroll` instead
  * The Go system got a PuppetDB discovery system and will honor the configuration of default discovery method, the `--dm` flag was added a few places to allow you to choose as before. 

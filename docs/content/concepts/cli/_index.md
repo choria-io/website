@@ -1,6 +1,6 @@
 +++
 title = "CLI Interaction Model"
-weight = 203
+weight = 204
 toc = true
 icon = "<b>2. </b>"
 +++
@@ -15,6 +15,10 @@ very familiar.
 
 {{% notice tip %}}
 These examples can be tried using our [Vagrant Demo](https://github.com/choria-io/vagrant-demo) environment
+{{% /notice %}}
+
+{{% notice info %}}
+At present we are migrating most of our command line tooling from `mco` to `choria`, this document switches around a bit, we'll improve consistency in time. `mco` is used for those commands that is only implemented in the Ruby language.
 {{% /notice %}}
 
 ## Basic Usage of the *mco* Command
@@ -135,7 +139,7 @@ Procedure Call (RPC) agent. Below is an example that shows an attempt to
 restart a ssh server on several machines:
 
 ```nohighlight
-$ mco rpc service restart service=sshd
+$ choria rpc service restart service=sshd
 Discovering hosts using the mc method for 2 second(s) .... 3
 
  * [ ============================================================> ] 3 / 3
@@ -182,7 +186,7 @@ Choria agents are broken up into actions and each action can take
 input arguments.
 
 ```nohighlight
-$ mco rpc service stop service=sshd
+$ choria rpc service stop service=sshd
 ```
 
 This shows the basic make-up of an RPC command. In this case we are:
@@ -195,7 +199,7 @@ This shows the basic make-up of an RPC command. In this case we are:
 The same command has a longer form as well:
 
 ```nohighlight
-$ mco rpc --agent service --action stop --argument service=sshd
+$ choria rpc --agent service --action stop --argument service=sshd
 ```
 
 These two commands are functionally identical.
@@ -286,7 +290,7 @@ With this information, you can request the status for a specific
 service:
 
 ```nohighlight
-$ mco rpc service status service=sshd
+$ choria rpc service status service=sshd
 Discovering hosts using the mc method for 2 second(s) .... 3
 
  * [ ============================================================> ] 3 / 3
@@ -324,13 +328,15 @@ a display name, the doc for the associated agent will have a
 
 ## Selecting Request Targets Using *Filters*
 
+Filters are how you use our discovery system, this is extensively documented in [../discovery](Discovery).
+
 ### Basic Filters
 
 A key capability of Choria is fast discovery of network resources.
 Discovery rules are written using *filters*.  For example:
 
 ```nohighlight
-$ mco rpc service status service=httpd -W "environment=development customer=acme"
+$ choria req service status service=httpd -W "environment=development customer=acme"
 ```
 
 This shows a filter rule that limits the RPC request to being run on
@@ -346,28 +352,28 @@ filter:
 
 ```nohighlight
 # all machines with the service agent
-$ mco ping -A service
-$ mco ping --with-agent service
+$ choria ping -A service
+$ choria ping --with-agent service
 
 # all machines with the apache class on them
-$ mco ping -C apache
-$ mco ping --with-class apache
+$ choria ping -C apache
+$ choria ping --with-class apache
 
 # all machines with a class that match the regular expression
-$ mco ping -C /service/
+$ choria ping -C /service/
 
 # all machines in the UK
-$ mco ping -F country=uk
-$ mco ping --with-fact country=uk
+$ choria ping -F country=uk
+$ choria ping --with-fact country=uk
 
 # all machines in either UK or USA
-$ mco ping -F "country=/uk|us/"
+$ choria ping -F "country=/uk|us/"
 
 # just the machines called dev1 or dev2
-$ mco ping -I dev1 -I dev2
+$ choria ping -I dev1 -I dev2
 
 # all machines in the domain foo.com
-$ mco ping -I /foo.com$/
+$ choria ping -I /foo.com$/
 ```
 
 As you can see, you can filter by Agent, Class and/or Fact, and you can
@@ -378,7 +384,7 @@ Note: You can use a shortcut to combine Class and Fact filters:
 
 ```nohighlight
 # all machines with classes matching /apache/ in the UK
-$ mco ping -W "/apache/ location=uk"
+$ choria ping -W "/apache/ location=uk"
 ```
 
 ## Complex Compound or Select Queries
@@ -390,7 +396,7 @@ This is an experimental feature and subject to change
 While the above examples are easy to enter, they are limited in that they can only combine filters additively. If you want to create searches with more complex boolean logic use the -S switch. For example:
 
 ```nohighlight
-$ mco ping -S '((with("customer=acme") && with("environment=staging") || with("environment=development")) && with("/apache/")'
+$ choria ping -S '((with("customer=acme") && with("environment=staging") || with("environment=development")) && with("/apache/")'
 ```
 
 The above example shows a scenario where the development environment is usually labeled development but one customer has chosen to use staging. You want to find all machines in those customers' environments that match the class apache. This search would be impossible using the previously shown methods, but the above command uses -S to allow the use of boolean operators such as and and or so you can easily build the logic of the search.
@@ -448,7 +454,7 @@ The *rpc* application defaults to a human friendly format, you can activate an
 alternative format that is a table of data:
 
 ```nohighlight
-mco rpc package status package=puppet-agent -I choria0.choria --table
+$ choria rpc package status package=puppet-agent -I choria0.choria --table
 Discovering nodes using the choria method ....1
 
 1 / 1    0s [====================================================================] 100%
@@ -467,7 +473,7 @@ To see the actual raw data, add the *-v* flag to disable the display
 helpers:
 
 ```nohighlight
-$ mco rpc package status package=puppet-agent -I choria0.choria -v
+$ choria rpc package status package=puppet-agent -I choria0.choria -v
 .
 .
 choria0.choria                          : OK
@@ -487,7 +493,7 @@ choria0.choria                          : OK
 This data can also be returned in JSON format:
 
 ```nohighlight
-$ mco rpc package status package=puppet-agent -I choria0.choria -j
+$ choria rpc package status package=puppet-agent -I choria0.choria -j
 {
    "agent": "package",
    "action": "status",
@@ -586,36 +592,23 @@ There is a few things to note here.
 
 These kinds of queries have to always return a boolean value.
 
-Within the expression we have a few variables:
+## Request Chaining
 
-|Variable|Description|
-|--------|-----------|
-|`msg`   |The Statusmsg of the RPC reply|
-|`code`  |The Statuscode of the RPC reply as an integer|
+{{% notice tip %}}
+This is an experimental feature and subject to change
+{{% /notice %}}
 
-Within the expression we have a few functions, more might be added later:
+Built on the previous feature you can use the result - optionally filtered - of one RPC request as discovery source for another.
 
-|Function|Description|
-|--------|-----------|
-|`ok()`  |If the status code is `mcorpc.OK` (0)|
-|`aborted()`|If the status code is `mcorpc.Aborted` (1)|
-|`unknown_action()`|If the status code is `mcorpc.UnknownAction` (2)|
-|`missing_data()`|If the status code is `mcorpc.MissingData` (3)|
-|`invalid_data()`|If the status code is `mcorpc.InvalidData` (4)|
-|`unknown_error()`|If the status code is `mcorpc.UnknownError` (5)|
-|`data(query)`|Queries the reply data using GJSON Path Syntax|
-|`include(hay, needle)`|Looks for needle in an array|
-
-
-## Error Messaging
-
-When an application encounters an error, it returns an explanatory
-string:
+Lets say we want to query our fleet for all the nodes where a specific version of a package is installed and then do a package upgrade request on just those nodes.
 
 ```nohighlight
-% mco rpc rpcutil foo
-FATA[0000] Could not run Choria: unknown action rpcutil#foo
+$ choria rpc package status package="zsh" -j --filter-replies 'ok() && data("version")=="4.3.11"' | choria req package update package=zsh
 ```
+
+Here we do a `package#status` query on the `zsh` package, we select all ok replies where the version is `4.3.11` and then do a `package#update` on the matching nodes.
+
+You can mix and match, for example you can do a service restart on all machine matching a specific package etc.
 
 ## Exit codes
 
