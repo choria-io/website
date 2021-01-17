@@ -308,6 +308,91 @@ Within the expression we have a few functions, more might be added later:
 
 Today only the *choria req* command supports this behaviour, once we have it just right we'll extend it to all other choria commands.
 
+## Discovery Methods
+
+In Choria the various backends that implement discovery are called *Discovery Methods*, this section provides detail of each of the core ones. Most CLI tools support the `--dm` or `--discovery-method` option to pick a backend.
+
+The following configuration options impact discovery backend selection and settings.
+
+|Configuration Flag|Valid Options|Description|
+|------------------|-------------|-----------|
+|`default_discovery_method`|`mc`, `broadcast`, `puppetdb`, `choria`, `external`|When not specified on the CLI, this will be used|
+|`discovery_timeout`|Integer in seconds|How long discovery is allowed to run, meaning might differ between methods|
+
+## *broadcast* or *mc*
+
+This is the default method of discovery, and the only one that is supported without any external dependencies. The Choria client sends an empty message with just a filter attached, all nodes that match the filter responds. We gather the replies, and those are the discovered nodes.
+
+The `discovery_timeout` is how long the client waits for responses from the fleet after publishing the message asking for responses.
+
+Supported Filters: *Class*, *Agent*, *Identity*, *Facts*, *Compound* and *Combined*
+
+## *puppetdb* or *choria*
+
+This method makes a request to PuppetDB with a PQL query structured to find nodes matching the filter query. 
+
+|Configuration Flag|Valid Options|Description|
+|------------------|-------------|-----------|
+|`plugin.choria.puppetdb_host`|`puppet.example.net`|The hostname where PuppetDB can be found|
+|`plugin.choria.puppetdb_port`|`8080`|The port the PuppetDB server listen on|
+|`plugin.choria.srv_domain`|`example.net`|When SRV lookups are enable, the domain to find PuppetDB in|
+|`plugin.choria.use_srv`|`true`|Enable or Disable SRV lookups|
+
+When SRV lookups is enabled PuppetDB is resolved using a `_x-puppet-db._tcp.example.net` query.
+
+## *external*
+
+The external method allow you to implement a Discovery Method using any programming language and the Choria Client will execute your plugin when needed.
+
+|Configuration Flag|Valid Options|Description|
+|------------------|-------------|-----------|
+|`plugin.choria.discovery.external.command`|`/some/command`|The command to run for discovery|
+
+When run the command will be executed as `command <request file> <reply file> io.choria.choria.discovery.v1.external_request`, the following environment variables will be set:
+
+|Variable|Description|
+|--------|-----------|
+|`CHORIA_EXTERNAL_REQUEST`|Where the request in JSON format can be found|
+|`CHORIA_EXTERNAL_REPLY`|Where to write the response|
+|`CHORIA_EXTERNAL_PROTOCOL`|`io.choria.choria.discovery.v1.external_request`|
+
+The request will look like this:
+
+```json
+{
+  "$schema": "https://choria.io/schemas/choria/discovery/v1/external_request.json",
+  "protocol": "io.choria.choria.discovery.v1.external_request",
+  "filter": {
+    "fact": [{"fact": "country", "operator": "==","value": "mt"}],
+    "cf_class": [],
+    "agent": ["rpcutil"],
+    "compound": [],
+    "identity": []
+  },
+  "collective": "ginkgo",
+  "timeout": 2,
+}
+```
+
+And the response can be either:
+
+```json
+{
+  "protocol": "io.choria.choria.discovery.v1.external_reply",
+  "nodes": ["n1.example.net"]
+}
+```
+
+If there is a failure you can return:
+
+```json
+{
+  "error": "Error shown to user"
+}
+```
+
+For Golang the [External](https://github.com/choria-io/go-external) package can be used to easily implement a discovery source.
+
 ## Looking ahead
 
 I mentioned earlier that the *compound* queries set using *-S* only supports querying the network and not things like PuppetDB. The reason is that we will include dynamic fleet state queries soon.
