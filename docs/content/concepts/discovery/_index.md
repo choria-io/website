@@ -27,7 +27,7 @@ Choria supports a rich feature set in both these modes of discovery.
 
 Choria maintains 2 sets of metadata about any machine. Nodes can be tagged using a list of items - we call them *classes* as borrowed from Puppet - this is simply a free-form list of words like *webserver*, *database*, *app_server* or Puppet classes like *profile::acme_server*. In the typical case this is supplied by Puppet but it is simply a text file with 1 word per line, you can source this from anywhere.
 
-In addition to the `classes` we support facts, facts are YAML or JSON data for example *{"country":"uk"}*. We support arbitrarily nested data such as those produced by *facter*, you can supply any JSON or YAML structure.
+In addition to the *classes* we support facts, facts are YAML or JSON data for example *{"country":"uk"}*. We support arbitrarily nested data such as those produced by *facter*, you can supply any JSON or YAML structure.
 
 Every single node maintains its own metadata store internally, requests directed at the fleet are evaluated against this metadata store before they are acted on.
 
@@ -169,6 +169,10 @@ $ choria discover -I 'pql:nodes[certname] { certname ~ ".choria" }' --dm=puppetd
 
 ## Compound Filters
 
+{{% notice tip %}}
+This feature is available since *Choria Server 0.19.0*
+{{% /notice %}}
+
 Things get more interesting when we look at something called Compound Filters. This is a new feature in the latest Choria Server. Previously MCollective had Compound Filters, but we've had to change the language to one that's more extendable and will grow with us.
 
 We use a library called *expr* with its own [Language Definition](https://github.com/antonmedv/expr/blob/master/docs/Language-Definition.md), we augment this with GJSON based lookup for nested data to create something that can really go deep into your infrastructure.
@@ -269,6 +273,10 @@ It can be a bit tricky to get this right, we'll add some tooling to help try out
 
 ## Using RPC queries for discovery
 
+{{% notice tip %}}
+This feature is available since *Choria Server 0.19.0*
+{{% /notice %}}
+
 Also in the latest Choria release we support the ability for the *choria req* command to do some Powershell inspired chaining of queries. This is also a feature MCollective had, one that required the *jgrep* utility to be installed, in Choria we will use our new *expr* based infrastructure to avoid this extra dependency.
 
 Let's say we have a scenario where a specific version of PHP causes a problem, and we need to restart Apache nightly to deal with that leak while a better solution is found.  We don't want to restart the entire fleet and while we could query the fleet it would be a bunch of awkward *jq* to get this all working into a flat file of affected nodes.
@@ -342,6 +350,10 @@ When SRV lookups is enabled PuppetDB is resolved using a `_x-puppet-db._tcp.exam
 
 ## *external*
 
+{{% notice tip %}}
+This feature is available since *Choria Server 0.19.1*
+{{% /notice %}}
+
 The external method allow you to implement a Discovery Method using any programming language and the Choria Client will execute your plugin when needed.
 
 |Configuration Flag|Valid Options|Description|
@@ -369,7 +381,7 @@ The request will look like this:
     "compound": [],
     "identity": []
   },
-  "collective": "ginkgo",
+  "collective": "mcollective",
   "timeout": 2,
 }
 ```
