@@ -3,11 +3,13 @@ title = "Go Clients"
 weight = 11
 +++
 
-We have a [Golang RPC library](https://godoc.org/github.com/choria-io/mcorpc-agent-provider/mcorpc/client) that's similar in spirit to the Ruby client library while being more idiomatic Golang and more suitable to long running large scale automation tasks.  Use this if you want to write some form of long running never ending automated system or scale to very large fleets. This library can interact with any Choria RPC Agent based on their DDL, you do not need to generate any code or stubs. A very good example of this library in use is the code for the [choria req](https://github.com/choria-io/go-choria/blob/master/cmd/req.go) utility.
+We have a [Golang RPC library](https://github.com/choria-io/go-choria/tree/master/providers/agent/mcorpc/client) that's similar in spirit to the Ruby client library while being more idiomatic Golang and more suitable to long-running large scale automation tasks.  Use this if you want to write some form of long-running never ending automated system or scale to very large fleets. This library can interact with any Choria RPC Agent based on their DDL, you do not need to generate any code or stubs. A very good example of this library in use is the code for the [choria req](https://github.com/choria-io/go-choria/blob/master/cmd/req.go) utility.
+
+Having pointed out that it's really good at long-running tasks - in contrast to the Ruby library - recently we've significantly improved it's use as a package for quick CLI tools as we have a plethora of tools now in the `choria` CLI writting using this library.
 
 By its nature it's more verbose and more involved to use - while the Ruby one is optimized for short quick scripts.
 
-Recently we added the ability to generate focussed clients for Choria RPC Agents that are very easy to use and yields quite easy to read code. These generated clients use the above mentioned client library so they are scalable to huge fleets and suitable for use in lond running orchestration systems.
+Recently we added the ability to generate focussed clients for Choria RPC Agents that are very easy to use and yields quite easy to read code. These generated clients use the above mentioned client library, so they are scalable to huge fleets and suitable for use in lond running orchestration systems.
 
 This guide will focus on these generated clients. You're encouraged to consider them first when looking at interacting with your fleet from Go.
 
@@ -15,17 +17,15 @@ This guide will focus on these generated clients. You're encouraged to consider 
 
 As you might be aware every Agent has a DDL file that describes the agent - all its actions, inputs, outputs, aggregation methods and validations. As of a recent improvement these DDL files now contain enough that highly usable clients can be generated for static languages like Golang.
 
-{{% notice tip %}}
-This capability is available as of version *0.14.0* of Choria
-{{% /notice %}}
-
 We have a video explainer of this feature which you can access on [YouTube](https://www.youtube.com/watch?v=oVYAWePAHow).
+
+This section will cover generating your own clients for your own agents, the Choria project includes generated clients for [rpcutil](https://pkg.go.dev/github.com/choria-io/go-choria/client/rpcutilclient), [scout](https://pkg.go.dev/github.com/choria-io/go-choria/client/scoutclient) and [choria_util](https://pkg.go.dev/github.com/choria-io/go-choria/client/choria_utilclient).
 
 ## Preparing your DDL
 
 The generator will handle almost all existing agent DDLs, however in the past we did not support or enforce data types for the output items from agents. This makes it extremely hard to create fully usable clients for static languages like Golang.
 
-We've recently added optional type hints to outputs in DDLs and I strongly suggest you take a look at the DDL files you're intending to use and add output hints. You should also review the code and ensure that the output types don't vary, if an item varies and you cannot fix that scenario then leave it untyped so Go will give you *interface{}* instances which you can then handle via *reflect*.
+We've recently added optional type hints to outputs in DDLs, and I strongly suggest you take a look at the DDL files you're intending to use and add output hints. You should also review the code and ensure that the output types don't vary, if an item varies, and you cannot fix that scenario then leave it untyped so Go will give you *interface{}* instances which you can then handle via *reflect*.
 
 Here's a sample fixup I did of the class [puppet agent](https://github.com/choria-plugins/puppet-agent/pull/41/files) as an example, it's easier than it sounds!
 
@@ -64,18 +64,14 @@ This creates the client, lets initialize go mod:
 $ go mod init example.net/puppet
 $ go mod tidy
 $ cat go.mod
-module example.net/puppet
+module example.net/pupppet
 
-go 1.13
+go 1.14
 
 require (
-        github.com/choria-io/go-choria v0.13.0
-        github.com/choria-io/go-client v0.5.2
-        github.com/choria-io/go-config v0.0.5
-        github.com/choria-io/go-protocol v1.3.2
-        github.com/choria-io/go-srvcache v0.0.6
-        github.com/choria-io/mcorpc-agent-provider v0.9.0
-        github.com/sirupsen/logrus v1.4.2
+        github.com/choria-io/go-choria v0.19.0
+        github.com/gosuri/uiprogress v0.0.1
+        github.com/sirupsen/logrus v1.7.0
 )
 ```
 
@@ -133,7 +129,7 @@ func main() {
 
 ## Code Details
 
-Lets look at a few key items about this code.
+Let's look at a few key items about this code.
 
 ### Setup
 
@@ -159,20 +155,26 @@ res, err := pc.OptionFactFilter("customer=acme").Disable().Message("testing gola
 
 Here the *OptionFactFilter()* is a RPC framework option thats applicable to any RPC call and not related to any specific agent.
 
-The godoc comments it the definitive document, but here are a few of the options you'd have:
+The godoc ([rpcutil](https://pkg.go.dev/github.com/choria-io/go-choria/client/rpcutilclient) example) is the definitive document, but here are a few of the options you'd have:
 
 |Option|Description|
 |------|-----------|
-|`OptionReset()`|Put this first to reset all the options from previous calls else they are sticky|
-|`OptionFactFilter(...string)`|One or more fact filters, matches the behavior of *-F* on the CLI|
+|`OptionAgentFilter(...string)`|One or more agent filters, matches the behavior of *-A* on the CLI|
 |`OptionClassFilter(...string)`|One or more class filters, matches the behavior of *-C* on the CLI|
-|`OptionIdentityFilter(...string)`|One or more identity filters, matches the behavior of *-I* on the CLI|
 |`OptionCollective(string)`|The name of the sub collective to target, matches *-T* on the CLI|
-|`OptionInBatches(size, sleep int)`|Performs the task in batches with a specific sleep, *--batch* and *--batch-sleep* on the CLI|
+|`OptionCombinedFilter(...string)`|One or more combined filters, matches the behavior of *-W* on the CLI|
+|`OptionCombpoundFilter(...string)`|One or more compound filters, matches the behavior of *-S* on the CLI|
 |`OptionDiscoveryTimeout(time.Duration)`|How long to wait for discovery, matched *--discovery-timeout* or *--dt* on the CLI|
-|`OptionLimitSize(string)`|Limit the request to a subset of nodes like *10* or *20%*, matches *--limit* on the CLI|
+|`OptionExprFilter(string)`|Filter the responses using an `expr` filter|
+|`OptionFactFilter(...string)`|One or more fact filters, matches the behavior of *-F* on the CLI|
+|`OptionIdentityFilter(...string)`|One or more identity filters, matches the behavior of *-I* on the CLI|
+|`OptionInBatches(size, sleep int)`|Performs the task in batches with a specific sleep, *--batch* and *--batch-sleep* on the CLI|
 |`OptionLimitMethod(string)`|How to pick the random set *random* or *first*, no CLI equivalent but settable in the config|
 |`OptionLimitSeed(int64)`|When using *random* method this lets you initialize the random number, set to the same number for predictable select|
+|`OptionLimitSize(string)`|Limit the request to a subset of nodes like *10* or *20%*, matches *--limit* on the CLI|
+|`OptionReset()`|Put this first to reset all the options from previous calls else they are sticky|
+|`OptionTargets([]string)`|Supply a node list to use rather than rely on discovery|
+|`OptionWorkers(int)`|How many connections to make to the Choria Broker and how many routines to process results, defaults to 3|
 
 ### Actions and Inputs
 
@@ -196,6 +198,8 @@ func (d *DisableOutput) Status() string
 If one of these did not have type hints the return type would have been *interface{}* and you'd need to figure that out yourself. Some types like *hash* can not be turned into structures automatically so they would be *map[string]interface{}*.
 
 ### Results
+
+#### Processing
 
 Here we iterate all the results and show a small one liner:
 
@@ -224,6 +228,54 @@ You can call *res.HashMap()* which will give you a *map[string]interface{}* of t
         }
     })
 
+```
+
+#### Rendering Results
+
+Choria CLI tools have a particular way of showing progress, results and summaries that can be hard to duplicate on your own.  These Client packages include standard options to achieve the same behaviour the core utilities make possible.
+
+First we can enable the progress bar:
+
+```go
+pc := p.Must(p.Progress())
+```
+
+Then we can render the results in a number of formats:
+
+Text mode, the default for `choria req rpcutil ping`:
+
+```go
+res, _ := pc.OptionFactFilter("customer=acme").Disable().Message("testing golang").Do(ctx)
+
+res.RenderResults(os.Stdout, p.TextFormat, p.DisplayDDL, verbose, silent, colorize, logger)
+```
+
+Table mode, the same as `choria req rpcutil ping --table`
+
+```go
+res.RenderResults(os.Stdout, p.TableFormat, p.DisplayDDL, verbose, silent, colorize, logger)
+```
+
+JSON mode, the same as `choria req rpcutil ping --json`
+
+```go
+res.RenderResults(os.Stdout, p.JSONFormat, p.DisplayDDL, verbose, silent, colorize, logger)
+```
+
+The `DisplayDDL` allows you to override what results are displayed.
+
+|Display Mode|Description|
+|------------|-----------|
+|`DisplayDDL`|Follows the `display` setting in the DDL|
+|`DisplayOK`|Shows only OK results|
+|`DisplayFailed`|Shows only Failed results|
+|`DisplayNone`|Show no results|
+|`DisplayAll`|Show all results|
+
+The table and text output formats include a standard footer, but perhaps you are rendering the results your self but want a standard footer, you can produce this as here:
+
+```go
+res.RenderResults(os.Stdout, p.TXTFooter, p.DisplayDDL, verbose, silent, colorize, logger)
 ```
 
 ### Statistics
@@ -259,7 +311,7 @@ type Stats interface {
 
 ## Custom Discovery
 
-By default the client uses a traditional broadcast discovery and that's the only method we supply, you can though integrate with your own easily.  Lets read a flat file.
+By default, the client uses a traditional broadcast discovery, you can though integrate with your own easily.  Lets read a flat file.
 
 ```golang
 type FlatFileDiscovery struct {
@@ -301,3 +353,94 @@ pc, err := p.New(p.Discovery(&FlatFileDiscovery{"/home/you/nodes.txt"}))
 ```
 
 Now instead of network discovery the file will be read instead.
+
+## CLI Tool Helpers
+
+Choria CLI utilities have a particular look and feel, the result rendering above can help you attain that for displaying results, but the command line flags is another important aspect.
+
+The aim is to make a utility with flags like these:
+
+```nohighlight
+./demo --help
+usage: demo [<flags>]
+
+Small demo app
+
+Flags:
+      --help             Show context-sensitive help (also try --help-long and --help-man).
+      --verbose          Be verbose
+  -F, --wf=WF ...        Match hosts with a certain fact
+  -C, --wc=WC ...        Match hosts with a certain configuration management class
+  -A, --wa=WA ...        Match hosts with a certain Choria agent
+  -I, --wi=WI ...        Match hosts with a certain Choria identity
+  -W, --with=FILTER ...  Combined classes and facts filter
+  -S, --select=EXPR      Match hosts using a expr compound filter
+  -T, --target=TARGET    Target a specific sub collective
+      --nodes=NODES      List of nodes to interact with in JSON, YAML or TEXT formats
+      --dm=DM            Sets a discovery method (mc, choria)
+      --discovery-timeout=SECONDS  
+                         Timeout for doing discovery
+```
+
+Which should switch the discovery method automatically depending on what flags are chosen etc. As Choria get new features you want these features available automatically without having to code them in.
+
+Choria core utilities are all written using [kingpin.v2](https://pkg.go.dev/gopkg.in/alecthomas/kingpin.v2), the below `main.go` is an entire choria utility that does `choria req rpcutil ping` with full discovery and rendering features.
+
+This is still a bit verbose and we'll be making some improvements to this in time.
+
+```go
+package main
+
+import (
+	"context"
+	"os"
+
+	"gopkg.in/alecthomas/kingpin.v2"
+
+	"github.com/choria-io/go-choria/choria"
+	"github.com/choria-io/go-choria/client/discovery"
+	"github.com/choria-io/go-choria/client/rpcutilclient"
+)
+
+var (
+	opt     *discovery.StandardOptions
+	verbose bool
+)
+
+func main() {
+	app := kingpin.New("demo", "Small demo app").Action(run)
+	app.Flag("verbose", "Be verbose").BoolVar(&verbose)
+
+	opt = &discovery.StandardOptions{}
+	opt.AddFilterFlags(app) // add flags like -W, -C, -A etc
+	opt.AddFlatFileFlags(app) // add --nodes for node lists from files
+	opt.AddSelectionFlags(app) // adds --dm and --discovery-timeout etc
+
+	kingpin.MustParse(app.Parse(os.Args[1:]))
+}
+
+func run(_ *kingpin.ParseContext) error {
+	fw, err := choria.New(choria.UserConfig())
+	if err != nil {
+		return err
+	}
+
+	opt.SetDefaultsFromChoria(fw)
+	rpcutil, err := rpcutilclient.New(rpcutilclient.Progress(), rpcutilclient.Discovery(rpcutilclient.NewMetaNS(opt, true)))
+	if err != nil {
+		return err
+	}
+
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
+
+	res, err := rpcutil.Ping().Do(ctx)
+	if err != nil {
+		return err
+	}
+
+	res.RenderResults(os.Stdout, rpcutilclient.TextFormat, rpcutilclient.DisplayDDL, false, false, true, fw.Logger("render"))
+
+	return nil
+}
+```
