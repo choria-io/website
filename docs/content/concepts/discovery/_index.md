@@ -326,6 +326,7 @@ The following configuration options impact discovery backend selection and setti
 |------------------|-------------|-----------|
 |`default_discovery_method`|`mc`, `broadcast`, `puppetdb`, `choria`, `external`|When not specified on the CLI, this will be used|
 |`discovery_timeout`|Integer in seconds|How long discovery is allowed to run, meaning might differ between methods|
+|`default_discovery_options`||Options to pass to discovery plugins unless `--do` is set on the CLI|
 
 ## *broadcast* or *mc*
 
@@ -348,17 +349,96 @@ This method makes a request to PuppetDB with a PQL query structured to find node
 
 When SRV lookups is enabled PuppetDB is resolved using a `_x-puppet-db._tcp.example.net` query.
 
+## *flatfile*
+
+The `flatfile` discovery method supports a number of file related discovery sources, you enable it by passing `--nodes`
+to commands that supports that.
+
+If an `-I` filter is supplied on the CLI only nodes matching that filter will be picked out of the file, regular expressions are supported.
+
+It accepts the following run-time options, for example `choria req rpcutil ping --do 'filter=groups.#(name=="linux").targets'`
+
+|Option|Description|
+|------|-----------|
+|`filter`|[GJSON path syntax](https://github.com/tidwall/gjson/blob/master/SYNTAX.md) query to dig into complex JSON or YAML|
+
+### Text files
+
+The most basic format is just a file with names like this:
+
+```nohighlight
+web1.example.net
+web2.example.net
+```
+
+A command like `choria req rpcutil ping --nodes list.txt` will parse a file like above and discover those nodes. 
+
+### JSON and YAML Files
+
+When the `--nodes` argument ends in `json`, `yaml` or `yml` this format is automatically chosen, below are valid files.
+
+```yaml
+---
+- web1.example.net
+- web2.example.net
+```
+
+```json
+[
+  "web1.example.net",
+  "web2.example.net"
+]
+```
+
+These files are not particularly useful, but lets look at a more complex example:
+
+```yaml
+groups:
+  - name: linux
+    targets:
+      - target1.example.com
+      - target2.example.com
+    config:
+      transport: ssh
+  - name: windows
+    targets:
+      - target3.example.com
+      - target4.example.com
+    config:
+      transport: winrm
+```
+
+We can discover all the `targets` in the `linux` group using this command:
+
+```nohighlight
+$ choria discover --nodes bolt.yaml --do 'filter=groups.#(name=="linux").targets'
+target1.example.com
+target2.example.com
+```
+
+The filter here ues [GJSON path syntax](https://github.com/tidwall/gjson/blob/master/SYNTAX.md)
+
+### Choria Results
+
+Finally, this discovery method is also the one implementing the [RPC Request Chaining](#using-rpc-queries-for-discovery) for data on the CLI 
+
 ## *external*
 
 {{% notice tip %}}
-This feature is available since *Choria Server 0.19.1*
+This feature is available since *Choria Server 0.19.1* and only to commands written in go like `choria`
 {{% /notice %}}
 
-The external method allow you to implement a Discovery Method using any programming language and the Choria Client will execute your plugin when needed.
+The external method allow you to implement a Discovery Method using any programming language, and the Choria Client will execute your plugin when needed.
 
 |Configuration Flag|Valid Options|Description|
 |------------------|-------------|-----------|
 |`plugin.choria.discovery.external.command`|`/some/command`|The command to run for discovery|
+
+It accepts the following run-time options, for example `choria req rpcutil ping --do command=/another/command`
+
+|Option|Description|
+|------|-----------|
+|`command`|Path to an alternative command overriding what is configured|
 
 When run the command will be executed as `command <request file> <reply file> io.choria.choria.discovery.v1.external_request`, the following environment variables will be set:
 
@@ -382,7 +462,7 @@ The request will look like this:
     "identity": []
   },
   "collective": "mcollective",
-  "timeout": 2,
+  "timeout": 2
 }
 ```
 
