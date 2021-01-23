@@ -8,7 +8,7 @@ Choria is configured using a set of text files that resembles key=val files. Val
 
 ## File locations and names
 
-Choria supports many different files for configuration, the complexity is in the Client - for server and broker you are required to supply a file.
+Choria supports many files for configuration, the complexity is in the Client - for server and broker you are required to supply a file.
 
 ### Client Configuration
 
@@ -30,8 +30,15 @@ After parsing the initial configuration a per-project configuration is supported
 $ choria tool config
 Configuration Files:
 
-            User Config: /etc/choria/client.conf
-   Project Confguration: /home/user/temp/choria.conf, /home/user/temp/project/choria.conf
+   User Config: /etc/choria/client.conf
+  Loaded Files: /etc/choria/client.conf
+                /etc/choria/plugin.d/actionpolicy.cfg
+                /etc/choria/plugin.d/choria.cfg
+                /etc/choria/plugin.d/login.cfg
+                /etc/choria/plugin.d/nrpe.cfg
+                /etc/choria/plugin.d/puppet.cfg
+                /home/user/temp/choria.conf
+                /home/user/temp/project/choria.conf
 ```
 
 ### Server and Broker Configuration
@@ -72,7 +79,13 @@ First lets look at one config options:
 $ choria tool config loglevel
 Configuration Files:
 
-            User Config: /etc/choria/client.conf
+   User Config: /etc/choria/client.conf
+  Loaded Files: /etc/choria/client.conf
+                /etc/choria/plugin.d/actionpolicy.cfg
+                /etc/choria/plugin.d/choria.cfg
+                /etc/choria/plugin.d/login.cfg
+                /etc/choria/plugin.d/nrpe.cfg
+                /etc/choria/plugin.d/puppet.cfg
 
 Configuration item: loglevel
 
@@ -95,7 +108,7 @@ Here we look at all configuration keys matching `loglevel` (regular expression s
 
 In other examples you'll be warned if it's a deprecated setting, and you might also find links to further information. Try `choria tool config .` for all the configuration options.
 
-An online version of this reference can be found in [GitHub](https://github.com/choria-io/go-choria/blob/master/CONFIGURATION.md) and is alwayd up to date.
+An online version of this reference can be found in [GitHub](https://github.com/choria-io/go-choria/blob/master/CONFIGURATION.md) and is always up to date.
 
 Additionally, we can also just get a list of available options which might help you explore deeper:
 
