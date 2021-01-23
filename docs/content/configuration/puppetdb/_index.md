@@ -10,6 +10,10 @@ This is an advanced PuppetDB plugin that is Subcollective aware and supports nod
 
 Using it you get a very fast discovery workflow but without the awareness of which nodes are actually up and responding, it's suitable for situations where you have a stable network, or really care to know when known machines are not responding as is common during software deployments. It makes a very comfortable to use default discovery plugin.
 
+{{% notice warning %}}
+This feature is currently broken for Puppet 7 due to an upstream [issue](https://tickets.puppetlabs.com/browse/PDB-5002)
+{{% /notice %}}
+
 ## Requirements
 
 Your MCollective _client_ machine needs to be able to communicate with PuppetDB on its SSL port. The client will use the same certificates that was created using *choria enroll* so you don't need to do anything with the normal Puppet client-tools config, though you might find setting those up helpful.

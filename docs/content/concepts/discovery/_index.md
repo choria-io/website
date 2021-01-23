@@ -361,6 +361,8 @@ It accepts the following run-time options, for example `choria req rpcutil ping 
 |Option|Description|
 |------|-----------|
 |`filter`|[GJSON path syntax](https://github.com/tidwall/gjson/blob/master/SYNTAX.md) query to dig into complex JSON or YAML|
+|`file`|Sets the file to use|
+|`format`|Sets the format - `json`, `yaml`, `yml`, `rpc`, `txt`|
 
 ### Text files
 
