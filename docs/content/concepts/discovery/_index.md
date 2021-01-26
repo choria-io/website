@@ -177,7 +177,7 @@ Things get more interesting when we look at something called Compound Filters. T
 
 We use a library called *expr* with its own [Language Definition](https://github.com/antonmedv/expr/blob/master/docs/Language-Definition.md), we augment this with GJSON based lookup for nested data to create something that can really go deep into your infrastructure.
 
-These do not support querying PuppetDB - they only work with the network based discovery feature. This is because this is a precursor to something called *Data Plugins* that allow deep inspection of node state during discovery. Below are some examples
+These do not support querying PuppetDB - they only work with the network based discovery and the inventory file based discovery.
 
 First a basic case - we want all machines for a certain customers staging environment or all machines with *prometheus* installed.
 
@@ -420,7 +420,113 @@ target2.example.com
 
 The filter here ues [GJSON path syntax](https://github.com/tidwall/gjson/blob/master/SYNTAX.md)
 
-### Choria Results
+### *inventory*
+
+Choria supports inventory files that holds within them full facts, agent lists, classes lists and collective membership information, enough to build rich discovery supporting our full feature set including Compound filters (without future data plugins).
+
+Additionally, uniquely, Inventory files can hold named searched allowing you to save an often used set of discovery filters by name and reuse it.
+
+{{% notice tip %}}
+This feature is available since *Choria Server 0.19.1* and only to commands written in go like `choria`
+{{% /notice %}}
+
+#### Usage
+
+General usage of Choria remains the same, all types of filter work including `-S` or Compound filters. There's one additional behaviour and that is if you filter for `-I group:named_group` the plugin will execute the stored discovery query against it's data.
+
+#### Configuration
+
+|Configuration Flag|Valid Options|Description|
+|------------------|-------------|-----------|
+|`plugin.choria.discovery.inventory.source`|`~/choria-inventory`|Path to the Inventory file|
+
+#### Inventory Format
+
+The inventory format is a YAML or JSON file that is strictly validated before use. File names must end in `.yaml`, `.yml` or `.json`.
+
+{{% notice tip %}}
+We publish a [JSON Schema of the inventory](https://choria.io/schemas/choria/discovery/v1/inventory_file.json), you can configure your editor to validate and assist your editing of this file
+{{% /notice %}}
+
+```yaml
+$schema: https://choria.io/schemas/choria/discovery/v1/inventory_file.json
+
+groups:
+  - name: acme
+    filter:
+      facts:
+        customer=acme
+  - name: all
+    filter:
+      identities:
+        - /./
+
+nodes:
+  - name: a1.example.net
+    collectives:
+      - acme
+      - mcollective
+    facts:
+      customer=acme
+    classes:
+      apache
+  - name: w1.example.net
+    collectives:
+      - widgets
+      - mcollective
+    facts:
+      customer=widgets
+    classes:
+      mysql
+```
+
+This file will allow for commands like, essentially all discovery features will work:
+
+ * all nodes in the `widgets` collective - `choria discover -T widgets`
+ * all nodes for customer widgets - `choria discover -F customer=widgets`
+ * all nodes for customer `acme` by using the node group `acme` - `choria discover -I group:acme`
+
+When maintaining this command, after editing I suggest running `choria tool inventory --validate inventory.yaml` to make sure it's well formed.
+
+#### Creating the inventory
+
+Creating this file can be a pain, especially keeping it up to date. We have some initial tooling to help you with this, with more to come.
+
+You can ask Choria to create or update this file for you, for example, if we just want to build the file based on an initial query we can do:
+
+```
+$ choria tool inventory inventory.yaml -W customer=acme
+Discovering nodes .... 19
+
+19 / 19    0s [====================================================================] 100%
+
+Wrote 19 nodes to /home/rip/inventory.yaml
+```
+
+This will write a full inventory for all the discovered nodes and add an `all` group. Once you've made some changes to the file, like add more groups for example, Choria can update the file for you:
+
+```
+$ choria tool inventory inventory.yaml --update
+```
+
+This will do a fresh network query for node metadata, update the file and leave your groups alone.
+
+Node this tool is doing discovery and then a `rpcutil#inventory` RPC request. Being that this is discovery driven you can discover nodes from any supported source, for example:
+
+```
+$ cat nodes.txt
+a1.example.net
+a2.example.net
+$ choria tool inventory inventory.yaml --update --nodes nodes.txt
+```
+
+And, for full inception, you can use the current file as discovery - meaning it will try to update all the nodes in the file with new data:
+
+```
+$ choria tool inventory inventory.yaml --update --dm inventory --do file=inventory.yaml
+```
+
+### Choria Results 
 
 Finally, this discovery method is also the one implementing the [RPC Request Chaining](#using-rpc-queries-for-discovery) for data on the CLI 
 
@@ -441,6 +547,8 @@ It accepts the following run-time options, for example `choria req rpcutil ping 
 |Option|Description|
 |------|-----------|
 |`command`|Path to an alternative command overriding what is configured|
+
+Additionally, any other options, excluding `command`, that gets passed this way will be sent to the external plugin in the request.
 
 When run the command will be executed as `command <request file> <reply file> io.choria.choria.discovery.v1.external_request`, the following environment variables will be set:
 
@@ -463,6 +571,7 @@ The request will look like this:
     "compound": [],
     "identity": []
   },
+  "options": {},
   "collective": "mcollective",
   "timeout": 2
 }
