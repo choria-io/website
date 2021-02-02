@@ -81,6 +81,10 @@ A combination of Servers, Nodes and Middleware all operating in the same Namespa
 
 Multiple collectives can be built sharing the same Middleware but kept separate.
 
+## Data Provider
+
+A plugin that provides data to the discovery subsystem allowing discovery of nodes based on their real time state.
+
 ## Facts
 
 Discreet bits of information about your nodes. Examples could be the domain name, country, role, operating system release etc. These are often gathered and exposed by Configuration Management systems like Puppet.

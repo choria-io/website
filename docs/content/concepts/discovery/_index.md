@@ -17,7 +17,7 @@ A key concept of Choria is to be able to manage what is there now, without tryin
 
 The native Choria discovery system is tailored to this dynamic world, it can discover nodes and operate on the ones that's there now.  This promotes a style of administration where you build a backplane based on a continuous control loop of discover -> query -> remediate. A down machine is down, but if it ever comes back your loop will pick it up and remediate anything that requires it.  It's done efficiently and without wasting time on down machines.
 
-In other scenarios where you do know and do care for a known set of machines - like when deploying a new version of your software that requires careful orchestration with database upgrades and more - it's vital to know what should be there and to know when a machine that should be there is not, or failed. Choria supports this by querying databases like PuppetDB or flat files.
+In other scenarios where you do know and do care for a known set of machines - like when deploying a new version of your software that requires careful orchestration with database upgrades and more - it's vital to know what should be there and to know when a machine that should be there is not, or failed. Choria supports this by querying databases like PuppetDB or flat files or its own fleet inventory format.
 
 In a sense this is like UDP and TCP, dynamic discovery does the best it can with what it has and lets you build resilient long term management backplanes that is stable in the face of uncertainty while the ability to query a data store for what should be there lets you build management systems with appropriate feedback when needed.
 
@@ -271,6 +271,63 @@ We get the all the networks across all NICs and all Bindings using GJSON, and th
 
 It can be a bit tricky to get this right, we'll add some tooling to help try out a few queries in a future release.
 
+## Data Providers
+
+{{% notice tip %}}
+This feature is available since *Choria Server 0.19.1*, it's alpha level supported and under active development
+{{% /notice %}}
+
+Data Providers expose real time state from the running node to the discovery system, today we support *choria*, *config_item* and *scout* Data Provider, in time users will be able to provide their own.
+
+A Data Provider can be queried in a Compound filter when using the *broadcast* or *mc* discovery methods, here we find all machines where a specific Scout check is not *OK*:
+
+```nohighlight
+$ choria req service restart service=foo -S 'scout("check_foo").state != "OK"'
+```
+
+We can also discover all nodes connected to a specific broker and restart them (if provisioning is enabled):
+
+```nohighlight
+$ choria req choria_provision restart token=s3cret splay=10 -S 'choria().connected_broker match "choria1.example.net"'
+```
+
+The data that a Data Provider provides can be seen using the CLI:
+
+```nohighlight
+choria req rpcutil get_data source=choria -I choria1.choria
+Discovering nodes using the mc method .... 1
+
+1 / 1    0s [====================================================================] 100%
+
+dev1.devco.net
+
+        agents_count: 13
+       classes_count: 95
+         config_file: /etc/choria/server.conf
+    connected_broker: nats://puppet.choria:4222
+    expired_messages: 0
+   filtered_messages: 1
+    invalid_messages: 0
+      machines_count: 17
+     passed_messages: 15
+        provisioning: false
+      reply_messages: 14
+      total_messages: 16
+              uptime: 6010
+      valid_messages: 15
+
+
+Finished processing 1 / 1 hosts in 780ms
+```
+
+In time users will be able to add their own Data Providers, for the moment these are all that is available.
+
+Some plugins take a query, like the *scout* one, here we find all nodes that had a CRITICAL state at any time in their last 10 checks:
+
+```nohighlight
+$ choria discover -S '"CRITICAL" in scout("check_puppet_run").history'
+```
+
 ## Using RPC queries for discovery
 
 {{% notice tip %}}
@@ -422,13 +479,15 @@ The filter here ues [GJSON path syntax](https://github.com/tidwall/gjson/blob/ma
 
 ### *inventory*
 
-Choria supports inventory files that holds within them full facts, agent lists, classes lists and collective membership information, enough to build rich discovery supporting our full feature set including Compound filters (without future data plugins).
+Choria supports inventory files that holds within them full facts, agent lists, classes lists and collective membership information, enough to build rich discovery supporting our full feature set including Compound filters (without Data Providers).
 
 Additionally, uniquely, Inventory files can hold named searched allowing you to save an often used set of discovery filters by name and reuse it.
 
 {{% notice tip %}}
 This feature is available since *Choria Server 0.19.1* and only to commands written in go like `choria`
 {{% /notice %}}
+
+Inventory files can be very large, an inventory of 10 000 nodes can take 180MB on disk as JSON data. While we think this feature is good for inventories with a few thousand nodes, a 10 000 node inventory works and can perform full compound search across all nodes in a few seconds.
 
 #### Usage
 
@@ -439,6 +498,14 @@ General usage of Choria remains the same, all types of filter work including `-S
 |Configuration Flag|Valid Options|Description|
 |------------------|-------------|-----------|
 |`plugin.choria.discovery.inventory.source`|`~/choria-inventory`|Path to the Inventory file|
+
+It accepts the following run-time options, for example `choria req rpcutil ping --do 'filter=groups.#(name=="linux").targets'`
+
+|Option|Description|
+|------|-----------|
+|`file`|The file to load the inventory from, overriding the configured setting|
+|`noverify`|When set to any value will disable JSON Schema based verification|
+
 
 #### Inventory Format
 
@@ -532,10 +599,6 @@ Finally, this discovery method is also the one implementing the [RPC Request Cha
 
 ## *external*
 
-{{% notice tip %}}
-This feature is available since *Choria Server 0.19.1* and only to commands written in go like `choria`
-{{% /notice %}}
-
 The external method allow you to implement a Discovery Method using any programming language, and the Choria Client will execute your plugin when needed.
 
 |Configuration Flag|Valid Options|Description|
@@ -594,37 +657,4 @@ If there is a failure you can return:
 }
 ```
 
-For Golang the [External](https://github.com/choria-io/go-external) package can be used to easily implement a discovery source.
-
-## Looking ahead
-
-I mentioned earlier that the *compound* queries set using *-S* only supports querying the network and not things like PuppetDB. The reason is that we will include dynamic fleet state queries soon.
-
-Imagine we are using [Choria Scout](/docs/scout) to monitor health of machines, here's a view of current status checks for some node:
-
-```nohighlight
-$ choria scout status choria0.choria
-+-------------+----------+------------+-------------------------------+
-| NAME        | STATE    | LAST CHECK | HISTORY                       |
-+-------------+----------+------------+-------------------------------+
-| heartbeat   | OK       | 19s        | OK OK OK OK OK OK OK OK OK OK |
-| ntp_peer    | CRITICAL | 1s         | CR CR CR CR CR CR CR CR CR CR |
-| swap        | OK       | 4m3s       | OK OK OK OK OK OK OK OK OK OK |
-| zombieprocs | OK       | 4m56s      | OK OK OK OK OK OK OK OK OK OK |
-+-------------+----------+------------+-------------------------------+
-```
-
-We might want to restart *ntpd* on all the machines where right now the *ntp_peer* check is failing.  In the future, you'd be able to do this:
-
-```nohighlight
-$ choria req service restart service=ntpd -S 'scout_check("ntp_peer").state() == "CRITICAL"'
-```
-
-This will perform a query at the point in time when this discovery is run for the most recent status of the Scout check and only those nodes in *CRITICAL* state will respond.
-
-You'll be able to extend the discovery system using your own plugins written in any language. This would give you the ability to perform very large distributed queries in real time over 10s of thousands of machines in a second and act on the information retrieved.
-
-This is a feature The Marionette Collective had, it was a bit weird though, so we're taking a hard look at this and rethinking how it works and how best to build it.
-
-In addition to supporting new data plugins we'll also support implementing discovery as a plugin again, so you can query your own databases and backends and extend the system to anything you can imagine.  As Choria moves to incorporate IoT and other worlds in addition to systems management expect the discovery system to grow and expand.
-
+For Golang the [External](https://github.com/choria-io/go-external), for Python use the [py-mco-agent](https://github.com/optiz0r/py-mco-agent) package can be used to easily implement a discovery source.
