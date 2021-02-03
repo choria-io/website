@@ -45,6 +45,22 @@ Configuration Files:
 
 Server and Brokers require the configuration to be supplied on the CLI using `--config`, these will always parse plugin configuration relative to the supplied configuration.
 
+As of version *0.20.0* the live values of a server configuration can be inspected:
+
+```nohighlight
+$ choria req rpcutil get_config_item item=plugin.choria.agent_provider.mcorpc.libdir
+Discovering nodes using the inventory method .... 27
+....
+Summary of Value:
+
+   ["/opt/puppetlabs/mcollective/plugins"]: 27
+
+
+Finished processing 27 / 27 hosts in 1.402s
+```
+
+You can also access this in discovery using Compound Filters: `-S 'config_item("plugin.choria.use_srv")==true`
+
 ## Configuration Format
 
 Choria configuration files are key=value pairs, they tend to be organised in a hierarchy like `plugin.security.provider`, this is almost like a directory tree of settings.

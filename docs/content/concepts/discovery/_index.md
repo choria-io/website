@@ -274,7 +274,7 @@ It can be a bit tricky to get this right, we'll add some tooling to help try out
 ## Data Providers
 
 {{% notice tip %}}
-This feature is available since *Choria Server 0.19.1*, it's alpha level supported and under active development
+This feature is available since *Choria Server 0.20.0*, it's alpha level supported and under active development
 {{% /notice %}}
 
 Data Providers expose real time state from the running node to the discovery system, today we support *choria*, *config_item* and *scout* Data Provider, in time users will be able to provide their own.
@@ -484,7 +484,7 @@ Choria supports inventory files that holds within them full facts, agent lists, 
 Additionally, uniquely, Inventory files can hold named searched allowing you to save an often used set of discovery filters by name and reuse it.
 
 {{% notice tip %}}
-This feature is available since *Choria Server 0.19.1* and only to commands written in go like `choria`
+This feature is available since *Choria Server 0.20.0* and only to commands written in go like `choria`
 {{% /notice %}}
 
 Inventory files can be very large, an inventory of 10 000 nodes can take 180MB on disk as JSON data. While we think this feature is good for inventories with a few thousand nodes, a 10 000 node inventory works and can perform full compound search across all nodes in a few seconds.
