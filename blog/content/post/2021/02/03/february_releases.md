@@ -194,12 +194,12 @@ Links: [Changes](https://github.com/choria-io/puppet-mcollective/compare/0.13.0.
 
  * Support agents without any extension, improving support for packaging `external` agents
 
-## [choria/choria version 0.22.1](https://forge.puppet.com/choria/choria)
+## [choria/choria version 0.22.2](https://forge.puppet.com/choria/choria)
 
-Links: [Changes](https://github.com/choria-io/puppet-choria/compare/0.21.0...0.22.1), [Release](https://forge.puppet.com/choria/choria/0.22.1/readme)
+Links: [Changes](https://github.com/choria-io/puppet-choria/compare/0.21.0...0.22.2), [Release](https://forge.puppet.com/choria/choria/0.22.2/readme)
 
 ### Enhancements
 
  * Support `run_as` for playbooks
  * Ensure the `mcollective` class is included when just including `choria`
- * Ensure version `0.20.1` of Choria is installed on RedHat and Debian/Ubuntu machines
+ * Ensure version `0.20.2` of Choria is installed on RedHat and Debian/Ubuntu machines
