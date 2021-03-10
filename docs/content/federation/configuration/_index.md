@@ -52,7 +52,7 @@ While I show the Puppet code here for completeness, I recommend using Hiera to c
 ```puppet
 node "nats1.ldn.example.net" {
   class { "choria":
-    srv_domain => "ldn.example.net"
+    srvdomain => "ldn.example.net"
   }
 
   class { "choria::broker":
