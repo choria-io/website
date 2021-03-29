@@ -29,7 +29,7 @@ The full discovery feature set have been documented at [https://choria.io/docs/c
  * Support data providers in the `-S` compound queries. Ship `choria`, `scout` and `config_item` data providers
  * Support all new discovery features in Ruby by invoking the `choria discover` command for discovery
 
-This is a huge list of improvements, discovery in Choria is now better than it's ever been and our `external` discovery method is the first offline method to support compound queries. We'll post followup blog posts with details on some of these, meanwhile the new documentation covers everything.
+This is a huge list of improvements, discovery in Choria is now better than it's ever been and our `inventory` discovery method is the first offline method to support compound queries. We'll post followup blog posts with details on some of these, meanwhile the new documentation covers everything.
 
 ### Inventory Discovery
 
