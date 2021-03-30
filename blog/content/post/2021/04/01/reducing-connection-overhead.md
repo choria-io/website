@@ -32,10 +32,8 @@ Before starting, you might want to measure the latency when you start to compare
 romain@zappy % choria ping
 [...]
 ---- ping statistics ----
-47 replies max: 378.357 min: 172.005 avg: 304.544 overhead: 1940.673
+47 replies max: 378ms min: 172ms avg: 304ms overhead: 1.940s
 ```
-
-All numbers are expressed in milliseconds.
 
 The _max_ / _min_ / _avg_ figures are not the one we are interested in here because they measure the latency between the choria client and the choria servers.  The _overhead_ is what we want to improve: the time needed by the client to establish a connexion to the broker node, nearly 2 seconds in my case.
 
@@ -76,9 +74,9 @@ Let's run `choria ping` one more time to compare the results.  The first thing y
 romain@zappy % choria ping
 [...]
 ---- ping statistics ----
-47 replies max: 509.744 min: 171.929 avg: 318.926 overhead: 47.991
+47 replies max: 509ms min: 171ms avg: 318ms overhead: 47ms
 ```
 
-The latency timings are now slightly higher (in my case from 304.544 to 318.926 ms, so a 4.722% increase of the average latency) because messages now have to go through one more layer between the client and servers.
+The latency timings are now slightly higher (in my case from 304 to 318 ms, so a 4.6% increase of the average latency) because messages now have to go through one more layer between the client and servers.
 
-But the key point: the _overhead_ was reduced from 1940.673 to 47.991 ms, about 2.5% of the initial duration.
+But the key point: the _overhead_ was reduced from 1.940s to 47 ms, about 2.4% of the initial duration.
