@@ -16,7 +16,7 @@ The use cases for this include:
  * Scaling asynchronous services by storing replies to requests in a less real time medium
 
 {{% notice warning %}}
-At present only NATS Streaming is supported with JetStream being in preview, this feature is under active development
+At present only NATS Streaming and NATS JetStream is supported, this feature is under active development
 {{% /notice %}}
 
 Data adapters are hosted inside the Choria Brokers much the same way that Network Brokers and Federation Brokers can live in the same binary.

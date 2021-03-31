@@ -1,6 +1,6 @@
 +++
 title = "JetStream"
-weight = 200
+weight = 100
 +++
 
 NATS JetStream is a easy to deploy and scale Streaming Server from the same people who make the NATS technology that the Choria Network Broker is built on.  JetStream will eventually replace NATS Streaming as a closer integrated streaming server and it's conceivable we will support JetStream natively in the Choria Broker.
@@ -13,7 +13,7 @@ The Choria JetStream Adapter is hosted in the Choria Broker and is configured us
 
 ## Configuration
 
-Given a JetStream server, the following will receive Registration data and re-publish it into a NATS Streaming Topic `node_data`.
+Given a JetStream server, the following will receive Registration data and re-publish it into a JetStream Topic `choria.node_metadata.%s` where the `%s` will be replaced with the sender node id.
 
 ```puppet
 class{"choria::broker":
@@ -21,7 +21,7 @@ class{"choria::broker":
     "node_data" => {
       "stream"  => {
         "type"      => "jetstream",
-        "topic"     => "choria.node_metadata",
+        "topic"     => "choria.node_metadata.%s",
         "workers"   => 10,
         "servers"   => [
           "js1.example.net:4222",
@@ -44,23 +44,8 @@ Many adapters can be hosted in a single Choria Broker.
 You have to create a `message set` in your JetStream that matches the above, here we create one that keeps messages for a week:
 
 ```nohighlight
-$ jsm add
-Enter the following information
-Name: choria_fleet_metadata
-Subjects: choria.node_metadata
-Limits (msgs, bytes, age): -1 -1 1w
-Storage: file
-Received response of "+OK"
-```
-
-After a while you'll start seeing messages if you configured your nodes to publish their metadata to `choria.discovery`:
-
-```nohighlight
-$ jsm info choria_fleet_metadata
-Messages: 2
-Bytes:    12 kB
-FirstSeq: 1
-LastSeq:  2
+$ nats stream add CHORIA_REGISTRATION
+...
 ```
 
 ## Data Formats
