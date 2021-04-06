@@ -50,7 +50,7 @@ You might be in a situation where you have multiple environments like developmen
 
 ```yaml
 mcollective_choria::config:
-  use_srv_records: false
+  use_srv: false
 ```
 
 ## Manual Config
@@ -63,7 +63,7 @@ At the moment there is some redundancy and confusion between mcollective and cho
 
 ```yaml
 mcollective_choria::config:
-  use_srv_records: false
+  use_srv: false
   puppetserver_host: "puppet1.example.net"
   puppetserver_port: 8140
   puppetca_host: "ca1.example.net"
