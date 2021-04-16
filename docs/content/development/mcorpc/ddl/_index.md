@@ -18,7 +18,7 @@ The DDL is used in various scenarios:
 
 ## Generating your own
 
-As of version `0.12.1` of the Choria Server you can use a guided utility to create both the JSON and Ruby format DDL files, you can also convert JSON ones to Ruby using the `choria tool generate ddl example.json example.ddl`, if the `example.json` already exists it will offer converting it into a Ruby one.
+As of version `0.12.1` of the Choria Server you can use a guided utility to create both the JSON and Ruby format DDL files, you can also convert JSON ones to Ruby using the `choria plugin generate ddl example.json example.ddl`, if the `example.json` already exists it will offer converting it into a Ruby one.
 
 The JSON DDL files contain JSON Schemas which when correctly setup in your editor will give you context sensitive help, tab completion and more.
 

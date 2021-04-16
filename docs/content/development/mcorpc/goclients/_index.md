@@ -37,7 +37,7 @@ We'll look at building a custom utility to do what `mco rpc puppet disable messa
 $ mkdir -p puppet/disable
 $ mkdir -p puppet/client
 $ cd puppet
-$ choria tool generate client /.../puppet.json client
+$ choria plugin generate client /.../puppet.json client
 INFO[0000] Writing Choria Client for Agent puppet Version 2.3.2 to client
 INFO[0000] Writing client/action_disable.go for action disable
 INFO[0000] Writing client/action_enable.go for action enable

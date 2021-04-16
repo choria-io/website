@@ -21,7 +21,7 @@ An external agent can be written in any language and the related files go in the
 -rw-r--r-- 1 root root 915 Sep 12 10:40 helloworld.json
 ```
 
-Both the [DDL](../ddl/) and JSON files are required and can be generated using the new `choria tool generate ddl helloworld.json helloworld.ddl` utility.
+Both the [DDL](../ddl/) and JSON files are required and can be generated using the new `choria plugin generate ddl helloworld.json helloworld.ddl` utility.
 
 ### Communication Protocols
 
