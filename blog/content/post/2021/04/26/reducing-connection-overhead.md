@@ -1,6 +1,6 @@
 ---
 title: "Reducing connection overhead for branch office scenarios"
-date: 2021-04-01T00:00:00+01:00
+date: 2021-04-26T00:00:00+01:00
 tags: ["leafnodes"]
 draft: false
 author: Romain Tartière
@@ -24,7 +24,7 @@ Let's see how to proceed to deploy a leaf node.
 
 ## Deploying a leaf node
 
-The choria-choria Puppet module recently gained the capacity to configure leaf nodes ([#239](https://github.com/choria-io/puppet-choria/pull/239)).  It is part of the [March release](/blog/post/2021/03/29/april_releases/) of Choria and require at least Choria Server version 0.21.1.  This section shows how to proceed.
+The choria-choria Puppet module recently gained the capacity to configure leaf nodes ([#239](https://github.com/choria-io/puppet-choria/pull/239)).  It is part of the [April 2021 Releases](/blog/post/2021/04/23/april_releases/) of Choria and require at least Choria Server version 0.22.0.  This section shows how to proceed.
 
 Before starting, you might want to measure the latency when you start to compare with what you have at the end.  Let's use `choria ping` for this purpose:
 
