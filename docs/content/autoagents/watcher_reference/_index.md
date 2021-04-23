@@ -79,11 +79,14 @@ This feature is available since *Choria Server 0.15.0*
 
 ### Properties
 
-|Property                 |Required                            |Description|
-|-------------------------|------------------------------------|-----------|
-|builtin                  |no                                  |Builtin check plugin, `heartbeat` or `goss` are supported now|
-|plugin                   |no                                  |Full path to the Nagios plugin script and it's arguments|
-|timeout                  |                                    |How long plugins can run, defaults to 10 seconds. Valid values are of the form 1s, 1m, 1h|
+|Property                 |Required  |Description|
+|-------------------------|----------|-----------|
+|builtin                  |no        |Builtin check plugin, `heartbeat`, `choria_status` or `goss` are supported now|
+|plugin                   |no        |Full path to the Nagios plugin script and it's arguments|
+|timeout                  |          |How long plugins can run, defaults to 10 seconds. Valid values are of the form 1s, 1m, 1h|
+|annotations              |no        |Additional annotations to apply to a specific check as a `map[string]string` JSON object|
+|gossfile                 |no        |A check specific goss file, else the system wide one is used|
+|last_message             |no        |For the `choria_status` builtin check, how long ago the last RPC message should have been received|
 
 When setting the plugin one can load override data from a JSON file defined in `plugin.scout.overrides`:
 
