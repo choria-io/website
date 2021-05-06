@@ -18,7 +18,7 @@ for ease of maintenance of the website, docs etc.
 After some googling I found the [Affinity symbol set](https://github.com/ecceman/affinity) - a public domain icon set in
 SVG format.  Using these I came up with set of on-brand colored icons for our various components you can see below.
 
-![](../../../img/drawio-components.png)
+![](/blog/img/drawio-components.png)
 
 Various diagrams in documentation and blog posts have been updated with the new style, I also am making all the colored
 icons and so forth available here. These can be loaded into *diagrams.net* using its *File -> Open Library* From option.:
@@ -36,3 +36,5 @@ The text color is dark blue *#2A395B*, green line is *#66C188* and orange line i
 
 Hopefully Choria users and contributors will find making these guidelines and files available useful in producing content
 for your own internal uses that match the stylings of our documentation.
+
+<!--more-->
