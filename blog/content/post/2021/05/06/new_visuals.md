@@ -20,6 +20,10 @@ SVG format.  Using these I came up with set of on-brand colored icons for our va
 
 ![](/blog/img/drawio-components.png)
 
+See the full post for links to assets and libraries for *diagrams.net*.
+
+<!--more-->
+
 Various diagrams in documentation and blog posts have been updated with the new style, I also am making all the colored
 icons and so forth available here. These can be loaded into *diagrams.net* using its *File -> Open Library* From option.:
 
@@ -37,4 +41,3 @@ The text color is dark blue *#2A395B*, green line is *#66C188* and orange line i
 Hopefully Choria users and contributors will find making these guidelines and files available useful in producing content
 for your own internal uses that match the stylings of our documentation.
 
-<!--more-->
