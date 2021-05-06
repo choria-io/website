@@ -25,7 +25,7 @@ icons and so forth available here. These can be loaded into *diagrams.net* using
 
 |File|Description|
 |----|-----------|
-|[component-shapes.xml](https://choria.io/docs/componentshapes.xml)|The main components as per above preview|
+|[component-shapes.xml](https://choria.io/docs/component-shapes.xml)|The main components as per above preview|
 |[blue-shapes.xml](https://choria.io/docs/blue-shapes.xml)|Component and other shapes in Choria logo dark blue|
 |[green-shapes.xml](https://choria.io/docs/green-shapes.xml)|Component and other shapes in Choria logo green|
 |[orange-shapes.xml](https://choria.io/docs/orange-shapes.xml)|Component and other shapes in Scout logo orange|
