@@ -7,11 +7,12 @@ toc = true
 Choria has its own broker that is based on the excellent [NATS.io](https://nats.io/) broker.  It's very fast, lightweight, is easy to configure and monitor.
 
   * TLS out of the box using your Puppet Agent certificates, accepting only nodes signed by Puppet CA
-  * Handles 50 000 MCollective connections per node - can be increased with a custom build
+  * Handles 50 000 Choria connections per node - can be increased with a custom build
   * Supports clustering on a LAN using a Full Mesh
   * Expose extensive Prometheus.io compatible metrics
   * Distributed for RedHat, Debian and Ubuntu
   * Includes advanced features like [Federation](../../federation) and [Protocol Adapters](../../adapters).
+  * Supports NATS Protocol over TCP+TLS and Secure Websocket
 
 ## Prerequisites
 
@@ -75,6 +76,20 @@ node "nats1.example.net" {
   }
 }
 ```
+
+## Secure Websocket
+
+To enable clients to connect to the broker using Websocket connections configure the port to use in addition to above settings:
+
+```puppet
+node "puppet.example.net" {
+  class{"choria::broker":
+    websocket_port => 4333
+  }
+}
+```
+
+Websocket can be used by Choria Agents and Clients by setting the middleware hosts to `wss://choria1.example.net:4333`.
 
 ## Large deploys
 

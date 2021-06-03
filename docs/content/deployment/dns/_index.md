@@ -85,3 +85,5 @@ choria::server_config:
   plugin.choria.puppetdb_port: 8081
   plugin.choria.middleware_hosts: "choria1.example.net:4222,choria2.example.net:4222,choria3.example.net:4222"
 ```
+
+To use Secure Websockets for communication if your broker is listening on WSS ports use `plugin.choria.middleware_hosts: wss://choria1.example.net:433,wss://choria2.example.net:433`.
