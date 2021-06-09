@@ -1,8 +1,7 @@
 +++
 title = "Discovery"
-weight = 203
+weight = 204
 toc = true
-icon = "<b>2. </b>"
 +++
 
 Discovery in Choria is the system used to address nodes on the Choria network. For example when issuing the command *choria req service restart service=httpd -C apache* I am saying all machines tagged class with *apache* should have their *httpd* service restarted.

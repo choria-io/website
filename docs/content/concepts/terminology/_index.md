@@ -1,8 +1,7 @@
 +++
 title = "Terminology"
-weight = 205
+weight = 206
 toc = true
-icon = "<b>3. </b>"
 +++
 
 As with most modern complex systems Choria has its own verbiage, this page attempts to define the terminology we use when discussing or writing about Choria.
@@ -118,6 +117,10 @@ Code that lives inside the server and takes on roles like security, connection h
 ## Registration
 
 A process where the Choria Server publishes on a regular basis data from a node, this could be metadata or in an IoT setting data like temperature, humidity and pressure.
+
+## Service Agent
+
+A Choria Agent hosted in a way where only 1 Service will respond to requests, this is foundational for creating configuration services, inventory, AAA signers and more that are reachable over the Middleware while being highly available and scalable.
 
 ## Server
 

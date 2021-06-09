@@ -2,7 +2,6 @@
 title = "Features"
 weight = 201
 toc = true
-icon = "<b>1. </b>"
 +++
 
 ## End User Features

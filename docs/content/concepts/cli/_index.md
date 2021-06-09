@@ -1,8 +1,7 @@
 +++
 title = "CLI Interaction Model"
-weight = 204
+weight = 205
 toc = true
-icon = "<b>2. </b>"
 +++
 
 Choria is designed first and foremost for the CLI. You will mostly

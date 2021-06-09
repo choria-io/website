@@ -290,6 +290,7 @@ The *scheduler* watcher flips between success and fail states based on a set of 
 
 |Property                 |Required                            |Description|
 |-------------------------|------------------------------------|-----------|
+|start_splay              |no                                  |Sleep a random period before initiating the schedule, expressed as a duration like `1m`. Should be no more than half the `duration`|
 |duration                 |yes                                 |How long the scheduler should be in the `success` state once triggered|
 |schedules                |yes                                 |A list of crontab like schedules based on which the `success` transitions will fire|
 
@@ -306,6 +307,7 @@ The schedules specified is a list of times when the scheduler will be in success
    interval: 1h
    properties:
      duration: 1h
+     start_splay: 1m
      schedules:
        - "0 8 * * *"
        - "0 12 * * *"
@@ -313,7 +315,7 @@ The schedules specified is a list of times when the scheduler will be in success
        - "0 20 * * SAT,SUN"
 ```
 
-The scheduler above will switch on daily at 8am, 12pm and 5pm but also at 8pm on Saturdays and Sundays.  It will stay on for a hour.
+The scheduler above will switch on daily at 8am, 12pm and 5pm but also at 8pm on Saturdays and Sundays.  It will stay on for an hour. Before starting it will sleep a random period between 0 and 1 minute. 
 
 If the machine transitions into an eligible *state_match* while a schedule is started it will immediately fire the *success_transition*.  If Choria starts up in the middle of a scheduled period it will be ignored and the next schedule will trigger.  Overlapping schedules is supported.
 

@@ -2,7 +2,6 @@
 title = "Architecture"
 weight = 202
 toc = true
-icon = "<b>1. </b>"
 +++
 
 ## The Choria Components
