@@ -56,6 +56,8 @@ The *exec* watcher supports running shell commands, it has a very basic exit cod
 |timeout                  |                                    |How long the command is allowed to run, *10s* default|
 |suppress_success_announce|                                    |Do not publish a state JSON document after every run, useful for frequently run items. Still publish on error. Still support regular publish via `announce_interval`|
 |environment              |                                    |A list of custom environment variables to set in the form `VAR=val`|
+|governor                 |                                    |Use the named Choria Concurrency Governor to control how many concurrent actions can be taken|
+|governor_timeout         |                                    |How long to attempt to gain a slot on the governor, defaults to *5m*|
 
 ### Behavior
 
@@ -68,6 +70,10 @@ An exec watcher will at *interval* times run the command specified with a few ma
 |*PATH*                |Includes the machine directory as last entry|
 
 The command is run with current directory set to the directory where the *machine.yaml* is, when the command exits *0* a *success_transition* fires, when it exits *!0* a *fail_transition* fires. Both cases publish an event announcing the execution.
+
+If a *governor* is configured the watcher will try to obtain a slot in the Governor before executing the command, it will timeout after *governor_timeout* has passed.
+
+To create a Governor Choria Streams must be enabled on the broker and the named Governor should have been created using `choria tool governor add`.
 
 ## Nagios watcher
 
