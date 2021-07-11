@@ -8,7 +8,7 @@ Choria Streams is a managed instance of [NATS JetStream](https://docs.nats.io/je
 
 Streams provide persistence for messages published on the NATS network, once messages are persisted to disk they can
 later be consumed by one or multiple consumers. These consumers can process the data, do calculations, analyze, train
-ML models or an similar actions.
+ML models or any similar actions.
 
 Messages are stored in a WAL on disk and various message expiration models are supported.
 
