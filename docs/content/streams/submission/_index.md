@@ -95,7 +95,7 @@ $ nats stream view MYAPP
 
   Nats-Msg-Id: ea8918a1-d3d5-4598-9a15-8d737902dccd
   Choria-Created: 1625991772906612419
-  Choria-Identity: dev1.devco.net
+  Choria-Identity: dev1.example.net
   Choria-Priority: 4
   Choria-Reliable: 1
   Choria-Sender: mypp.production
