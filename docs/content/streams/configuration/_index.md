@@ -90,4 +90,4 @@ Obtaining Stream stats
 ╰──────────────────────────┴─────────┴───────────┴──────────┴─────────┴──────┴─────────┴──────────────────────────╯
 ```
 
-Past that, for the moment, reference the [NATS Documentation])(https://docs.nats.io/jetstream).
+Past that, for the moment, reference the [NATS Documentation](https://docs.nats.io/jetstream).
