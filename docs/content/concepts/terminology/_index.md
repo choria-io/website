@@ -66,6 +66,10 @@ Delivered as part of the *choria* single binary.
 
 [Scout](../../scout) is a project currently in R&D that will deliver a full feature, secure and highly scalable monitoring system using Choria technologies.
 
+## Choria Streams
+
+A managed instance of NATS JetStream used to persist metadata, events and other messages. Also used for key-value store, concurrency Governor and more
+
 ## Client
 
 Software that produces commands for servers to process, typically this would be a computer with the client package installed and someone using the commands like *mco package* to interact with Agents.

@@ -1,8 +1,8 @@
 +++
 title = "Optional Configuration"
 chapter = true
-pre = "<b>11. </b>"
-weight = 110
+pre = "<b>12. </b>"
+weight = 120
 +++
 
 # Optional Configuration
