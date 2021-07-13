@@ -8,7 +8,7 @@ Choria Streams is a managed instance of [NATS JetStream](https://docs.nats.io/je
 
 Streams provide persistence for messages published on the NATS network, once messages are persisted to disk they can
 later be consumed by one or multiple consumers. These consumers can process the data, do calculations, analyze, train
-ML models or any similar actions.
+ML models or any similar actions in any of the 40+ language that support NATS.
 
 Messages are stored in a WAL on disk and various message expiration models are supported.
 
@@ -21,7 +21,7 @@ Today we support:
  * Publishing data from the Registration system to Choria Streams using [Adapters](../adapters/)
  * Constraining concurrency of some tasks in Autonomous Agents and cron using [Choria Governor](governor/)
  * Sending data from fleet nodes into a stream via the [Stream Submission](../submission) system
- * Scout check history viewer based on historical data
+ * Scout check history viewer based on historical data for example *choria scout watch --history 5m*
 
 Planned:
 

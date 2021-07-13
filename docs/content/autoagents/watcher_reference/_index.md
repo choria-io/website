@@ -50,14 +50,27 @@ The *exec* watcher supports running shell commands, it has a very basic exit cod
 
 ### Properties
 
-|Property                 |Required                            |Description|
-|-------------------------|------------------------------------|-----------|
-|command                  |yes                                 |The command to run relative to the watcher manifest directory|
-|timeout                  |                                    |How long the command is allowed to run, *10s* default|
-|suppress_success_announce|                                    |Do not publish a state JSON document after every run, useful for frequently run items. Still publish on error. Still support regular publish via `announce_interval`|
-|environment              |                                    |A list of custom environment variables to set in the form `VAR=val`|
-|governor                 |                                    |Use the named Choria Concurrency Governor to control how many concurrent actions can be taken|
-|governor_timeout         |                                    |How long to attempt to gain a slot on the governor, defaults to *5m*|
+|Property                 |Required|Description|
+|-------------------------|--------|-----------|
+|command                  |yes     |The command to run relative to the watcher manifest directory|
+|timeout                  |        |How long the command is allowed to run, *10s* default|
+|suppress_success_announce|        |Do not publish a state JSON document after every run, useful for frequently run items. Still publish on error. Still support regular publish via `announce_interval`|
+|environment              |        |A list of custom environment variables to set in the form `VAR=val`|
+|governor                 |        |Use the named [Choria Concurrency Governor](../../streams/governor) to control how many concurrent actions can be taken|
+|governor_timeout         |        |How long to attempt to gain a slot on the governor, defaults to *5m*|
+|parse_as_data            |        |Attempt to parse the data as JSON data and store each JSON key in a matching data item|                   
+
+### Data
+
+Choria Autonomous Agents can store data on a per machine basis. The data be written using the *kv* store watcher or the output
+from an exec command can be parsed as JSON and stored in the machine.
+
+Generally it's best to think of data keys and values as strings, but we do support any JSON data type for data coming from an
+*exec* watcher.
+
+Any *exec* that runs has access to all the machine data. While we persist the data to disk between runs and restarts it's best
+to think of the data as ephemeral. It's wont be there on start and we will delete corrupt data.  Your Autonomous Agent should 
+be able to run without data - by gathering it or creating it on demand.
 
 ### Behavior
 
@@ -68,20 +81,51 @@ An exec watcher will at *interval* times run the command specified with a few ma
 |*MACHINE_WATCHER_NAME*|The *name* of the watcher being run|
 |*MACHINE_NAME*        |The *name* of the machine being run|
 |*PATH*                |Includes the machine directory as last entry|
+|*WATCHER_DATA*        |A path to a temporary file that holds a copy of machine data in JSON format|
+|*WATCHER_FACTS*       |A path to a temporary file that holds a copy of all known facts about a machine in JSON format|
 
 The command is run with current directory set to the directory where the *machine.yaml* is, when the command exits *0* a *success_transition* fires, when it exits *!0* a *fail_transition* fires. Both cases publish an event announcing the execution.
 
 If a *governor* is configured the watcher will try to obtain a slot in the Governor before executing the command, it will timeout after *governor_timeout* has passed.
 
-To create a Governor Choria Streams must be enabled on the broker and the named Governor should have been created using `choria tool governor add`.
+To create a [Choria Concurrency Governor](../../streams/governor) must be enabled on the broker and the named Governor should have been created using `choria governor add`.
+
+## Key-Value store 
+
+The *kv* watcher watches a Choria Key-Value Store key and act on changes, updating the Machine data store with values and optionally
+performing transitions on change.
+
+{{% notice tip %}}
+This feature is available since *Choria Server 0.23.0*
+{{% /notice %}}
+
+Polling the Key-Value store is less resource intensive than watching, polling can be slower though.  In general this feature
+should be used on thousands of machines maximum rather than 10s of thousands.
+
+### Properties
+
+|Property|Required|Description|
+|--------|--------|-----------|
+|bucket  |yes     |The name of the bucket to watch|
+|key     |        |Watch a specific key in the bucket|
+|mode    |        |Either *poll* or *watch*|
+|bucket_prefix|   |Store the data in the machine data store with a prefix matching the bucket name, on by default|
+
+### Behavior
+
+The *kv* watcher will at *interval* fetch the value of a key in *poll* mode or actively watch buckets for change. Any change
+on the watched key will be stored in the Machine data and made available to other watchers like the *exec* one.
+
+If *bucket_prefix* is true (the default), the data will be stored like *BUCKET_KEY* in the data, otherwise just *KEY*.
+
+The *fail_transition* is called for any Key-Value retrieval failure, *success_transition* on any data change - including
+if a watched key is deleted.
+
+It does not announce state regularly or on state changes.
 
 ## Nagios watcher
 
 The *nagios* watcher executes Nagios compatible plugins and emits transitions `OK`, `WARNING`, `CRITICAL` and `UNKNOWN`.  This watcher can be combined with the `exec` watcher to create self healing systems that remediate when in `critical` or `warning` states.
-
-{{% notice tip %}}
-This feature is available since *Choria Server 0.15.0*
-{{% /notice %}}
 
 ### Properties
 
