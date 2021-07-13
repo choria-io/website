@@ -108,6 +108,18 @@ $ choria kv watch CFG username
 [2021-07-13 12:40:07] DEL CFG.username
 ```
 
+There's a special form of watch that is like a waiting Get, best to show it:
+
+```bash
+set -e
+USERNAME=$(choria kv watch CFG username --once --timeout 10s)
+```
+
+Here if there is a value at start time the value will be got and set in *USERNAME*, if there is not a value immediately
+it will wait for up to 10 seconds for a value to be created.
+
+If after 10 seconds nothing arrived a timeout will be reached and error raised
+
 ### Purging a bucket
 
 All the values can be removed from a bucket and history will not be kept.  Note any active watchers will not be notified
