@@ -17,10 +17,10 @@ All watchers share a common set of properties detailed below, watcher specific p
 |name              |yes|A unique name for the watcher|
 |type              |yes|A known type of watcher like *file* or *exec*|
 |state_match       |no |A list of state names where this watcher is valid for|
-|fail_transition   |   |If set this event fires on failure|
-|success_transition|   |If set this event fires on success|
-|interval          |   |Runs the watcher every interval, valid intervals are of the form *1s*, *1m*, *1h*|
-|announce_interval |   |Announce the current state of the watcher regularly, valid intervals are of the form *1s*, *1m*, *1h*|
+|fail_transition   |no |If set this event fires on failure|
+|success_transition|no |If set this event fires on success|
+|interval          |no |Runs the watcher every interval, valid intervals are of the form *1s*, *1m*, *1h*|
+|announce_interval |no |Announce the current state of the watcher regularly, valid intervals are of the form *1s*, *1m*, *1h*|
 |properties        |yes|Watcher specific settings|
 
 ## File watcher
@@ -381,7 +381,7 @@ The *metric* watcher periodically run a command and publish metrics found in its
 |interval                 |yes                                 |Go duration for how frequently to gather metrics|
 |labels                   |no                                  |key=value pairs of strings of additional labels to add to gathered metrics|
 
-## Behaviour
+### Behaviour
 
 The plugin supports 2 data formats, one Choria specific one and the commonly used Nagios Perfdata format. 
 

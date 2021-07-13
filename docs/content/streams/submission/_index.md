@@ -1,6 +1,6 @@
 +++
 title = "Message Submit"
-weight = 30
+weight = 40
 +++
 
 When building systems related to Choria it might be desirable to submit data from those processes to Choria Streams without

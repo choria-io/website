@@ -20,12 +20,12 @@ Today we support:
  * Highly available, replicated share-nothing, storage
  * Publishing data from the Registration system to Choria Streams using [Adapters](../adapters/)
  * Constraining concurrency of some tasks in Autonomous Agents and cron using [Choria Governor](governor/)
- * Sending data from fleet nodes into a stream via the [Stream Submission](../submission) system
+ * Sending data from fleet nodes into a stream via the [Stream Submission](submission) system
+ * High performance [distributed Key-Value store](key-value) integrated into [Autonomous Agents](../autoagents)
  * Scout check history viewer based on historical data for example *choria scout watch --history 5m*
 
 Planned:
 
- * High performance distributed key-value store integrated into Autonomous Agents
  * Publishing Choria Audit logs into a central store
  * Leader elections to bring HA to Tally, Provisioner and Stream Replicator
  * Stream Replicator support for Choria Streams
