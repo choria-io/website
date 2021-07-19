@@ -72,6 +72,16 @@ Any *exec* that runs has access to all the machine data. While we persist the da
 to think of the data as ephemeral. It's wont be there on start and we will delete corrupt data.  Your Autonomous Agent should 
 be able to run without data - by gathering it or creating it on demand.
 
+The `environment`, `command` and `governor` properties support looking up facts and data:
+
+```yaml
+properties:
+  governor: APP_{{ fact "location" }}
+```
+
+Will look up the fact `location` within the Choria Server facts.  You can also use the `data` function to get machine data. 
+Nested data can be looked up using `gjson` syntax, for example `{{ facts "os.distro.codename" }}`.
+
 ### Behavior
 
 An exec watcher will at *interval* times run the command specified with a few machine specific environment variables set in addition to any set using `environment`. Since version 0.11.1 when the interval is not set or set to 0 the the command will run only on transitions.
