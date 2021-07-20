@@ -76,11 +76,15 @@ The `environment`, `command` and `governor` properties support looking up facts 
 
 ```yaml
 properties:
-  governor: APP_{{ fact "location" }}
+  governor: APP_{{ lookup "facts.location" "DEFAULT" }}
 ```
 
-Will look up the fact `location` within the Choria Server facts.  You can also use the `data` function to get machine data. 
-Nested data can be looked up using `gjson` syntax, for example `{{ facts "os.distro.codename" }}`.
+Will look up the fact `location` within the Choria Server facts using `DEFAULT` when the fact is not set.  You can also access the `data` structure to get machine data. Nested data can be looked up using `gjson` syntax, for example `{{ lookup "facts.os.distro.codename" "UNKNOWN }}`.
+
+Additional to the `lookup` function we also have `Title` (Title Case A String), `Capitalize` (Same as Title), `ToLower`, `ToUpper`, `StringJoin` (comma joins a list of strings), `Base64Encode` and `Base64Decode`.
+
+These templates are expanded every time the data is needed so if you reference machine data you can make it dynamic - every time a command,
+governor etc is needed the template is newly expanded.
 
 ### Behavior
 
