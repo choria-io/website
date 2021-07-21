@@ -145,6 +145,25 @@ We can see after purge no values are stored.
 
 Finally, the bucket can be completely removed using `choria kv rm CFG`.
 
+### Backup and Restore
+
+Choria can create a backup for a bucket while the bucket is online and without interruption:
+
+```nohighlight
+$ choria kv backup CFG /srv/backup/cfg
+Created 791 bytes backup of bucket CFG in /srv/backup/cfg
+
+# on another cluster
+$ choria kv restore /srv/backup/cfg
+Restored 791 bytes backup from /srv/backup/cfg
+$ choria kv ls
++--------+---------+--------+
+| BUCKET | HISTORY | VALUES |
++--------+---------+--------+
+| CFG    | 5       | 6      |
++--------+---------+--------+
+```
+
 ## Autonomous Agent Integration
 
 Choria Autonomous Agents let us build small Kubernetes Operator like managed finite state machines. Since version *0.23.0*
