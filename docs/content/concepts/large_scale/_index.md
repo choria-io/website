@@ -166,7 +166,7 @@ For the authorization rule we support 2 models, a basic list of *agent.action* r
 }
 ```
 
-Here I am allowed to access all actions on the `puppet` agent and only 1 action on the `rpcutil` agent. The token encodes who I am (callerid) and how long the token is valid for.  The token is signed using an RSA private key. 
+Here I am allowed to access all actions on the *puppet* agent and only 1 action on the *rpcutil* agent. The token encodes who I am (*callerid*) and how long the token is valid for.  The token is signed using an RSA private key. 
 
 More complex policies can be written using Open Policy Agent and embedded in the token, here's an example policy:
 
@@ -203,13 +203,13 @@ This policy is written into the JWT, signed by the key and cannot be modified by
 
 ### Authorization and Auditing
 
-Running in every Overlay is a *Signing Service*. The signing service holds a private key that is trusted by the Choria network to delegate identity. That is the key `signer.privileged` can state to the Choria protocol that the caller identity is in fact `okta=rip@choria.io` instead of that of the privileged key.
+Running in every Overlay is a *Signing Service*. The signing service holds a private key that is trusted by the Choria network to delegate identity. That is the key *signer.privileged* can state to the Choria protocol that the caller identity is in fact *okta=rip@choria.io* instead of that of the privileged key.
 
 When a client holding a JWT token wish to communicate with Choria they send their JWT token and request to the signer.  The signer evaluated the policy embedded in the JWT token, checks that the token is valid - including verifying the signature and expiry times - and if all is allowed and correct it signs the request giving it back to the caller.
 
 From there the caller continues as normal publishing the message and processing replies.
 
-The individual fleet nodes will then see a request coming in from `okta=rip@choria.io`, they will perform their own AAA based on that identity.
+The individual fleet nodes will then see a request coming in from *okta=rip@choria.io*, they will perform their own AAA based on that identity.
 
 Authorized and denied requests are audited by this central signing component, it supports writing individual audit log entries to files and *Choria Streams* where the *Stream Replicator* can pick up these audit logs and send them to the central infrastructure for long term archival. The audit logs are described in the [io.choria.signer.v1.signature_audit](https://choria.io/schemas/choria/signer/v1/signature_audit.json) schema.
 
@@ -250,7 +250,7 @@ This data flow is discussed extensively on a talk I gave at Configuration Manage
 
 ### Node Metadata Capture
 
-On a basic level gathering node data might be as simple as running `facter -y` everywhere, in a more dynamic environment you might have multiple ways to gather data on a specific machine and configuring Cron might not really be an option.
+On a basic level gathering node data might be as simple as running *facter -y* everywhere, in a more dynamic environment you might have multiple ways to gather data on a specific machine and configuring Cron might not really be an option.
 
 We therefore prefer to create an [Autonomous Agent](https://choria.io/docs/autoagents/) that embeds all the dependencies, scripts and so forth to gather the metadata for a node, and we run that using a [Schedule Watcher](https://choria.io/docs/autoagents/watcher_reference/#scheduler-watcher).
 
@@ -285,7 +285,7 @@ plugin.choria.adapter.jetstream.ingest.topic = mcollective.ingest.discovery.>
 plugin.choria.adapter.jetstream.ingest.protocol = request
 ```
 
-Here we subscribe to data on `mcollective.ingest.discovery.>` and we publish it to `js.in.discovery.%s`, where `%s` will be replaced by the node name.
+Here we subscribe to data on *mcollective.ingest.discovery.>* and we publish it to *js.in.discovery.%s*, where `%s` will be replaced by the node name giving you the flexibility to keep, for example, 5 most recently metadata publishes per node with the oldest one being 7 days old. 
 
 The data is placed in Choria Streams in the format [choria:adapters:jetstream:output:1](https://choria.io/schemas/choria/adapters/jetstream/v1/output.json)
 
@@ -300,10 +300,11 @@ Using these Lifecycle events central systems or even regional orchestration syst
 
 The sampling pattern means in our Overlay we can have 5 minutely data but moving that date out of our Overlay can happen only once per hour for any node (but immediately if it's new). This way we do not affect a denial of service against central infrastructure.
 
+While Stream Replicator has special modes to handle node metadata, it can replicate any stream data and has various modes for order-preserving strictness or very fast parallel replication etc. Thus we use the same technology to shift workflow status updates, new jobs, life cycle events and monitoring data around the infrastructure.
 
 ### Consuming Data
 
-Ultimately Choria is only concerned with shifting data here, the data can be consumed in Go, Java, .Net or any of the 40+ languages that has support for NATS. The data can be consumed, combined and saved into other data bases like MongoDB.
+Ultimately Choria is only concerned with shifting data here or managing user supplied plugins for gathering data. The data can be consumed in Go, Java, .Net or any of the 40+ languages that has support for NATS. The data can be consumed, combined and saved into databases like MongoDB, processed live or feed into other systems for other teams and business units by way of replication.
 
 ### Further Reading
 
@@ -315,3 +316,22 @@ Ultimately Choria is only concerned with shifting data here, the data can be con
 
  * Support Choria Streams / JetStream in Stream Replicator
  * Allow HA groups of Stream Replicators
+
+## Job Status Updates and other Events
+
+Focusing on the workflow problem space again, some background about how a node executes a job will be needed.  Essentially we have a job / workflow description language that describes one or multiple steps to complete.
+
+This is handed to the node via a RPC call, the node spawns a background job process that handles the life of that job or sub-job, executing each step until completion.
+
+As the job runs the node might want to communicate details about individual steps, or the job. Step started, Step running, Step logs, Stop completed, next Step started and so forth.
+
+As these are external processes that runs and exit when done, they cannot really have their own connection to the Choria Broker - it would massively increase the specifications needed by the central infrastructure. Further, as the job execution is short lived, it cannot be expected to retry deliveries to the broker during network events.
+
+Choria can be configured to accept such messages from cron job, agents, really any external process running on the node using the [Message Submit](https://choria.io/docs/streams/submission/) feature.
+
+Shell scripts can essentially stick some payload in a temporary file and run `choria tool submit --config /etc/choria/server.conf --reliable --sender myapp.production myapp.metrics /tmp/payload`, which will result in a *reliable* message being submitted to Choria, it will on behalf of the Cron job retry this message until completion. There is also a Go API for submitting messages in this manner.
+
+The system support priority queues, maximum delivery attempts, unreliable messages for regularly published metrics, can maintain order between reliable messages and more. They are kept in a spool on each node, great care is taken to not fill the node up or cause problems on disk - we'll rather reject messages than try our best - at the expense of the node - to accept each one.
+
+These messages are published over the Choria Broker, optionally into Streams, and can be consumed by any of 40 different programming languages. Those stored in streams can be replicated elsewhere using *Choria Stream Replicator* as detailed above.
+
