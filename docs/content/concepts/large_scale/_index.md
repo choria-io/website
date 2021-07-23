@@ -22,7 +22,7 @@ In this document we will not dwell much on the actual workflow engine rather we 
 
 The kinds of workflows discussed are for tasks like data gathering, remediation, driving patch exercises or providing intel during outages additionally, regular observation of fleet state via [Choria Scout](https://master.choria.io/docs/scout/) can feed into ML models enabling work in the AI Ops space.
 
-It's been shown that in large enterprises this system can support millions of workflow executions on a monthly basis once integrated into enterprise monitoring and other such systems.
+It's been shown that in large enterprises this system can support millions of workflow executions on a daily basis once integrated into enterprise monitoring and other such systems.
 
 A number of systems are required to realise such a system, a few are listed here and this document will explore how these are built using Choria technologies:
 
@@ -116,6 +116,8 @@ Being that the extension point is an external script any level of integration ca
  * Make it highly available so that a standby Provisioner in a data center can take over when the primary one fails, now possible using Choria Streams
  * Perhaps extend the information that can be embedded in the CSR
  * In addition to certificates allow a token to be placed on the node to access Choria Broker multi tenancy model
+ * Reprovision on cert expiry [go-choria#1309](https://github.com/choria-io/go-choria/issues/1309)
+ * Expose cert age via node status [go-choria#1310](https://github.com/choria-io/go-choria/issues/1310)
 
 ## Certificate Authorities
 
@@ -334,4 +336,39 @@ Shell scripts can essentially stick some payload in a temporary file and run `ch
 The system support priority queues, maximum delivery attempts, unreliable messages for regularly published metrics, can maintain order between reliable messages and more. They are kept in a spool on each node, great care is taken to not fill the node up or cause problems on disk - we'll rather reject messages than try our best - at the expense of the node - to accept each one.
 
 These messages are published over the Choria Broker, optionally into Streams, and can be consumed by any of 40 different programming languages. Those stored in streams can be replicated elsewhere using *Choria Stream Replicator* as detailed above.
+
+## Job execution APIs
+
+One of the oldest, if not THE oldest, features in Choria via its Marionette Collective roots is the ability to host agents. An agent is essentially a collection of related APIs. For example the *service* agent have separate calls to start, stop, obtain status, enable or disable a service on any supported operating system.
+
+These agents have schemas (we call them DDLs) that describes the inputs, outputs, actions, validations and even how to summarise the data you receive from them.
+
+They can be written in Ruby, Go compiled into the Server, Go via an [external helper](https://github.com/choria-io/go-external), Python via an [external helper](https://github.com/optiz0r/py-mco-agent) or really in any language you want by implementing the quite easy external extension interface.
+
+In the context of our Job system we have an Agent that has amongst others these actions:
+
+ * `run_workflow` - given a YAML workflow spawns a seperate manager process that runs the workflow to completely, disconnected from Choria, returns execution IDs and workflow ID
+ * `query_workflow` - given a execution ID or workflow ID obtain a overall job status for that ID
+ * `stop_workflow` - stops a currently running workflow by its execution or workflow ID
+ * `running_workflows` - retrieves a list of all currently running workflows on this node
+
+Essentially the agent has a on-node spool directory where it writes statuses, job definitions and more.  Each running job has a light-weight Go process that manages the life cycle of that job execution.
+
+In spirit this is very similar to how [Puppet Tasks is integrated into Choria](https://choria.io/docs/tasks/). A background execution engine maintains a spool per job and writes statuses there.
+
+When this is combined with the [Message Submit](https://choria.io/docs/streams/submission/) feature long-running executions can communicate their statuses back to the Overlay coordinator via Choria Streams.
+
+Once an agent is developed and deployed high performance Go clients can be generated allowing programmatic access to these agents allowing robust RPC execution:
+
+ * Can access 50 000 nodes in 2 seconds
+ * Support various networking models common to node orchestration - batches, canary, random set selection, retries and more
+ * Integrates with all the Choria Security and Discovery features.
+
+Fully exploring this is out of scope for this document, but we have it documented in the [Extending Choria](https://choria.io/docs/development/mcorpc/goclients/) section of the documentation.
+
+### TODO
+
+ * Support asynchronous mode RPC in generated clients (see below)
+
+## Asynchronous RPC
 
