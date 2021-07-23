@@ -211,10 +211,11 @@ From there the caller continues as normal publishing the message and processing 
 
 The individual fleet nodes will then see a request coming in from `okta=rip@choria.io`, they will perform their own AAA based on that identity.
 
-Authorized and denied requests are audited by this central component, it supports writing individual audit log entries to *Choria Streams* where the *Stream Replicator* can pick up these audit logs and send them to the central infrastructure for long term archival.
+Authorized and denied requests are audited by this central signing component, it supports writing individual audit log entries to files and *Choria Streams* where the *Stream Replicator* can pick up these audit logs and send them to the central infrastructure for long term archival. The audit logs are described in the [io.choria.signer.v1.signature_audit](https://choria.io/schemas/choria/signer/v1/signature_audit.json) schema.
 
 ### Further Reading
 
+ * [Choria AAA Service](https://github.com/choria-io/aaasvc)
  * [Centralized AAA](https://choria.io/blog/post/2019/01/23/central_aaa/)
  * [Choria AAA Improvements](https://choria.io/blog/post/2020/09/13/aaa_improvements/)
  * [Rego Policies for Choria Server](https://choria.io/blog/post/2020/02/14/rego_policies_opa/)
@@ -226,3 +227,91 @@ Authorized and denied requests are audited by this central component, it support
 
  * Improvements for Choria Streams auditing
  * Extending JWT tokens to declare which tenant in a multi tenant environment a token has access to
+
+## Node Metadata
+
+Having an up to date inventory for a fleet is essential to successful orchestration, Choria has extensive per-rpc request [discovery facilities](https://choria.io/docs/concepts/discovery/) that can help on the last mile, but when presenting users with user-interfaces where subsets of fleets can be selected for workflows this information has to be accurate and current.
+
+Building large fleet metadata services is a significant undertaking, Choria plays a role in this, but, it's generally only 1 input into a larger effort to consolidate information from many enterprise sources.
+
+The general flow of metadata from node to central is:
+
+ * Choria Server regularly publish Lifecycle Events in CloudEvent format.
+ * Choria can read files as inventory input - tags and facts.
+ * Inventory files can be made using Cron or [Autonomous Agents](https://choria.io/docs/autoagents/)
+ * Inventory data can be regularly published, typically every 5 minutes
+ * [Choria Data Adapters](https://choria.io/docs/adapters/) receive, validate, unpack and restructure inventory data into [Choria Streams](https://choria.io/docs/streams/) 
+ * [Choria Stream Replicator](https://github.com/choria-io/stream-replicator) intelligently moves the data to other regions
+ * Custom internal processors read the streams as input into building local databases
+
+Optionally the metadata databases can be integrated into [Choria Discovery](https://choria.io/docs/concepts/discovery/) for use via CLI or RPC API.
+
+This data flow is discussed extensively on a talk I gave at Configuration Management Camp titled [Solving large scale operational metadata problems using stream processing](https://www.youtube.com/watch?v=HKnNgZfrx-8).
+
+### Node Metadata Capture
+
+On a basic level gathering node data might be as simple as running `facter -y` everywhere, in a more dynamic environment you might have multiple ways to gather data on a specific machine and configuring Cron might not really be an option.
+
+We therefore prefer to create an [Autonomous Agent](https://choria.io/docs/autoagents/) that embeds all the dependencies, scripts and so forth to gather the metadata for a node, and we run that using a [Schedule Watcher](https://choria.io/docs/autoagents/watcher_reference/#scheduler-watcher).
+
+One can have an autonomous agent whose function is to manage other autonomous agents, downloading metadata gathering agents from systems like Artifactory. Perhaps based on Key-Value data stored in [Choria Key-Value Store](https://choria.io/docs/streams/key-value/).
+
+### Publishing Metadata
+
+Once the data is stored in a file Choria Server can be configured to publish this regularly using 3 configuration options:
+
+```ini
+plugin.choria.registration.inventory_content.compression = true
+plugin.choria.registration.inventory_content.target = mcollective.ingest.discovery.n1.example.net
+registerinterval = 300
+```
+
+This will result in compressed data being published to the *choria.ingest.discovery.n1.example.net* subject every 5 minutes. The data is in the format [choria:registration:inventorycontent:1](https://choria.io/schemas/choria/registration/v1/inventorycontent.json)
+
+Publishing this data is lossy, we do not retry, we do not wait for acknowledgement of it being processed, it's simply a regular ping of data.
+
+This is combined with regular Lifecycle events - starting, stopping, still alive etc.
+
+### Moving data to Choria Streams
+
+[Choria Adapters](https://choria.io/docs/adapters/) receive this data and feeds it into Choria Streams, this is configured on the broker:
+
+```ini
+plugin.choria.adapters = jetstream
+plugin.choria.adapter.jetstream.type = jetstream
+plugin.choria.adapter.jetstream.stream.servers = broker-broker-ss:4222
+plugin.choria.adapter.jetstream.stream.topic = js.in.discovery.%s
+plugin.choria.adapter.jetstream.ingest.topic = mcollective.ingest.discovery.>
+plugin.choria.adapter.jetstream.ingest.protocol = request
+```
+
+Here we subscribe to data on `mcollective.ingest.discovery.>` and we publish it to `js.in.discovery.%s`, where `%s` will be replaced by the node name.
+
+The data is placed in Choria Streams in the format [choria:adapters:jetstream:output:1](https://choria.io/schemas/choria/adapters/jetstream/v1/output.json)
+
+### Replicating Data
+
+The [Choria Stream Replicator](https://github.com/choria-io/stream-replicator) copies data between 2 streams, it has features that makes it particularly suitable for replicating node metadata produced by Choria.
+
+ * It tracks Lifecycle events to know about new machines, cleanly shutdown machines, crashed machines (absence of data) and can publish / replicate advisories about fleet health
+ * It can sample data from a source stream intelligently ensuring that new nodes get replicated immediately and for healthy nodes only replicated hourly
+
+Using these Lifecycle events central systems or even regional orchestration systems will be aware immediately when a new node is up that it is up anywhere in the fleet and will soon get a fresh set of metadata for that node. This is done using [age advisories](https://choria.io/schemas/sr/v1/age_advisory.json) that other systems can listen for. This way when a central workflow engine presents a list of orchestration targets they can visually warn that machines being targeted have not been seen for a hour etc.
+
+The sampling pattern means in our Overlay we can have 5 minutely data but moving that date out of our Overlay can happen only once per hour for any node (but immediately if it's new). This way we do not affect a denial of service against central infrastructure.
+
+
+### Consuming Data
+
+Ultimately Choria is only concerned with shifting data here, the data can be consumed in Go, Java, .Net or any of the 40+ languages that has support for NATS. The data can be consumed, combined and saved into other data bases like MongoDB.
+
+### Further Reading
+
+ * [Choria Lifecycle Events](https://choria.io/blog/post/2019/01/03/lifecycle/)
+ * [Transitioning Events to CloudEvents](https://choria.io/blog/post/2019/12/05/cloudevents_transition/)
+ * [Solving large scale operational metadata problems using stream processing](https://www.youtube.com/watch?v=HKnNgZfrx-8)
+
+### TODO
+
+ * Support Choria Streams / JetStream in Stream Replicator
+ * Allow HA groups of Stream Replicators
