@@ -105,13 +105,13 @@ The decision about which Overlay to place a node can be made by metadata provide
 
 Being that the extension point is an external script any level of integration can be done that a user might want without recompiling any Choria components.
 
-**Further Reading:** 
+### Further Reading 
 
  * [Mass Provisioning Choria Servers](https://choria.io/blog/post/2018/08/13/server-provisioner/)
  * [Upcoming Server Provisioning Changes](https://choria.io/blog/post/2019/12/30/whats_next_for_provisioning/)
  * [Provisioning Agent Repository](https://github.com/choria-io/provisioning-agent) (warning: out of date README, improvements imminent)
 
-We have some TODO items on the Provisioner:
+### TODO
 
  * Make it highly available so that a standby Provisioner in a data center can take over when the primary one fails, now possible using Choria Streams
  * Perhaps extend the information that can be embedded in the CSR
@@ -135,4 +135,94 @@ As described above the Provisioning Server can be used to integrate Choria into 
  * The API has to be fast, if there is a network with 60 000 fleet nodes it will not do to provision them 5/second. We need to be able to issue 1000s per minute.
  * On connections from Overlays to central (see the stream replicator), the Overlay must have a certificate that would give it access to that central environment and must have access to the CA chain.
 
-It might be desirable to instead obtain an intermediate CA from the Enterprise CA and issue certificates locally using something like *cfssl* or integration into Vault.
+It might be desirable to instead obtain an intermediate CA from the Enterprise CA and issue certificates locally using something like *cfssl*mv  or integration into Vault.
+
+## Enterprise Authentication
+
+In cases where user level access to Choria will be provided it might be desirable to provide a flow where users need to login to the Choria environment using something like `choria login`, this might require 2FA token, enterprise SSO or other integrations.
+
+Choria supports these using a flow supported by the [Choria AAA Service](https://github.com/choria-io/aaasvc). 
+
+### Authentication
+
+The AAA Service is split into 2 parts. First you need an *Authenticator* service that handles the login flow, almost by it's very nature this will vary from Enterprise to Enterprise. Out of the box we support a static user list file and we can integrate with Okta Identity Cloud. This is not going to be enough for real world large scale use.
+
+The purpose of the Authentication step is two-fold; first it establishes who you are by means of username and password, 2FA token or any other means and secondly it encodes what you are allowed to do into a JWT token.
+
+In the case of our workflow system, authorization happens against the user database and IAM policies embedded into the workflow engine. Typically there would be entitlements assigned by or approved by ones manager and based on these entitlements certain access is allowed.
+
+The authentication system is therefor typically rolled out centrally on highly reliable infrastructure. This can be augmented with in-region or in-overlay authentication services that can be used when the Overlay is isolated, or even augmented with a more traditional certificate-only approach.  These 2 models can co-exist on the same Choria deployment. 
+
+For the authorization rule we support 2 models, a basic list of *agent.action* rules or a more full features Open Policy Agent based flow. Here's the content of a JWT token using the Agent List authorization rules:
+
+```json
+{
+  "agents": [
+    "rpcutil.ping",
+    "puppet.*"
+  ],
+  "callerid": "okta=rip@choria.io",
+  "exp": 1547742762
+}
+```
+
+Here I am allowed to access all actions on the `puppet` agent and only 1 action on the `rpcutil` agent. The token encodes who I am (callerid) and how long the token is valid for.  The token is signed using an RSA private key. 
+
+More complex policies can be written using Open Policy Agent and embedded in the token, here's an example policy:
+
+```rego
+# must be in this package
+package io.choria.aaasvc
+
+# it only checks `allow`, its good to default false
+default allow = false
+
+# user can deploy only frontend of myco into production but only in malta
+allow {
+	input.action == "deploy"
+	input.agent == "myco"
+	input.data.component == "frontend"
+	requires_fact_filter("country=mt")
+	input.collective == "production"
+}
+
+# can ask status anywhere in any environment
+allow {
+	input.action == "status"
+	input.agent == "myco"
+}
+
+# user can do anything myco related in development
+allow {
+	input.agent == "myco"
+	input.collective == "development"
+}
+```
+
+This policy is written into the JWT, signed by the key and cannot be modified by the user.
+
+### Authorization and Auditing
+
+Running in every Overlay is a *Signing Service*. The signing service holds a private key that is trusted by the Choria network to delegate identity. That is the key `signer.privileged` can state to the Choria protocol that the caller identity is in fact `okta=rip@choria.io` instead of that of the privileged key.
+
+When a client holding a JWT token wish to communicate with Choria they send their JWT token and request to the signer.  The signer evaluated the policy embedded in the JWT token, checks that the token is valid - including verifying the signature and expiry times - and if all is allowed and correct it signs the request giving it back to the caller.
+
+From there the caller continues as normal publishing the message and processing replies.
+
+The individual fleet nodes will then see a request coming in from `okta=rip@choria.io`, they will perform their own AAA based on that identity.
+
+Authorized and denied requests are audited by this central component, it supports writing individual audit log entries to *Choria Streams* where the *Stream Replicator* can pick up these audit logs and send them to the central infrastructure for long term archival.
+
+### Further Reading
+
+ * [Centralized AAA](https://choria.io/blog/post/2019/01/23/central_aaa/)
+ * [Choria AAA Improvements](https://choria.io/blog/post/2020/09/13/aaa_improvements/)
+ * [Rego Policies for Choria Server](https://choria.io/blog/post/2020/02/14/rego_policies_opa/)
+ * [Open Policy Agent in AAA Service](https://choria.io/blog/post/2019/12/20/aaasvc_opa/)
+ * [New pkcs11 Security Provider](https://choria.io/blog/post/2019/09/09/pkcs11/)
+ * [Limiting Clients to IP Ranges](https://choria.io/blog/post/2019/01/17/client_ip_limits/)
+
+### TODO
+
+ * Improvements for Choria Streams auditing
+ * Extending JWT tokens to declare which tenant in a multi tenant environment a token has access to
