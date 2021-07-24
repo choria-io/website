@@ -64,7 +64,7 @@ Essentially the workflow system becomes a system of many cooperating workflow sy
 
 In a typical Choria environment Puppet is used to provision a uniform Choria infrastructure integrated into the Puppet CA. This does not really work in large enterprises as the environments tend to be in all shapes, sizes and generations. There might be Baremetal managed using ancient automation scripts, VMWare systems, OpenStack systems, Kubernetes based container infrastructure and everything in between running in different environments from physical data centers to cloud to PaaS platforms.
 
-Choria therefore supports a provisioning mode where the process of enrolling a node can be managed on a per-environment basis allowing for:
+Choria therefore supports a provisioning mode where the process of enrolling a node can be managed on a per-environment basis allowing for, this is where we manage the vast differences in environments, platforms, etc.  Once Choria is install we have a unified overlay interface:
 
  * Custom endpoints for provisioning where needed. Optionally programmatically determined via plugins that can be compiled into Choria
  * Fully dynamic generation of configuration based on node metadata and fleet environment
@@ -78,6 +78,7 @@ The *Choria Provisioner* presents a *Choria Broker* managed by itself, creating 
 
 The general provisioning flow is as follows:
 
+
  * Choria Server starts up without a configuration
    * It checks if there is a *provisioning.jwt* in a well known location (see `choria buildinfo`)
    * The token is parsed and configuration like SRV domain, locations of metadata to expose and more is read from it.
@@ -88,17 +89,41 @@ Here the *provisioning.jwt* is a token that you would generate on a per Overlay 
 
 The *Choria Provisioner* actively listens for CloudEvents indicating a new machine just arrived in the environment ready for provisioning. Assuming sometimes these events can be missed it also actively scans, via the [discovery framework](../discovery/), the network for nodes ready for provisioning.
 
- * For each discovered node
-   * Retrieve *provisioning.jwt* JWT token, validates it and check its signature against a trusted certificate
-   * Retrieve metadata such as facts, inventory, versions and more about the node
-   * Requests the node generate a Certificate Signing Request with specific CN, OU, O, C and L set. The private key does not leave the node.
-   * Pass the inventory and CSR to an external extension point which must:
-     * Get the CSR signed using environment specific means
-     * Construct a node specific configuration that can be varied based on environment, metadata and more
-   * Provisioner sends the signed certificate and configuration to the new fleet node
-   * Fleet node restarts itself, now running it's new configuration using new PKI
+{{<mermaid align="left">}}
+sequenceDiagram
+   participant P as Provisioner
+   participant S as Server
+   participant H as Helper
+   participant CA
 
-We mention an external extension point, this is just a script or command that reads data on it's STDIN and writes the result to STDOUT. Any programming language can be used. Using this one can provide a single provisioner for an entire region or even globally, the provisioner can decide what Overlay to place a node in.
+   P ->> P: Discover servers
+
+   loop Every Server
+      P ->> S: Retrieve token
+      S ->> P: 
+      P ->> P: Validate Token
+      
+      P ->> S: Retrieve facts, metadata
+      S ->> P: 
+      
+      P ->> S: Request CSR
+      S ->> P: 
+      
+      P ->> H: Process Server
+      H ->> CA: Sign CSR
+      CA ->> H: Signed Cert
+      H ->> H: Generate configuration
+      H ->> P: Node configuration and cert
+      
+      P ->> S: Provide configuration and cert
+      S ->> S: Configure self
+      S ->> P: Confirm
+      
+      S ->> S: Restart into normal boot
+   end
+{{< /mermaid >}}
+
+We show an external helper, this is just a script or command that reads data on it's STDIN and writes the result to STDOUT. Any programming language can be used. Using this one can provide a single provisioner for an entire region or even globally, the provisioner can decide what Overlay to place a node in.
 
 This is an important capability, being able to intelligently place nodes in the correct Overlay means all nodes that form part of the same customer service in a region can be in the same Overlay meaning in an isolation scenario all infrastructure for a client can still be managed.  One can also imagine that having a shared databased in use by 10s of customers it would be beneficial to place the database, and those customers in the same Overlay.
 
