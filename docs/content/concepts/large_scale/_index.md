@@ -374,29 +374,67 @@ Fully exploring this is out of scope for this document, but we have it documente
 
 ## Asynchronous RPC
 
-The general Choria RPC flow is as follows, the entire request is modeled as a single blocking call multiplexed over multiple connections to the Broker.
+When building backend systems capable of processing many concurrent RPC requests and that support independent state queries of potentially long-running RPC requests we need to move from our typical synchronous RPC request model to an asynchronous model.
+
+This allows our Job Infrastructure to adopt a microservices design where multiple services can get access to request status, progress, outcomes etc independently without being in-process with the client as a synchronous client would require.
+
+The general Choria RPC flow is as follows, the entire request is modeled as a single blocking call multiplexed over multiple connections to the Broker. Discovery can be any of the discovery methods, files, network, API calls to databases whatever is configured in Choria.
 
 {{<mermaid align="left">}}
 sequenceDiagram
    participant Client
+   participant Discovery Source
    participant Broker
    participant Fleet
 
    Note over Client: Discovery
-   Client ->> Broker: set up reply channel
-   Client ->> Fleet: discovery request
-   loop Discovery Agent
-      Fleet ->> Fleet: evaluate filter
-   end
-   Fleet ->> Client: discovered nodes into reply channel
+   Client ->>+ Discovery Source: discover request
+   Discovery Source ->>- Client: discovered nodes
 
    Note over Client: RPC Request 
-   Client ->> Broker: set up reply channel
-   Client ->> Fleet: publish RPC request
+   Client ->>+ Broker: new reply channel
+   Client ->>+ Fleet: publish RPC request
    loop Replies
-      Fleet ->> Client: RPC replies into reply channel
-      Client ->> Client: handle replies
+     Fleet ->>- Client: RPC replies into reply channel
+     Client ->> Client: handle replies
    end
+   Broker ->>- Client: close reply channel
 {{< /mermaid >}}
 
 Generally this is fine for interactive user or even in background automations, but on a busy system trying to coordinate 10s or 100s of concurrent workflows this becomes onerous as one might need many threads and many connections.
+
+Choria supports splitting this process at the loop marked *Replies* where the Client receives and handle replies from the fleet.
+
+We have a long-running process (4) that listens constantly on the network for replies. It receives any reply and stores it in the storage (5), this can be something like MongoDB. The Client (1) queries this storage for replies related to a request it made. If the client creates a record for every RPC request and associate the replies we have a flow that works really well for web based systems.
+
+In this model the Client (1) do not need a reply channel, do not need to wait for any replies or block past the small period where requests are published. The receiver process (4) can be scaled horizontally for reliability and scalability. Accessing request results, progress, outcomes etc is now standard database operations. Showing result progress is a consolidation against discovered nodes and replied nodes.
+
+![Async RPC](../../large-scale/async-rpc.png)
+
+{{<mermaid align="left">}}
+sequenceDiagram
+   participant Client
+   participant DS as Discovery Source
+   participant DB as Data Store
+   participant RP as Receiver
+   participant Fleet
+
+   Note over Client: Discovery
+   Client ->> DS: discover request
+   DS ->> Client: discovered nodes
+   
+   Note over Client: Async Request
+   Client ->> DB: Write job details
+   Client ->> Fleet: Publish Request
+   Client ->> DB: Update job record with ID
+   
+   Note over RP: Receive replies
+   loop Process Replies
+      Fleet ->> RP: Receive Reply
+      RP ->> DB: Store Reply by ID
+   end
+
+   Note over Client: Access RPC Result
+   Client ->> DB: Read database records for ID
+   DB ->> Client: Consolidate and render
+{{< /mermaid >}}
