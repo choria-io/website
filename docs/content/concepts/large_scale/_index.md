@@ -4,19 +4,19 @@ weight = 208
 toc = true
 +++
 
-This is a reference design for a very large scale Choria deployment. This deployment supports a job orchestration system that allows long-running, multi-site/multi-region workflows to be scheduled centrally while allowing region level isolation.
+This is a reference design for a very large scale Choria deployment. This deployment supports a job orchestration system that allows long-running, multi-site/multi-region workflows to be scheduled centrally while allowing region level isolation. It supports multiple access models and forms the basis for a robust Enterprise scale automation platform allowing expansion in many directions.
 
-This is not a typical deployment that one would build using Puppet, but it does demonstrate the potential of the framework and how some of these concepts can be combined into truly large-scale orchestration platform.
+This is not a typical deployment that one would build using Puppet and most users do not need to think in these terms, but it does demonstrate the potential of the framework and how some of these concepts can be combined into truly large-scale orchestration platform.
 
 This architecture has been deployed successfully across global organisations with 100s of Data Centers / Regions, 100s of thousands or even millions of fleet nodes, both on-prem and cloud based.
 
 ## Goals
 
-The goal of the system is to provide a connective substrate that enables a very large enterprise workflow system to be built. 
+The goal of this architecture is to provide a connective substrate that enables a very large enterprise workflow system to be built. Such large workflow system makes many demands of the underlying infrastructure and need to be able to run over heterogeneous infrastructure. 
 
-The kind of workflow can be as simple as executing a single command on 10s of thousands of nodes in a region or as complex as a multi-stage workflow that can run for a long time, orchestration 100s or 1000s of steps.
+We'll discuss this system in the context of a system that can execute workflows as simple as executing a single command on 10s of thousands of nodes in a region or as complex as a multi-stage workflow that can run for a long time, orchestration 100s or 1000s of steps.
 
-Single workflows can impact machines in multiple regions, have sub workflows and have dependencies on completion of steps that happen in other regions. Everything built on a foundational mature security model providing strong Authentication, Authorization and Auditing.
+Single workflows can impact machines in multiple regions, have sub-workflows and have dependencies on completion of steps that happen in other regions. Everything built on a foundational mature security model providing strong Authentication, Authorization and Auditing.
 
 In this document we will not dwell much on the actual workflow engine rather we show how the various components of Choria would enable such a system to be built reliably and at large scale. A conceptual design of the actual workflow system might be included later, but the actual flow engine is not a component included in Choria today. One can mentally replace this workflow component with any other component that need access to programmable infrastructure.
 
@@ -27,6 +27,7 @@ It's been shown that in large enterprises this system can support millions of wo
 A number of systems are required to realise such a system, a few are listed here and this document will explore how these are built using Choria technologies:
 
  * Ability to deliver the agent with low-touch overhead, self-managing its lifecycle, configuration, availability and security.
+ * Should present a single unified interface to different generations of platform from artisanal baremetal to highly ephemeral cloud infrastructure and everything in between
  * Integration into existing Enterprise security be it Certificate Authorities, SSO or 2FA tokens from different vendors and with different standards.
  * Node introspection to discover its environment, this includes delivery of metadata gathering plugins at a large scale.
  * Fleet metadata collected and stored for every node, regionally and globally, continuously.
