@@ -51,11 +51,13 @@ If you are keen on IoT you can embed Choria into your small sensor devices and c
 
 See our [Related Projects](/docs/concepts/related/) page for links to other projects we work on in this space.
 
+Finally, for the truly large scale environments of 100s of thousands of nodes Choria can be the backplane for an entire [Enterprise Management Platform](large_scale).
+
 ## Introduction
 
-Choria is an Orchestration System built using a client server model. Servers on your network will expose API's that allow you to perform actions against those servers.  These actions can be implemented using several different languages and you can build your own to extend the system.
+Choria is an Orchestration System built using a client server model. Servers on your network will expose API's that allow you to perform actions against those servers.  These actions can be implemented using several languages, and you can build your own to extend the system.
 
-Choria is aware of your network topology and provides a rich discovery system allowing you to address nodes classified by your configuration management system with certain characteristics, real time status of nodes or by querying asset databases.
+Choria is aware of your network topology and provides a rich [discovery system](discovery) allowing you to address nodes classified by your Configuration Management system with certain characteristics, real time status of nodes or by querying asset databases.
 
 The system is part complete end user solution via features like its rich Playbook system and part framework allowing you to extend it and build on it. You can start with basic Choria and do useful things on day one but sculpt it into the orchestration system of your dreams due to the exposed framework that provides many of the capabilities orchestration systems need.
 

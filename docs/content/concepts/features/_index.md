@@ -12,6 +12,7 @@ toc = true
   * Common plugins like Package, Service, Puppet and File Manager deployed and ready to use, many more actively maintained and ready to install.
   * Ability to construct [Autonomous Agents](../../autoagents) that can manage any device or component continuously.
   * Explore our current R&D project [Choria Scout](../../scout) that will deliver a full featured monitoring solution.
+  * A NATS JetStream based Streaming server called [Choria Streams](../../streams) providing Key-Value, Concurrency Control, Leader Election and more
 
 ## Developer Features
 
