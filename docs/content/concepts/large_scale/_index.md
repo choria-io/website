@@ -20,13 +20,13 @@ Single workflows can impact machines in multiple regions, have sub workflows and
 
 In this document we will not dwell much on the actual workflow engine rather we show how the various components of Choria would enable such a system to be built reliably and at large scale. A conceptual design of the actual workflow system might be included later, but the actual flow engine is not a component included in Choria today. One can mentally replace this workflow component with any other component that need access to programmable infrastructure.
 
-The kinds of workflows discussed are for tasks like data gathering, remediation, driving patch exercises or providing intel during outages additionally, regular observation of fleet state via [Choria Scout](https://master.choria.io/docs/scout/) can feed into ML models enabling work in the AI Ops space.
+The kinds of workflows discussed are for tasks like data gathering, remediation, driving patch exercises or providing intel during outages, additionally, regular observation of fleet state via [Choria Scout](https://master.choria.io/docs/scout/) can feed into ML models enabling work in the AI Ops space.
 
 It's been shown that in large enterprises this system can support millions of workflow executions on a daily basis once integrated into enterprise monitoring and other such systems.
 
 A number of systems are required to realise such a system, a few are listed here and this document will explore how these are built using Choria technologies:
 
- * Ability to deliver the agent with low-touch overhead with self-managing of its lifecycle, configuration, availability and security.
+ * Ability to deliver the agent with low-touch overhead, self-managing its lifecycle, configuration, availability and security.
  * Integration into existing Enterprise security be it Certificate Authorities, SSO or 2FA tokens from different vendors and with different standards.
  * Node introspection to discover its environment, this includes delivery of metadata gathering plugins at a large scale.
  * Fleet metadata collected and stored for every node, regionally and globally, continuously.
@@ -35,7 +35,7 @@ A number of systems are required to realise such a system, a few are listed here
  * Various components on fleet nodes can communicate their state, job progress and other information into the substrate without having to each manage reliable connections which would overwhelm the central components with short-lived connections.
  * Open data formats used to maximise integration in a highly heterogeneous environment, maximising return on investment.
  * Efficient processing of fleet state data using Enterprise programming languages using familiar streaming data concepts.
- * Isolated cellular design where individual cells (around 20 000 fleet nodes) can function independently.
+ * Isolated cellular design where individual cells (around 20 000 fleet nodes per cell) can function independently.
 
 ## Overview
 
@@ -47,11 +47,11 @@ As mentioned the system will be cellular in design - in Choria we call each cell
  * [Choria AAA Server](https://github.com/choria-io/aaasvc) providing integration with Enterprise SSO systems, pkcs11 tokens and more
  * [Choria Stream Replicator](https://github.com/choria-io/stream-replicator) allowing data from an overlay to be replicated to a region or to a central location
 
-Generally, depending on the availability model chosen for the Network Brokers, this is around 3 to 5 nodes required to manage 20 000 fleet nodes.
+Generally, depending on the availability model chosen for the Network Brokers, this is around 3 to 5 nodes required to manage each Overlay.
 
 ![Client Server Overview](../../large-scale/global-orchestrator.png)
 
-Here we see the various components built with multiple Overlay networks shown, highlighting the full independence of each Overlay.
+Here we see the various components within each Overlay networks shown, highlighting the full independence of each Overlay. Each Overlay is identical.
 
 The *Stream Replicator* component is used to move data between environments in an eventually consistent manner, that is, should *Overlay 1* be isolated from the network as a whole the *job infrastructure* can submit jobs locally. Job statuses, job progress records and metadata gathered during the time and so forth are all kept in the Overlay until such time as the connectivity to the rest of the world is restored. At that time the Stream replication will copy the data centrally.
 
@@ -79,18 +79,18 @@ The general provisioning flow is as follows:
 
  * Choria Server starts up without a configuration
    * It checks if there is a *provisioning.jwt* in a well known location (see `choria buildinfo`)
-   * The token is read, from it is taken server list, SRV domain, locations of metadata to expose and more.
+   * The token is parsed and configuration like SRV domain, locations of metadata to expose and more is read from it.
    * Choria Server activates the *choria_provisioning* agent that is compiled into it, this agent is usually disabled in Puppet environments.
-   * Choria Server connects to the infrastructure described in the token and wait there for provisioning. Regularly sending CloudEvents and, optionally publishing metadata regularly.
+   * Choria Server connects to the infrastructure described in the token and wait there for provisioning. Regularly publishing CloudEvents and, optionally node metadata.
 
 Here the *provisioning.jwt* is a token that you would generate on a per Overlay or Region basis and it would hold provisioning configuration for that region.
 
-The *Choria Provisioner* actively listens for CloudEvents indicating a new machine just arrived in the environment ready for provisioning. Assuming sometimes these events can be missed it also actively scans, via the discovery framework, the network for nodes ready for provisioning.
+The *Choria Provisioner* actively listens for CloudEvents indicating a new machine just arrived in the environment ready for provisioning. Assuming sometimes these events can be missed it also actively scans, via the [discovery framework](../discovery/), the network for nodes ready for provisioning.
 
  * For each discovered node
-   * Retrieve *provisioning.jwt* JWT token, validates it for validity and checks its signature against a trusted certificate
+   * Retrieve *provisioning.jwt* JWT token, validates it and check its signature against a trusted certificate
    * Retrieve metadata such as facts, inventory, versions and more about the node
-   * Requests the node to generate a Certificate Signing Request with specific CN, OU, O, C and L set. The private key does not leave the node.
+   * Requests the node generate a Certificate Signing Request with specific CN, OU, O, C and L set. The private key does not leave the node.
    * Pass the inventory and CSR to an external extension point which must:
      * Get the CSR signed using environment specific means
      * Construct a node specific configuration that can be varied based on environment, metadata and more
@@ -114,7 +114,7 @@ Being that the extension point is an external script any level of integration ca
 ### TODO
 
  * Make it highly available so that a standby Provisioner in a data center can take over when the primary one fails, now possible using Choria Streams
- * Perhaps extend the information that can be embedded in the CSR
+ * Perhaps extend the information that can be embedded in the CSR including SANs
  * In addition to certificates allow a token to be placed on the node to access Choria Broker multi tenancy model
  * Reprovision on cert expiry [go-choria#1309](https://github.com/choria-io/go-choria/issues/1309)
  * Expose cert age via node status [go-choria#1310](https://github.com/choria-io/go-choria/issues/1310)
@@ -155,7 +155,7 @@ In the case of our workflow system, authorization happens against the user datab
 
 The authentication system is therefor typically rolled out centrally on highly reliable infrastructure. This can be augmented with in-region or in-overlay authentication services that can be used when the Overlay is isolated, or even augmented with a more traditional certificate-only approach.  These 2 models can co-exist on the same Choria deployment. 
 
-For the authorization rule we support 2 models, a basic list of *agent.action* rules or a more full features Open Policy Agent based flow. Here's the content of a JWT token using the Agent List authorization rules:
+For the authorization rule we support 2 models, a basic list of *agent.action* rules or a more full featured Open Policy Agent based flow. Here's the content of a JWT token using the Agent List authorization rules:
 
 ```json
 {
@@ -207,7 +207,7 @@ This policy is written into the JWT, signed by the key and cannot be modified by
 
 Running in every Overlay is a *Signing Service*. The signing service holds a private key that is trusted by the Choria network to delegate identity. That is the key *signer.privileged* can state to the Choria protocol that the caller identity is in fact *okta=rip@choria.io* instead of that of the privileged key.
 
-When a client holding a JWT token wish to communicate with Choria they send their JWT token and request to the signer.  The signer evaluated the policy embedded in the JWT token, checks that the token is valid - including verifying the signature and expiry times - and if all is allowed and correct it signs the request giving it back to the caller.
+When a client holding a JWT token wish to communicate with Choria they send their JWT token and request to the signer.  The signer evaluates the policy embedded in the JWT token, checks that the token is valid - including verifying the signature and expiry times - and if all is allowed and correct it signs the request giving it back to the caller.
 
 From there the caller continues as normal publishing the message and processing replies.
 
@@ -298,7 +298,7 @@ The [Choria Stream Replicator](https://github.com/choria-io/stream-replicator) c
  * It tracks Lifecycle events to know about new machines, cleanly shutdown machines, crashed machines (absence of data) and can publish / replicate advisories about fleet health
  * It can sample data from a source stream intelligently ensuring that new nodes get replicated immediately and for healthy nodes only replicated hourly
 
-Using these Lifecycle events central systems or even regional orchestration systems will be aware immediately when a new node is up that it is up anywhere in the fleet and will soon get a fresh set of metadata for that node. This is done using [age advisories](https://choria.io/schemas/sr/v1/age_advisory.json) that other systems can listen for. This way when a central workflow engine presents a list of orchestration targets they can visually warn that machines being targeted have not been seen for a hour etc.
+Using these advisory events central systems or even regional orchestration systems will be aware immediately when a new node is up that it is up anywhere in the fleet and will soon get a fresh set of metadata for that node. This is done using [age advisories](https://choria.io/schemas/sr/v1/age_advisory.json) that other systems can listen for. This way when a central workflow engine presents a list of orchestration targets they can visually warn that machines being targeted have not been seen for a short while - often with higher fidelity than enterprise monitoring systems.
 
 The sampling pattern means in our Overlay we can have 5 minutely data but moving that date out of our Overlay can happen only once per hour for any node (but immediately if it's new). This way we do not affect a denial of service against central infrastructure.
 
@@ -339,11 +339,13 @@ These messages are published over the Choria Broker, optionally into Streams, an
 
 ## Job execution APIs
 
-One of the oldest, if not THE oldest, features in Choria via its Marionette Collective roots is the ability to host agents. An agent is essentially a collection of related APIs. For example the *service* agent have separate calls to start, stop, obtain status, enable or disable a service on any supported operating system.
+One of the oldest, if not THE oldest, features in Choria via its Marionette Collective roots is the ability to host agents. An agent is essentially a collection of related APIs. For example the *service* agent have separate functions, called actions, to start, stop, obtain status, enable or disable a service on any supported operating system.
 
 These agents have schemas (we call them DDLs) that describes the inputs, outputs, actions, validations and even how to summarise the data you receive from them.
 
-They can be written in Ruby, Go compiled into the Server, Go via an [external helper](https://github.com/choria-io/go-external), Python via an [external helper](https://github.com/optiz0r/py-mco-agent) or really in any language you want by implementing the quite easy external extension interface.
+These agents can be accessed from CLI, Ruby Scripts, Puppet DSL based Playbooks or Go based programs. All access is subject to validation and control of the DDL files.
+
+Agents can be written in Ruby, Go compiled into the Server, Go via an [external helper](https://github.com/choria-io/go-external), Python via an [external helper](https://github.com/optiz0r/py-mco-agent) or really in any language you want by implementing the quite easy external extension interface.
 
 In the context of our Job system we have an Agent that has amongst others these actions:
 
@@ -372,3 +374,29 @@ Fully exploring this is out of scope for this document, but we have it documente
 
 ## Asynchronous RPC
 
+The general Choria RPC flow is as follows, the entire request is modeled as a single blocking call multiplexed over multiple connections to the Broker.
+
+{{<mermaid align="left">}}
+sequenceDiagram
+   participant Client
+   participant Broker
+   participant Fleet
+
+   Note over Client: Discovery
+   Client ->> Broker: set up reply channel
+   Client ->> Fleet: discovery request
+   loop Discovery Agent
+      Fleet ->> Fleet: evaluate filter
+   end
+   Fleet ->> Client: discovered nodes into reply channel
+
+   Note over Client: RPC Request 
+   Client ->> Broker: set up reply channel
+   Client ->> Fleet: publish RPC request
+   loop Replies
+      Fleet ->> Client: RPC replies into reply channel
+      Client ->> Client: handle replies
+   end
+{{< /mermaid >}}
+
+Generally this is fine for interactive user or even in background automations, but on a busy system trying to coordinate 10s or 100s of concurrent workflows this becomes onerous as one might need many threads and many connections.

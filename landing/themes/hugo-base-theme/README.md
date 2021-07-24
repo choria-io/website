@@ -21,7 +21,7 @@ Navigate to your site folder and run the following commands :
 +++
 date = 2014-10-13T20:07:19Z
 draft = true
-title = "First"
+title = "First"w
 description = "Ceci est mon premier post \n bla bla bla"
 weight = 1
 icon = "pacman"
