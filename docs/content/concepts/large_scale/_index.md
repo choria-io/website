@@ -466,7 +466,7 @@ sequenceDiagram
 {{< /mermaid >}}
 
 A simplified Request Publisher can be seen here that essentially does `choria req rpcutil ping` but with a custom reply
-set via the environment variable REPLY, we do not perform the steps to store the data in a database but that's fairly easy:
+set via the environment variable `REPLY`, we do not perform the steps to store the data in a database but that's fairly easy:
 
 ```go
 package main
@@ -520,14 +520,8 @@ func main() {
 
    conn, err := fw.NewConnector(context.Background(), fw.MiddlewareServers, "async-receiver", fw.Logger("conn"))
    panicIfErr(err)
-
-   subj := os.Getenv("REPLY")
-   if subj == "" {
-      subj = fmt.Sprintf("%s.reply.%s.%s", fw.Config.MainCollective, fmt.Sprintf("%x", md5.Sum([]byte(fw.CallerID()))), strings.Replace(fw.UniqueID(), "-", "", -1))
-      log.Warnf("Subscribing to subject %q", subj)
-   }
-
-   msgs, err := conn.ChanQueueSubscribe(fmt.Sprintf("async-reciver-%d", os.Getpid()), subj, "async", 1000)
+   
+   msgs, err := conn.ChanQueueSubscribe(fmt.Sprintf("async-reciver-%d", os.Getpid()), os.Getenv("REPLY"), "async", 1000)
    panicIfErr(err)
 
    for msg := range msgs {
