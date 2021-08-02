@@ -175,6 +175,7 @@ The godoc ([rpcutil](https://pkg.go.dev/github.com/choria-io/go-choria/client/rp
 |`OptionReset()`|Put this first to reset all the options from previous calls else they are sticky|
 |`OptionTargets([]string)`|Supply a node list to use rather than rely on discovery|
 |`OptionWorkers(int)`|How many connections to make to the Choria Broker and how many routines to process results, defaults to 3|
+|`OptionReplyTo(string)`|A custom reply subject, the specific client will never get any replies|
 
 ### Actions and Inputs
 

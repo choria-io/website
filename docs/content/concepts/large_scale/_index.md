@@ -64,7 +64,7 @@ Essentially the workflow system becomes a system of many cooperating workflow sy
 
 In a typical Choria environment Puppet is used to provision a uniform Choria infrastructure integrated into the Puppet CA. This does not really work in large enterprises as the environments tend to be in all shapes, sizes and generations. There might be Baremetal managed using ancient automation scripts, VMWare systems, OpenStack systems, Kubernetes based container infrastructure and everything in between running in different environments from physical data centers to cloud to PaaS platforms.
 
-Choria therefore supports a provisioning mode where the process of enrolling a node can be managed on a per-environment basis allowing for, this is where we manage the vast differences in environments, platforms, etc.  Once Choria is install we have a unified overlay interface:
+Choria therefore supports a provisioning mode where the process of enrolling a node can be managed on a per-environment basis, this is where we manage the vast differences in environments, platforms, etc.  Once Choria is installed we have a unified overlay interface:
 
  * Custom endpoints for provisioning where needed. Optionally programmatically determined via plugins that can be compiled into Choria
  * Fully dynamic generation of configuration based on node metadata and fleet environment
@@ -139,7 +139,7 @@ Being that the extension point is an external script any level of integration ca
 
 ### TODO
 
- * Make it highly available so that a standby Provisioner in a data center can take over when the primary one fails, now possible using Choria Streams
+ * Make it highly available so that a standby Provisioner in a data center can take over when the primary one fails, now possible using Choria Streams [provisioning-agent#133](https://github.com/choria-io/provisioning-agent/issues/133)
  * Perhaps extend the information that can be embedded in the CSR including SANs
  * In addition to certificates allow a token to be placed on the node to access Choria Broker multi tenancy model
  * Reprovision on cert expiry [go-choria#1309](https://github.com/choria-io/go-choria/issues/1309)
@@ -396,7 +396,7 @@ Fully exploring this is out of scope for this document, but we have it documente
 
 ### TODO
 
- * Support asynchronous mode RPC in generated clients (see below)
+ * Support asynchronous mode RPC in generated clients (see below) (**DONE:** [go-choria#1314](https://github.com/choria-io/go-choria/issues/1314))
 
 ## Asynchronous RPC
 
