@@ -464,3 +464,94 @@ sequenceDiagram
    Client ->> DB: Read database records for ID
    DB ->> Client: Consolidate and render
 {{< /mermaid >}}
+
+A simplified Request Publisher can be seen here that essentially does `choria req rpcutil ping` but with a custom reply
+set via the environment variable REPLY, we do not perform the steps to store the data in a database but that's fairly easy:
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+
+	"github.com/choria-io/go-choria/client/rpcutilclient"
+)
+
+func main() {
+	rpcu,err:=rpcutilclient.New()
+	panicIfErr(err)
+
+	res,err:=rpcu.OptionReplyTo(os.Getenv("REPLY")).Ping().Do(context.Background())
+	panicIfErr(err)
+
+	fmt.Println(res.Stats().UniqueRequestID())
+}
+```
+
+We can set up a dedicated receiver for these Replies, here we just validate and parse them, you would process them based on the values
+of `reply.Agent()` and `r.Action` into the correct structures and process them as needed, here we just log them.
+
+Here we read the messages live from the network with no buffering though one can imagine a scenario where messages are sent into Choria Streams,
+by setting a stream as reply, and then using a Stream Consumer to loop over the received messages to create a reliable/buffered channel:
+
+```go
+package main
+
+import (
+   "context"
+   "crypto/md5"
+   "fmt"
+   "os"
+   "strings"
+
+   "github.com/choria-io/go-choria/choria"
+   "github.com/choria-io/go-choria/providers/agent/mcorpc/client"
+   "github.com/sirupsen/logrus"
+)
+
+func main() {
+   fw, err := choria.New(choria.UserConfig())
+   panicIfErr(err)
+
+   log := fw.Logger("receiver")
+   log.Logger.SetLevel(logrus.InfoLevel)
+
+   conn, err := fw.NewConnector(context.Background(), fw.MiddlewareServers, "async-receiver", fw.Logger("conn"))
+   panicIfErr(err)
+
+   subj := os.Getenv("REPLY")
+   if subj == "" {
+      subj = fmt.Sprintf("%s.reply.%s.%s", fw.Config.MainCollective, fmt.Sprintf("%x", md5.Sum([]byte(fw.CallerID()))), strings.Replace(fw.UniqueID(), "-", "", -1))
+      log.Warnf("Subscribing to subject %q", subj)
+   }
+
+   msgs, err := conn.ChanQueueSubscribe(fmt.Sprintf("async-reciver-%d", os.Getpid()), subj, "async", 1000)
+   panicIfErr(err)
+
+   for msg := range msgs {
+      reply, err := fw.NewReplyFromTransportJSON(msg.Data, true)
+      if err != nil {
+         log.Errorf("Could not handle reply: %s", err)
+         continue
+      }
+
+      r, err := client.ParseReply(reply)
+      if err != nil {
+         log.Errorf("Could not handle reply: %s", err)
+         continue
+      }
+
+      log.Infof("[%s] Received a reply from %s via %s#%s request %s: %s", reply.Time(), reply.SenderID(), reply.Agent(), r.Action, reply.RequestID(), r.Statusmsg)
+      log.Infof(">>> %s", r.Data)
+   }
+}
+```
+
+Output from this looksl like:
+
+```nohighlight
+INFO[0004] [2021-08-02 15:07:06 +0200 CEST] Received a reply from example.net via rpcutil#ping request 96dbb3da5c9e45bb96a1211b81764cb1: OK  component=receiver
+INFO[0004] >>> {"pong":1627909626}                       component=receiver
+```
