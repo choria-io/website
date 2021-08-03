@@ -394,10 +394,6 @@ Once an agent is developed and deployed high performance Go clients can be gener
 
 Fully exploring this is out of scope for this document, but we have it documented in the [Extending Choria](https://choria.io/docs/development/mcorpc/goclients/) section of the documentation.
 
-### TODO
-
- * Support asynchronous mode RPC in generated clients (see below) (**DONE:** [go-choria#1314](https://github.com/choria-io/go-choria/issues/1314))
-
 ## Asynchronous RPC
 
 When building backend systems capable of processing many concurrent RPC requests and that support independent state queries of potentially long-running RPC requests we need to move from our typical synchronous RPC request model to an asynchronous model.
@@ -508,7 +504,6 @@ import (
 
    "github.com/choria-io/go-choria/choria"
    "github.com/choria-io/go-choria/providers/agent/mcorpc/client"
-   "github.com/sirupsen/logrus"
 )
 
 func main() {
@@ -516,7 +511,6 @@ func main() {
    panicIfErr(err)
 
    log := fw.Logger("receiver")
-   log.Logger.SetLevel(logrus.InfoLevel)
 
    conn, err := fw.NewConnector(context.Background(), fw.MiddlewareServers, "async-receiver", fw.Logger("conn"))
    panicIfErr(err)
@@ -543,7 +537,7 @@ func main() {
 }
 ```
 
-Output from this looksl like:
+Output from this looks like:
 
 ```nohighlight
 INFO[0004] [2021-08-02 15:07:06 +0200 CEST] Received a reply from example.net via rpcutil#ping request 96dbb3da5c9e45bb96a1211b81764cb1: OK  component=receiver

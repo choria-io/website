@@ -85,6 +85,11 @@ the message is stored to disk.  Retries are managed by the *--reliable*, *--max-
 
 If the spool is full message submission will fail.
 
+If you wish to submit messages from within a compiled in agent you can access `agent.Choria.DirectorySubmitter()` which
+will give you access to submit messages into the spool, error when not enabled.
+
+Messages can also be submitted programmatically from `Go` using the `github.com/choria-io/go-choria/submission` package.
+
 ## Viewing messages
 
 At this point the message should be in the Stream, we can view all messages in a pager:
