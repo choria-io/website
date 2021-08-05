@@ -24,7 +24,7 @@ This will all be available in our upcoming `0.23.0` release.
 
 Read the full entry for an overview of where we are.
 
-<--more-->
+<!--more-->
 
 ## Streams and Consumers
 
