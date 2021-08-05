@@ -22,7 +22,7 @@ SVG format.  Using these I came up with set of on-brand colored icons for our va
 
 See the full post for links to assets and libraries for *diagrams.net*.
 
-<!--more-->
+<--more-->
 
 Various diagrams in documentation and blog posts have been updated with the new style, I also am making all the colored
 icons and so forth available here. These can be loaded into *diagrams.net* using its *File -> Open Library* From option.:

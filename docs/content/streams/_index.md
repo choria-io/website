@@ -18,7 +18,7 @@ Today we support:
 
  * Auto Configuring Streams for Events, Autonomous Agent Data and Scout Data 
  * Highly available, replicated share-nothing, storage
- * Publishing data from the Registration system to Choria Streams using [Adapters](../adapters/)
+ * Publishing data from the Registration system to Choria Streams using [Adapters](../adapters/choria/)
  * Constraining concurrency of some tasks in Autonomous Agents and cron using [Choria Governor](governor/)
  * Sending data from fleet nodes into a stream via the [Stream Submission](submission) system
  * High performance [distributed Key-Value store](key-value) integrated into [Autonomous Agents](../autoagents)
