@@ -190,5 +190,5 @@ We are not done and will add many additional features around Streams, but I felt
 mentioning the work we are doing to bring this exciting technology to Choria users.
 
 Keep an eye on the [Choria Streams Documentation](https://choria.io/docs/streams/) and I look forward to hearing feedback
-from users.
+from users. We hope to release the next Choria release in the coming days.
 
