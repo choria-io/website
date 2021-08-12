@@ -74,10 +74,18 @@ Choria therefore supports a provisioning mode where the process of enrolling a n
 
 The component that owns this process is the *Choria Provisioner* and within *Choria Server* a special mode can be enabled by using JWT tokens.
 
-The *Choria Provisioner* presents a *Choria Broker* managed by itself, creating a fully isolated on-boarding network. Optionally on-boarding can be done on the main Choria Brokers for the environment where un-provisioned machines are isolated from provisioned ones using the multi-tenancy features of the broker.
+The *Choria Broker* has a special mode that enables unprovisioned fleet nodes to connect using non TLS connections. At first this seems risky to have plain and TLS connections, however we have several mitigations to make this safe:
+
+ * Plain text support is off by default
+ * Plain text provisioning is only supported if the broker is in TLS mode
+ * Connections coming in on the plain text port **MUST** present a `provision.jwt` that **MUST** validate using the public certificate the broker has in its configuration
+ * Only servers with a `provision.jwt` is allowed to connect, those servers have very strict permissions. They cannot communicate with any other unprovisioned servers and may only start a specific few agents
+ * The *Choria Provisioner* **MUST** connect over TLS and must present a password matching one the broker has in its configuration. Only the *Choria Provisioner* can make requests to unprovisioned nodes.
+ * The entire provisioning is isolated within the broker in an Account - meaning there is no Choria communications between provisioned and unprovisioned nodes
+
+This means the central - redundant - broker infrastructure can be used to accept unprovisioned nodes, it also means the *Choria Provisioner* can use *Choria Streams* for leader election and have it be hosted on a reliable cluster without dedicating resources to provisioning.
 
 The general provisioning flow is as follows:
-
 
  * Choria Server starts up without a configuration
    * It checks if there is a *provisioning.jwt* in a well known location (see `choria buildinfo`)

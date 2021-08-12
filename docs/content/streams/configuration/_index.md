@@ -6,6 +6,27 @@ weight = 10
 Recent versions of Choria all have Choria Streams ready to be used, though I suggest starting to use it only since version
 *0.23.0* and newer.
 
+## Node Sizing
+
+Traditionally Choria would allocate some memory per connection, little bits per subscription - but really you'd be fine
+with less than 1GB for 10s of thousands of connections.
+
+Streams changes the equation a bit where now we need to persist data to disk, we need to use a lot of network resources
+to replicate data and obviously some CPU to manage all this.
+
+On my network with 10s of nodes Memory and CPU is no problem, 1GB is plenty. In larger networks we'd say go for 8GB RAM,
+4 to 8 cores of fast CPUs and fast SSD based disks.
+
+If you want to publish data to Streams and Replicate that data 3 times - that means your data will traverse the network
+at least 4 times - could be even more. 1GB of messages can easily translate to 5GB or more of network usage. So you need 
+to be careful with what kind of network you provision.  Especially if you use network attached storage.
+
+Direct attached storage is best, network attached block storage would also work - but keep in mind the considerations above.
+Under heavy load we'd depend a lot on fast IOPS.
+
+There is no rule, you should test your workloads and be very sure to have monitoring on your servers that considers these
+new dimensions.
+
 ## Choria Broker
 
 If you have a clustered Choria Broker cluster you need to enable Choria Streams on all nodes in the cluster using the
