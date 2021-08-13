@@ -74,16 +74,17 @@ Choria therefore supports a provisioning mode where the process of enrolling a n
 
 The component that owns this process is the *Choria Provisioner* and within *Choria Server* a special mode can be enabled by using JWT tokens.
 
-The *Choria Broker* has a special mode that enables unprovisioned fleet nodes to connect using non TLS connections. At first this seems risky to have plain and TLS connections, however we have several mitigations to make this safe:
+The *Choria Broker* has a special mode that enables unprovisioned fleet nodes to connect using unverified TLS connections. At first this seems risky to unverified and verified TLS connections, however we have several mitigations to make this safe:
 
- * Plain text support is off by default
- * Plain text provisioning is only supported if the broker is in TLS mode
- * Connections coming in on the plain text port **MUST** present a `provision.jwt` that **MUST** validate using the public certificate the broker has in its configuration
+ * Unverified TLS support is off by default
+ * Connections coming in on unverified **MUST** present a `provision.jwt` that **MUST** validate using the public certificate the broker has in its configuration
  * Only servers with a `provision.jwt` is allowed to connect, those servers have very strict permissions. They cannot communicate with any other unprovisioned servers and may only start a specific few agents
- * The *Choria Provisioner* **MUST** connect over TLS and must present a password matching one the broker has in its configuration. Only the *Choria Provisioner* can make requests to unprovisioned nodes.
+ * The *Choria Provisioner* **MUST** connect over verified TLS and must present a password matching one the broker has in its configuration. Only the *Choria Provisioner* can make requests to unprovisioned nodes.
  * The entire provisioning is isolated within the broker in an Account - meaning there is no Choria communications between provisioned and unprovisioned nodes
 
 This means the central - redundant - broker infrastructure can be used to accept unprovisioned nodes, it also means the *Choria Provisioner* can use *Choria Streams* for leader election and have it be hosted on a reliable cluster without dedicating resources to provisioning.
+
+![Client Server Overview](../../large-scale/unverified-tls-provisioning.png)
 
 The general provisioning flow is as follows:
 
