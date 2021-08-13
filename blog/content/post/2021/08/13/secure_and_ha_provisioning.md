@@ -92,14 +92,14 @@ By default, we are still only ever full mTLS. This is something you have to enab
 
 Unverified connections are subject to a number of mitigating checks:
 
- * Connections coming in on unverified connections MUST present a provision.jwt that MUST validate using the public certificate the broker has in its configuration
+ * Connections coming in on unverified connections *MUST* present a `provision.jwt` that *MUST* validate using the public certificate the broker has in its configuration
  * Only servers with a `provision.jwt` is allowed to connect, those servers have very strict permissions. They cannot communicate with any other unprovisioned servers and may only start a specific few agents
- * The Choria Provisioner MUST connect over verified TLS and must present a password matching one the broker has in its configuration. Only the Choria Provisioner can make requests to unprovisioned nodes.
+ * The Choria Provisioner *MUST* connect over verified TLS and must present a password matching one the broker has in its configuration. Only the Choria Provisioner can make requests to unprovisioned nodes.
  * The entire provisioning system is isolated within the broker in an Account - meaning there is no Choria communications between provisioned and unprovisioned nodes
  * Life-cycle events are transported into the Choria account and into Streams to facilitate a central audit stream
 
 This means a) any connection that's unverified will be isolated from the fleet b) the only component that can provision 
-node MUST use fully verified mTLS.
+node *MUST* use fully verified mTLS.
 
 Together this means we have a secure on-boarding process, safe from snooping and token leaks.
 
