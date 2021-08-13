@@ -30,7 +30,7 @@ to use that investment.
 Additionally, using [Choria Streams](https://choria.io/docs/streams), we support making the provisioner highly available by 
 performing Leader Election against it.
 
-![Client Server Overview](/large-scale/unverified-tls-provisioning.png)
+![Client Server Overview](/docs/large-scale/unverified-tls-provisioning.png)
 
 The above diagram shows the basic flow from a TCP and NATS perspective going forward, this requires some explanation.
 

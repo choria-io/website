@@ -145,6 +145,7 @@ Being that the extension point is an external script any level of integration ca
 
  * [Mass Provisioning Choria Servers](https://choria.io/blog/post/2018/08/13/server-provisioner/)
  * [Upcoming Server Provisioning Changes](https://choria.io/blog/post/2019/12/30/whats_next_for_provisioning/)
+ * [Provisioning HA and Security](https://choria.io/blog/post/2021/08/13/secure_and_ha_provisioning/)
  * [Provisioning Agent Repository](https://github.com/choria-io/provisioning-agent)
 
 ### TODO
