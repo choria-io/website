@@ -74,13 +74,14 @@ Choria therefore supports a provisioning mode where the process of enrolling a n
 
 The component that owns this process is the *Choria Provisioner* and within *Choria Server* a special mode can be enabled by using JWT tokens.
 
-The *Choria Broker* has a special mode that enables unprovisioned fleet nodes to connect using unverified TLS connections. At first this seems risky to unverified and verified TLS connections, however we have several mitigations to make this safe:
+The *Choria Broker* has a special mode that enables unprovisioned fleet nodes to connect using unverified TLS connections. At first this seems risky to allow unverified and verified TLS connections, however we have several mitigations to make this safe:
 
  * Unverified TLS support is off by default
- * Connections coming in on unverified **MUST** present a `provision.jwt` that **MUST** validate using the public certificate the broker has in its configuration
- * Only servers with a `provision.jwt` is allowed to connect, those servers have very strict permissions. They cannot communicate with any other unprovisioned servers and may only start a specific few agents
+ * Connections coming in on unverified connections **MUST** present a *provision.jwt* that **MUST** validate using the public certificate the broker has in its configuration
+ * Only servers with a *provision.jwt* is allowed to connect, those servers have very strict permissions. They cannot communicate with any other unprovisioned servers and may only start a specific few agents
  * The *Choria Provisioner* **MUST** connect over verified TLS and must present a password matching one the broker has in its configuration. Only the *Choria Provisioner* can make requests to unprovisioned nodes.
- * The entire provisioning is isolated within the broker in an Account - meaning there is no Choria communications between provisioned and unprovisioned nodes
+ * The entire provisioning system is isolated within the broker in an Account - meaning there is no Choria communications between provisioned and unprovisioned nodes
+ * Life-cycle events are transported into the Choria account and into Streams to facilitate a central audit stream
 
 This means the central - redundant - broker infrastructure can be used to accept unprovisioned nodes, it also means the *Choria Provisioner* can use *Choria Streams* for leader election and have it be hosted on a reliable cluster without dedicating resources to provisioning.
 
