@@ -1,8 +1,8 @@
 ---
 title: "Introducing Choria Streams"
 date: 2021-08-05T00:00:00+01:00
-tags: ["documentation"]
-draft: streams
+tags: ["streams"]
+draft: false
 ---
 
 Choria Broker is based on the excellent NATS Server technology, this technology has been instrumental to moving Choria
