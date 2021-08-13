@@ -59,7 +59,8 @@ node "nats1.ldn.example.net" {
     network_broker     => true,
     federation_broker  => true,
     federation_cluster => "london",
-
+    cluster_peer_port  => 4223,
+    
     network_peers => [
       "nats://choria1.ldn.example.net:4223",
       "nats://choria2.ldn.example.net:4223",
@@ -78,7 +79,8 @@ If you wish to configure the middleware manually rather than SRV records you can
     network_broker     => true,
     federation_broker  => true,
     federation_cluster => "london",
-
+    cluster_peer_port  => 4223,
+    
     federation_middleware_hosts => [
       "choria1.fed.example.net:4222",
       "choria2.fed.example.net:4222",
