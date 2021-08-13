@@ -3,11 +3,13 @@ title = "Provisioning Target"
 weight = 50
 +++
 
-Choria Server supports a Provisioning Mode where it will start up with a specific configuration allowing a piece of software to dynamically configure it. You can read more about this in the [Provisioning Agent](https://github.com/choria-io/provisioning-agent) repository we also have a [video](https://youtu.be/7sGHf55_OQM) explaining the concept and message flow.
+Choria Server supports a Provisioning Mode where it will start up with a specific configuration allowing a piece of software to dynamically configure it. You can read more about this in the [Provisioning Agent](https://github.com/choria-io/provisioner) repository we also have a [video](https://youtu.be/7sGHf55_OQM) explaining the concept and message flow.
 
 The problem with provisioning is that you have to connect somewhere where there is a provisioner. You can imagine, for example, if you have 30 data centers you might want to provision regionally to each DC. You could make it so that you always arrange for lets say *choria-provision.$dc.example.net* resolving as *choria-provision* but what if you have many different kinds of network or do not have the ability to influence DNS in this manner? A simple static build time configuration does not work.
 
 Choria therefore lets you plug your own logic into it where you can resolve things however you wish.  You can do FQDN parsing, or call out to your cloud provider API, or speak to something like Consul or etcd to do service discovery. This plugin is called a *Provisioning Target* and we'll show you how to build a basic one.
+
+By default, we ship a Provisioner Target that uses a JWT file, you deploy this file with your server and it provides all the hints needed for provisioning.  In generally I strongly recommend that is the model to use rather than write your own targets.
 
 ## File based hints
 

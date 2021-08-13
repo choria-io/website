@@ -26,7 +26,7 @@ Read on for full details.
 <!--more-->
 ## Designing for events
 
-A situation where we use these events is in the [Provisioning Server](https://github.com/choria-io/provisioning-agent) where we detect a new provisioning mode node starting up from its `startup` event of the `provision_mode_server` component and then trigger an immediate provision flow, the sequence diagram below indicates the flow.
+A situation where we use these events is in the [Choria Provisioner](https://github.com/choria-io/provisioner) where we detect a new provisioning mode node starting up from its `startup` event of the `provision_mode_server` component and then trigger an immediate provision flow, the sequence diagram below indicates the flow.
 
 {{< mermaid >}}
 sequenceDiagram

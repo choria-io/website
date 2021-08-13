@@ -6,7 +6,7 @@ tags: ["releases", "server"]
 
 Today I released version 0.9.0 of the Choria Server along with an update to the Ruby plugin for MCollective.
 
-This is a significant milestone release that give us full support for custom Certificate Authorities including chains of Intermediates.  The [Choria Server Provisioner](https://github.com/choria-io/provisioning-agent) supports requesting CSR's from nodes and supplying those nodes with signed certs and you can integrate it with any CA with an API of your choosing.
+This is a significant milestone release that give us full support for custom Certificate Authorities including chains of Intermediates.  The [Choria Provisioner](https://github.com/choria-io/provisioner) supports requesting CSR's from nodes and supplying those nodes with signed certs and you can integrate it with any CA with an API of your choosing.
 
 We've also fixed some bugs, tweaked some things and generally iterated ever forward.
 
@@ -30,7 +30,7 @@ plugin.security.file.cache = /etc/choria/ssl/cache
 
 Setting up your own CA chain and integrating that into Choria was documented on the [documentation site](https://choria.io/docs/configuration/custom_ca/).
 
-The [Provisioning Agent](https://github.com/choria-io/provisioning-agent) have also had some doc updates showing how to integrate it into a CFSSL CA.
+The [Provisioning Agent](https://github.com/choria-io/provisioner) have also had some doc updates showing how to integrate it into a CFSSL CA.
 
 A lof ot this work was completed with the help of [Vincent Janelle](https://twitter.com/randomfrequency).
 

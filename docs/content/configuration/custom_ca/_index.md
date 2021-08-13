@@ -24,7 +24,7 @@ This guide will cover the following:
 What this guide will not cover:
 
  * How PKI works. [This guide](https://smallstep.com/blog/everything-pki.html) is very good.
- * How to get the certificates on every node, this step is essentially going to be unique per site, we cannot realistically cover this for everyone. The [Choria Server Provisioner](https://github.com/choria-io/provisioning-agent) can enroll nodes in any CA with an API
+ * How to get the certificates on every node, this step is essentially going to be unique per site, we cannot realistically cover this for everyone. The [Choria Provisioner](https://github.com/choria-io/provisioner) can enroll nodes in any CA with an API
  * Certificate revocation and renewal
  * How to use CFSSL in detail or its deployment best practices
   * For documentation on the CFSSL project, and how to run it in a client/server fashion, please visit the [Cloudlare CFSSL documentation repo](https://github.com/cloudflare/cfssl/tree/master/doc)
@@ -219,7 +219,7 @@ We'll issue certificates for every node, this entails:
  * Configuring the Choria Server
 
 {{% notice tip %}}
-The [Choria Server Provisioner](https://github.com/choria-io/provisioning-agent) can automate this enrollment of nodes in a Certificate Authority, using it is not for everyone but if you are a big complex site it might be of interest to you.
+The [Choria Provisioner](https://github.com/choria-io/provisioner) can automate this enrollment of nodes in a Certificate Authority, using it is not for everyone but if you are a big complex site it might be of interest to you.
 {{% /notice %}}
 
 #### Creating the CSR

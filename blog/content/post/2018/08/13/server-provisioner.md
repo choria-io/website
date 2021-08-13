@@ -219,6 +219,6 @@ I made a video explainer that goes in more detail and show the system in action:
 
 ## Conclusion
 
-This is a quick introduction to the process, there’s a lot more to know – you can write your own custom provisioner and even your own custom agent and more – the [provisioning-agent GitHub repository](https://github.com/choria-io/provisioning-agent#readme) has all the details. The provisioner detailed above is released as RPMs on our package cloud repo.
+This is a quick introduction to the process, there’s a lot more to know – you can write your own custom provisioner and even your own custom agent and more – the [provisioner GitHub repository](https://github.com/choria-io/provisioner#readme) has all the details. The provisioner detailed above is released as RPMs on our package cloud repo.
 
 It’s a bit early days for this tool – personally I will soon roll it out to 10s of data centres where it will manages 100s of thousands of nodes, expect a few more hardening changes to be made. In the future we’ll also support Choria version upgrades as part of this cycle.

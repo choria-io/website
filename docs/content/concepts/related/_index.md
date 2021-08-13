@@ -46,7 +46,7 @@ In large dynamic environments where you do not have configuration management sys
 
 This is an advanced feature and requires custom builds to be made (but we provide the tools for this).
 
-See the documentation in [provisioning-agent](https://github.com/choria-io/provisioning-agent).
+See the documentation in [provisioner](https://github.com/choria-io/provisioner).
 
 A video demonstrating this capability can be seen below:
 

@@ -43,7 +43,7 @@ A number of systems are required to realise such a system, a few are listed here
 As mentioned the system will be cellular in design - in Choria we call each cell and Overlay. Each Overlay has a number of components:
 
  * [Choria Network Brokers](https://choria.io/docs/deployment/broker/) with the [Choria Streams](https://choria.io/docs/streams/) capability enabled
- * [Choria Provisioner](https://github.com/choria-io/provisioning-agent) that provisions individual fleet nodes onto the Choria network
+ * [Choria Provisioner](https://github.com/choria-io/provisioner) that provisions individual fleet nodes onto the Choria network
  * Enterprise Certificate Authority integrated into *Choria Provisioner* to ensure a strong mTLS is in use in compliance with enterprise security
  * [Choria AAA Server](https://github.com/choria-io/aaasvc) providing integration with Enterprise SSO systems, pkcs11 tokens and more
  * [Choria Stream Replicator](https://github.com/choria-io/stream-replicator) allowing data from an overlay to be replicated to a region or to a central location
@@ -146,15 +146,13 @@ Being that the extension point is an external script any level of integration ca
  * [Mass Provisioning Choria Servers](https://choria.io/blog/post/2018/08/13/server-provisioner/)
  * [Upcoming Server Provisioning Changes](https://choria.io/blog/post/2019/12/30/whats_next_for_provisioning/)
  * [Provisioning HA and Security](https://choria.io/blog/post/2021/08/13/secure_and_ha_provisioning/)
- * [Provisioning Agent Repository](https://github.com/choria-io/provisioning-agent)
+ * [Provisioning Agent Repository](https://github.com/choria-io/provisioner)
 
 ### TODO
 
- * Make it highly available so that a standby Provisioner in a data center can take over when the primary one fails, now possible using Choria Streams [provisioning-agent#133](https://github.com/choria-io/provisioning-agent/issues/133)
  * Perhaps extend the information that can be embedded in the CSR including SANs
  * In addition to certificates allow a token to be placed on the node to access Choria Broker multi tenancy model
  * Reprovision on cert expiry [go-choria#1309](https://github.com/choria-io/go-choria/issues/1309)
- * Expose cert age via node status [go-choria#1310](https://github.com/choria-io/go-choria/issues/1310)
 
 ## Certificate Authorities
 

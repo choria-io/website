@@ -97,11 +97,11 @@ acme:
 
 ## Additional Plugins
 
-If you have any plugins to include in the resulting build you create `packaging/user_plugins.yaml`, in this example we link in the [Choria Provisioning Agent](https://github.com/choria-io/provisioning-agent).
+If you have any plugins to include in the resulting build you create `packaging/user_plugins.yaml`, in this example we link in a hypothetical additional agent.
 
 ```yaml
 ---
-choria_provision: github.com/choria-io/provisioning-agent/agent
+choria_provision: github.com/example/acme-agent/agent
 ```
 
 You have to arrange for these to be available in the build path, see the example later in the doc.
