@@ -101,32 +101,45 @@ The *Choria Provisioner* actively listens for CloudEvents indicating a new machi
 
 {{<mermaid align="left">}}
 sequenceDiagram
-   participant P as Provisioner
    participant S as Server
+   participant P as Provisioner
    participant H as Helper
    participant CA
 
    P ->> P: Discover servers
 
    loop Every Server
-      P ->> S: Retrieve token
-      S ->> P: 
-      P ->> P: Validate Token
-      
+      P ->> S: Retrieve JWT
+      S ->> S: Start ECDH
+      S ->> P: JWT and ECDH Public
+      P ->> P: Validate JWT
+   
       P ->> S: Retrieve facts, metadata
       S ->> P: 
-      
+         
+         
       P ->> S: Request CSR
       S ->> P: 
-      
+   
       P ->> H: Process Server
-      H ->> CA: Sign CSR
-      CA ->> H: Signed Cert
+      H ->> CA: Request PKI files
+      CA ->> H: PKI files
       H ->> H: Generate configuration
-      H ->> P: Node configuration and cert
-      
-      P ->> S: Provide configuration and cert
+      H ->> P: Node configuration and PKI
+   
+      alt received private key
+         P ->> P: Continues ECDH
+         P ->> P: Encrypts Private Key
+      end
+   
+      P ->> S: Provide configuration and PKI
       S ->> S: Configure self
+   
+      alt received private key
+         S ->> S: Completes ECDH
+         S ->> S: Decrypts and Store Private Key
+      end
+   
       S ->> P: Confirm
       
       S ->> S: Restart into normal boot
@@ -140,6 +153,8 @@ This is an important capability, being able to intelligently place nodes in the 
 The decision about which Overlay to place a node can be made by metadata provided by the node and by querying Overlay level metadata storage to find the associations. One can also use this to balance, retire or expand the Overlays in a region by for example re-provisioning all nodes in a specific Overlay and then spreading those nodes around the remaining Overlays.
 
 Being that the extension point is an external script any level of integration can be done that a user might want without recompiling any Choria components.
+
+Generally the flow is based on a CSR that is signed by the CA. Some enterprises requires a flow where a central actor has to create all private keys.  We do not recommend supporting such a deployment model at all, but if we have to we use a [Curve 25519](https://en.wikipedia.org/wiki/Curve25519) based [Diffie-Hellman](https://en.wikipedia.org/wiki/Elliptic-curve_Diffie%E2%80%93Hellman) secret exchange to agree on an encryption key that is used to encrypt the Private key in transport.  This means the Key is encrypted using a passphrase that never traverse the network and nothing that can be used to derive the passphrase ever traverse the network.
 
 ### Further Reading 
 
