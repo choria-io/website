@@ -127,7 +127,7 @@ sequenceDiagram
       H ->> H: Generate configuration
       H ->> P: Node configuration and PKI
    
-      alt received private key
+      opt received private key
          P ->> P: Continues ECDH
          P ->> P: Encrypts Private Key
       end
@@ -135,7 +135,7 @@ sequenceDiagram
       P ->> S: Provide configuration and PKI
       S ->> S: Configure self
    
-      alt received private key
+      opt received private key
          S ->> S: Completes ECDH
          S ->> S: Decrypts and Store Private Key
       end
