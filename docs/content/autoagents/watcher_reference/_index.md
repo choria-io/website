@@ -135,6 +135,9 @@ If *bucket_prefix* is true (the default), the data will be stored like *BUCKET_K
 The *fail_transition* is called for any Key-Value retrieval failure, *success_transition* on any data change - including
 if a watched key is deleted.
 
+As of version `0.24.0` data that appears to be JSON data will be parsed and stored as generically parsed data. This means
+data lookups against any nested JSON data found in a key will work correctly.
+
 It does not announce state regularly or on state changes.
 
 ## Nagios watcher
@@ -331,6 +334,7 @@ This can be used to create systems like a maintenance window that automatically 
 |Property                 |Required                            |Description|
 |-------------------------|------------------------------------|-----------|
 |timer                    |yes                                 |How long the timer should run for, triggers `fail_transition` at the end of the timer|
+|splay                    |no                                  |When true adjusts the timer to a random period between zero and timer (since 0.24.0)|
 
 ### Behavior
 

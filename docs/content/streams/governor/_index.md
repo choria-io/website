@@ -113,9 +113,10 @@ Finally if not needed anymore the Governor can be removed using `choria governor
 
 ## Observing runs
 
-During a run the CLI or Autonomous Agent will publish Choria Lifecycle Events that can be viewed using `choria event`
+During a run the CLI or Autonomous Agent will publish Choria Lifecycle Events that can be viewed using `choria tool event`
 
 ```nohighlight
+$ choria tool event --type governor
 09:32:55 [governor] dev13.example.net: obtained slot 2421 on PUPPET
 09:33:10 [governor] dev8.example.net: obtained slot 2422 on PUPPET
 09:33:15 [governor] dev17.example.net: vacated slot 2420 on PUPPET
