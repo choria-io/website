@@ -1,0 +1,1 @@
+https://yum.eu.choria.io/release/el/8/x86_64

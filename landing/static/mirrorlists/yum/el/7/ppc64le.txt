@@ -1,0 +1,1 @@
+https://yum.eu.choria.io/release/el/7/ppc64le
