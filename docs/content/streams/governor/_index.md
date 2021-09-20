@@ -40,6 +40,22 @@ be taken to choose an appropriately safe setting.
 Running this command again with different settings will edit the Governor, adjusting the capacity will immediately impact
 the running fleet with no restarts or update of the fleet nodes needed. The Replicas setting can not be edited.
 
+As of version 0.26.0 of the `choria/choria` module, you can also use Puppet to manage Governors:
+
+```puppet
+choria_governor {"PUPPET":
+    capacity => 10,
+    expire   => 20*60,
+    replicas => 3,
+}
+```
+
+When managing the Governor used to limit Puppet runs there is a chicken and egg, so perhaps do not run your Puppet Servers
+against a Governor but on a traditional schedule and let them manage the Governors.
+
+Replicas is not changeable without destroying the Governor, so if you created with Replica 1 and want to move to 3 you
+will need to set `force => true` on the `choria_governor` resource which will then destroy and recreate the Governor.
+
 ## Executing a CRON job
 
 To use this Governor to control a cron job use the `choria governor run` command:
