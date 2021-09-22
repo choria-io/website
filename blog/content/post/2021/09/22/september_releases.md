@@ -20,9 +20,9 @@ We have started the process of supporting a new style of agent called a Choria S
 Thanks to Romain Tartière, Romuald Conty and Tim Meusel for their contributions to this release
 
 <!--more-->
-## [Choria Server version 0.24.0](https://github.com/choria-io/go-choria)
+## [Choria Server version 0.24.1](https://github.com/choria-io/go-choria)
 
-Links: [Changes](https://github.com/choria-io/go-choria/compare/v0.23.0...v0.24.0), [Release](https://github.com/choria-io/go-choria/releases/tag/v0.24.0)
+Links: [Changes](https://github.com/choria-io/go-choria/compare/v0.23.0...v0.24.1), [Release](https://github.com/choria-io/go-choria/releases/tag/v0.24.1)
 
 ### Enhancements
 
