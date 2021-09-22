@@ -37,6 +37,18 @@ $ choria kv add CFG \
 Above we add a bucket *CFG*, it keeps 5 historic values for any key, the data
 is replicated across 3 Choria Brokers, and some limits are set for sizes.
 
+As of version 0.27.0 of the `choria/choria` module, you can also use Puppet to manage Key-Value Buckets:
+
+```puppet
+choria_kv_bucket { 'CONFIGURATION':
+  history => 5,
+  replicas => 3,
+  max_value_size => 100,
+  max_bucket_size => 1024*1024*100,
+  ensure => 'present',
+}
+```
+
 ### Writing a value
 
 Any data can be stored in the bucket:
