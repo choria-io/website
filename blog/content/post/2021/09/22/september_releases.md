@@ -11,7 +11,7 @@ We have a major breaking change relating to our Package Repositories. For most p
 
 We've had some great feedback on [Choria Governors](https://choria.io/docs/streams/governor/) and we've improved the CLI tooling a bit, we've also added a new Puppet Type and Provider to manage these. Thanks to users who have been testing these new features.
 
-We have an opt-in new feature that should significantly improve the default broadcast based discovery system.  Usually we wait for 2 seconds for discovery results, but in most cases most discovery results came in within the first few 100ms. By setting `plugin.choria.discovery.broadcast.windowed_timeout=1` in your client configuration file we now do a windowed discovery that will terminate if after the last received result no more esults were received in 300ms. In most cases this will be a massive improvement in UX. Please test it, we aim to flip this to default on in near future.
+We have an opt-in new feature that should significantly improve the default broadcast based discovery system.  Usually we wait for 2 seconds for discovery results, but in most cases most discovery results came in within the first few 100ms. By setting `plugin.choria.discovery.broadcast.windowed_timeout=1` in your client configuration file we now do a windowed discovery that will terminate if after the last received result no more results were received in 300ms. In most cases this will be a massive improvement in UX. Please test it, we aim to flip this to default on in near future.
 
 We've had a big set of refactors on the Debian packaging and should have functioning Debian Bullseye packages for this release.  There's also been a few improvements to the Debian packages in general.
 
