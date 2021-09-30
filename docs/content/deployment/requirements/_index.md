@@ -21,7 +21,7 @@ To make it to the end of this guide you will need to be able to effect root leve
 
 ### Required
 
-  * You must use Puppet 6 deployed using the Puppet Inc AIO packages - the one called _puppet-agent_.
+  * You must use Puppet 6 or 7 deployed using the Puppet Inc AIO packages - the one called _puppet-agent_.
   * You must be using a Puppet Server based setup, typically using _puppetserver_
   * You need to run middleware, Choria has its own Choria Broker that supports RedHat 7 and 8, Debian and Ubuntu.
   * Your certnames must match your FQDNs - the default
