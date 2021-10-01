@@ -37,7 +37,7 @@ As before if you're getting started you should focus on deploying a single locat
 
 ## Package Repos
 
-Packages are hosted with [packagecloud](https://packagecloud.io/choria/release), you can mirror the repositories and set up your own repository configuration or use the packagecloud ones.
+Packages are hosted at choria.io. See [the mirror lists](http://mirrorlists.choria.io/). You can mirror the repositories and set up your own repository configuration, or use the appropriate mirrorlist directly.
 
 To configure the Choria Repositories use the following class:
 
