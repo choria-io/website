@@ -282,7 +282,7 @@ Authorized and denied requests are audited by this central signing component, it
 
 ## Node Metadata
 
-Having an up to date inventory for a fleet is essential to successful orchestration, Choria has extensive per-rpc request [discovery facilities](https://choria.io/docs/concepts/discovery/) that can help on the last mile, but when presenting users with user-interfaces where subsets of fleets can be selected for workflows this information has to be accurate and current.
+Having an up to date inventory for a fleet is essential to successful orchestration, Choria has extensive per-rpc request [discovery facilities](https://choria.io/docs/concepts/discovery/) that can help on the last mile, but when presenting users with user-interfaces, where subsets of fleets can be selected for workflows, this information has to be accurate and current.
 
 Building large fleet metadata services is a significant undertaking, Choria plays a role in this, but, it's generally only 1 input into a larger effort to consolidate information from many enterprise sources.
 
@@ -306,7 +306,24 @@ On a basic level gathering node data might be as simple as running *facter -y* e
 
 We therefore prefer to create an [Autonomous Agent](https://choria.io/docs/autoagents/) that embeds all the dependencies, scripts and so forth to gather the metadata for a node, and we run that using a [Schedule Watcher](https://choria.io/docs/autoagents/watcher_reference/#scheduler-watcher).
 
-One can have an autonomous agent whose function is to manage other autonomous agents, downloading metadata gathering agents from systems like Artifactory. Perhaps based on Key-Value data stored in [Choria Key-Value Store](https://choria.io/docs/streams/key-value/).
+One can have an autonomous agent whose function is to manage other autonomous agents, downloading metadata gathering agents from systems like Artifactory. Perhaps based on Key-Value data stored in [Choria Key-Value Store](https://choria.io/docs/streams/key-value/). Choria includes, but do not enable, Autonomous agent watchers that can do this: [Archive Watcher](https://github.com/choria-io/go-choria/tree/main/aagent/watchers/archivewatcher) and [Machines Watcher](https://github.com/choria-io/go-choria/tree/main/aagent/watchers/machineswatcher).
+
+The 2 watchers above combine to read a - ed25519 private key signed - specification of autonomous agents to deploy to the fleet, below is an example before signing.  This data is read from Choria Key-Value Store and concurrency is controlled using Choria Governors.
+
+```json
+[
+ {
+   "name": "facts",
+     "source": "https://example.net/metadata/metadata-machine-1.0.0.tgz",
+     "verify": "SHA256SUMS",
+     "verify_checksum": "1e85719c6959eb0f2c8f2166e30ae952ccaef2c286f31868ea1d311d3738a339",
+     "checksum": "f11ea2005de97bf309bafac46e77c01925307a26675f44f388d4502d2b9d00bf",
+     "match": "has_command('facter')"
+ }
+]
+```
+
+Using this method several Autonomous agents can be safely deployed and actively managed. If any changes are made to the agents they will be re-deployed from scratch protecting the integrity of the system end to end.
 
 ### Publishing Metadata
 
