@@ -9,7 +9,7 @@ and the bucket as a whole has a TTL which represents the campaign interval.
 The purpose is to allow applications like Choria Provisioner to do leader election without also having their own high-available
 storage. This facility is available to any program on your network that needs a similar feature.
 
-## Behavior
+## Behaviour
 
 Once an Election is started, Campaigners will try to create a value in the KV Bucket with the option set to only succeed
 if the key has no value in it currently.
@@ -34,7 +34,7 @@ When Choria Broker starts it will automatically create a KV Bucket called `CHORI
 by default. By default, the bucket will have Replicas set equalling the cluster size.
 
 The `plugin.choria.network.stream.leader_election_replicas` setting sets the number of replicas and `plugin.choria.network.stream.leader_election_ttl`
-sets the TTL.  We strongly recomment defaults are kept.
+sets the TTL.  We strongly recommend defaults are kept.
 
 ## Inspecting from the CLI
 
@@ -42,10 +42,13 @@ The `choria` CLI can be used to see who is the current leader based on Choria Id
 
 ```nohighlight
 $ choria kv get CHORIA_LEADER_ELECTION my_app
-CHORIA_LEADER_ELECTION > my_app created @ 01 Nov 21 17:00 UTC
+CHORIA_LEADER_ELECTION > my_app sequence 20 created @ 01 Nov 21 17:30 UTC
 
 c1.example.net
 ```
+
+Here the sequence of `20` indicates how many election campaigns the current leader won, and, the timestamp
+shows since when the current leader has been leader.
 
 A leadership stand-down can be forced by deleting this key:
 
