@@ -9,6 +9,10 @@ and the bucket as a whole has a TTL which represents the campaign interval.
 The purpose is to allow applications like Choria Provisioner to do leader election without also having their own high-available
 storage. This facility is available to any program on your network that needs a similar feature.
 
+{{% notice tip %}}
+This feature is available since *Choria Server 0.25.0*
+{{% /notice %}}
+
 ## Behaviour
 
 Once an Election is started, Campaigners will try to create a value in the KV Bucket with the option set to only succeed

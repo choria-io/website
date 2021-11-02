@@ -168,10 +168,6 @@ $ choria discover -I 'pql:nodes[certname] { certname ~ ".choria" }' --dm=puppetd
 
 ## Compound Filters
 
-{{% notice tip %}}
-This feature is available since *Choria Server 0.19.0*
-{{% /notice %}}
-
 Things get more interesting when we look at something called Compound Filters. This is a new feature in the latest Choria Server. Previously MCollective had Compound Filters, but we've had to change the language to one that's more extendable and will grow with us.
 
 We use a library called *expr* with its own [Language Definition](https://github.com/antonmedv/expr/blob/master/docs/Language-Definition.md), we augment this with GJSON based lookup for nested data to create something that can really go deep into your infrastructure.
@@ -272,10 +268,6 @@ It can be a bit tricky to get this right, we'll add some tooling to help try out
 
 ## Data Providers
 
-{{% notice tip %}}
-This feature is available since *Choria Server 0.20.0*, it's alpha level supported and under active development
-{{% /notice %}}
-
 Data Providers expose real time state from the running node to the discovery system, today we support *choria*, *config_item* and *scout* Data Provider, in time users will be able to provide their own.
 
 A Data Provider can be queried in a Compound filter when using the *broadcast* or *mc* discovery methods, here we find all machines where a specific Scout check is not *OK*:
@@ -328,10 +320,6 @@ $ choria discover -S '"CRITICAL" in scout("check_puppet_run").history'
 ```
 
 ## Using RPC queries for discovery
-
-{{% notice tip %}}
-This feature is available since *Choria Server 0.19.0*
-{{% /notice %}}
 
 Also in the latest Choria release we support the ability for the *choria req* command to do some Powershell inspired chaining of queries. This is also a feature MCollective had, one that required the *jgrep* utility to be installed, in Choria we will use our new *expr* based infrastructure to avoid this extra dependency.
 
@@ -481,10 +469,6 @@ The filter here ues [GJSON path syntax](https://github.com/tidwall/gjson/blob/ma
 Choria supports inventory files that holds within them full facts, agent lists, classes lists and collective membership information, enough to build rich discovery supporting our full feature set including Compound filters (without Data Providers).
 
 Additionally, uniquely, Inventory files can hold named searched allowing you to save an often used set of discovery filters by name and reuse it.
-
-{{% notice tip %}}
-This feature is available since *Choria Server 0.20.0* and only to commands written in go like `choria`
-{{% /notice %}}
 
 Inventory files can be very large, an inventory of 10 000 nodes can take 180MB on disk as JSON data. While we think this feature is good for inventories with a few thousand nodes, a 10 000 node inventory works and can perform full compound search across all nodes in a few seconds.
 
