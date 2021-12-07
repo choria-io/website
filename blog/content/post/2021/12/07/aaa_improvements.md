@@ -10,18 +10,18 @@ uses the distribution method by default.
 
 The AAA Service [was introduced in 2019](https://choria.io/blog/post/2019/01/23/central_aaa/) and we've improved on it in 2020 by allowing [a client certificate free operation](https://choria.io/blog/post/2020/09/13/aaa_improvements/).
 
-The Certificate Free operation was a big win, however it came at a considerable cost of requiring an additional Choria Broker(s) to take client connections.
+The Certificate Free operation was a big win, however it came at a considerable cost of requiring additional Choria Brokers to take client connections.
 
 We made a number of improvements in Release 0.6.0, read the full entry for details.
 
 <!--more-->
 ## Signing via Choria RPC
 
-Previous versions of the AAA Server only supported listening on a HTTP(s) port for signing requests. This never felt right to me as we really want in-region communications to be always via the Choria Broker.
+Previous versions of the AAA Server only supported listening on a HTTP(s) port for signing requests. Users had to provision Load Balancers, extra certificates and more. This never felt right to me as we really want in-region communications to be always via the Choria Broker.
 
 Recent Choria Servers support a concept called Choria Services. A Service is essentially a Choria Agent that is called in a 1 to 1 basis rather than 1 to many.
 
-Think of it like a standard microservice where 1 microservice serves 1 request.  The Choria Broker has full Service Mesh capabilities (failover, scale up, scale out, GSLB, observability and more), so a Choria Service benefits from all of these behaviors.
+Think of it like a standard microservice where 1 microservice serves 1 request.  The Choria Broker has full Service Mesh capabilities (failover, scale up, scale out, GSLB, observability and more), so a Choria Service benefits from all of these behaviors without additional components - just run multiple instances.
 
 The latest AAA Service supports connecting to the Choria Broker and offering signing as a Choria Service. This means you have one less port to manage, do not need to worry about its HA or load balancers infront of it and do not need to worry about certificates for it. Just start multiple AAA Service and let the Choria Broker internal Service Mesh handle it all.
 
@@ -58,7 +58,7 @@ So our new Client JWTs have a map of permissions, which when none are set true a
 |`org_admin`|Can access all subjects and data in the broker within the organisation|
 |`service`|Allowed to have a JWT that exceeds the default maximum life cycle|
 
-In addition to this, clients now have a Ed25519 private key and they sign a nonce on the broker to connect. This serves the same purpose as the private key in a mTLS setup - it confirms you are the rightful owner of the JWT you present to the server and to AAA. The public key is baked into the JWT and signed by the Login Service.  So you can only use a JWT if you have the matching ed25519 seed (private key).
+In addition to this, clients now have a Ed25519 private key and they sign a [nonce](https://en.wikipedia.org/wiki/Nonce) on the broker to connect. This serves the same purpose as the private key in a mTLS setup - it confirms you are the rightful owner of the JWT you present to the server and to AAA. The public key is baked into the JWT and signed by the Login Service.  So you can only use a JWT if you have the matching Ed25519 seed (private key).
 
 ```json
 {
