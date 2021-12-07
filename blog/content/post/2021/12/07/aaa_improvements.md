@@ -8,6 +8,10 @@ draft: false
 Choria supports a distributed authentication model as well as a centralised model using our Choria AAA Service. A Puppet user
 uses the distribution method by default.
 
+In distributed mode every client has a certificate, signs his request with it and the certificate becomes the identity.  The servers will verify using their RPC Authorization system if that certificate (id) can perform an action.
+
+In the centralised setup each client do not have a certificate but it has a JWT token obtained from a sign-in service often using `choria login`. The JWT holds the identity, policies, permissions and more. The AAA Service signs requests using its certificate allowing clients to publish signed requests.  Effectively the signing step gets outsourced to a trusted 3rd party. Before signing a request a policy is evaluated on the AAA Service to determine if the request should be allowed.
+
 The AAA Service [was introduced in 2019](https://choria.io/blog/post/2019/01/23/central_aaa/) and we've improved on it in 2020 by allowing [a client certificate free operation](https://choria.io/blog/post/2020/09/13/aaa_improvements/).
 
 The Certificate Free operation was a big win, however it came at a considerable cost of requiring additional Choria Brokers to take client connections.
@@ -36,6 +40,24 @@ The latest AAA Service supports connecting to the Choria Broker and offering sig
 ```
 
 Setting `choria_service` to true enables this.
+
+On the client side we have to set these settings:
+
+```ini
+# communicates with the service for signing
+plugin.choria.security.request_signer.service = true
+
+# enables non mTLS connections
+plugin.security.client_anon_tls = true
+
+# where to store the JWT file
+plugin.choria.security.request_signer.token_file = ~/.choria/token
+
+# where to perform the sign in, typically near your central SSO
+plugin.login.aaasvc.login.url = https://aaa.choria:8080/choria/v1/login
+```
+
+This is currently only supported with the Go clients, Ruby to follow.
 
 ## Improved JWT Tokens
 
