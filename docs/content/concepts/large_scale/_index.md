@@ -12,7 +12,7 @@ This architecture has been deployed successfully across global organisations wit
 
 ## Goals
 
-The goal of this architecture is to provide a connective substrate that enables a very large enterprise workflow system to be built. Such large workflow system makes many demands of the underlying infrastructure and need to be able to run over heterogeneous infrastructure. 
+The goal of this architecture is to provide a connective substrate that enables a very large enterprise workflow system to be built. Such large workflow system makes many demands of the underlying infrastructure and need to be able to run over heterogeneous infrastructure.
 
 We'll discuss this system in the context of a system that can execute workflows as simple as executing a single command on 10s of thousands of nodes in a region or as complex as a multi-stage workflow that can run for a long time, orchestration 100s or 1000s of steps.
 
@@ -113,35 +113,35 @@ sequenceDiagram
       S ->> S: Start ECDH
       S ->> P: JWT and ECDH Public
       P ->> P: Validate JWT
-   
+
       P ->> S: Retrieve facts, metadata
-      S ->> P: 
-         
-         
+      S ->> P:
+
+
       P ->> S: Request CSR
-      S ->> P: 
-   
+      S ->> P:
+
       P ->> H: Process Server
       H ->> CA: Request PKI files
       CA ->> H: PKI files
       H ->> H: Generate configuration
       H ->> P: Node configuration and PKI
-   
+
       opt received private key
          P ->> P: Continues ECDH
          P ->> P: Encrypts Private Key
       end
-   
+
       P ->> S: Provide configuration and PKI
       S ->> S: Configure self
-   
+
       opt received private key
          S ->> S: Completes ECDH
          S ->> S: Decrypts and Store Private Key
       end
-   
+
       S ->> P: Confirm
-      
+
       S ->> S: Restart into normal boot
    end
 {{< /mermaid >}}
@@ -156,7 +156,7 @@ Being that the extension point is an external script any level of integration ca
 
 Generally the flow is based on a CSR that is signed by the CA. Some enterprises requires a flow where a central actor has to create all private keys.  We do not recommend supporting such a deployment model at all, but if we have to we use a [Curve 25519](https://en.wikipedia.org/wiki/Curve25519) based [Diffie-Hellman](https://en.wikipedia.org/wiki/Elliptic-curve_Diffie%E2%80%93Hellman) secret exchange to agree on an encryption key that is used to encrypt the Private key in transport.  This means the Key is encrypted using a passphrase that never traverse the network and nothing that can be used to derive the passphrase ever traverse the network.
 
-### Further Reading 
+### Further Reading
 
  * [Mass Provisioning Choria Servers](https://choria.io/blog/post/2018/08/13/server-provisioner/)
  * [Upcoming Server Provisioning Changes](https://choria.io/blog/post/2019/12/30/whats_next_for_provisioning/)
@@ -193,7 +193,7 @@ It might be desirable to instead obtain an intermediate CA from the Enterprise C
 
 In cases where user level access to Choria will be provided it might be desirable to provide a flow where users need to login to the Choria environment using something like `choria login`, this might require 2FA token, enterprise SSO or other integrations.
 
-Choria supports these using a flow supported by the [Choria AAA Service](https://github.com/choria-io/aaasvc). 
+Choria supports these using a flow supported by the [Choria AAA Service](https://github.com/choria-io/aaasvc).
 
 ### Authentication
 
@@ -203,7 +203,7 @@ The purpose of the Authentication step is two-fold; first it establishes who you
 
 In the case of our workflow system, authorization happens against the user database and IAM policies embedded into the workflow engine. Typically there would be entitlements assigned by or approved by ones manager and based on these entitlements certain access is allowed.
 
-The authentication system is therefor typically rolled out centrally on highly reliable infrastructure. This can be augmented with in-region or in-overlay authentication services that can be used when the Overlay is isolated, or even augmented with a more traditional certificate-only approach.  These 2 models can co-exist on the same Choria deployment. 
+The authentication system is therefor typically rolled out centrally on highly reliable infrastructure. This can be augmented with in-region or in-overlay authentication services that can be used when the Overlay is isolated, or even augmented with a more traditional certificate-only approach.  These 2 models can co-exist on the same Choria deployment.
 
 For the authorization rule we support 2 models, a basic list of *agent.action* rules or a more full featured Open Policy Agent based flow. Here's the content of a JWT token using the Agent List authorization rules:
 
@@ -218,7 +218,7 @@ For the authorization rule we support 2 models, a basic list of *agent.action* r
 }
 ```
 
-Here I am allowed to access all actions on the *puppet* agent and only 1 action on the *rpcutil* agent. The token encodes who I am (*callerid*) and how long the token is valid for.  The token is signed using an RSA private key. 
+Here I am allowed to access all actions on the *puppet* agent and only 1 action on the *rpcutil* agent. The token encodes who I am (*callerid*) and how long the token is valid for.  The token is signed using an RSA private key.
 
 More complex policies can be written using Open Policy Agent and embedded in the token, here's an example policy:
 
@@ -292,7 +292,7 @@ The general flow of metadata from node to central is:
  * Choria can read files as inventory input - tags and facts.
  * Inventory files can be made using Cron or [Autonomous Agents](https://choria.io/docs/autoagents/)
  * Inventory data can be regularly published, typically every 5 minutes
- * [Choria Data Adapters](https://choria.io/docs/adapters/) receive, validate, unpack and restructure inventory data into [Choria Streams](https://choria.io/docs/streams/) 
+ * [Choria Data Adapters](https://choria.io/docs/adapters/) receive, validate, unpack and restructure inventory data into [Choria Streams](https://choria.io/docs/streams/)
  * [Choria Stream Replicator](https://github.com/choria-io/stream-replicator) intelligently moves the data to other regions
  * Custom internal processors read the streams as input into building local databases
 
@@ -354,7 +354,7 @@ plugin.choria.adapter.jetstream.ingest.topic = mcollective.ingest.discovery.>
 plugin.choria.adapter.jetstream.ingest.protocol = request
 ```
 
-Here we subscribe to data on *mcollective.ingest.discovery.>* and we publish it to *js.in.discovery.%s*, where `%s` will be replaced by the node name giving you the flexibility to keep, for example, 5 most recently metadata publishes per node with the oldest one being 7 days old. 
+Here we subscribe to data on *mcollective.ingest.discovery.>* and we publish it to *js.in.discovery.%s*, where `%s` will be replaced by the node name giving you the flexibility to keep, for example, 5 most recently metadata publishes per node with the oldest one being 7 days old.
 
 The data is placed in Choria Streams in the format [choria:adapters:jetstream:output:1](https://choria.io/schemas/choria/adapters/jetstream/v1/output.json)
 
@@ -454,7 +454,7 @@ sequenceDiagram
    Client ->>+ Discovery Source: discover request
    Discovery Source ->>- Client: discovered nodes
 
-   Note over Client: RPC Request 
+   Note over Client: RPC Request
    Client ->>+ Broker: new reply channel
    Client ->>+ Fleet: publish RPC request
    loop Replies
@@ -474,6 +474,8 @@ In this model the Client (1) do not need a reply channel, do not need to wait fo
 
 ![Async RPC](../../large-scale/async-rpc.png)
 
+A flow sequence of a complete setup can be seen below:
+
 {{<mermaid align="left">}}
 sequenceDiagram
    participant Client
@@ -485,12 +487,12 @@ sequenceDiagram
    Note over Client: Discovery
    Client ->> DS: discover request
    DS ->> Client: discovered nodes
-   
+
    Note over Client: Async Request
    Client ->> DB: Write job details
    Client ->> Fleet: Publish Request
    Client ->> DB: Update job record with ID
-   
+
    Note over RP: Receive replies
    loop Process Replies
       Fleet ->> RP: Receive Reply
@@ -503,7 +505,8 @@ sequenceDiagram
 {{< /mermaid >}}
 
 A simplified Request Publisher can be seen here that essentially does `choria req rpcutil ping` but with a custom reply
-set via the environment variable `REPLY`, we do not perform the steps to store the data in a database but that's fairly easy:
+set via the environment variable `REPLY`, we do not perform the steps to store the data in a database but that is fairly easy:
+
 
 ```go
 package main
@@ -555,7 +558,7 @@ func main() {
 
    conn, err := fw.NewConnector(context.Background(), fw.MiddlewareServers, "async-receiver", fw.Logger("conn"))
    panicIfErr(err)
-   
+
    msgs, err := conn.ChanQueueSubscribe(fmt.Sprintf("async-reciver-%d", os.Getpid()), os.Getenv("REPLY"), "async", 1000)
    panicIfErr(err)
 
