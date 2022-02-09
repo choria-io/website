@@ -44,17 +44,23 @@ A micro-services framework hosted within the Choria Broker process that receives
 
 Delivered as part of the *choria* single binary.
 
+## Choria Governor
+
+[Governor](../../streams/governor) is a system that can control network wide Concurrency for Cron Jobs, Choria internal processes and more.
+
 ## Choria Federation Broker
 
 A Choria protocol aware router and intelligent gateway that connect several independent Collectives together into 1.  Also performs co-processing for Clients significantly reducing the work they have to do.
 
 Delivered as part of the *choria* single binary.
 
-## Choria Server
+## Choria Key-Value Store
 
-A *Server* written in Golang. It can run standalone and replace *mcollectived* but can also be embedded into other Golang projects at compile time.
+[Key-Value Store](../../streams/key-value) is a highly available, distributed Key-Value store built into the Choria Broker and integrated with Choria Autonomous Agents and more.
 
-Delivered as part of the *choria* single binary.
+## Choria Message Submit
+
+[Submit](../../streams/submission) allows local processes like Cron Jobs to submit data to Choria Streams reliably and without maintaining network connections.
 
 ## Choria Network Broker
 
@@ -65,6 +71,16 @@ Delivered as part of the *choria* single binary.
 ## Choria Scout
 
 [Scout](../../scout) is a project currently in R&D that will deliver a full feature, secure and highly scalable monitoring system using Choria technologies.
+
+## Choria Server
+
+A *Server* written in Golang. It can run standalone and replace *mcollectived* but can also be embedded into other Golang projects at compile time.
+
+Delivered as part of the *choria* single binary.
+
+## Choria Service Registry
+
+Resolves, Serves and Transforms DDL files - Choria internal schema documents for accessing remote Agents, Services and more - against a highly available network based service.
 
 ## Choria Streams
 

@@ -1,0 +1,35 @@
+sequenceDiagram
+   participant S as Server
+   participant P as Provisioner
+   participant H as Helper
+   participant CA
+
+   P ->> P: Discover servers
+
+   loop Every Server
+      P ->> S: Retrieve Prov JWT
+      P ->> P: Validate Prov JWT
+
+      P ->> P: Create Nonce
+      P ->> S: Retrieve ED25519 Pubk and Nonce Sig
+      P ->> P: Verify Nonce Signature
+      S ->> P:
+
+      P ->> S: Retrieve facts, metadata
+      S ->> P:
+
+
+      P ->> H: Process Server
+      H ->> H: Generate configuration and JWT Claims
+      H ->> P: Node configuration and JWT
+
+
+      P ->> P: Generate and sign JWT
+
+      P ->> S: Provide configuration and JWT
+      S ->> S: Configure self
+
+      S ->> P: Confirm
+
+      S ->> S: Restart into normal boot
+   end

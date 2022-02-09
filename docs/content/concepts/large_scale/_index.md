@@ -14,9 +14,7 @@ This architecture has been deployed successfully across global organisations wit
 
 The goal of this architecture is to provide a connective substrate that enables a very large enterprise workflow system to be built. Such large workflow system makes many demands of the underlying infrastructure and need to be able to run over heterogeneous infrastructure.
 
-We'll discuss this system in the context of a system that can execute workflows as simple as executing a single command on 10s of thousands of nodes in a region or as complex as a multi-stage workflow that can run for a long time, orchestration 100s or 1000s of steps.
-
-Single workflows can impact machines in multiple regions, have sub-workflows and have dependencies on completion of steps that happen in other regions. Everything built on a foundational mature security model providing strong Authentication, Authorization and Auditing.
+We'll discuss this architecture in the context of a system that can execute workflows as simple as executing a single command on 10s of thousands of nodes in a region or as complex as a multi-stage workflow that can run for a long time, orchestration 100s or 1000s of steps. Single workflows can impact machines in multiple regions, have sub-workflows and have dependencies on completion of steps that happen in other regions. Everything built on a foundational mature security model providing strong Authentication, Authorization and Auditing.
 
 In this document we will not dwell much on the actual workflow engine rather we show how the various components of Choria would enable such a system to be built reliably and at large scale. A conceptual design of the actual workflow system might be included later, but the actual flow engine is not a component included in Choria today. One can mentally replace this workflow component with any other component that need access to programmable infrastructure.
 
@@ -44,7 +42,6 @@ As mentioned the system will be cellular in design - in Choria we call each cell
 
  * [Choria Network Brokers](https://choria.io/docs/deployment/broker/) with the [Choria Streams](https://choria.io/docs/streams/) capability enabled
  * [Choria Provisioner](https://github.com/choria-io/provisioner) that provisions individual fleet nodes onto the Choria network
- * Enterprise Certificate Authority integrated into *Choria Provisioner* to ensure a strong mTLS is in use in compliance with enterprise security
  * [Choria AAA Server](https://github.com/choria-io/aaasvc) providing integration with Enterprise SSO systems, pkcs11 tokens and more
  * [Choria Stream Replicator](https://github.com/choria-io/stream-replicator) allowing data from an overlay to be replicated to a region or to a central location
 
@@ -68,17 +65,16 @@ Choria therefore supports a provisioning mode where the process of enrolling a n
 
  * Custom endpoints for provisioning where needed. Optionally programmatically determined via plugins that can be compiled into Choria
  * Fully dynamic generation of configuration based on node metadata and fleet environment
- * Integration into Certificate Authorities provided by Enterprise Security - provided they meet some requirements
  * Self-healing via cycling back into provisioning on critical error
  * On-boarding of machines at a rate of thousands a minute
 
-The component that owns this process is the *Choria Provisioner* and within *Choria Server* a special mode can be enabled by using JWT tokens.
+The component that owns this process is the [Choria Provisioner](https://github.com/choria-io/provisioner) and within *Choria Server* a special mode can be enabled by using JWT tokens or plugin.
 
 The *Choria Broker* has a special mode that enables unprovisioned fleet nodes to connect using unverified TLS connections. At first this seems risky to allow unverified and verified TLS connections, however we have several mitigations to make this safe:
 
  * Unverified TLS support is off by default
- * Connections coming in on unverified connections **MUST** present a *provision.jwt* that **MUST** validate using the public certificate the broker has in its configuration
- * Only servers with a *provision.jwt* is allowed to connect, those servers have very strict permissions. They cannot communicate with any other unprovisioned servers and may only start a specific few agents
+ * Connections coming in on unverified connections **MUST** present a JWT that **MUST** validate using the public certificate the broker has in its configuration
+ * Connections presenting a `ProvisioningPurpose` token is allowed to connect, those servers have very strict permissions. They cannot communicate with any other unprovisioned servers and may only start a specific few agents
  * The *Choria Provisioner* **MUST** connect over verified TLS and must present a password matching one the broker has in its configuration. Only the *Choria Provisioner* can make requests to unprovisioned nodes.
  * The entire provisioning system is isolated within the broker in an Account - meaning there is no Choria communications between provisioned and unprovisioned nodes
  * Life-cycle events are transported into the Choria account and into Streams to facilitate a central audit stream
@@ -90,7 +86,7 @@ This means the central - redundant - broker infrastructure can be used to accept
 The general provisioning flow is as follows:
 
  * Choria Server starts up without a configuration
-   * It checks if there is a *provisioning.jwt* in a well known location (see `choria buildinfo`)
+   * It checks if there is a *provisioning.jwt* in a well known location (see `choria buildinfo`) or interrogate a site specific plugin
    * The token is parsed and configuration like SRV domain, locations of metadata to expose and more is read from it.
    * Choria Server activates the *choria_provisioning* agent that is compiled into it, this agent is usually disabled in Puppet environments.
    * Choria Server connects to the infrastructure described in the token and wait there for provisioning. Regularly publishing CloudEvents and, optionally node metadata.
@@ -99,52 +95,7 @@ Here the *provisioning.jwt* is a token that you would generate on a per Overlay 
 
 The *Choria Provisioner* actively listens for CloudEvents indicating a new machine just arrived in the environment ready for provisioning. Assuming sometimes these events can be missed it also actively scans, via the [discovery framework](../discovery/), the network for nodes ready for provisioning.
 
-{{<mermaid align="left">}}
-sequenceDiagram
-   participant S as Server
-   participant P as Provisioner
-   participant H as Helper
-   participant CA
-
-   P ->> P: Discover servers
-
-   loop Every Server
-      P ->> S: Retrieve JWT
-      S ->> S: Start ECDH
-      S ->> P: JWT and ECDH Public
-      P ->> P: Validate JWT
-
-      P ->> S: Retrieve facts, metadata
-      S ->> P:
-
-
-      P ->> S: Request CSR
-      S ->> P:
-
-      P ->> H: Process Server
-      H ->> CA: Request PKI files
-      CA ->> H: PKI files
-      H ->> H: Generate configuration
-      H ->> P: Node configuration and PKI
-
-      opt received private key
-         P ->> P: Continues ECDH
-         P ->> P: Encrypts Private Key
-      end
-
-      P ->> S: Provide configuration and PKI
-      S ->> S: Configure self
-
-      opt received private key
-         S ->> S: Completes ECDH
-         S ->> S: Decrypts and Store Private Key
-      end
-
-      S ->> P: Confirm
-
-      S ->> S: Restart into normal boot
-   end
-{{< /mermaid >}}
+![Provisioning Flow](../../large-scale/provisioning-flow.svg)
 
 We show an external helper, this is just a script or command that reads data on it's STDIN and writes the result to STDOUT. Any programming language can be used. Using this one can provide a single provisioner for an entire region or even globally, the provisioner can decide what Overlay to place a node in.
 
@@ -154,7 +105,7 @@ The decision about which Overlay to place a node can be made by metadata provide
 
 Being that the extension point is an external script any level of integration can be done that a user might want without recompiling any Choria components.
 
-Generally the flow is based on a CSR that is signed by the CA. Some enterprises requires a flow where a central actor has to create all private keys.  We do not recommend supporting such a deployment model at all, but if we have to we use a [Curve 25519](https://en.wikipedia.org/wiki/Curve25519) based [Diffie-Hellman](https://en.wikipedia.org/wiki/Elliptic-curve_Diffie%E2%80%93Hellman) secret exchange to agree on an encryption key that is used to encrypt the Private key in transport.  This means the Key is encrypted using a passphrase that never traverse the network and nothing that can be used to derive the passphrase ever traverse the network.
+Generally the flow is based on a ED25519 key exchange where the server generates a Private Key and signs a Nonce the Provisioner gave it. The Public key having been verified is then placed in a `ServerPurpose` JWT token along with claims giving servers access to certain features, organizational units and more.
 
 ### Further Reading
 
@@ -165,13 +116,13 @@ Generally the flow is based on a CSR that is signed by the CA. Some enterprises 
 
 ### TODO
 
- * Perhaps extend the information that can be embedded in the CSR including SANs
- * In addition to certificates allow a token to be placed on the node to access Choria Broker multi tenancy model
- * Reprovision on cert expiry [go-choria#1309](https://github.com/choria-io/go-choria/issues/1309)
+ * Reprovision on Token expiry [go-choria#1309](https://github.com/choria-io/go-choria/issues/1309)
 
 ## Certificate Authorities
 
-As described above the Provisioning Server can be used to integrate Choria into enterprise Certificate Authorities. There's a lot of detail in this one point though, and the CA has to have certain properties:
+While not shown above the Provisioner can also integrate with Certificate Authorities and handle dynamically enrolling new nodes into a CA. This is often problematic in large environments so the flow above relies on a non mTLS based Choria Network.
+
+Should a CA integration be desired it would need to satisfy these requirements:
 
  * The CA **MUST** issue certificates with a SAN set. Go will not allow certificates without SANs to be used
  * Fleet node certificates must have the node FQDN in them
@@ -191,7 +142,7 @@ It might be desirable to instead obtain an intermediate CA from the Enterprise C
 
 ## Enterprise Authentication
 
-In cases where user level access to Choria will be provided it might be desirable to provide a flow where users need to login to the Choria environment using something like `choria login`, this might require 2FA token, enterprise SSO or other integrations.
+In cases where user level access to Choria will be provided it might be desirable to provide a flow where users need to login to the Choria environment using something like *choria login*, this might require 2FA token, enterprise SSO or other integrations.
 
 Choria supports these using a flow supported by the [Choria AAA Service](https://github.com/choria-io/aaasvc).
 
@@ -209,16 +160,24 @@ For the authorization rule we support 2 models, a basic list of *agent.action* r
 
 ```json
 {
-  "agents": [
+   "agents": [
     "rpcutil.ping",
     "puppet.*"
-  ],
-  "callerid": "okta=rip@choria.io",
-  "exp": 1547742762
+   ],
+   "callerid": "okta=rip@choria.io",
+   "exp": 1547742762,
+   "nbf": 1547634762,
+   "iat": 1547634762, 
+   "ou": "choria",
+   "permissions": {
+      "streams_admin": true,
+      "events_viewer": true
+   },
+   "public_key": "50485e558877b53f2e9cc479e417b7e9ad280729742842726fd1c7f3edf9a517"
 }
 ```
 
-Here I am allowed to access all actions on the *puppet* agent and only 1 action on the *rpcutil* agent. The token encodes who I am (*callerid*) and how long the token is valid for.  The token is signed using an RSA private key.
+Here I am allowed to access all actions on the *puppet* agent and only 1 action on the *rpcutil* agent. The token encodes who I am (*callerid* and *public_key*) and how long the token is valid for. It also gives me some broker level permissions for Choria Streams. The token is signed using an RSA private key. 
 
 More complex policies can be written using Open Policy Agent and embedded in the token, here's an example policy:
 
