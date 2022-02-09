@@ -118,28 +118,6 @@ Generally the flow is based on a ED25519 key exchange where the server generates
 
  * Reprovision on Token expiry [go-choria#1309](https://github.com/choria-io/go-choria/issues/1309)
 
-## Certificate Authorities
-
-While not shown above the Provisioner can also integrate with Certificate Authorities and handle dynamically enrolling new nodes into a CA. This is often problematic in large environments so the flow above relies on a non mTLS based Choria Network.
-
-Should a CA integration be desired it would need to satisfy these requirements:
-
- * The CA **MUST** issue certificates with a SAN set. Go will not allow certificates without SANs to be used
- * Fleet node certificates must have the node FQDN in them
- * User or role certificates need to have specific SAN set or have common names matching Choria identity patterns like *rip.mcollective*. Specifics on this point varies by environment or use, and is an area in desperate need of improvement.
- * The certificates and keys **MUST** be in a x509 PEM format
- * The certificates **MUST** be RSA based - a restriction we are working on to relax
- * We can set custom CN, OU, O, C and L fields, additional fields would need to be set by the CA or we need to extend provisioning, we want to support requesting specific SANs.
- * The certificates should in general allow for server and client use, it might be acceptable for fleet nodes to only have client mode restrictions. Testing required.
- * All certificates must allow signing.
- * We support auto enrollment for Fleet nodes but not yet for brokers and other components unless they are in Kubernetes managed by cert-manager. Those must have long validity certificates issued by the CA and presented to the node using configuration management.
- * The CA must have some form of API so it can be called at from the provisioning script
- * We recreate certificates between provisioning attempts. That is a node *c1.example.net* might present new CSRs signed by new keys several times during its life, we would not know what the sequence of the past certificates was so the CA or integration must handle revocation if needed
- * The API has to be fast, if there is a network with 60 000 fleet nodes it will not do to provision them 5/second. We need to be able to issue 1000s per minute.
- * On connections from Overlays to central (see the stream replicator), the Overlay must have a certificate that would give it access to that central environment and must have access to the CA chain.
-
-It might be desirable to instead obtain an intermediate CA from the Enterprise CA and issue certificates locally using something like *cfssl*mv  or integration into Vault.
-
 ## Enterprise Authentication
 
 In cases where user level access to Choria will be provided it might be desirable to provide a flow where users need to login to the Choria environment using something like *choria login*, this might require 2FA token, enterprise SSO or other integrations.
