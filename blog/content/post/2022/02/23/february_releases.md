@@ -115,9 +115,9 @@ Links: [Changes](https://github.com/choria-io/go-choria/compare/v0.24.1...v0.25.
  * Ignore Autonomous Agents with `-temp` name suffix and the `tmp` directory
  * Compatibility fix for latest NATS Server code regarding dynamic limits
 
-## [choria/choria version 0.27.0](https://forge.puppet.com/choria/choria)
+## [choria/choria version 0.27.1](https://forge.puppet.com/choria/choria)
 
-Links: [Changes](https://github.com/choria-io/puppet-choria/compare/0.26.2...0.27.0), [Release](https://forge.puppet.com/choria/mcollective_choria/0.27.0/readme)
+Links: [Changes](https://github.com/choria-io/puppet-choria/compare/0.26.2...0.27.1), [Release](https://forge.puppet.com/choria/mcollective_choria/0.27.1/readme)
 
 NOTE this changes the monitoring interface to loopback by default, if you poll Prometheus stats
 from your brokers set `choria::broker::stats_listen_address` to `::` as it now defaults to `::1`
@@ -135,9 +135,9 @@ Links: [Changes](https://github.com/choria-io/mcorpc-ruby-support/compare/2.25.3
 
  * Add a Choria::TaskResult#bolt_task_result API
 
-## [choria/mcollective version 0.14.0](https://forge.puppet.com/choria/mcollective)
+## [choria/mcollective version 0.14.1](https://forge.puppet.com/choria/mcollective)
 
-Links: [Changes](https://github.com/choria-io/puppet-mcollective/compare/0.13.4...0.14.0), [Release](https://forge.puppet.com/choria/mcollective/0.14.0/readme)
+Links: [Changes](https://github.com/choria-io/puppet-mcollective/compare/0.13.4...0.14.1), [Release](https://forge.puppet.com/choria/mcollective/0.14.1/readme)
 
  * Improve module metadata for operating systems and puppet versions
  * Arch Linux: Switch from Ruby 2.7 to 3
