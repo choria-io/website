@@ -215,7 +215,7 @@ key that was used to request the server JWT.
 
 Below the important bits from the `choria-provisioner.yaml`:
 
-``yaml
+```yaml
 # public key used to sign the provisioning.jwt
 jwt_verify_cert: /etc/choria-provisioner/provisioning-jwt-signer.pem
 
@@ -227,11 +227,11 @@ helper: /etc/choria-provisioner/helper.rb
 features:
     jwt: true # verifies the provisioner.jwt
     ed25519: true # enabled non tls mode
-``
+```
 
 In the `helper.rb` we can now set some additional properties that will configure the server JWT:
 
-```
+```ruby
 reply["server_claims"] = {
   # token expire after a yead
   "exp" => Time.now.utc.to_i + (60*60*24*365),
