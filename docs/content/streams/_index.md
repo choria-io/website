@@ -22,12 +22,13 @@ Today we support:
  * Constraining concurrency of some tasks in Autonomous Agents and cron using [Choria Governor](governor/)
  * Sending data from fleet nodes into a stream via the [Stream Submission](submission) system
  * High performance [distributed Key-Value store](key-value) integrated into [Autonomous Agents](../autoagents)
+ * High performance, share nothing, horizontally and vertically scalable cron like task execution using [Choria Asynchronous Jobs](https://github.com/choria-io/asyncjobs)
  * Scout check history viewer based on historical data for example *choria scout watch --history 5m*
+ * Named Leader Elections against a Key-Value store bucket
 
 Planned:
 
  * Publishing Choria Audit logs into a central store
- * Leader elections to bring HA to Tally, Provisioner and Stream Replicator
  * Stream Replicator support for Choria Streams
 
 The data stored in the streams can be accessed using programming libraries, today the NATS project

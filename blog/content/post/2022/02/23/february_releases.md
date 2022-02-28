@@ -58,7 +58,7 @@ keep an eye out for incoming documentation around this feature.
 ## Package Repository Changes
 
 As notified back in September we are moving away from Packagecloud to our own package hosting infrastructure. I am keeping the Packagecloud
-infrastructure up for a while but this release and all future ones will not be uploaded there to promote users from moving to the new infrastructure.
+infrastructure up for a while but this release and all future ones will not be uploaded there to promote users moving to the new infrastructure.
 
 Thanks to Romain Tartière, Steffy Fort, Tim Meusel and Alexander Olofsson for their contributions to this release
 
