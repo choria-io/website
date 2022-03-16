@@ -12,7 +12,7 @@ A number of Ruby based plugins are maintained in the [Choria Plugins](https://gi
 
 ## Stream Replicator
 
-Choria uses technology from [NATS.io](https://nats.io) in its Network Broker but we also use the [NATS Streaming Server](https://github.com/nats-io/nats-streaming-server) in various situations.  The [Data Adapters](../../adapters/) supports bridging Registration and Choria Replies onto a NATS Streaming service.
+Choria uses technology from [NATS.io](https://nats.io) in its Network Broker, [Choria Streams](/streams/) is a managed instance of [NATS JetStream](https://docs.nats.io/jetstream/).  The [Data Adapters](../../adapters/) supports bridging Registration and Choria Replies onto a Choria Streams service.
 
 You might have multiple data centers and want to transport these registration data to a central location in a way that is resilient to network outage and would support building multiple caches of data in multiple locations with different freshness cadences. You can also subscribe entirely different kinds of processor for the data and each processor can consume the data at its own pace.
 
@@ -29,16 +29,6 @@ Tools like the Stream Replicator and Prometheus Streams will feature this Backpl
 A video demonstrating this capability can be seen below:
 
 <iframe width="840" height="473" src="https://www.youtube.com/embed/97OqYIT6ynQ" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-
-## Prometheus Streams
-
-Prometheus is a very flexible and scalable monitoring system but it has a very unfortunate Pull based system that requires vast amount of network ports to be opened between DCs. The [Choria Prometheus Streams](https://github.com/choria-io/prometheus-streams) project lets you poll in your remote DCs and have the metrics streamed over a NATS Streaming Server - and optionally replicated using the Choria Stream Replicator.
-
-Using this you can create a single pane of glass for multiple data centers.  It's not for all uses - in fact it has a very narrow focus, review its README carefully before adopting it.
-
-## Prometheus File Exporter
-
-A [small exporter and CLI tool](https://github.com/choria-io/prometheus-file-exporter) that allows you to run commands like `pfe counter acme_ctr` or `pfe counter acme_ctr --inc 10` to create metrics from cron jobs and similar.  The exporter listens via inotify for changes and updates an HTTP based exporter in real time.
 
 ## Choria Server Provisioner
 
