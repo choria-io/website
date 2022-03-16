@@ -24,12 +24,12 @@ Today we support:
  * High performance [distributed Key-Value store](key-value) integrated into [Autonomous Agents](../autoagents)
  * High performance, share nothing, horizontally and vertically scalable cron like task execution using [Choria Asynchronous Jobs](https://github.com/choria-io/asyncjobs)
  * Scout check history viewer based on historical data for example *choria scout watch --history 5m*
- * Named Leader Elections against a Key-Value store bucket
+ * Named [Leader Elections](elections) against a Key-Value store bucket
+ * Stream data replication using the [Choria Stream Replicator](https://github.com/choria-io/stream-replicator)
 
 Planned:
 
  * Publishing Choria Audit logs into a central store
- * Stream Replicator support for Choria Streams
 
 The data stored in the streams can be accessed using programming libraries, today the NATS project
 support Go, Java, JavaScript with .Net and C being in progress.  Ruby and Python to follow soon.
