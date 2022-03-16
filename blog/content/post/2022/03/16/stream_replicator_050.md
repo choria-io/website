@@ -6,8 +6,8 @@ draft: false
 ---
 
 In the past we've had a project called Stream Replicator that was used to copy data between independent NATS Streaming 
-Server instances. I've needed an updated version of this, see the full text for links to a brand new groun-up rewrite
-of this tool.
+Server instances. I've needed an updated version of this, see the full text for links to a brand new ground-up rewrite
+of this tool that support JetStream.
 
 At a basic level the system simply takes all data in one Stream found in a cluster and copies it all to another stream
 in, potentially, another cluster. We maintain order and, it's a long-running process so the 2 streams are kept up to date.
@@ -31,6 +31,15 @@ nodes not recently seen and nodes that are deemed retired. By ingesting these ad
 view of global node availability can be built without the cost of actually processing node level data. 
 
 ![Choria Fleet Streams](/blog/img/choria-fleet.png)
+
+Given the above diagram, the Replicator supports:
+
+ 1. Choria Fleet Nodes publish their metadata every 300 seconds
+ 2. Choria Data Adapters place the data in the CHORIA_REGISTRATION stream with per-sender identifying information
+ 3. Stream Replicator reads all messages in the CHORIA_REGISTRATION Stream
+ 4. Sampling is applied and advisories are sent to the CHORIA_REGISTRATION_ADVISORIES stream about node movements and health
+ 5. Sampled Fleet Node metadata is replicated to central into the CHORIA_REGISTRATION stream
+ 6. All advisories are replicated to central into the CHORIA_REGISTRATION_ADVISORIES stream
 
 I gave a talk detailing this pattern at [Cfgmgmt Camp 2019](https://www.youtube.com/watch?v=HKnNgZfrx-8) that might
 explain the concept further.
