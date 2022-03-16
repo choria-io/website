@@ -35,11 +35,11 @@ view of global node availability can be built without the cost of actually proce
 Given the above diagram, the Replicator supports:
 
  1. Choria Fleet Nodes publish their metadata every 300 seconds
- 2. Choria Data Adapters place the data in the CHORIA_REGISTRATION stream with per-sender identifying information
- 3. Stream Replicator reads all messages in the CHORIA_REGISTRATION Stream
- 4. Sampling is applied and advisories are sent to the CHORIA_REGISTRATION_ADVISORIES stream about node movements and health
- 5. Sampled Fleet Node metadata is replicated to central into the CHORIA_REGISTRATION stream
- 6. All advisories are replicated to central into the CHORIA_REGISTRATION_ADVISORIES stream
+ 2. Choria Data Adapters place the data in the `CHORIA_REGISTRATION` stream with per-sender identifying information
+ 3. Stream Replicator reads all messages in the `CHORIA_REGISTRATION` Stream
+ 4. Sampling is applied and advisories are sent to the `CHORIA_REGISTRATION_ADVISORIES` stream about node movements and health
+ 5. Sampled Fleet Node metadata is replicated to central into the `CHORIA_REGISTRATION` stream
+ 6. All advisories are replicated to central into the `CHORIA_REGISTRATION_ADVISORIES` stream without sampling
 
 I gave a talk detailing this pattern at [Cfgmgmt Camp 2019](https://www.youtube.com/watch?v=HKnNgZfrx-8) that might
 explain the concept further.
