@@ -7,14 +7,16 @@ draft: false
 
 Just a small headsup to alert users of a few changes in the Operating Systems we support.
 
-We support Operating System packages primarily for our Puppet users, and, so we tend to follow along with their deprecations.
-
 ## Operating Systems
+
+We support Operating System packages primarily for our Puppet users, and, so we tend to follow along with their deprecations.
 
 Yesterday Puppet announced they will drop support for Ubuntu Xenial which prompted me to do the same here. Xenial has been
 a long and painful distribution to support, I am eager to not have to deal with it anymore. At the same time we are
 removing support for Debian Stretch and EL6 (though we have not done packages for EL6 for a long time). We will not build
 packagers for these Operating Systems and future releases will not have any RPMs or DEBs published for them.
+
+We will in the near term future archive the repositories that was used to serve these Operating Systems.
 
 ## Golang
 
