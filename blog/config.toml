@@ -4,6 +4,7 @@ title = "choria.io/blog"
 theme = "beautifulhugo"
 googleAnalytics = "UA-10152852-12"
 disqusShortname = "choria-io"
+summaryLength = 20480
 
 [markup.goldmark.renderer]
    unsafe= true
