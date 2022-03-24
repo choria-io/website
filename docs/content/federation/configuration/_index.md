@@ -123,7 +123,7 @@ If these are absent it will fall back to the usual configuration and use the exa
 If you have a client that is generally only connected to the local Collective or one where you do not always want to specify all the Federation Collectives you can use the *CHORIA_FED_COLLECTIVE* environment variable to set the *plugin.choria.federation.collectives* setting in the same format.
 
 ```bash
-$ MCOLLECTIVE_FED_COLLECTIVE=tokyo mco puppet status
+$ CHORIA_FED_COLLECTIVE=tokyo mco puppet status
 ```
 
 The above command will address only the *tokyo* Collective, or if it was a unfederated client it will become Federated with *tokyo* being the only known collective.  The same comma separated format is usable here.
