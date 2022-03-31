@@ -4,8 +4,7 @@ weight = 150
 toc = true
 +++
 
-Choria has a number of components, we provide means of monitoring the various components. This sections
-covers how you might monitor your Choria deployment rather than using Choria Scout to monitor other components.
+This sections covers how you might monitor your Choria Server, Choria Broker and data held in Choria Streams.
 
 ## Choria Server
 

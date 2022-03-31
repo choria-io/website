@@ -55,24 +55,13 @@ not all settings are currently settable in Puppet.
 
 ## NATS CLI
 
-Choria does not provide management CLI tools for Stream maintenance, however you can use the [NATS CLI](https://github.com/nats-io/natscli)
-to interact with JetStream.
+Choria embeds key parts of the NATS management tool, for example `nats pub` can be found in `nats broker pub`. 
+By default it uses the Choria configuration and no extra settings are needed.
 
-Once installed, configure the CLI to access choria:
-
-```nohighlight
-$ nats context add choria --select \
-   --description "Choria" \
-   --server nats://choria.example.net:4222/ \
-   --tlscert /home/rip/.puppetlabs/etc/puppet/ssl/certs/rip.mcollective.pem \
-   --tlskey /home/rip/.puppetlabs/etc/puppet/ssl/private_keys/rip.mcollective.pem \
-   --tlsca /home/rip/.puppetlabs/etc/puppet/ssl/certs/ca.pem
-```
-
-After this `nats account info` should report something like this:
+After this `choria broker account info` should report something like this:
 
 ```nohighlight
-$ nats account info
+$ choria broker account info
 Connection Information:
 
                Client ID: 7186
@@ -97,7 +86,7 @@ JetStream Account Information:
 And the list of Streams can be seen:
 
 ```nohighlight
-$ nats stream report
+$ choria broker stream report
 Obtaining Stream stats
 
 ╭─────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮
@@ -111,4 +100,9 @@ Obtaining Stream stats
 ╰──────────────────────────┴─────────┴───────────┴──────────┴─────────┴──────┴─────────┴──────────────────────────╯
 ```
 
-Past that, for the moment, reference the [NATS Documentation](https://docs.nats.io/jetstream).
+## Additional References
+
+As Choria Streams is a managed instance of [NATS JetStream](https://docs.nats.io/jetstream) you can use the NATS docs
+for guidance on the various programming APIs.
+
+We have sections here for various, tailored, features we built for the Choria Ecosystem using this technology.
