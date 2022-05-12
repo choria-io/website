@@ -19,7 +19,7 @@ using `--help`.
 Initially we support calling Choria Agents, Interacting with Choria Key-Value Store and executing external commands.
 
 {{% notice warning %}}
-This is an emerging proof of concept feature that will be introduced in Choria 0.26.0. It's subject to change, and, we 
+This is a proof of concept feature that will be introduced in Choria 0.26.0. It's subject to change and, we 
 might even entirely remove it should this prove to be too restrictive as a replacement for the old application framework.
 {{% /notice %}}
 
