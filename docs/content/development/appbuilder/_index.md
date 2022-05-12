@@ -18,6 +18,12 @@ using `--help`.
 
 Initially we support calling Choria Agents, Interacting with Choria Key-Value Store and executing external commands.
 
+{{% notice warning %}}
+This is an emerging proof of concept feature that will be introduced in Choria 0.26.0. It's subject to change, and, we 
+might even entirely remove it should this prove to be too restrictive as a replacement for the old application framework.
+{{% /notice %}}
+
+
 ## Exploratory Example
 
 Here we see a short example CLI built using this framework:
@@ -110,7 +116,7 @@ commands:
   description: Query Autonomous Agents
   type: rpc
   std_filters: false
-  output_formats_flags: true
+  output_format_flags: true
   display_flag: true
   batch_flags: false
   request:
@@ -249,7 +255,7 @@ The `kv` command can Put, Get or Delete data from a Choria Key-Value bucket.
 The example below will show a current leader for something using Choria Leader Election and force a Leader Election by
 deleting some data.  It also shows creating some data.
 
-When creating data we support template expansion to read values from Flags, Arguments or Configuration.
+When creating data we support template expansion to read values from `.Flags`, `.Arguments` or `.Configuration`.
 
 ```yaml
 commands:
@@ -308,7 +314,7 @@ commands:
     description: Query Autonomous Agents
     type: rpc
     std_filters: true
-    output_formats_flags: true
+    output_format_flags: true
     display_flag: true
     batch_flags: true
     request:
@@ -327,4 +333,36 @@ commands:
         description: Matches instances that are not this version
         place_holder: VERSION
         filter: ok() && semver(data("version"), "!= {{.Flags.ne}}")
+```
+
+While above, we enabled flags like `--batch`, we can instead disable `--batch` entirely and force it to a specific value,
+we can do the same with a few other options shown here.  In all cases when you set it specifically you cannot also set
+the option to enable matching flags from being set:
+
+```yaml
+commands:
+  - name: machines
+    description: Query Autonomous Agents
+    type: rpc
+    
+    # sets batch settings, prevents batch_flags from being added to the cli options 
+    batch: 10
+    batch_sleep: 60
+
+    # sets display mode overriding the DDL, prevents display_flag from being used
+    display: none
+    
+    # disables the progress bar
+    no_progress: true
+    
+    # forces JSON output, prevents output_format_flags from being used
+    output_format: json
+    
+    # sets specific discovery filters and options, prevent std_filters from being used
+    filter:
+      facts: [operatingsystem=CentOS]
+      discovery_method: choria
+      classes: [puppet]
+
+    # as before
 ```
