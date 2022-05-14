@@ -196,6 +196,9 @@ commands:
     type: x
     commands: [] # sub commands that are any valid command
 
+    # Prompts for a y/n before performing the action, no prompt if not set
+    confirm_prompt: Do you really want to perform this action
+    
     # arguments are like 'opscmd command argument' they do not require dashes before and
     # tend to be reserved for things that are required, though the last ones can all be
     # optional
@@ -250,7 +253,7 @@ commands:
 
 ### `kv` Command Type
 
-The `kv` command can Put, Get or Delete data from a Choria Key-Value bucket. 
+The `kv` command can Put, Get, Delete or History data from a Choria Key-Value bucket. 
 
 The example below will show a current leader for something using Choria Leader Election and force a Leader Election by
 deleting some data.  It also shows creating some data.
@@ -288,6 +291,13 @@ commands:
           - name: version
             description: The version to deploy
             required: true
+
+      - name: history
+        description: View recent deployed versions
+        type: kv
+        action: history
+        bucket: APP_CONFIG
+        key: version
 ```
 
 ### `rpc` Command Type
@@ -302,6 +312,7 @@ arguments, flags, and we set some defaults.
  * `output_format_flags` will enable `--json`, `--table`, `--senders` etc
  * `display_flag` will enable `--display`
  * `batch_flags` will enable `--batch` and `--batch-sleep`
+ * `all_nodes_confirm_prompt` will prompt for confirmation when no filters are given - meaning all nodes will be acted on
  
 All of these match their `choria req` counter-parts and all are off by default.
 
@@ -317,10 +328,11 @@ commands:
     output_format_flags: true
     display_flag: true
     batch_flags: true
+    all_nodes_confirm_prompt: Really act on all nodes without a filter
     request:
       agent: choria_util
       action: machine_state
-      params:
+      inputs:
         name: "{{.Arguments.machine}}"
 
     arguments:
