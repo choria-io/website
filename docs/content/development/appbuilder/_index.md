@@ -157,6 +157,15 @@ The configuration file and application definitions can be put in `.`, `~/.config
 Once a definition is placed in any of the above locations in a file like `opscmd-app.yaml`, simply make a symlink from 
 `/usr/bin/opscmd` (or anywhere in your path) to `/usr/bin/choria`.
 
+## Templates
+
+Some strings like commands, inputs and more are parsed via the Go template language. We have a few functions to help
+with common tasks.
+
+ * `require` - requires a string is set, mostly used for accessing configuration data `{{ .Config.value | require "value must be set"}}`, here we see how to set a custom error message
+ * `escape` - perform shell escaping on the value, useful for executing external commands with user input `command: /bin/upgrade.sh "{{ .Arguments.version | escape }}"`
+ * `read_filter` - reads the contents of a file, you can use this to read files given on the CLI as arguments or flags
+
 ## Reference
 
 The Specification YAML file is validated using a JSON Schema, as a temporary location this Schema is in the 
@@ -348,8 +357,8 @@ commands:
 ```
 
 While above, we enabled flags like `--batch`, we can instead disable `--batch` entirely and force it to a specific value,
-we can do the same with a few other options shown here.  In all cases when you set it specifically you cannot also set
-the option to enable matching flags from being set:
+we can do the same with a few other options shown here.  In all cases except `filter` when you set it specifically you cannot
+also set the option to enable matching flags from being set, in the case of `filter` it will merge with `std_filter`:
 
 ```yaml
 commands:
@@ -370,7 +379,7 @@ commands:
     # forces JSON output, prevents output_format_flags from being used
     output_format: json
     
-    # sets specific discovery filters and options, prevent std_filters from being used
+    # sets specific discovery filters and options, will be merged with std_options
     filter:
       facts: [operatingsystem=CentOS]
       discovery_method: choria
