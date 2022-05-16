@@ -16,7 +16,8 @@ for you based on this input definition.
 The application will feel comfortable within any Choria deployment and it's entire feature set will be discoverable 
 using `--help`.
 
-Initially we support calling Choria Agents, Interacting with Choria Key-Value Store and executing external commands.
+Initially we support calling Choria Agents, Interacting with Choria Key-Value Store, Performing Choria Discovery, Fleet 
+Executing external commands.
 
 {{% notice warning %}}
 This is a proof of concept feature that will be introduced in Choria 0.26.0. It's subject to change and, we 
@@ -309,12 +310,43 @@ commands:
         key: version
 ```
 
+### `discover` Command Type
+
+The `discover` command type invokes Choria Discovery, it renders data as lists of nodes in one node per line or JSON format.
+
+In the example below we find all machines where a specific filter matches, we allow additional filters to be set on the CLI.
+
+```yaml
+commands:
+  - name: list
+    description: List the servers running the service
+    type: discover
+    std_filters: true
+    filter:
+      classes: ["profiles::nats"]
+```
+
+The filter can take all standard Choria filters including picking the discovery method and discovery options.
+
+ * `collective` - target a specific collective 
+ * `facts` - a list of fact filters like `["region=us-east-1"]`, matches `-W`
+ * `agents` - a list of agents that should be on the node like `["rpcutil"]`, matches `-A`
+ * `classes` - a list of configuration management tags like `["apache"]`, matched `-C`
+ * `identities` - a list of identities to match like `["/db.example.net/"]`, matches `-I`
+ * `combined` - a list of combined filters like `["apache", "region=us-east-1"]`, matches `-W`
+ * `compound` - a compound filter to apply like `choria().version="0.25.1"`, matches `-S`
+ * `discovery_method` - sets one of the discovery methods to use
+ * `discovery_timeout` - time to allow discovery to run, in seconds
+ * `dynamic_discovery_timeout` - use a window of reply times to speed up discovery
+ * `nodes_file` - read targets from a file in yaml, json or plain text formats
+ * `discovery_options` - options to pass to the discovery method as a hash of strings
+
 ### `rpc` Command Type
 
 The `rpc` command type invokes Choria RPC Agents, it renders data like `choria req` and supports almost 100% compatible 
 flags as `choria req`, essentially it's a frontend with configurable defaults.
 
-In the example below we initial the `machine_state` action on `choria_util` agent with properties built from command line
+In the example below we perform a RPC request to the `machine_state` action on `choria_util` agent with properties built from command line
 arguments, flags, and we set some defaults.
 
  * `std_filters` will enable `-C`, `-I`, `-S`, `-F` and friends
@@ -338,6 +370,8 @@ commands:
     display_flag: true
     batch_flags: true
     all_nodes_confirm_prompt: Really act on all nodes without a filter
+    filter:
+      facts: ["team=ops"]
     request:
       agent: choria_util
       action: machine_state
