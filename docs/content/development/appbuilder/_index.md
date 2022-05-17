@@ -370,11 +370,11 @@ commands:
     display_flag: true
     batch_flags: true
     all_nodes_confirm_prompt: Really act on all nodes without a filter
-    filter:
-      facts: ["team=ops"]
     request:
       agent: choria_util
       action: machine_state
+      filter:
+        facts: ["team=ops"]
       inputs:
         name: "{{.Arguments.machine}}"
 
@@ -387,7 +387,7 @@ commands:
       - name: ne
         description: Matches instances that are not this version
         place_holder: VERSION
-        filter: ok() && semver(data("version"), "!= {{.Flags.ne}}")
+        reply_filter: ok() && semver(data("version"), "!= {{.Flags.ne}}")
 ```
 
 While above, we enabled flags like `--batch`, we can instead disable `--batch` entirely and force it to a specific value,
@@ -413,11 +413,14 @@ commands:
     # forces JSON output, prevents output_format_flags from being used
     output_format: json
     
-    # sets specific discovery filters and options, will be merged with std_options
-    filter:
-      facts: [operatingsystem=CentOS]
-      discovery_method: choria
-      classes: [puppet]
+    request:
+      agent: rpcutil
+      action: ping
+      # sets specific discovery filters and options, will be merged with std_options
+      filter:
+        facts: [operatingsystem=CentOS]
+        discovery_method: choria
+        classes: [puppet]
 
     # as before
 ```
@@ -434,11 +437,11 @@ commands:
       std_filters: true
       transform:
         query: '.replies | .[] | select(.statuscode==0) | .sender + ": " + .data.state'
-      filter:
-        classes: ["profiles::nats"]
       request:
         agent: choria_util
         action: machine_state
+        filter:
+          classes: ["profiles::nats"]
         inputs:
           name: nats
 ```
