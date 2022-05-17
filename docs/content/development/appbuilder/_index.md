@@ -421,3 +421,32 @@ commands:
 
     # as before
 ```
+
+Data can be transformed using JQ (specifically we use [gojq](https://github.com/itchyny/gojq)), the data that will be processed
+using JQ will be exactly the structure you might find using `choria req --json`. Here we retrieve the status of an autonomous 
+agent and transform the data:
+
+```yaml
+commands:
+    - name: state
+      description: Obtain the state of the service operator
+      type: rpc
+      std_filters: true
+      transform:
+        query: '.replies | .[] | select(.statuscode==0) | .sender + ": " + .data.state'
+      filter:
+        classes: ["profiles::nats"]
+      request:
+        agent: choria_util
+        action: machine_state
+        inputs:
+          name: nats
+```
+
+The output will look something like this:
+
+```nohighlight
+n1-example: RUN
+n2-example: RUN
+n3-example: MAINTENANCE
+```
