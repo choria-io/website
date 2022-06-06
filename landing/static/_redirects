@@ -9,7 +9,9 @@
 /schemas/*   https://raw.githubusercontent.com/choria-io/schemas/master/:splat 301!
 /mcollective /docs/about/mcollective/ 302!
 
-/asyncjobs-docker https://github.com/choria-io/asyncjobs/wiki/Running-in-Docker 301!
+/asyncjobs-docker https://choria-io.github.io/asyncjobs/overview/handlers-docker/ 301!
+/appbuilder https://choria-io.github.io/appbuilder/ 301!
+/syncjobs https://choria-io.github.io/asyncjobs/ 301!
 
 https://marionette-collective.com/* https://choria.io/docs/about/mcollective/ 301!
 https://marionette-collective.org/* https://choria.io/docs/about/mcollective/ 301!

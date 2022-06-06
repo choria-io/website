@@ -20,15 +20,28 @@ This is a key component to be able to build scalable asynchronous REST systems, 
 
 The [Choria Stream Replicator](https://github.com/choria-io/stream-replicator) is the tool to achieve this and other tools mentioned below are developed to be compatible with data flows managed using it.
 
-## Choria Embeddable Backplane
+## Choria Asyncjobs
 
-In a modern containerised world the use for a general purpose orchestration server like the main Choria Server is a bit limited, if you write your Microservices in Go though you can use the [Choria Embeddable Backplane](https://github.com/choria-io/go-backplane) to gain Circuit Breakers, Health Checks and Emergency Shutdown features that live on the Choria Broker Network where you can manage these Microservices using the CLI, Ruby API, Go API or Choria Playbooks.
+Think of it as a distributed share-nothing Cron system.  You can execute jobs with workers written in any language and hosted in Kubernetes, Docker or elsewhere.
 
-Tools like the Stream Replicator and Prometheus Streams will feature this Backplane to manage their internals.  The Choria Server Provisioner already incorporates it.
+It is an Asynchronous Job Queue system that relies on NATS JetStream for storage and general job life cycle management. It is compatible with any NATS JetStream based system like a private hosted JetStream, Choria Streams or a commercial SaaS.
 
-A video demonstrating this capability can be seen below:
+Each Task is stored in JetStream by a unique ID and Work Queue item is made referencing that Task. JetStream will handle dealing with scheduling, retries, acknowledgements and more of the Work Queue item. The stored Task will be updated during the lifecycle.
 
-<iframe width="840" height="473" src="https://www.youtube.com/embed/97OqYIT6ynQ" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+Multiple processes can process jobs concurrently, thus job processing is both horizontally and vertically scalable. Job handlers are implemented in Go with one process hosting one or many handlers. Other languages can implement Job Handlers using NATS Request-Reply services. Per process concurrency and overall per-queue concurrency controls exist.
+
+See its [documentation](https://choria-io.github.io/asyncjobs/) for more details.
+
+## Choria Appbuilder
+To a large extent these are tribal knowledge and something that is a big hurdle for new members of the team. The answer is often to write wiki pages capturing run books that has these commands documented.
+
+This does not scale well and does not stay up to date.
+
+What if there was a CLI tool that encapsulated all of these commands in a single, easy to use and easy to discover command.
+
+The appbuilder project lets you build exactly that by specifying a model for your CLI application in a YAML file and then building custom interfaces on the fly.
+
+See its [documentation](https://choria-io.github.io/appbuilder/) for more details, we also have a [video introduction](https://www.youtube.com/watch?v=wbu3N63WY7Y).
 
 ## Choria Server Provisioner
 
