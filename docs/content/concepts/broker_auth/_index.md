@@ -10,12 +10,12 @@ to the Broker must be authenticated. Choria supports 2 major methods of authenti
  * x509 based mTLS creating a closed network where only entities with issued certificates can connect
  * JWT Tokens with ed25519 signed connection [Cryptographic nonce](https://en.wikipedia.org/wiki/Cryptographic_nonce) over TLS
 
-The first is the default supported method for your typical Puppet user. The Puppet CA provides a Certificate Authority 
+The first is the default supported method for your typical Puppet user. The Puppet CA provides a Certificate Authority
 and, we have extensive integration with it.
 
 The second is more advanced and is typically used at [Large Scale](../large_scale) in combination with the Choria Provisioner and
-Choria AAA Service. You would choose this if issuing 10s or 100s of thousands of certificates is prohibitively slow or if 
-integration with enterprise Certificate Authorities prove to be onerous. 
+Choria AAA Service. You would choose this if issuing 10s or 100s of thousands of certificates is prohibitively slow or if
+integration with enterprise Certificate Authorities prove to be onerous.
 
 A single Choria Broker can support both methods of authentication at the same time. Servers can be provisioned using the
 second method, clients with the first. Or even just some clients using the first and some the second.
@@ -75,7 +75,7 @@ these features, we cannot encode these permission flags in certificates so, for 
 
 ## About Certnames
 
-Given that the main intention here is to re-use Puppet CA we need to be a bit careful that someone who gets their hands on 
+Given that the main intention here is to re-use Puppet CA we need to be a bit careful that someone who gets their hands on
 any Puppet signed certificate cannot communicate with the fleet as a client.
 
 For this purpose we make our client certificates using a pattern like `name.surname.mcollective`. The server has a configured
@@ -129,7 +129,7 @@ This method does not rely on mTLS, instead we use anonymous TLS, Signed JWT toke
  * JWT tokens signed by a trusted component to create a closed network of allowed connection, controlled by a central authority
  * ED25519 key-pair to uniquely identify a connection as holding the private key used to request the JWT token
 
-These properties combine to create a setup that is at a transport level nearly as secure as a full mTLS setup while the use of JWT tokens 
+These properties combine to create a setup that is at a transport level nearly as secure as a full mTLS setup while the use of JWT tokens
 open the door to vastly improved privacy and security features overall.
 
 Today this deployment model is best achieved using the Choria Provisioner for enrolling nodes and the Choria AAA Service for
@@ -219,7 +219,7 @@ Below the important bits from the `choria-provisioner.yaml`:
 # public key used to sign the provisioning.jwt
 jwt_verify_cert: /etc/choria-provisioner/provisioning-jwt-signer.pem
 
-# private key used to sign server JWTs 
+# private key used to sign server JWTs
 jwt_signing_key: /etc/choria-provisioner/node-signer-key.pem
 
 helper: /etc/choria-provisioner/helper.rb
@@ -294,6 +294,7 @@ all permissions.  All default to `false`.
 | `governor`      | Can use [Governors](https://choria.io/docs/streams/governor/)                                                              |
 | `org_admin`     | Has access to all subjects in the organisation, full unlimited access on the broker                                        |
 | `service`       | Is allowed to have a client JWT that's valid for a long time, typical for long running services that use the Choria Client |
+| `system_user`   | Is allowed to access the Choria Broker system account for monitoring and management purposes  (> 0.26.0)                   |
 
 ## Server
 
