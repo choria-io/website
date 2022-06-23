@@ -58,7 +58,7 @@ We removed Ubuntu Xenial, Debian Stretch and EL6.
 
 ## Contributors
 
-Special thanks to Jonathan Matthews, Vincent Janelle, Nicolas Le Gaillart and Romain Tartière for their contributions.
+Special thanks to Jonathan Matthews, Vincent Janelle, Nicolas Le Gaillart, Lena Schneider  and Romain Tartière for their contributions.
 
 <!--more-->
 ## [Choria Server version 0.26.0](https://github.com/choria-io/go-choria)
@@ -73,9 +73,9 @@ Links: [Changes](https://github.com/choria-io/go-choria/compare/v0.25.1...v0.26.
 
 ## Enhancements
 
- * Debian packages are distro tagged, Ubuntu 22.04 LTS supported
+ * Debian packages are distro tagged, Ubuntu 22.04 LTS supported but not published due to compatability issues
  * El9 is supported, EL6 removed
- * KV Watcher will not template parse Keys
+ * KV Watcher will now template parse Keys
  * Exec Watcher can now do an initial splayed run before starting schedules
  * Provisioner JWT can have extended details added to it for site specific information
  * UX improvements to --help
