@@ -3,6 +3,15 @@ title = "Governor"
 weight = 20
 +++
 
+Choria Governor allows you to control number of concurrent executions and, optionally, number of executions per period
+of time.
+
+These 2 abilities allow us to solve complex problems faced in making Cron job execution reliable namely preventing all
+the cron jobs from running at the same time and making cron servers reliable by spreading execution over a pool of servers
+while only running a job on one server.
+
+## Managing overall concurrency
+
 When running tasks on network servers that access shared resources like databases, Puppet Servers or other similarly
 constrained resource services its desirable to limit the concurrency of executions.
 
@@ -12,11 +21,7 @@ can be hit or miss and does not solve the problem for adhoc executions.
 Choria Governor lets you use Choria Streams to constrain the concurrency of network tasks, one could run a cron command
 fleet wide at the same time and use the Governor to limit how many concurrent processes will execute.
 
-{{% notice tip %}}
-This feature added in Choria v0.23.0
-{{% /notice %}}
-
-## Creating a Governor
+### Creating a Governor
 
 With Choria Streams configured you can create a Governor using the CLI:
 
@@ -56,7 +61,7 @@ against a Governor but on a traditional schedule and let them manage the Governo
 Replicas is not changeable without destroying the Governor, so if you created with Replica 1 and want to move to 3 you
 will need to set `force => true` on the `choria_governor` resource which will then destroy and recreate the Governor.
 
-## Executing a CRON job
+### Executing a CRON job
 
 To use this Governor to control a cron job use the `choria governor run` command:
 
@@ -74,6 +79,50 @@ This can be used in shell scripts, CLI or just anywhere you need to limit concur
 to the Choria Broker and so needs certificates etc, here we use the `server.conf` to use the server certificates. Keep
 in mind that each process makes a connection to the broker and that Choria Broker is limited to 50 000 concurrent connections
 by default.
+
+## Limiting number of runs per period
+
+In this mode we might have a pool of cron servers running jobs but only one of them should run a job. Others will simply
+exit with 0 exit code in that scenario. We might also say a specific job can only run 5 times per period etc.
+
+This add reliability to cron execution in that machines can fail but jobs continue to run.
+
+This particular mode is good for isolated jobs, for a set of related jobs see our section on leader election.
+
+{{% notice tip %}}
+This feature added in Choria v0.26.1
+{{% /notice %}}
+
+### Creating a Governor
+
+With Choria Streams configured you can create a Governor using the CLI:
+
+```nohighlight
+$ choria governor add ACCOUNTING 1 29m 3
+
+Capacity: 1
+Expires: 29m0s
+Replicas: 3
+```
+
+Like the previous example we first create a governor for our Cronjob, here we allow only 1 execution and we set the expiry
+to 29 minutes.  The period is chosen since will run our cron every 30 minutes so this should be sufficient to control it.
+
+### Executing a CRON job
+
+To use this Governor to control a cron job use the `choria governor run` command:
+
+```nohighlight
+*/30 * * * * /bin/choria governor run ACCOUNTING \
+             --config /etc/choria/server.conf \
+             --max-wait 10s \
+             -max-per-period \
+             '/usr/local/bin/account.sh'
+```
+
+We pass the new flag `-max-per-period` that enables the mode where we limit executions per Governor expiry period.
+
+That's it, this cron job can now run on 10 machines and every 30 minutes one of the 30 will run the task.
 
 ## Controlling Choria Autonomous Agent
 
