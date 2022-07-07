@@ -116,11 +116,11 @@ To use this Governor to control a cron job use the `choria governor run` command
 */30 * * * * /bin/choria governor run ACCOUNTING \
              --config /etc/choria/server.conf \
              --max-wait 10s \
-             -max-per-period \
+             --max-per-period \
              '/usr/local/bin/account.sh'
 ```
 
-We pass the new flag `-max-per-period` that enables the mode where we limit executions per Governor expiry period.
+We pass the new flag `--max-per-period` that enables the mode where we limit executions per Governor expiry period.
 
 That's it, this cron job can now run on 10 machines and every 30 minutes one of the 30 will run the task.
 
