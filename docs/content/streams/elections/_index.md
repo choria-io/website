@@ -1,4 +1,4 @@
-+++
+	+++
 title = "Leader Elections"
 weight = 40
 +++
@@ -10,7 +10,7 @@ The purpose is to allow applications like Choria Provisioner to do leader electi
 storage. This facility is available to any program on your network that needs a similar feature.
 
 {{% notice tip %}}
-This feature is available since *Choria Server 0.25.0*
+Examples using the `choria election` command requires *Choria Server 0.26.1* or newer
 {{% /notice %}}
 
 ## Behaviour
@@ -19,7 +19,7 @@ Once an Election is started, Campaigners will try to create a value in the KV Bu
 if the key has no value in it currently.
 
 Whoever has a successful create operation becomes the leader after a cool-down grace period and notes the value sequence.
-The leader repeatedly updates the bucket with a new value. The update has the option set that ensures the last value in 
+The leader repeatedly updates the bucket with a new value. The update has the option set that ensures the last value in
 the Key is the one that he put. As long as he is updating his own data he remains leader.
 
 If ever the updates stop for a minute (or configured TTL) the data expires and another campaigner becomes the leader.
@@ -42,7 +42,35 @@ sets the TTL.  We strongly recommend defaults are kept.
 
 ## Inspecting from the CLI
 
-The `choria` CLI can be used to see who is the current leader based on Choria Identity.
+### Election Bucket State
+
+Since version `0.26.1` the overall state of a bucket can be viewed:
+
+```nohighlight
+$ choria election info
+Election bucket information for CHORIA_LEADER_ELECTION
+
+       Created: 27 Jun 22 09:05 +0000
+       Storage: File
+  Maximum Time: 10s
+      Replicas: 1
+     Elections: 1
+
+╭───────────────────────────────────────────────────────────────────────────╮
+│                             Active Elections                              │
+├────────────────┬──────────────────────────────────────────────────────────┤
+│ Election       │ Leader                                                   │
+├────────────────┼──────────────────────────────────────────────────────────┤
+│ task_scheduler │ task-scheduler-asyncjobs-task-scheduler-6c96b69db5-zc8cr │
+╰────────────────┴──────────────────────────────────────────────────────────╯
+```
+
+The `--bucket` argument is optional and will default to `CHORIA_LEADER_ELECTION`.
+This command will also show warnings about general bucket health and so forth.
+
+An optional argument will apply a regular expression over the keys in the `Active Election` table.
+
+For earlier versions `choria` CLI can be used to see who is the current leader based on Choria Identity.
 
 ```nohighlight
 $ choria kv get CHORIA_LEADER_ELECTION my_app
@@ -51,23 +79,116 @@ CHORIA_LEADER_ELECTION > my_app sequence 20 created @ 01 Nov 21 17:30 UTC
 c1.example.net
 ```
 
-Here the sequence of `20` indicates how many election campaigns the current leader won, and, the timestamp
-shows since when the current leader has been leader.
+### Evicting a leader
 
-A leadership stand-down can be forced by deleting this key:
+The current leader for an election can be evicted which will cause him to stand by and a new leader (possibly
+the same one) can be elected.
+
+Since version `0.26.1` the `election` utility can be used:
 
 ```nohighlight
-$ choria kv del CHORIA_LEADER_ELECTION my_app
-? Really remove the my_app key from bucket CHORIA_LEADER_ELECTION Yes
+$ choria election evict task_scheduler
+? Evict the current leader from election task_scheduler in bucket CHORIA_LEADER_ELECTION Yes
+Evicted the leader from election task_scheduler in bucket CHORIA_LEADER_ELECTION
+```
+
+In earlier versions a leadership stand-down can be forced by deleting this key:
+
+```nohighlight
+$ choria kv del CHORIA_LEADER_ELECTION task_scheduler
+? Really remove the task_scheduler key from bucket CHORIA_LEADER_ELECTION Yes
 ```
 
 After this, within a minute, the leader will stand-down and another worker will take over.
 
-Listing the `keys` on the bucket will show you all elections:
+### Controlling the presence of a file
+
+Often where cron is used for job scheduling a set of cron jobs need to run together but you also want
+to support failing over to another server should the selected server fail.
+
+There are many ways to accomplish this - best is perhaps to use a actual distributed job system - but cron
+is nice and many tools like Puppet and Ansible support it and it's well understood.
+
+Choria can maintain a file on a server using Elections that can signal to related cron jobs that they are
+active on any given machine:
 
 ```nohighlight
-$ choria kv keys CHORIA_LEADER_ELECTION
-my_app
+$ choria election file CRON /tmp/cron.host
+```
+
+Here we campaign within an election `CRON` and on the leader create the file `/tmp/cron.host`.  This will will 
+be written frequently.
+
+You cron jobs can now just check for the presence and age of this file to know if they should be active on a node.
+
+### Running a command under Election control
+
+To run shell scripts and similar under Election control is difficult, we have a helper that can do that by starting
+and signalling a process based on the election status.
+
+```nohighlight
+This feature is subject to change as we refine the model a bit, your feedback would be appreciated
+```
+
+The basic idea is that your shell script or program should trap `USR1`, `USR2` and `INT`. It will receive `USR1` when
+an election is won, `USR2` when it is lost and when opting out of the signal mode and `INT` before `TERM` when the election
+is lost.
+
+```bash
+#!/bin/bash
+
+LEADER=0
+
+function won() {
+  echo "Election won"; LEADER=1
+}
+function lost() {
+  echo "Election lost"; LEADER=0
+}
+function int() {
+  echo "Got interrupt signal"; exit
+}
+
+trap won USR1
+trap lost USR2
+trap int INT
+
+while true
+do
+  if [ $LEADER == 1 ]
+  then
+    echo "Doing work...."
+  fi
+  sleep 5
+done
+```
+
+We can run this script in one of 2 modes. In both modes the script should assume it is not the leader at start and it
+must always accept at least `USR1`.
+
+First where it will receive `USR1`/`USR2` signals and run for a long time. 
+
+```nohighlight
+$ choria election run SHELL ./test.sh
+Election won
+Doing work....
+Doing work....
+WARN[0034] Sending SIGUSR2 to 1158614                    component=election
+Election lost
+```
+
+In the second mode `USR2` will not be sent, the program wlll be terminated when leadership is lost:
+
+```nohighlight
+$ choria election run SHELL --terminate ./test.sh
+Election won
+Doing work....
+Doing work....
+WARN[0031] Sending SIGINT to 1158759                     component=election
+WARN[0032] Sending SIGTERM to 1158759                    component=election
+ERRO[0032] Execution failed with exit code: 1            component=election
+$ echo $?
+1
 ```
 
 ## Using from Go
@@ -197,7 +318,7 @@ func newWorker(ctx context.Context, wg *sync.WaitGroup, fw inter.Framework, i in
 	}
 
 	var err error
-	
+
 	// join the my_app election
 	w.e, err = fw.NewElection(ctx, nil, "my_app", election.OnWon(w.win), election.OnLost(w.loose))
 	if err != nil {
