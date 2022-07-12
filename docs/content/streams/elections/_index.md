@@ -113,13 +113,17 @@ Choria can maintain a file on a server using Elections that can signal to relate
 active on any given machine:
 
 ```nohighlight
-$ choria election file CRON /tmp/cron.host
+$ choria election file /tmp/cron.host CRON
 ```
 
-Here we campaign within an election `CRON` and on the leader create the file `/tmp/cron.host`.  This will will 
+Here we campaign within an election `CRON` and on the leader create the file `/tmp/cron.host`.  This will 
 be written frequently.
 
 You cron jobs can now just check for the presence and age of this file to know if they should be active on a node.
+
+```nohighlight
+* * * * * root choria election file --check /tmp/cron.host && echo "hello world"
+```
 
 ### Running a command under Election control
 
