@@ -26,7 +26,7 @@ while and we're expanding that a bit in this release.
 First here's some Hiera data to create a goss manifest and then run that as a health check on some nodes,
 this will integrate with prometheus for alerting and more:
 
-```
+```yaml
 choria::scout_checks:
   check_vpnhosts:
     builtin: goss
@@ -50,11 +50,11 @@ Lets say you are working an outage of a service, you know the service spans many
 up of many components. What you want to do is an immediate, deep, health check of the entire service, deeper
 than an individual health check tend to do.
 
-```
+```nohighlight
 $ choria scout validate /etc/service/goss.yaml -W service=acme
 Discovering nodes .... 10
 
-10 / 10    0s [============================================================================] 100%
+10 / 10    0s [==========================================================] 100%
 
 example.net: Count: 25, Failed: 1, Duration: 0.549s
 
