@@ -4,9 +4,9 @@
 - id: shortdateFormat
   translation: "2 Jan, 2006 15:04:05"
 - id: postedOnDate
-  translation: "Gepost op {{ .Count }}"
+  translation: "Gepost op {{ . }}"
 - id: lastModified
-  translation: "(Laatst gewijzigd op {{ .Count }})"
+  translation: "(Laatst gewijzigd op {{ . }})"
 - id: translationsLabel
   translation: "Andere talen: "
 - id: translationsSeparator
@@ -33,7 +33,7 @@
 
 # Footer
 - id: poweredBy # Accepts HTML
-  translation: '<a href="http://gohugo.io">Hugo v{{ .Site.Hugo.Version }}</a>-aangedreven &nbsp;&bull;&nbsp; Thema door <a href="http://deanattali.com/beautiful-jekyll/">Beautiful Jekyll</a> aangepast voor <a href="https://github.com/halogenica/beautifulhugo">Beautiful Hugo</a>'
+  translation: '<a href="https://gohugo.io">Hugo v{{ .Site.Hugo.Version }}</a>-aangedreven &nbsp;&bull;&nbsp; Thema door <a href="https://github.com/halogenica/beautifulhugo">Beautiful Hugo</a> aangepast van <a href="https://deanattali.com/beautiful-jekyll/">Beautiful Jekyll</a>'
 
 # Navigation
 - id: toggleNavigation
@@ -65,9 +65,9 @@
 
 # Delayed Disqus
 - id: show
-  translation: "Laat"
+  translation: "Laat zien"
 - id: comments
-  translation: "reacties zien" 
+  translation: "reacties"
 
 # Related posts
 - id: seeAlso

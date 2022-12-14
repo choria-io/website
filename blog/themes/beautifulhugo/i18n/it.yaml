@@ -4,9 +4,9 @@
 - id: shortdateFormat
   translation: "2 Jan 2006 15:04:05"
 - id: postedOnDate
-  translation: "Redatto il {{ .Count }}"
+  translation: "Pubblicato il {{ . }}"
 - id: lastModified
-  translation: "(Ultima modifica il {{ .Count }})"
+  translation: "(Ultima modifica il {{ . }})"
 - id: translationsLabel
   translation: "Altre lingue: "
 - id: translationsSeparator
@@ -33,13 +33,13 @@
 
 # Footer
 - id: poweredBy # Accepts HTML
-  translation: '<a href="http://gohugo.io">Sviluppato con Hugo v{{ .Site.Hugo.Version }}</a> &nbsp;&bull;&nbsp; Tema: <a href="http://deanattali.com/beautiful-jekyll/">Beautiful Jekyll</a> adattato a <a href="https://github.com/halogenica/beautifulhugo">Beautiful Hugo</a>'
+  translation: '<a href="https://gohugo.io">Sviluppato con Hugo v{{ .Site.Hugo.Version }}</a> &nbsp;&bull;&nbsp; Tema <a href="https://github.com/halogenica/beautifulhugo">Beautiful Hugo</a> adattato da <a href="https://deanattali.com/beautiful-jekyll/">Beautiful Jekyll</a>'
 
 # Navigation
 - id: toggleNavigation
-  translation: "Attiva/disattiva la navigazione"
+  translation: "Menu"
 - id: languageSwitcherLabel
-  translation: "Linguaggio"
+  translation: "Lingua"
 - id: gcseLabelShort
   translation: "Cerca"
 - id: gcseLabelLong
@@ -71,4 +71,4 @@
 
 # Related posts
 - id: seeAlso
-  translation: "Guarda anche"
+  translation: "Vedi anche"
