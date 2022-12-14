@@ -1,8 +1,11 @@
-baseurl = "http://dev1.devco.net:9292"
 contentdir = "content"
-theme = "hugo-theme-learn"
+theme = "hugo-theme-relearn"
 title = "Choria Orchestrator"
 googleAnalytics = "UA-10152852-12"
+
+[markup]
+  [markup.highlight]
+  guessSyntax = false
 
 [markup.goldmark.renderer]
   unsafe= true
@@ -15,4 +18,5 @@ googleAnalytics = "UA-10152852-12"
   author = "R.I.Pienaar <rip@devco.net>"
   showVisitedLinks = false
   menu = [ "about", "concepts", "tasks", "playbooks", "scout", "autoagents", "federation", "adapters", "development", "deployment", "configuration" ]
-  themeVariant = "choria"
+  themeVariant = "choria-relearn"
+  disableLandingPageButton = true

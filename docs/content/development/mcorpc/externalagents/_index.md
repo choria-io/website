@@ -3,11 +3,7 @@ title = "External Agents"
 weight = 21
 +++
 
-As of version *0.12.1* of the Choria Server we support something called `External Agents`, these let you write agents hosted by the Choria Server in any language.  These agents are forked on demand and receive the request in a temporary file and write their reply in a temporary file as JSON.
-
-{{% notice tip %}}
-This is a brand new feature and subject to change and quite possibly has some bugs!
-{{% /notice %}}
+Choria Server supports `External Agents`, these let you write agents hosted by the Choria Server in any language.  These agents are forked on demand and receive the request in a temporary file and write their reply in a temporary file as JSON.
 
 ## Overview
 
@@ -21,19 +17,39 @@ An external agent can be written in any language and the related files go in the
 -rw-r--r-- 1 root root 915 Sep 12 10:40 helloworld.json
 ```
 
+For compiled agents, like those written in Go, we support multi-arch binary selection.
+
+{{% notice secondary "Version Hint" code-branch %}}
+Requires Choria Server version 0.27.0
+{{% /notice %}}
+
+```nohighlight
+$ find agents
+agents
+agents/helloworld.json
+agents/helloworld.ddl
+agents/helloworld
+agents/helloworld/helloworld-darwin_amd64
+agents/helloworld/helloworld-linux_amd64
+agents/helloworld/helloworld-freebsd_amd64
+```
+
+Here we will pick the binary based on the go *GOOS* and *GOARCH* variables.
+
+
 Both the [DDL](../ddl/) and JSON files are required and can be generated using the new `choria plugin generate ddl helloworld.json helloworld.ddl` utility.
 
 ### Communication Protocols
 
 Communication from the Choria Server to your agent is done via files on disk and environment variables.  When run these variables will be set:
 
-|Variable|Meaning|
-|--------|-------|
-|CHORIA_EXTERNAL_REQUEST|The path to where the JSON request data is found|
-|CHORIA_EXTERNAL_CONFIG|The path to the configuration file specific to this agent in the `plugin.d` directory|
-|CHORIA_EXTERNAL_REPLY|The path where your agent should write JSON reply data|
-|CHORIA_EXTERNAL_PROTOCOL|Indicating if this is a request (io.choria.mcorpc.external.v1.rpc_request) or activation (io.choria.mcorpc.external.v1.rpc_reply) message|
-|CHORIA_EXTERNAL_FACTS|The path to where a JSON snapshots of Server facts can be found.  Since Choria Server 0.14.0|
+| Variable                 | Meaning                                                                                                                                   |
+|--------------------------|-------------------------------------------------------------------------------------------------------------------------------------------|
+| CHORIA_EXTERNAL_REQUEST  | The path to where the JSON request data is found                                                                                          |
+| CHORIA_EXTERNAL_CONFIG   | The path to the configuration file specific to this agent in the `plugin.d` directory                                                     |
+| CHORIA_EXTERNAL_REPLY    | The path where your agent should write JSON reply data                                                                                    |
+| CHORIA_EXTERNAL_PROTOCOL | Indicating if this is a request (io.choria.mcorpc.external.v1.rpc_request) or activation (io.choria.mcorpc.external.v1.rpc_reply) message |
+| CHORIA_EXTERNAL_FACTS    | The path to where a JSON snapshots of Server facts can be found.  Since Choria Server 0.14.0                                              |
 
 Your agent will also be called with 3 arguments:
 
@@ -123,14 +139,14 @@ Your reply should be written to `CHORIA_EXTERNAL_REPLY` and must look like this:
 
 The *statuscode* is standard MCollective Protocol status codes:
 
-|Status Code|Description|Exception Class|
-|-----------|-----------|---------------|
-|0|OK| |
-|1|OK, failed.  All the data parsed ok, we have a action matching the request but the requested action could not be completed.|RPCAborted|
-|2|Unknown action|UnknownRPCAction|
-|3|Missing data|MissingRPCData|
-|4|Invalid data|InvalidRPCData|
-|5|Other error|UnknownRPCError|
+| Status Code | Description                                                                                                                 | Exception Class  |
+|-------------|-----------------------------------------------------------------------------------------------------------------------------|------------------|
+| 0           | OK                                                                                                                          |                  |
+| 1           | OK, failed.  All the data parsed ok, we have a action matching the request but the requested action could not be completed. | RPCAborted       |
+| 2           | Unknown action                                                                                                              | UnknownRPCAction |
+| 3           | Missing data                                                                                                                | MissingRPCData   |
+| 4           | Invalid data                                                                                                                | InvalidRPCData   |
+| 5           | Other error                                                                                                                 | UnknownRPCError  |
 
 And *data* is free form data being sent back to the client.  Note however the data too will be validated against the DDL output section, defaults will be set and more.
 

@@ -110,3 +110,50 @@ $ nats stream view MYAPP
 
 We can see the message is there, and some additional headers are set pertaining to the message. From here any NATS JetStream
 capable client can consume and act on the messages.
+
+## Signing Messages
+
+{{% notice tip %}}
+This feature added in Choria v0.27.0
+{{% /notice %}}
+
+If the data being sent from your nodes are sensitive, or you will be taking action, possibly destructive, based on those
+messages you need to be sure they are from the correct source.
+
+When Choria is deployed using Organization Issuers the messages can be signed using the ed25519 private key and the server JWT
+will be sent with the message.
+
+Receivers can then:
+
+* Verify the JWT token is valid and signed in the Organization Issuer trust chain
+* Extract the public key for the node from the JWT
+* Verify the signature of the payload
+* Use the Identity from the JWT
+
+In this way you know:
+
+* The sender is trusted by your Organization
+* The data is sent by a server holding the private key
+* The payload has not been tampered with in any way
+
+This can be done on the CLI by passing the `--sign` flag.
+
+```nohighlight
+$ echo 'hello world'|choria tool submit --config /etc/choria/server.conf --sign test  -- -
+```
+
+```nohighlight
+$ choria broker sub 'choria.submission.>'
+[#1] Received on "choria.submission.in.test"
+Choria-Created: 1669894728644243262
+Choria-Identity: a4568c49a6ae.choria.local
+Choria-Priority: 4
+Choria-Sender: user 2048
+Choria-Signature: beb0385885...172d1bc21dd3eb2ee531e70e
+Choria-Token: eyJhbGciOiJFZ...8kFEsmjvTWW-sBA
+Nats-Msg-Id: 3a734124-9542-4bf5-9eda-f2827d26b722
+
+hello world
+```
+
+Here the `Choria-Signature` and `Choria-Token` is set for these messages, the `tokens` package can be used to perform validation of these.

@@ -4,3 +4,4 @@ docs_template
 .DS_Store
 .netlify
 .idea
+.hugo_build.lock

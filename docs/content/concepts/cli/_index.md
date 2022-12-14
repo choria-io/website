@@ -25,7 +25,7 @@ At present we are migrating most of our command line tooling from `mco` to `chor
 A simple example of a *mco* command can be seen below:
 
 ```nohighlight
-$ mco ping
+$ choria ping
 choria1.choria                           time=30.49 ms
 puppet.choria                            time=30.71 ms
 choria0.choria                           time=31.47 ms
@@ -71,7 +71,7 @@ application* or *mco application ---help*. Shown below is part of the
 help for the *rpc* application:
 
 ```nohighlight
-$ mco rpc --help
+$ choria rpc --help
 usage: choria req [<flags>] <agent> <action> [<args>...]
 
 Performs a RPC request against the Choria network
@@ -211,20 +211,27 @@ installed Choria system you can use the *plugin* application to get
 a list:
 
 ```nohighlight
-$ mco plugin doc
-Please specify a plugin. Available plugins are:
+$ choria plugin doc
+Known Plugins:
 
 Agents:
-  bolt_tasks                Downloads and runs Puppet Tasks
-  choria_util               Choria Utilities
-  filemgr                   File Manager
-  nettest                   Perform network tests from a mcollective host
-  package                   Manage Operating System Packages
-  process                   Manages Operating System Processes
-  puppet                    Manages the Life Cycle of the Puppet Agent
-  rpcutil                   General helpful actions that expose stats and internals to SimpleRPC clients
-  service                   Manages Operating System Services
-  shell                     Run commands with the local shell
+
+          aaa_signer: Request Signer for Choria AAA Service
+          bolt_tasks: Downloads and runs Puppet Tasks
+         choria_util: Choria Utilities
+             package: Manage Operating System Packages
+              puppet: Manages the Life Cycle of the Puppet Agent
+             rpcutil: Utility actions that expose information about the state of the running Server
+             service: Manages Operating System Services
+
+Data Providers:
+
+              choria: Data about a the running Choria instance
+         config_item: Runtime value of a configuration items
+       machine_state: Data about a Choria Autonomous Agent
+               scout: Data about a specific Scout check
+
+
 ```
 
 The first part of this list shows all the agents this computer is aware
@@ -235,43 +242,50 @@ To find out the *actions*, *inputs* and *outputs* for a specific agent
 use the plugin application again:
 
 ```nohighlight
-$ mco plugin doc agent/service
-service
-=======
+$ choria plugin doc agent/service
+Service Agent version 4.0.1
 
 Manages Operating System Services
 
-      Author: R.I.Pienaar <rip@devco.net>
-     Version: 4.0.1
-     License: Apache-2.0
-     Timeout: 60
-   Home Page: https://github.com/choria-plugins/service-agent
+Plugin Metadata:
 
-   Requires MCollective 2.2.1 or newer
+    Author: R.I.Pienaar <rip@devco.net>
+       URL: https://github.com/choria-plugins/service-agent
+   License: Apache-2.0
+   Timeout: 60
 
-ACTIONS:
-========
-   restart, start, status, stop
+Available Action: restart, start, status, stop
 
-   status action:
-   --------------
-       Gets the status of a service
+Actions:
 
-       INPUT:
-           service:
-              Description: The service to get the status for
-                   Prompt: Service Name
-                     Type: string
-                 Optional: false
-               Validation: service_name
-                   Length: 90
+  start Action:
 
-
-       OUTPUT:
-           status:
-              Description: The status of the service
-               Display As: Service Status
-            Default Value: unknown
+    Start a service
+    
+    Inputs:
+    
+      service:
+        
+        The service to start
+        
+        ║      Prompt: Service Name
+        ║        Type: String
+        ║    Optional: false
+        ║  Validation: service_name
+        ║  Max Length: 90
+        ╙─
+        
+    
+    Outputs:
+    
+      status:
+        
+        The status of the service after starting
+        
+        ║  Display As: Service Status
+        ║        Type: Undefined
+        ║     Default: unknown
+        ╙─
 ....
 ```
 
@@ -415,37 +429,19 @@ These expressions are built using [expr](https://github.com/antonmedv/expr/blob/
 
 Within the expressions we have defined some variables:
 
-|Variable|Description|
-|--------|-----------|
-|`agents`|List of known agents|
-|`classes`|List of classes this machine belongs to|
-|`facts`|Facts for the machine as raw JSON|
+| Variable  | Description                             |
+|-----------|-----------------------------------------|
+| `agents`  | List of known agents                    |
+| `classes` | List of classes this machine belongs to |
+| `facts`   | Facts for the machine as raw JSON       |
 
 And we made a few functions available:
 
-|Function|Description|
-|--------|-----------|
-|`with`  |Equivalent of a `-W` filter - class and fact matches combined|
-|`fact`  |Retrieves a fact from the nested fact data using [GJSON path syntax](https://github.com/tidwall/gjson/blob/master/SYNTAX.md)|
-|`include`|Checks if an array includes a specific element|
-
-## Using with PuppetDB
-
-Recent versions of PuppetDB has a built in query language called
-Puppet Query Language that you use via the `puppet query` command.
-
-Much like the above example of chaining RPC requests Choria supports
-reading results from Puppet Query:
-
-```nohighlight
-$ puppet query "inventory { facts.os.name = 'CentOS' }"| mco rpc puppetd runonce
-```
-
-This will run Puppet on all CentOS machines
-
-Additionally, Choria includes a discovery plugin that can communicate directly
-with PuppetDB for you so you do not need to learn PQL.  Read about this plugin
-in the Optional Configuration section.
+| Function  | Description                                                                                                                  |
+|-----------|------------------------------------------------------------------------------------------------------------------------------|
+| `with`    | Equivalent of a `-W` filter - class and fact matches combined                                                                |
+| `fact`    | Retrieves a fact from the nested fact data using [GJSON path syntax](https://github.com/tidwall/gjson/blob/master/SYNTAX.md) |
+| `include` | Checks if an array includes a specific element                                                                               |
 
 ## Tabular format 
 
@@ -467,7 +463,7 @@ Discovering nodes using the choria method ....1
 
 ## Seeing the Raw Data
 
-By default the *rpc* application will try to show human-readable data.
+By default, the *rpc* application will try to show human-readable data.
 To see the actual raw data, add the *-v* flag to disable the display
 helpers:
 
@@ -539,10 +535,6 @@ $ choria rpc package status package=puppet-agent -I choria0.choria -j
 
 ## Filtering results
 
-{{% notice tip %}}
-This is an experimental feature and subject to change
-{{% /notice %}}
-
 When using the *rpc* application you can perform additional filtering of the results, this will include only returned results if they matches a filter. This is a pure client side filter, all the data still has to arrive at the client and be processed before being removed. 
 
 The filter is using the [expr](https://github.com/antonmedv/expr) language to match against an individual reply. And we support [GJSON Path Syntax](https://github.com/tidwall/gjson/blob/master/SYNTAX.md) for accessing data in the reply.
@@ -613,14 +605,14 @@ You can mix and match, for example you can do a service restart on all machine m
 
 When *mco* or *choria* finishes, it generates an exit code. The returned exit code depends on the nature of the issue:
 
-|Exit Code|Description|
-|---------|-----------|
-|0|If nodes were discovered and all passed.|
-|0|If no discovery was performed, at least 1 response was received, and all responses were OK.|
-|1|If no nodes were discovered, or if mco encountered an issue not listed here|
-|2|If nodes were discovered but some RPC requests failed.|
-|3|If nodes were discovered, but no responses were received.|
-|4|If no discovery was performed, and no responses were received.|
+| Exit Code | Description                                                                                 |
+|-----------|---------------------------------------------------------------------------------------------|
+| 0         | If nodes were discovered and all passed.                                                    |
+| 0         | If no discovery was performed, at least 1 response was received, and all responses were OK. |
+| 1         | If no nodes were discovered, or if mco encountered an issue not listed here                 |
+| 2         | If nodes were discovered but some RPC requests failed.                                      |
+| 3         | If nodes were discovered, but no responses were received.                                   |
+| 4         | If no discovery was performed, and no responses were received.                              |
 
 ## Custom Applications
 

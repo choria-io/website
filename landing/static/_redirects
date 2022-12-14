@@ -6,12 +6,17 @@
 /docs/adapters/jetstream/  /docs/adapters/choria/  301!
 /docs/configuration/plugins   /docs/development/mcorpc/packaging/ 301!
 /docs/configuration/plugins/  /docs/development/mcorpc/packaging/ 301!
+/docs/concepts/broker_auth /docs/concepts/security/ 301!
+/docs/concepts/broker_auth/ /docs/concepts/security/ 301!
 /schemas/*   https://raw.githubusercontent.com/choria-io/schemas/master/:splat 301!
 /mcollective /docs/about/mcollective/ 302!
 
 /asyncjobs-docker https://choria-io.github.io/asyncjobs/overview/handlers-docker/ 301!
 /appbuilder https://choria-io.github.io/appbuilder/ 301!
 /syncjobs https://choria-io.github.io/asyncjobs/ 301!
+/asyncjobs https://choria-io.github.io/asyncjobs/ 301!
+/aaasvc https://choria-io.github.io/aaasvc/ 301!
+/provisioner https://choria-io.github.io/provisioner/ 301!
 
 https://marionette-collective.com/* https://choria.io/docs/about/mcollective/ 301!
 https://marionette-collective.org/* https://choria.io/docs/about/mcollective/ 301!
