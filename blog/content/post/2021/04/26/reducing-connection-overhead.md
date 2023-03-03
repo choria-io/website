@@ -50,7 +50,7 @@ choria::broker::leafnode_port: 7422
 A _leaf node_ is really just a broker.  We have to provide it the list the broker nodes it can use to reach the actual middleware (on the ports we have configured in the previous step) and it will listen on port 4222 to accept client connections:
 
 ```
-choria::broker::leafnodes:
+choria::broker::leafnode_upstreams:
   choria:
     url: "nats://choria1.example.net:7422,nats://choria2.example.net:7422,nats://choria3.example.net:7422"
 ```
