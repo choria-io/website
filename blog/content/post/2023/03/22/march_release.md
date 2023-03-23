@@ -74,7 +74,7 @@ Thanks to Romain Tartière and Pieter Loubser for their contributions to this re
 
 Links: [Changes](https://github.com/choria-io/go-choria/compare/v0.26.2...v0.27.0), [Release](https://github.com/choria-io/go-choria/releases/tag/v0.27.0)
 
-## Enhancements
+### Enhancements
 
  * Introduce Choria JWT based security and Protocol version 2
  * Choria Message Submit can sign published messages when using Choria Security
@@ -101,11 +101,11 @@ Links: [Changes](https://github.com/choria-io/go-choria/compare/v0.26.2...v0.27.
  * Support adding headers to Choria Message Submit messages
  * Record the builtin type as plugin in nagios watcher events
 
-## Deprecations
+### Deprecations
 
  * Remove numerous deprecated configuration settings
 
-## Bug Fixes
+### Bug Fixes
 
  * Improve handling defaults in output DDLs for generated clients
  * Improve fact filter parsing to handle functions both left and right of the equation
@@ -118,11 +118,63 @@ Links: [Changes](https://github.com/choria-io/go-choria/compare/v0.26.2...v0.27.
  * Correctly detect paths to ed25519 public keys that are 64 characters long as paths
  * Ensure multiple AAA Login URLs are parsed correctly
 
-## Other Changes
+### Other Changes
 
  * Extract the tokens package into github.com/choria-io/tokens
  * Add `context.Context` to the provisioner target resolve `Configure()` method
  * Export `SetBuildBasedOnJWT` in default proftarget plugin
+
+## [Stream Replicator version 0.8.1](https://github.com/choria-io/stream-replicator)
+
+Links: [Changes](https://github.com/choria-io/stream-replicator/compare/v0.6.1...v0.8.1), [Release](https://github.com/choria-io/go-choria/releases/tag/v0.8.1)
+
+We have not announced these releases regularly - this covers a few releases done this year
+
+### Enhancements
+
+ * Log file is now world readable and credentials are redacted
+ * Support Choria Organization Issuer based Choria Brokers
+ * Move some noisy log lines to debug level
+ * Enable profiling on the monitor port
+ * Support being deployed in [High Available](https://choria-io.github.io/stream-replicator/configuration/clustering/index.html) mode with active-active multi node reliable clusters
+ * Add numerous CLI tools for inspecting cluster traffic, state files and search advisories
+ * Support more template fields in advisory subjects
+ * Adds a new replication mode optimised for high-throughput under high latency conditions
+ * Synchronise ID track state using a gossip protocol over the NATS cluster
+ * Increase backoff window during long outages
+ * Support publishing heartbeats into streams to facilitate latency monitoring on idle streams
+
+### Bug Fixes
+
+ * Authentication errors from the brokers will not cause the reconnection cycle to terminate
+ * Fix health management routines that would consume 100% cpu on one core in some cases
+ * Handle situations where the target or source stream was purged
+ * Ensure advisories are not sent for messages that could not be tracked due to missing values
+
+## [Choria AAA Service version 0.7.0](https://github.com/choria-io/aaasvc)
+
+Links: [Changes](https://github.com/choria-io/aaasvc/compare/0.6.1...0.7.0), [Release](https://github.com/choria-io/aaasvc/releases/tag/0.7.0)
+
+### Enhancements
+
+ * Support embedding OPA policies and validating using code shared with go-choria
+ * Require a signature in signing requests                                       
+ * Support protocol version 2 using Organization Issuers
+
+## [Choria Provisioner version 0.15.0](https://github.com/choria-io/provisioner)
+
+Links: [Changes](https://github.com/choria-io/provisioner/compare/v0.14.0...v0.15.0), [Release](https://github.com/choria-io/provisioner/releases/tag/v0.15.0)
+
+### Enhancements
+
+ * Support upgrading nodes over the air using `go-updater`
+ * Support provisioning Protocol v2 nodes via Organization Issuers
+ * Support shutting down servers as well as defer provisioning
+ * Report on the number of waiting nodes
+
+### Bug Fixes
+
+ * Improve handling very large waiting node counts
 
 ## [choria/choria version 0.29.0](https://forge.puppet.com/choria/choria)
 
