@@ -12,16 +12,16 @@ A [JSON schema](https://choria.io/schemas/choria/machine/v1/manifest.json) descr
 
 All watchers share a common set of properties detailed below, watcher specific properties are always in the *properties* key:
 
-|Property          |Required                    |Description|
-|------------------|----------------------------|-----------|
-|name              |yes|A unique name for the watcher|
-|type              |yes|A known type of watcher like *file* or *exec*|
-|state_match       |no |A list of state names where this watcher is valid for|
-|fail_transition   |no |If set this event fires on failure|
-|success_transition|no |If set this event fires on success|
-|interval          |no |Runs the watcher every interval, valid intervals are of the form *1s*, *1m*, *1h*|
-|announce_interval |no |Announce the current state of the watcher regularly, valid intervals are of the form *1s*, *1m*, *1h*|
-|properties        |yes|Watcher specific settings|
+| Property           | Required | Description                                                                                           |
+|--------------------|----------|-------------------------------------------------------------------------------------------------------|
+| name               | yes      | A unique name for the watcher                                                                         |
+| type               | yes      | A known type of watcher like *file* or *exec*                                                         |
+| state_match        | no       | A list of state names where this watcher is valid for                                                 |
+| fail_transition    | no       | If set this event fires on failure                                                                    |
+| success_transition | no       | If set this event fires on success                                                                    |
+| interval           | no       | Runs the watcher every interval, valid intervals are of the form *1s*, *1m*, *1h*                     |
+| announce_interval  | no       | Announce the current state of the watcher regularly, valid intervals are of the form *1s*, *1m*, *1h* |
+| properties         | yes      | Watcher specific settings                                                                             |
 
 ## File watcher
 
@@ -29,10 +29,10 @@ The *file* watcher observes a specific file for changes and presence. Today only
 
 ### Properties
 
-|Property            |Required                            |Description|
-|--------------------|------------------------------------|-----------|
-|path                |yes|The path to the file to watch relative to the watcher manifest directory|
-|gather_initial_state|   |Gathers the initial file mode, stats etc for regular announces but only perform first watch after *interval*|
+| Property             | Required | Description                                                                                                  |
+|----------------------|----------|--------------------------------------------------------------------------------------------------------------|
+| path                 | yes      | The path to the file to watch relative to the watcher manifest directory                                     |
+| gather_initial_state |          | Gathers the initial file mode, stats etc for regular announces but only perform first watch after *interval* |
 
 ### Behavior
 
@@ -50,15 +50,15 @@ The *exec* watcher supports running shell commands, it has a very basic exit cod
 
 ### Properties
 
-|Property                 |Required|Description|
-|-------------------------|--------|-----------|
-|command                  |yes     |The command to run relative to the watcher manifest directory|
-|timeout                  |        |How long the command is allowed to run, *10s* default|
-|suppress_success_announce|        |Do not publish a state JSON document after every run, useful for frequently run items. Still publish on error. Still support regular publish via `announce_interval`|
-|environment              |        |A list of custom environment variables to set in the form `VAR=val`|
-|governor                 |        |Use the named [Choria Concurrency Governor](../../streams/governor) to control how many concurrent actions can be taken|
-|governor_timeout         |        |How long to attempt to gain a slot on the governor, defaults to *5m*|
-|parse_as_data            |        |Attempt to parse the data as JSON data and store each JSON key in a matching data item|                   
+| Property                  | Required | Description                                                                                                                                                          |
+|---------------------------|----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| command                   | yes      | The command to run relative to the watcher manifest directory                                                                                                        |
+| timeout                   |          | How long the command is allowed to run, *10s* default                                                                                                                |
+| suppress_success_announce |          | Do not publish a state JSON document after every run, useful for frequently run items. Still publish on error. Still support regular publish via `announce_interval` |
+| environment               |          | A list of custom environment variables to set in the form `VAR=val`                                                                                                  |
+| governor                  |          | Use the named [Choria Concurrency Governor](../../streams/governor) to control how many concurrent actions can be taken                                              |
+| governor_timeout          |          | How long to attempt to gain a slot on the governor, defaults to *5m*                                                                                                 |
+| parse_as_data             |          | Attempt to parse the data as JSON data and store each JSON key in a matching data item                                                                               |                   
 
 ### Data
 
@@ -90,13 +90,13 @@ governor etc is needed the template is newly expanded.
 
 An exec watcher will at *interval* times run the command specified with a few machine specific environment variables set in addition to any set using `environment`. Since version 0.11.1 when the interval is not set or set to 0 the the command will run only on transitions.
 
-|Variable              |Description|
-|----------------------|-----------|
-|*MACHINE_WATCHER_NAME*|The *name* of the watcher being run|
-|*MACHINE_NAME*        |The *name* of the machine being run|
-|*PATH*                |Includes the machine directory as last entry|
-|*WATCHER_DATA*        |A path to a temporary file that holds a copy of machine data in JSON format|
-|*WATCHER_FACTS*       |A path to a temporary file that holds a copy of all known facts about a machine in JSON format|
+| Variable               | Description                                                                                    |
+|------------------------|------------------------------------------------------------------------------------------------|
+| *MACHINE_WATCHER_NAME* | The *name* of the watcher being run                                                            |
+| *MACHINE_NAME*         | The *name* of the machine being run                                                            |
+| *PATH*                 | Includes the machine directory as last entry                                                   |
+| *WATCHER_DATA*         | A path to a temporary file that holds a copy of machine data in JSON format                    |
+| *WATCHER_FACTS*        | A path to a temporary file that holds a copy of all known facts about a machine in JSON format |
 
 The command is run with current directory set to the directory where the *machine.yaml* is, when the command exits *0* a *success_transition* fires, when it exits *!0* a *fail_transition* fires. Both cases publish an event announcing the execution.
 
@@ -118,12 +118,12 @@ should be used on thousands of machines maximum rather than 10s of thousands.
 
 ### Properties
 
-|Property|Required|Description|
-|--------|--------|-----------|
-|bucket  |yes     |The name of the bucket to watch|
-|key     |        |Watch a specific key in the bucket|
-|mode    |        |Either *poll* or *watch*|
-|bucket_prefix|   |Store the data in the machine data store with a prefix matching the bucket name, on by default|
+| Property      | Required | Description                                                                                    |
+|---------------|----------|------------------------------------------------------------------------------------------------|
+| bucket        | yes      | The name of the bucket to watch                                                                |
+| key           |          | Watch a specific key in the bucket                                                             |
+| mode          |          | Either *poll* or *watch*                                                                       |
+| bucket_prefix |          | Store the data in the machine data store with a prefix matching the bucket name, on by default |
 
 ### Behavior
 
@@ -146,14 +146,14 @@ The *nagios* watcher executes Nagios compatible plugins and emits transitions `O
 
 ### Properties
 
-|Property                 |Required  |Description|
-|-------------------------|----------|-----------|
-|builtin                  |no        |Builtin check plugin, `heartbeat`, `choria_status` or `goss` are supported now|
-|plugin                   |no        |Full path to the Nagios plugin script and it's arguments|
-|timeout                  |          |How long plugins can run, defaults to 10 seconds. Valid values are of the form 1s, 1m, 1h|
-|annotations              |no        |Additional annotations to apply to a specific check as a `map[string]string` JSON object|
-|gossfile                 |no        |A check specific goss file, else the system wide one is used|
-|last_message             |no        |For the `choria_status` builtin check, how long ago the last RPC message should have been received|
+| Property     | Required | Description                                                                                        |
+|--------------|----------|----------------------------------------------------------------------------------------------------|
+| builtin      | no       | Builtin check plugin, `heartbeat`, `choria_status` or `goss` are supported now                     |
+| plugin       | no       | Full path to the Nagios plugin script and it's arguments                                           |
+| timeout      |          | How long plugins can run, defaults to 10 seconds. Valid values are of the form 1s, 1m, 1h          |
+| annotations  | no       | Additional annotations to apply to a specific check as a `map[string]string` JSON object           |
+| gossfile     | no       | A check specific goss file, else the system wide one is used                                       |
+| last_message | no       | For the `choria_status` builtin check, how long ago the last RPC message should have been received |
 
 When setting the plugin one can load override data from a JSON file defined in `plugin.scout.overrides`:
 
@@ -288,16 +288,16 @@ This watcher requires write access to a `homekit` directory within the machine d
 
 ### Properties
 
-|Property                 |Required |Description|
-|-------------------------|---------|-----------|
-|pin                      |yes      |The pin to enter when adding the button to Home App|
-|serial_number            |         |The serial number to report to Home Kit|
-|model                    |         |The model to report to Home Kit, defaults to `Autonomous Agent`|
-|setup_id                 |         |A Home Kit set up id to report|
-|initial                  |         |The initial state of the button, either `on` or `off`|
-|on_when                  |         |When the machine is in any of these states the button will be reported as `on` to Home Kit|
-|off_when                 |         |When the machine is in any of these states the button will be reported as `off` to Home Kit|
-|disable_when             |         |When the machine is in any of these states the Home Kit integration will shut down and the button will be unreachable|
+| Property      | Required | Description                                                                                                           |
+|---------------|----------|-----------------------------------------------------------------------------------------------------------------------|
+| pin           | yes      | The pin to enter when adding the button to Home App                                                                   |
+| serial_number |          | The serial number to report to Home Kit                                                                               |
+| model         |          | The model to report to Home Kit, defaults to `Autonomous Agent`                                                       |
+| setup_id      |          | A Home Kit set up id to report                                                                                        |
+| initial       |          | The initial state of the button, either `on` or `off`                                                                 |
+| on_when       |          | When the machine is in any of these states the button will be reported as `on` to Home Kit                            |
+| off_when      |          | When the machine is in any of these states the button will be reported as `off` to Home Kit                           |
+| disable_when  |          | When the machine is in any of these states the Home Kit integration will shut down and the button will be unreachable |
 
 ### Behavior
 
@@ -331,10 +331,10 @@ This can be used to create systems like a maintenance window that automatically 
 
 ### Properties
 
-|Property                 |Required                            |Description|
-|-------------------------|------------------------------------|-----------|
-|timer                    |yes                                 |How long the timer should run for, triggers `fail_transition` at the end of the timer|
-|splay                    |no                                  |When true adjusts the timer to a random period between zero and timer (since 0.24.0)|
+| Property | Required | Description                                                                           |
+|----------|----------|---------------------------------------------------------------------------------------|
+| timer    | yes      | How long the timer should run for, triggers `fail_transition` at the end of the timer |
+| splay    | no       | When true adjusts the timer to a random period between zero and timer (since 0.24.0)  |
 
 ### Behavior
 
@@ -356,11 +356,11 @@ The *scheduler* watcher flips between success and fail states based on a set of 
 
 ### Properties
 
-|Property                 |Required                            |Description|
-|-------------------------|------------------------------------|-----------|
-|start_splay              |no                                  |Sleep a random period before initiating the schedule, expressed as a duration like `1m`. Should be no more than half the `duration`|
-|duration                 |yes                                 |How long the scheduler should be in the `success` state once triggered|
-|schedules                |yes                                 |A list of crontab like schedules based on which the `success` transitions will fire|
+| Property    | Required | Description                                                                                                                         |
+|-------------|----------|-------------------------------------------------------------------------------------------------------------------------------------|
+| start_splay | no       | Sleep a random period before initiating the schedule, expressed as a duration like `1m`. Should be no more than half the `duration` |
+| duration    | yes      | How long the scheduler should be in the `success` state once triggered                                                              |
+| schedules   | yes      | A list of crontab like schedules based on which the `success` transitions will fire                                                 |
 
 ### Behavior
 
@@ -393,11 +393,11 @@ The *metric* watcher periodically run a command and publish metrics found in its
 
 ### Properties
 
-|Property                 |Required                            |Description|
-|-------------------------|------------------------------------|-----------|
-|command                  |yes                                 |Path to the command to run to retrieve the metric|
-|interval                 |yes                                 |Go duration for how frequently to gather metrics|
-|labels                   |no                                  |key=value pairs of strings of additional labels to add to gathered metrics|
+| Property | Required | Description                                                                |
+|----------|----------|----------------------------------------------------------------------------|
+| command  | yes      | Path to the command to run to retrieve the metric                          |
+| interval | yes      | Go duration for how frequently to gather metrics                           |
+| labels   | no       | key=value pairs of strings of additional labels to add to gathered metrics |
 
 ### Behaviour
 
@@ -462,3 +462,128 @@ OK: last run 24 minutes ago with 0 failed resources 0 failed events and currentl
 ```
 
 This will produce output as above for metrics `choria_machine_metric_watcher_puppet_time_since_last_run` and so forth.
+
+## Archive watcher
+
+The *archive* watcher downloads, extracts and, optionally, integrety check and remediate `tar.gz` files.
+
+It supports verifying the contents of archives using `SHA256SUM` style files and can also detect tampering with the `SHA25SUM` file. This is most useful when the autonomous agent is compiled into the server binary so the checksums cannot be modified.
+
+It supports coordinating around a [Choria Governor](https://choria.io/docs/streams/governor/) to control concurrent access to the webserver that hosts the archive file.
+
+**NOTE:** Added in version `0.27.1`
+
+### Preparing the Archive
+
+Here we prepare an archive that will be fully verified both the archive checksum and the checksum of all files in the archive as well as the checksum of the `SHA256SUMS` file. If you do not want all the verification but just want to manage a file then simply create a normal archive. 
+
+This supports GZipped Tar files only, we have a typical Choria Autonomous Agent here:
+
+```nohighlight
+metadata
+├── machine.yaml
+├── gather.sh
+└── SHA256SUMS
+```
+
+The `SHA256SUMS` file was made using `find * -type f -print0|xargs -0 sha256sum > SHA256SUMS`.
+
+We tar up this archive and again get another SHA256 for it:
+
+```nohighlight
+$ cd metadata
+$ sha256sum * > SHA256SUMS
+$ cd -
+$ tar -cvzf metadata-machine-1.0.0.tgz metadata
+$ sha256sum metadata-machine-1.0.0.tgz metadata/SHA256SUMS
+f11ea2005de97bf309bafac46e77c01925307a26675f44f388d4502d2b9d00bf  metadata-machine-1.0.0.tgz
+1e85719c6959eb0f2c8f2166e30ae952ccaef2c286f31868ea1d311d3738a339  metadata/SHA256SUMS
+```
+
+Place this file on any webserver of your choice. Note these checksums for later.
+
+### Properties
+
+| Property           | Required | Description                                                                     |
+|--------------------|----------|---------------------------------------------------------------------------------|
+| `checksum`         | no       | A sha256 hex string of the archive being downloaded                             |
+| `creates`          | yes      | The directory the tarball will extract into                                     |
+| `governor`         | no       | The name of a Choria Governor to coordinate concurrency with                    |
+| `governor_timeout` | no       | A duration for the timeout around accessing the governor, defaults to 5 minutes |
+| `username`         | no       | A username for http basic authentication                                        |
+| `password`         | no       | A password for http basic authentication                                        |
+| `source`           | yes      | The url to the archive file                                                     |
+| `target`           | yes      | The target directory the archive will be extracted into                         |
+| `timeout`          | no       | HTTP timeout duration, defaults to 5s                                           |
+| `verify`           | no       | The name of the file inside the archive to use for file checksums               |
+| `verify_checksum`  | no       | The checksum of the file specified by `verify`                                  |
+
+### Behavior
+
+We'll show a bigger example that reads the details of the archive to manage from a Key-Value bucket, lets create the bucket first:
+
+```nohighlight
+$ choria kv add METADATA --replicas 3
+```
+
+Now we put the data from above into the bucket:
+
+```nohighlight
+$ choria kv put METADATA machine \
+'{
+  "source": "https://my.example.net/metadata/metadata-machine-1.0.0.tgz",
+  "checksum": "f11ea2005de97bf309bafac46e77c01925307a26675f44f388d4502d2b9d00bf",
+  "verify_checksum": "1e85719c6959eb0f2c8f2166e30ae952ccaef2c286f31868ea1d311d3738a339"
+}'
+```
+
+The `source` is where to get the file, `checksum` is the SHA256 sum of the `metadata-machine-1.0.0.tgz` and the `verify_checksum` is the SHA256 sum of the `SHA256SUMS` file that's inside `metadata-machine-1.0.0.tgz`
+
+Now we arrange for this data to be placed on each node and subsequent changes to be monitored using the KV Watcher:
+
+```yaml
+watchers:
+  - name: data
+    type: kv
+    interval: 55s
+    state_match: [MANAGE]
+    properties:
+      bucket: METADATA
+      key: machine
+      mode: poll
+      bucket_prefix: false
+```
+
+Finally, we set up our metadata manager to fetch and maintain the metadata gathering Autonomous Agent:
+
+```yaml
+watchers:
+  - name: download
+    state_match: [MANAGE]
+    type: archive
+    interval: 1m
+    properties:
+      source: '{{ lookup "data.machine.source" "" }}'
+      checksum: '{{ lookup "data.machine.checksum" "" }}'
+      verify_checksum: '{{ lookup "data.machine.verify_checksum" "" }}'
+      username: artifacts
+      password: toomanysecrets
+      target: /etc/choria/machines
+      creates: metadata
+      verify: SHA256SUMS
+```
+
+This will:
+
+Every minute
+
+ * Checks that the `/etc/choria/machines/metadata` directory exist
+ * Verify the checksum of `/etc/choria/machines/metadata/SHA256SUMS`
+ * Verify the checksum of every file in `/etc/choria/machines/metadata` using the `SHA256SUMS` file
+ * If verification failed, downloads the file:
+   * Into a temporary directory
+   * Verifies the checksum of the `tar.gz`
+   * Extract it, verifies it makes metadata
+   * Verify every file in it based on `SHA256SUMS` after first verifying `SHA256SUMS` is legit
+   * Remove the existing files in `/etc/choria/machines/metadata`
+   * Replace them with the new files
