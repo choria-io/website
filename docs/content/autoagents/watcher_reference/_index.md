@@ -664,7 +664,7 @@ $ cat machines.json
      "match": "has_command('facter')"
  }
 ]
-$ go run cmd/mms.go pack machines.json d8bd4d6392af154e996a18a4ccd5f51931d8e861d42966a677d85fbb598b66d364031219d4922eed63a5f567303e98607c632139c01bc9fa4ca2514c2d9d30da > spec.json
+$ choria machine mms machines.json machines.seed d8bd4d6392af154e996a18a4ccd5f51931d8e861d42966a677d85fbb598b66d364031219d4922eed63a5f567303e98607c632139c01bc9fa4ca2514c2d9d30da > spec.json
 $ cat spec.json | choria kv put MACHINES machines -
 {"machines":"WwogewogIC....CgnZmFjdGVyJykiCiB9Cl0K","signature":"f06d4a1cfe9ac79d26b5e6646fdfa9d845a5506c9a2fe0a71fb8416f6f7edd253a1eb46363c12ca5f6148b19ab1ed9a5f25c89b09b3360a09b7d054bf4b55204"}
 ```
