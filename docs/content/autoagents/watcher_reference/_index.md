@@ -588,30 +588,32 @@ Every minute
    * Remove the existing files in `/etc/choria/machines/metadata`
    * Replace them with the new files
 
-## Machines watcher
+## Plugins watcher
 
-The *machines* watcher manages the typical `/etc/choria/machines` directory via Choria Key-Value Store and the `archive` watcher.
+The *plugins* watcher manages the typical `/etc/choria/machines` or RPC Lib directory via Choria Key-Value Store and the `archive` watcher.
 
-In effect this allows you to Configuration Manage sets of Autonomous Agents on a fleet where you do not have other Configuration Management tools or where you just want to manage these out of band.
+In effect this allows you to Configuration Manage sets of Autonomous Agents or RPC AGents on a fleet where you do not have other Configuration Management tools or where you just want to manage these out of band.
 
-Deployed autonomous agents are regularly validated and any modification to a managed agent will result in it being removed and re-deployed. Using this systems have been built to deploy Autonomous Agents to 100s of thousands of machines in minutes.
+Deployed plugins are regularly validated and any modification to a managed plugin will result in it being removed and re-deployed. Using this systems have been built to deploy Autonomous Agents to 100s of thousands of machines in minutes.
 
 **NOTE:** Added in version `0.27.1`
 
 ### Properties
 
-| Property                  | Required | Description                                                                                                                                              |
-|---------------------------|----------|----------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `data_item`               | yes      | The data item to fetch from the autonomous agent data, typically set via KV                                                                              |
-| `purge_unknown`           | no       | Removes unknown autonomous agents                                                                                                                        |
-| `machine_manage_interval` | no       | The interval at which machines are regularly managed and unknown ones are purged                                                                         |
-| `public_key`              | no       | ED25519 public key used to sign the specification, when set the specification received will be validated and any invalid specification will be discarded |
+| Property                 | Required | Description                                                                                                                                                                                         |
+|--------------------------|----------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `data_item`              | yes      | The data item to fetch from the plugin data, typically set via KV                                                                                                                                   |
+| `purge_unknown`          | no       | Removes unknown plugins                                                                                                                                                                             |
+| `plugin_manage_interval` | no       | The interval at which plugins are regularly managed and unknown ones are purged                                                                                                                     |
+| `public_key`             | no       | ED25519 public key used to sign the specification, when set the specification received will be validated and any invalid specification will be discarded                                            |
+| `plugins_directory`      | no       | Directory where plugins will be placed, defaults to configured autonomous agent directory                                                                                                           |
+| `manager_machine_prefix` | yes      | Prefix string to place infront of Autonomous Agents that will manage a plugin, for example `mm_acme` will be the agent managing the `acme` plugin, this should construct unique names for your site |
 
 ### Behavior
 
-We'll show a complete example here including how to prepare agents and optionally activate autonomous agent management at compile time in a very secure manner.
+We'll show a complete example here including how to prepare plugins.
 
-#### Autonomous Agent Archives
+#### Plugin Archives
 
 These archives are prepared as per the instructions in the archive watcher with the following hard constraints:
 
@@ -621,7 +623,7 @@ These archives are prepared as per the instructions in the archive watcher with 
 
 #### Configuring
 
-An Autonomous agent must be created that polls the Key-Value store and then configures the `machines` type watcher:
+An Autonomous agent must be created that polls the Key-Value store and then configures the `plugins` type watcher:
 
 ```yaml
 watchers:
@@ -630,21 +632,23 @@ watchers:
     interval: 1m
     state_match: [MANAGE]
     properties:
-       bucket: MACHINES
+       bucket: PLUGINS
        key: machines
        mode: poll
        bucket_prefix: false
     
-  - name: manage_machines
+  - name: manage_plugins
     state_match: [MANAGE]
-    type: machines
+    type: plugins
     interval: 1m
     state_matchin:
       - MANAGE
     properties:
       data_item: machines
       purge_unknown: true
-      machine_manage_interval: 1m
+      plugin_manage_interval: 1m
+      manager_machine_prefix: mm
+      plugins_directory: /etc/choria/machine
       public_key: 64031219d4922eed63a5f567303e98607c632139c01bc9fa4ca2514c2d9d30da
 ```
 
@@ -653,7 +657,7 @@ Here we set an optional public_key, when this is set to a ed25519 public key it 
 The data can now be created:
 
 ```nohighlight
-$ cat machines.json
+$ cat plugins.json
 [
  {
    "name": "facts",
@@ -664,9 +668,9 @@ $ cat machines.json
      "match": "has_command('facter')"
  }
 ]
-$ choria machine mms machines.json machines.seed d8bd4d6392af154e996a18a4ccd5f51931d8e861d42966a677d85fbb598b66d364031219d4922eed63a5f567303e98607c632139c01bc9fa4ca2514c2d9d30da > spec.json
-$ cat spec.json | choria kv put MACHINES machines -
-{"machines":"WwogewogIC....CgnZmFjdGVyJykiCiB9Cl0K","signature":"f06d4a1cfe9ac79d26b5e6646fdfa9d845a5506c9a2fe0a71fb8416f6f7edd253a1eb46363c12ca5f6148b19ab1ed9a5f25c89b09b3360a09b7d054bf4b55204"}
+$ choria machine plugins pack plugins.json plugins.seed d8bd4d6392af154e996a18a4ccd5f51931d8e861d42966a677d85fbb598b66d364031219d4922eed63a5f567303e98607c632139c01bc9fa4ca2514c2d9d30da > spec.json
+$ cat spec.json | choria kv put PLUGINS machines -
+{"plugins":"WwogewogIC....CgnZmFjdGVyJykiCiB9Cl0K","signature":"f06d4a1cfe9ac79d26b5e6646fdfa9d845a5506c9a2fe0a71fb8416f6f7edd253a1eb46363c12ca5f6148b19ab1ed9a5f25c89b09b3360a09b7d054bf4b55204"}
 ```
 
 #### Match Expressions
@@ -682,39 +686,3 @@ Note the `has_command('facter')` for the matcher key, this is a small [expr](htt
 
 The expression format is the typical used by Choria for example a match might be `identity('^web') && has_command('facter')`
 would do pretty much the right thing.
-
-#### Compiling Autonomous Agents into Choria
-
-If you're really paranoid or strict you would compile the above autonomous agent into Choria and use it to bootstrap others in a trusted manner from a trusted source allowing just the properties you want to be adjusted via Key-Value Store.
-
-In this mode you can even forgo the entire Key-Value integration and compile urls and all checksums right into the binary
-for the truly paranoid.
-
-```go
-package metamgr
-
-import (
-	"github.com/choria-io/go-choria/aagent/machine"
-	"github.com/choria-io/go-choria/aagent/plugin"
-)
-
-func ChoriaPlugin() *plugin.MachinePlugin {
-	return plugin.NewMachinePlugin("metamgr", &machine.Machine{
-		MachineName: "metamgr",
-		InitialState: "MANAGE",
-		// rest of the autonomous agent
-    })
-}
-```
-
-You can now include this file in the `user_plugins.yaml` and it will be compiled in, see below example.  This way you have
-an unmodifiable way to bootstrap a trusted set of Autonomous Agents onto new servers without needing Configuration Management
-
-We include a basic [manager autonomous agent](https://github.com/choria-io/go-choria/tree/main/aagent/watchers/machineswatcher/manager) that you can use rather than craft your own, but activating this will require a custom Choria build.
-
-```yaml
-# packager/user_plugins.yaml
-machines_manager: github.com/choria-io/go-choria/aagent/watchers/machineswatcher/manager
-```
-
-Do `go generate` and recompile, this will include the watcher.
