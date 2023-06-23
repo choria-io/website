@@ -236,7 +236,7 @@ You can also access these 2 file paths in the _MCOLLECTIVE_REPLY_FILE_ and _MCOL
 
 Simply write your reply as a JSON hash into the reply file.
 
-The exit code of your script should correspond to the ones in [ResultsandExceptions](https://choria.io/docs/development/mcorpc/clients/index.html#results-and-exceptions).  Any text in STDERR will be
+The exit code of your script should correspond to the ones in [Results and Exceptions](https://choria.io/docs/development/mcorpc/clients/index.html#results-and-exceptions).  Any text in STDERR will be
 logged on the server at _error_ level and used in the text for the fail text.
 
 Any text to STDOUT will be logged on the server at level _info_.
