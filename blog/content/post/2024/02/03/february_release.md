@@ -27,13 +27,13 @@ In the end we will still support a Puppet deployment method but it will become m
 a small part of the overall heavy lifting using Puppet. We will also unlock full featured environments backed by 
 Kubernetes and other hosting environments.
 
-Thanks to Jeff McCune, Pieter Loubser, Trey Dockendorf, Ryan Dill, Mark Dechiaro, Romain Tartière
+Thanks to Jeff McCune, Pieter Loubser, Trey Dockendorf, Ryan Dill, Mark Dechiaro and Romain Tartière, Vincent Janelle for 
+their support in making these releases possible.
 
 <!--more-->
 ## [Choria Server version 0.28.0](https://github.com/choria-io/go-choria)
 
-Links: [Changes](https://github.com/choria-io/go-choria/compare/v0.27.0...v0.28.0), [Release](https://github.
-com/choria-io/go-choria/releases/tag/v0.28.0)
+Links: [Changes](https://github.com/choria-io/go-choria/compare/v0.27.0...v0.28.0), [Release](https://github.com/choria-io/go-choria/releases/tag/v0.28.0)
 
 ## Enhancements
 
@@ -105,9 +105,17 @@ Links: [Changes](https://github.com/choria-plugins/filemgr-agent/compare/2.0.1..
 
 * Support Ruby 3.2
 
-## [choria/choria version 0.30.2](https://forge.puppet.com/choria/choria)
+## [choria/mcollective_agent_package version 5.4.1](https://forge.puppet.com/choria/mcollective_agent_filemgr)
 
-Links: [Changes](https://github.com/choria-io/puppet-choria/compare/0.30.1...0.30.2), [Release](https://forge.puppet.com/choria/puppet-choria/0.30.2/readme)
+Links: [Changes](https://github.com/choria-plugins/package-agent/compare/5.3.0...5.4.1), [Release](https://forge.puppet.com/choria/mcollective_agent_package/5.4.1/readme)
+
+### Enhancements
+
+* Support Ruby 3.2
+
+## [choria/choria version 0.30.3](https://forge.puppet.com/choria/choria)
+
+Links: [Changes](https://github.com/choria-io/puppet-choria/compare/0.30.1...0.30.3), [Release](https://forge.puppet.com/choria/puppet-choria/0.30.3/readme)
 
 * Use modern APT keyrings on Debian family
 * Ensure tasks from non-production environments actually work
