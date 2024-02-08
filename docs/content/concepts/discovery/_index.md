@@ -182,19 +182,20 @@ $ choria discovery -S '(with("customer=acme") && with("environment=staging")) ||
 
 Within the expressions we have defined some variables:
 
-|Variable|Description|
-|--------|-----------|
-|`agents`|List of known agents|
-|`classes`|List of classes this machine belongs to|
-|`facts`|Facts for the machine as raw JSON|
+| Variable  | Description                             |
+|-----------|-----------------------------------------|
+| `agents`  | List of known agents                    |
+| `classes` | List of classes this machine belongs to |
+| `facts`   | Facts for the machine as raw JSON       |
 
 And we made a few functions available:
 
-|Function|Description|
-|--------|-----------|
-|`with`  |Equivalent of a `-W` filter - class and fact matches combined with regular expression support|
-|`fact`  |Retrieves a fact from the nested fact data using [GJSON path syntax](https://github.com/tidwall/gjson/blob/master/SYNTAX.md)|
-|`include`|Checks if an array includes a specific element|
+| Function  | Description                                                                                                                  |
+|-----------|------------------------------------------------------------------------------------------------------------------------------|
+| `with`    | Equivalent of a `-W` filter - class and fact matches combined with regular expression support                                |
+| `fact`    | Retrieves a fact from the nested fact data using [GJSON path syntax](https://github.com/tidwall/gjson/blob/master/SYNTAX.md) |
+| `include` | Checks if an array includes a specific element                                                                               |
+| `semver`  | Performs semver version matching (since 0.26.0)                                                                              |
 
 We can go really deep as here:
 
@@ -204,7 +205,8 @@ with('apache') and                              # class or agent 'apache'
   with('fnumber=1.2') and                       # fact fnumber with a float value equals 1.2
   fact('nested.string') matches('h.llo') and    # lookup a fact 'nested.string' and regex match it with 'h.llo'
   include(fact('sarray'), '1') and              # check if the 'sarray' fact - a array of strings - include a value '1'
-  include(fact('iarray'), 1)                    # check if the 'iarray' fact - a array of ints - include a value 1
+  include(fact('iarray'), 1) and                # check if the 'iarray' fact - a array of ints - include a value 1
+  semver(fact('facterversion'), '>= 4.0.0')     # matches the version of facter to 
 ```
 
 Here the *include* command is a basic function to check if an array contains something and *fact()* just looks up a fact using GJSON.
