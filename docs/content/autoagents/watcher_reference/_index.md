@@ -673,6 +673,8 @@ $ cat spec.json | choria kv put PLUGINS machines -
 {"plugins":"WwogewogIC....CgnZmFjdGVyJykiCiB9Cl0K","signature":"f06d4a1cfe9ac79d26b5e6646fdfa9d845a5506c9a2fe0a71fb8416f6f7edd253a1eb46363c12ca5f6148b19ab1ed9a5f25c89b09b3360a09b7d054bf4b55204"}
 ```
 
+Since Choria `0.29.0` the `choria machine plugins` command has helpers to manage the `machines.json`, pack it into `spec.json` and validate them.
+
 #### Match Expressions
 
 Note the `has_command('facter')` for the matcher key, this is a small [expr](https://github.com/antonmedv/expr) expression that is run on the node to determine if a specific machine should go on a node. The Key-Value is for the entire connected DC so in order to allow heterogeneous environments machines that should not go on the entire fleet can be limited using matchers.
@@ -686,3 +688,53 @@ Note the `has_command('facter')` for the matcher key, this is a small [expr](htt
 
 The expression format is the typical used by Choria for example a match might be `identity('^web') && has_command('facter')`
 would do pretty much the right thing.
+
+Since Choria `0.29.0` Choria has a Autonomous Agent built in - but disabled by default - that uses this watcher to load plugins into a standard build of Choria, to configure it set these values:
+
+```ini
+plugin.machines.download = 1
+plugin.machines.bucket = CHORIA_MACHINES # the default value
+plugin.machines.key = plugins            # the default value
+plugin.machines.purge = 1                # the default value
+plugin.machines.poll_interval = 1m       # the default interval for checking the bucket
+plugin.machines.check_interval = 30s     # the default value for validating deployed plugins
+plugin.machines.signing_key = ba5bcd9a383f6704eec298dd691d9859d2a312fb5b9afc0b617c2b8b24b9804
+```
+
+Using this Choria managed by the Choria Provisioner can bootstrap plugins and agents into itself without Configuration Management tools.
+
+#### Compiling Autonomous Agents into Choria
+
+If you're really paranoid or strict you would compile the above autonomous agent into Choria and use it to bootstrap others in a trusted manner from a trusted source allowing just the properties you want to be adjusted via Key-Value Store.
+
+In this mode you can even forgo the entire Key-Value integration and compile urls and all checksums right into the binary
+for the truly paranoid.
+
+```go
+package metamgr
+
+import (
+	"github.com/choria-io/go-choria/aagent/machine"
+	"github.com/choria-io/go-choria/aagent/plugin"
+)
+
+func ChoriaPlugin() *plugin.MachinePlugin {
+	return plugin.NewMachinePlugin("metamgr", &machine.Machine{
+		MachineName: "metamgr",
+		InitialState: "MANAGE",
+		// rest of the autonomous agent
+    })
+}
+```
+
+You can now include this file in the `user_plugins.yaml` and it will be compiled in, see below example.  This way you have
+an unmodifiable way to bootstrap a trusted set of Autonomous Agents onto new servers without needing Configuration Management
+
+We include a basic [manager autonomous agent](https://github.com/choria-io/go-choria/tree/main/aagent/watchers/machineswatcher/manager) that you can use rather than craft your own, but activating this will require a custom Choria build.
+
+```yaml
+# packager/user_plugins.yaml
+machines_manager: github.com/choria-io/go-choria/aagent/watchers/machineswatcher/manager
+```
+
+Do `go generate` and recompile, this will include the watcher.
