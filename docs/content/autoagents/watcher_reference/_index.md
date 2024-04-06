@@ -398,6 +398,7 @@ The *metric* watcher periodically run a command and publish metrics found in its
 | command         | yes      | Path to the command to run to retrieve the metric                          |
 | interval        | yes      | Go duration for how frequently to gather metrics                           |
 | labels          | no       | key=value pairs of strings of additional labels to add to gathered metrics |
+| store           | no       | Stores the metric to the Machine Data                                      |
 | graphite_host   | no       | Graphite host to send metrics to                                           |
 | graphite_port   | no       | Graphite port to send metrics to                                           |
 | graphite_prefix | no       | Prefix to apply to Graphite metrics                                        |
@@ -411,6 +412,8 @@ If you're writing your own gathering scripts we suggest the Choria format.
 The watcher will at `interval` run the `command` and create Prometheus data. The labels from the specific output is augmented by `labels`, the `labels` given here will override those from the `command`.
 
 Since version `0.29.0` when `graphite_host` and `graphite_port` are set metrics will be sent to Graphite, the default prefix is `choria.machine_name`.
+
+Since version `0.29.0` when `store` is true the metric will be stored to the local machine data.
 
 ### Choria Metric Format
 
