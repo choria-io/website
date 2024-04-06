@@ -393,11 +393,14 @@ The *metric* watcher periodically run a command and publish metrics found in its
 
 ### Properties
 
-| Property | Required | Description                                                                |
-|----------|----------|----------------------------------------------------------------------------|
-| command  | yes      | Path to the command to run to retrieve the metric                          |
-| interval | yes      | Go duration for how frequently to gather metrics                           |
-| labels   | no       | key=value pairs of strings of additional labels to add to gathered metrics |
+| Property        | Required | Description                                                                |
+|-----------------|----------|----------------------------------------------------------------------------|
+| command         | yes      | Path to the command to run to retrieve the metric                          |
+| interval        | yes      | Go duration for how frequently to gather metrics                           |
+| labels          | no       | key=value pairs of strings of additional labels to add to gathered metrics |
+| graphite_host   | no       | Graphite host to send metrics to                                           |
+| graphite_port   | no       | Graphite port to send metrics to                                           |
+| graphite_prefix | no       | Prefix to apply to Graphite metrics                                        |
 
 ### Behaviour
 
@@ -406,6 +409,8 @@ The plugin supports 2 data formats, one Choria specific one and the commonly use
 If you're writing your own gathering scripts we suggest the Choria format.
 
 The watcher will at `interval` run the `command` and create Prometheus data. The labels from the specific output is augmented by `labels`, the `labels` given here will override those from the `command`.
+
+Since version `0.29.0` when `graphite_host` and `graphite_port` are set metrics will be sent to Graphite, the default prefix is `choria.machine_name`.
 
 ### Choria Metric Format
 
