@@ -293,7 +293,7 @@ The `expression` watcher performs `expr-lang` expressions over data and facts. B
 | success_when |          | An expression that when it returns `true` will fire the `success_transition` |
 | fail_when    |          | An expression that when it returns `true` will fire the `fail_transition`    |
 
-## Behaviour
+### Behaviour
 
 Based on the `interval` the watcher will run first the `success_when` and then the `fail_when` expression.  The first to return a `true` value will trigger a transition.
 
