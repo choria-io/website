@@ -280,6 +280,27 @@ watchers:
 
 Checks can be stopped using `mco rpc choria_util machine_transition name=check_httpd transition=MAINTENANCE` and resumed using by passing `transition=RESUME` instead.
 
+## Expression watcher
+
+The `expression` watcher performs `expr-lang` expressions over data and facts. Based on the outcome of these expressions transitions can be triggered.
+
+**NOTE:** Added in version `0.29.0`
+
+### Properties
+
+| Property     | Required | Description                                                                  |
+|--------------|----------|------------------------------------------------------------------------------|
+| success_when |          | An expression that when it returns `true` will fire the `success_transition` |
+| fail_when    |          | An expression that when it returns `true` will fire the `fail_transition`    |
+
+## Behaviour
+
+Based on the `interval` the watcher will run first the `success_when` and then the `fail_when` expression.  The first to return a `true` value will trigger a transition.
+
+Each expression must be boolean in nature, for example: `data.temp != nil && data.temp < 20`. The environment the expression runs in will have `data`, `facts` and `identity` available to perform expressions against. As in this example it is important to guide against nil in the `data` and `facts` since those are nil at initial start of the machine. 
+
+The typical use case would combine with the `metrics`, `kv` or `exec` whatchers that can create data while this would look over that data and trigger changes based on values.
+
 ## Home Kit watcher
 
 The `homekit` watcher creates an Apple Home Kit Button resource that can be activated from iOS devices and Siri. When the button is pressed on a `success_transition` is fired and when off a `fail_transition`.
@@ -399,6 +420,7 @@ The *metric* watcher periodically run a command and publish metrics found in its
 | interval        | yes      | Go duration for how frequently to gather metrics                           |
 | labels          | no       | key=value pairs of strings of additional labels to add to gathered metrics |
 | store           | no       | Stores the metric to the Machine Data                                      |
+| skip_prometheus | no       | Disables publishing metrics to Prometheus                                  |
 | graphite_host   | no       | Graphite host to send metrics to                                           |
 | graphite_port   | no       | Graphite port to send metrics to                                           |
 | graphite_prefix | no       | Prefix to apply to Graphite metrics                                        |
@@ -412,8 +434,8 @@ If you're writing your own gathering scripts we suggest the Choria format.
 The watcher will at `interval` run the `command` and create Prometheus data. The labels from the specific output is augmented by `labels`, the `labels` given here will override those from the `command`.
 
 Since version `0.29.0` when `graphite_host` and `graphite_port` are set metrics will be sent to Graphite, the default prefix is `choria.machine_name`.
-
 Since version `0.29.0` when `store` is true the metric will be stored to the local machine data.
+Since version `0.29.0` when `skip_prometheus` is true no Prometheus metrics will be published by this watcher even if generally enabled.
 
 ### Choria Metric Format
 
