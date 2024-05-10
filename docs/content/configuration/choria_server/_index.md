@@ -63,9 +63,9 @@ The server has lots of configuration options which can be specified by the `chor
 classesfile: "/opt/puppetlabs/puppet/cache/state/classes.txt"
   rpcaudit: 1
   plugin.rpcaudit.logfile: "/var/log/choria-audit.log"
-  plugin.yaml: "/etc/puppetlabs/mcollective/generated-facts.yaml"
+  plugin.yaml: "/etc/choria/generated-facts.yaml"
   plugin.choria.agent_provider.mcorpc.agent_shim: "/usr/bin/choria_mcollective_agent_compat.rb"
-  plugin.choria.agent_provider.mcorpc.config: "/etc/puppetlabs/mcollective/choria-shim.cfg"
+  plugin.choria.agent_provider.mcorpc.config: "/etc/choria/choria-shim.cfg"
   plugin.choria.agent_provider.mcorpc.libdir: "/opt/puppetlabs/mcollective/plugins"
   plugin.choria.middleware_hosts: "nats1.example.net:4222"
 ```
