@@ -377,11 +377,12 @@ The *scheduler* watcher flips between success and fail states based on a set of 
 
 ### Properties
 
-| Property    | Required | Description                                                                                                                         |
-|-------------|----------|-------------------------------------------------------------------------------------------------------------------------------------|
-| start_splay | no       | Sleep a random period before initiating the schedule, expressed as a duration like `1m`. Should be no more than half the `duration` |
-| duration    | yes      | How long the scheduler should be in the `success` state once triggered                                                              |
-| schedules   | yes      | A list of crontab like schedules based on which the `success` transitions will fire                                                 |
+| Property                | Required | Description                                                                                                                         |
+|-------------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------|
+| start_splay             | no       | Sleep a random period before initiating the schedule, expressed as a duration like `1m`. Should be no more than half the `duration` |
+| duration                | yes      | How long the scheduler should be in the `success` state once triggered                                                              |
+| schedules               | yes      | A list of crontab like schedules based on which the `success` transitions will fire                                                 |
+| skip_trigger_on_reenter | no       | Skips triggering `success` when changing between 2 states that are both active in the scheduler                                     | 
 
 ### Behavior
 
