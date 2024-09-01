@@ -26,7 +26,7 @@ Installing from these native system packages is something from a past era, and i
 Also, the custom layout we used prevented users from using the latest version of a plugin by pointing r10k to the git repository of the module.
 
 For these reasons, we reworked the layout of the plugins so that they all use the standard structure of puppet modules.
-It should not change anything for most users as modules on the Puppet forge are the same as before, and we have not been shipping .deb and .rpm modules anymore for a long time (XXX: is that true?).
+It should not change anything for most users as modules on the Puppet forge are the same as before, and we have not been shipping .deb and .rpm modules anymore for a long time.
 If you ever wanted to use the latest code of a module and got frustrated by the pain it was to do so, just be aware that now you can do this the way you do it with other modules.
 
 We hope this change will help users and contributors to iterate more quickly on new features development and bug fixes.
