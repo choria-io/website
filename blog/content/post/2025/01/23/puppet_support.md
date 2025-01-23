@@ -7,14 +7,17 @@ draft: false
 
 There has been a significant change in the Open Source landscape of Puppet in recent months, I will not go too much into
 the details but suffice to say that Perforce (Puppet trademark owner) have essentially created a private closed-source
-fork of Puppet and from now on if you get "puppet" packages they are this rogue anti-community closed source fork.
+fork of Puppet and from now on if you get "puppet" packages they are this rogue closed source fork. 
+
+Updates to the closed source fork will not automatically be done to the community repositories, there's is no undertaking 
+that the updates, when they are made, will be complete or reflect what is in the private fork.
 
 Some relevant blog posts:
 
  * [Our Plans for Open Source Puppet in 2025](https://www.puppet.com/blog/open-source-puppet-updates-2025)
  * [It was only a matter of time](https://overlookinfratech.com/2024/11/08/sequestered-source/)
 
-At this point, any official Puppet release is a high-risk, closed source fork, I do not suggest anyone keep using these
+At this point, any Perforce Puppet release is a high-risk, closed source fork, I do not suggest anyone keep using these
 packages as you are essentially running closed source disguised as Open Source. You will not be able to see git history
 of what you are running, you will not be able to see build tooling or related infrastructure.
 
@@ -31,8 +34,8 @@ Some relevant blog posts:
 Going forward there will be no way to test Choria against the rogue fork of Puppet that Perforce maintains without signing
 an EULA (as yet unseen by anyone). There will also be limits to how many open source servers one may manage (25).
 
-As such, Choria will not continue to support Puppet as released by Perforce and will take steps in future releases to require
-Open Vox.
+As such, Choria will not continue to support the rogue fork of Puppet that Perforce maintains and will take steps in future 
+releases to require Open Vox.
 
 Read on for some timelines and release details.
 
