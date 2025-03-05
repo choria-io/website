@@ -137,6 +137,26 @@ watchers:
         command: monitor.sh
 ```
 
+## Subscribing to events from other agents
+
+While not used in this example it is possible for a transition to subscribe to another autonomous agent.
+
+{{% notice secondary "Version Hint" code-branch %}}
+This requires Choria 0.30.0 or newer
+{{% /notice %}}
+
+````yaml
+transitions:
+  - name: air_bad
+    from: [idle, running]
+    destination: running
+    subscribe:
+      - machine_name: humidity_sensor
+        event: critical
+````
+
+Here the `air_bad` event will fire when the `humidity_sensor` autonomous agent fires its `critical` event.
+
 ## Validating
 
 You can validate the *machine.yaml* by running *choria machine validate hvac* where *hvac* is the directory with your machine.
