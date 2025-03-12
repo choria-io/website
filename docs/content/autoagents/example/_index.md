@@ -157,6 +157,23 @@ transitions:
 
 Here the `air_bad` event will fire when the `humidity_sensor` autonomous agent fires its `critical` event.
 
+Additionally a watcher can elect to only run when one or more, local to the node, foreign machines are in a specific state,
+for the watcher to execute the script the entire list of `foreign_state_required` all have to be true:
+
+```yaml
+  - name: monitor
+    type: exec
+    state_match: [idle, running]
+    foreign_state_required:
+      - machine_name: humidity_sensor
+        state: healthy
+    success_transition: air_good
+    fail_transition: air_bad
+    interval: "1m"
+    properties:
+        command: monitor.sh
+```
+
 ## Validating
 
 You can validate the *machine.yaml* by running *choria machine validate hvac* where *hvac* is the directory with your machine.
