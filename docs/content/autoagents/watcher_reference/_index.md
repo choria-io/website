@@ -496,9 +496,9 @@ This will produce output as above for metrics `choria_machine_metric_watcher_pup
 
 ## Archive watcher
 
-The *archive* watcher downloads, extracts and, optionally, integrety check and remediate `tar.gz` files.
+The *archive* watcher downloads, extracts and, optionally, integrity check and remediate `tar.gz` files.
 
-It supports verifying the contents of archives using `SHA256SUM` style files and can also detect tampering with the `SHA25SUM` file. This is most useful when the autonomous agent is compiled into the server binary so the checksums cannot be modified.
+It supports verifying the contents of archives using `SHA256SUM` style files and can also detect tampering with the `SHA25SUM` file.
 
 It supports coordinating around a [Choria Governor](https://choria.io/docs/streams/governor/) to control concurrent access to the webserver that hosts the archive file.
 
@@ -724,7 +724,7 @@ Since Choria `0.29.0` Choria has a Autonomous Agent built in - but disabled by d
 
 ```ini
 plugin.machines.download = 1
-plugin.machines.bucket = CHORIA_MACHINES # the default value
+plugin.machines.bucket = CHORIA_PLUGINS  # the default value
 plugin.machines.key = plugins            # the default value
 plugin.machines.purge = 1                # the default value
 plugin.machines.poll_interval = 1m       # the default interval for checking the bucket
