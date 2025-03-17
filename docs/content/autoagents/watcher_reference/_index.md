@@ -12,16 +12,17 @@ A [JSON schema](https://choria.io/schemas/choria/machine/v1/manifest.json) descr
 
 All watchers share a common set of properties detailed below, watcher specific properties are always in the *properties* key:
 
-| Property           | Required | Description                                                                                           |
-|--------------------|----------|-------------------------------------------------------------------------------------------------------|
-| name               | yes      | A unique name for the watcher                                                                         |
-| type               | yes      | A known type of watcher like *file* or *exec*                                                         |
-| state_match        | no       | A list of state names where this watcher is valid for                                                 |
-| fail_transition    | no       | If set this event fires on failure                                                                    |
-| success_transition | no       | If set this event fires on success                                                                    |
-| interval           | no       | Runs the watcher every interval, valid intervals are of the form *1s*, *1m*, *1h*                     |
-| announce_interval  | no       | Announce the current state of the watcher regularly, valid intervals are of the form *1s*, *1m*, *1h* |
-| properties         | yes      | Watcher specific settings                                                                             |
+| Property               | Required | Description                                                                                           |
+|------------------------|----------|-------------------------------------------------------------------------------------------------------|
+| name                   | yes      | A unique name for the watcher                                                                         |
+| type                   | yes      | A known type of watcher like *file* or *exec*                                                         |
+| state_match            | no       | A list of state names where this watcher is valid for                                                 |
+| foreign_state_required | no       | Requires foreign autonomous agents be in a specific state (since 0.30.0)                              |
+| fail_transition        | no       | If set this event fires on failure                                                                    |
+| success_transition     | no       | If set this event fires on success                                                                    |
+| interval               | no       | Runs the watcher every interval, valid intervals are of the form *1s*, *1m*, *1h*                     |
+| announce_interval      | no       | Announce the current state of the watcher regularly, valid intervals are of the form *1s*, *1m*, *1h* |
+| properties             | yes      | Watcher specific settings                                                                             |
 
 ## File watcher
 
@@ -713,6 +714,7 @@ Note the `has_command('facter')` for the matcher key, this is a small [expr](htt
 | Function      | Description                                                                      |
 |---------------|----------------------------------------------------------------------------------|
 | identity      | Regular expression match over the machine identity                               |
+| facts         | The facts known to this instance (since 0.30.0)                                  |
 | has_file      | Determines if a regular file is present on the machine                           |
 | has_directory | Determines if a directory is present on the machine                              |
 | has_command   | Searches `PATH` for a command, note the `PATH` choria runs with is quite limited |
