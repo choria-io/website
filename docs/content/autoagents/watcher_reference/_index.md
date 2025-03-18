@@ -298,9 +298,9 @@ The `expression` watcher performs `expr-lang` expressions over data and facts. B
 
 Based on the `interval` the watcher will run first the `success_when` and then the `fail_when` expression.  The first to return a `true` value will trigger a transition.
 
-Each expression must be boolean in nature, for example: `data.temp != nil && data.temp < 20`. The environment the expression runs in will have `data`, `facts` and `identity` available to perform expressions against. As in this example it is important to guide against nil in the `data` and `facts` since those are nil at initial start of the machine. 
+Each expression must be boolean in nature, for example: `data.temp != nil && data.temp < 20`. The environment the expression runs in will have `data`, `facts`, `get_fact` (using gjson query) and `identity` available to perform expressions against. As in this example it is important to guide against nil in the `data` and `facts` since those are nil at initial start of the machine. 
 
-The typical use case would combine with the `metrics`, `kv` or `exec` whatchers that can create data while this would look over that data and trigger changes based on values.
+The typical use case would combine with the `metrics`, `kv` or `exec` watchers that can create data while this would look over that data and trigger changes based on values.
 
 ## Home Kit watcher
 
@@ -714,12 +714,12 @@ Note the `has_command('facter')` for the matcher key, this is a small [expr](htt
 | Function      | Description                                                                      |
 |---------------|----------------------------------------------------------------------------------|
 | identity      | Regular expression match over the machine identity                               |
-| facts         | The facts known to this instance (since 0.30.0)                                  |
+| get_fact      | Retrieves a fact using gjson expression, nil if not found (since 0.30.0)         |
 | has_file      | Determines if a regular file is present on the machine                           |
 | has_directory | Determines if a directory is present on the machine                              |
 | has_command   | Searches `PATH` for a command, note the `PATH` choria runs with is quite limited |
 
-The expression format is the typical used by Choria for example a match might be `identity('^web') && has_command('facter')`
+The expression format is the typical used by Choria for example a match might be `identity('^web') && has_command('facter') && get_fact('bios.vendor') == 'SeaBIOS'`
 would do pretty much the right thing.
 
 Since Choria `0.29.0` Choria has a Autonomous Agent built in - but disabled by default - that uses this watcher to load plugins into a standard build of Choria, to configure it set these values:
