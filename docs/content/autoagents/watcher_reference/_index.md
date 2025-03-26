@@ -34,8 +34,14 @@ The *file* watcher observes a specific file for changes and presence. Today only
 |----------------------|----------|--------------------------------------------------------------------------------------------------------------|
 | path                 | yes      | The path to the file to watch relative to the watcher manifest directory                                     |
 | gather_initial_state |          | Gathers the initial file mode, stats etc for regular announces but only perform first watch after *interval* |
+| content              |          | Place specific content into the file, supports template parsing and data lookup                              |
+| owner                |          | Who should own the file when managing content                                                                |
+| group                |          | What group should own the file when managing content                                                         |
+| mode                 |          | A file mode to apply when managing content, must be a string like `"0700"`                                   |
 
 ### Behavior
+
+#### Change detection only
 
 A file watcher will at *interval* times do an *mtime* check on the file.
 
@@ -44,6 +50,13 @@ If the file is missing a *fail_transition* event fires and an announcement is ma
 If the file has changed since the previous run a *success_transition* event fires and an announcement is made. This means the first check would set the initial state after which changes are detected.  You could by setting *gather_initial_state* have the system gather initial file state on startup so the first regular watch would detect a change.
 
 If the file has not changed nothing is published on every check, however a regular state announce can be done by setting *announce_interval*.
+
+#### Content management
+
+Since version `0.30.0` when the `content`, `owner`, `group` and `mode` values are set the content of the file will be managed and any changes will trigger change events.
+
+All these keys support templates.
+
 
 ## Exec watcher
 
