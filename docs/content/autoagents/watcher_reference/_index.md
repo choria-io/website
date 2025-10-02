@@ -98,11 +98,11 @@ Will look up the fact `location` within the Choria Server facts using `DEFAULT` 
 Additional to the `lookup` function we also have `Title` (Title Case A String), `Capitalize` (Same as Title), `ToLower`, `ToUpper`, `StringJoin` (comma joins a list of strings), `Base64Encode` and `Base64Decode`.
 
 These templates are expanded every time the data is needed so if you reference machine data you can make it dynamic - every time a command,
-governor etc is needed the template is newly expanded.
+governor, etc is needed the template is newly expanded.
 
 ### Behavior
 
-An exec watcher will at *interval* times run the command specified with a few machine specific environment variables set in addition to any set using `environment`. Since version 0.11.1 when the interval is not set or set to 0 the the command will run only on transitions.
+An exec watcher will at *interval* times run the command specified with a few machine specific environment variables set in addition to any set using `environment`. When the interval is not set or set to 0 the the command will run only on transitions.
 
 | Variable               | Description                                                                                    |
 |------------------------|------------------------------------------------------------------------------------------------|
@@ -132,12 +132,13 @@ should be used on thousands of machines maximum rather than 10s of thousands.
 
 ### Properties
 
-| Property      | Required | Description                                                                                    |
-|---------------|----------|------------------------------------------------------------------------------------------------|
-| bucket        | yes      | The name of the bucket to watch                                                                |
-| key           |          | Watch a specific key in the bucket                                                             |
-| mode          |          | Either *poll* or *watch*                                                                       |
-| bucket_prefix |          | Store the data in the machine data store with a prefix matching the bucket name, on by default |
+| Property          | Required | Description                                                                                    |
+|-------------------|----------|------------------------------------------------------------------------------------------------|
+| bucket            | yes      | The name of the bucket to watch                                                                |
+| key               |          | Watch a specific key in the bucket                                                             |
+| mode              |          | Either *poll* or *watch*                                                                       |
+| bucket_prefix     |          | Store the data in the machine data store with a prefix matching the bucket name, on by default |
+| republish_trigger |          | Trigger a KV update based on a Stream Republish                                                |
 
 ### Behavior
 
@@ -149,10 +150,27 @@ If *bucket_prefix* is true (the default), the data will be stored like *BUCKET_K
 The *fail_transition* is called for any Key-Value retrieval failure, *success_transition* on any data change - including
 if a watched key is deleted.
 
-As of version `0.24.0` data that appears to be JSON data will be parsed and stored as generically parsed data. This means
-data lookups against any nested JSON data found in a key will work correctly.
+Data that appears to be JSON data will be parsed and stored as generically parsed data. This means data lookups against
+any nested JSON data found in a key will work correctly.
 
 It does not announce state regularly or on state changes.
+
+## Republish trigger
+
+As of version `0.30.0` the `republish_trigger` property is supported that can listen to Stream republished messages and trigger a KV update.
+This can be used to instantly trigger all KV watchers without waiting for the polling interval. This is done on a best efforts basis so the
+regular pull will act as a backup should the broadcast be missed.
+
+To configure `republish_trigger` the following Stream configuration change is needed:
+
+```nohighlight
+$ choria broker s edit KV_BUCKET --republish-source '$KV.BUCKET.>' --republish-destination 'choria.republish.KV.BUCKET.>'
+```
+
+You would set the `republish_trigger` property on the watcher to `choria.republish.KV.BUCKET.key` when watching `key` in a KV bucket called `BUCKET`.
+The `choria` part in the subject must match the Organisation the servers run in.
+
+When using JWT authentication the `choria.republish.>` subjects is very restricted; no user or server can publish to it, so it is safe to injections.  Only the `OrgAdmin` user and the Streams subsystem itself could publish to these subjects.
 
 ## Nagios watcher
 
@@ -516,8 +534,6 @@ It supports verifying the contents of archives using `SHA256SUM` style files and
 
 It supports coordinating around a [Choria Governor](https://choria.io/docs/streams/governor/) to control concurrent access to the webserver that hosts the archive file.
 
-**NOTE:** Added in version `0.27.1`
-
 ### Preparing the Archive
 
 Here we prepare an archive that will be fully verified both the archive checksum and the checksum of all files in the archive as well as the checksum of the `SHA256SUMS` file. If you do not want all the verification but just want to manage a file then simply create a normal archive. 
@@ -640,8 +656,6 @@ The *plugins* watcher manages the typical `/etc/choria/machines` or RPC Lib dire
 In effect this allows you to Configuration Manage sets of Autonomous Agents or RPC AGents on a fleet where you do not have other Configuration Management tools or where you just want to manage these out of band.
 
 Deployed plugins are regularly validated and any modification to a managed plugin will result in it being removed and re-deployed. Using this systems have been built to deploy Autonomous Agents to 100s of thousands of machines in minutes.
-
-**NOTE:** Added in version `0.27.1`
 
 ### Properties
 
