@@ -335,6 +335,8 @@ The typical use case would combine with the `metrics`, `kv` or `exec` watchers t
 
 ## Home Kit watcher
 
+**NOTE:** Since `0.30.0` this feature is removed as Apple has moved away from this technology
+
 The `homekit` watcher creates an Apple Home Kit Button resource that can be activated from iOS devices and Siri. When the button is pressed on a `success_transition` is fired and when off a `fail_transition`.
 
 This watcher requires write access to a `homekit` directory within the machine directory to store state.
