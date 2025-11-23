@@ -156,7 +156,7 @@ any nested JSON data found in a key will work correctly.
 
 It does not announce state regularly or on state changes.
 
-## Tiny Hiera Data
+### Tiny Hiera Data
 
 As of version `0.30.0` the *kv* watcher can also parse Tiny Hiera data and store it in the Machine data store.
 
@@ -180,7 +180,7 @@ Tiny Hiera is a minimal, single-file, version of Hiera. Here we define a configu
 
 When ran on `example.net` the watcher will store `{"port": 8081}` in the Machine data store otherwise `{"port": 8080}`.
 
-## Republish trigger
+### Republish trigger
 
 As of version `0.30.0` the `republish_trigger` property is supported that can listen to Stream republished messages and trigger a KV update.
 This can be used to instantly trigger all KV watchers without waiting for the polling interval. This is done on a best efforts basis so the
