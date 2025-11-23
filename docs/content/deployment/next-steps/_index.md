@@ -10,7 +10,7 @@ At this point you should have a working Choria set up with your user able to do 
 
 The community is where you can go to get support should you have any problems installing or using the software or just want to discuss ideas or concerns with other users.
 
-For more interactive comms I am on the Puppet IRC as _Volcane_ and on slack as _ripienaar_, we also have a _#choria_ channel on the [Puppet Slack](http://slack.puppet.com/) and [GitHub Discussions](https://github.com/choria-io/general/discussions).
+For more interactive comms I am on the Puppet IRC as _Volcane_ and on slack as _ripienaar_, we also have a _#choria_ channel on the [Vox Pupuli Slack](https://short.voxpupu.li/puppetcommunity_slack_signup) and [GitHub Discussions](https://github.com/choria-io/general/discussions).
 
 If you wish to file a ticket about anything here or improve something you can do so in [choria-io/general](https://github.com/choria-io/general) where it will be triaged.
 

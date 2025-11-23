@@ -27,7 +27,7 @@ Choria users can be found in a few places:
 
  * [GitHub Discussions](https://github.com/choria-io/general/discussions)
  * [Choria Blog](https://choria.io/blog)
- * `#choria` channel on [Slack](https://puppetcommunity.slack.com/)
+ * `#choria` channel on [Slack](https://short.voxpupu.li/puppetcommunity_slack_signup)
 
 ## Status
 

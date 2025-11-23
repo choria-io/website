@@ -132,13 +132,14 @@ should be used on thousands of machines maximum rather than 10s of thousands.
 
 ### Properties
 
-| Property          | Required | Description                                                                                    |
-|-------------------|----------|------------------------------------------------------------------------------------------------|
-| bucket            | yes      | The name of the bucket to watch                                                                |
-| key               |          | Watch a specific key in the bucket                                                             |
-| mode              |          | Either *poll* or *watch*                                                                       |
-| bucket_prefix     |          | Store the data in the machine data store with a prefix matching the bucket name, on by default |
-| republish_trigger |          | Trigger a KV update based on a Stream Republish                                                |
+| Property          | Required | Description                                                                                             |
+|-------------------|----------|---------------------------------------------------------------------------------------------------------|
+| bucket            | yes      | The name of the bucket to watch                                                                         |
+| key               |          | Watch a specific key in the bucket                                                                      |
+| mode              |          | Either *poll* or *watch*                                                                                |
+| bucket_prefix     |          | Store the data in the machine data store with a prefix matching the bucket name, on by default          |
+| republish_trigger |          | Trigger a KV update based on a Stream Republish                                                         |
+| hiera_config      |          | Parses the KV Value as [Tiny Hiera](https://github.com/choria-io/tinyhiera) JSON and stores the results |
 
 ### Behavior
 
@@ -154,6 +155,30 @@ Data that appears to be JSON data will be parsed and stored as generically parse
 any nested JSON data found in a key will work correctly.
 
 It does not announce state regularly or on state changes.
+
+## Tiny Hiera Data
+
+As of version `0.30.0` the *kv* watcher can also parse Tiny Hiera data and store it in the Machine data store.
+
+Tiny Hiera is a minimal, single-file, version of Hiera. Here we define a configuration, its hierarchy and fact resolution:
+
+```json
+{
+  "hierarchy": {
+    "order": [
+      "fqdn:%{networking.fqdn}"
+    ]
+  },
+  "configuration": {
+    "port": 8080
+  },
+  "fqdn:example.net": {
+    "port": 8081
+  }
+}
+```
+
+When ran on `example.net` the watcher will store `{"port": 8081}` in the Machine data store otherwise `{"port": 8080}`.
 
 ## Republish trigger
 

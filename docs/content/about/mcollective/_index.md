@@ -22,7 +22,7 @@ Puppet Inc have donated all the legacy MCollective code, this code is hosted in 
 
 Choria - and MCollective via the compatability layer - is in wide use by the community, we have some work left to do but the transition is generally smooth now.
 
-For further information please contact me am on the Puppet IRC as _Volcane_ and on slack as _ripienaar_, _#choria_ on the [Puppet Slack](http://slack.puppet.com/) and [GitHub Discussions](https://github.com/choria-io/general/discussions).
+For further information please contact me am on the Puppet IRC as _Volcane_ and on slack as _ripienaar_, _#choria_ on the [Vox Pupuli Slack](https://short.voxpupu.li/puppetcommunity_slack_signup) and [GitHub Discussions](https://github.com/choria-io/general/discussions).
 
 ## Source Code
 
