@@ -166,14 +166,16 @@ Tiny Hiera is a minimal, single-file, version of Hiera. Here we define a configu
 {
   "hierarchy": {
     "order": [
-      "fqdn:%{networking.fqdn}"
+      "fqdn:{{lookup('facts.networking.fqdn'}}"
     ]
   },
-  "configuration": {
+  "data": {
     "port": 8080
   },
-  "fqdn:example.net": {
-    "port": 8081
+  "overrides": {
+     "fqdn:example.net": {
+        "port": 8081
+     }
   }
 }
 ```
