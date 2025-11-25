@@ -190,7 +190,7 @@ This way we can create role-orientated specific data all in the same Key-Value k
 
 I want to create a new CM system that takes the model we are used to in Puppet but brings it to scripts and reusable APIs.
 
-The script use case would essentially be, these commands would be idempotent which would hugely improve the ability for simple scripts to be safe to run many times:
+The script use case would essentially be standalone commands:
 
 ```nohighlight
 $ marionette package ensure zsh --version 1.2.3
@@ -228,7 +228,7 @@ hierarchy:
     merge: deep
     order:
         - platform:{{ lookup('host.info.platform') }}
-        - hostname:{{ lookup('hhost.info.hostname') }}
+        - hostname:{{ lookup('host.info.hostname') }}
 
 overrides:
     platform:darwin
@@ -239,6 +239,12 @@ EOF
 
 $ marionette apply manifest.json --system-facts
 ```
+
+Pull this into Autonomous Agents and you have self-contained, self-managing applications similar to Kubernetes Operators but anywhere.
+
+Use this in scripts, simple setups, during container creation or orchestration, or even in CI pipelines.
+
+We should even be able to compile this manifest, or a full autonomous agent, into a single, static, binary that you can just run as `./setup` or `./manage` and the entire lifecycle is managed with zero dependencies.
 
 ## Availability and Status
 
