@@ -24,39 +24,128 @@ All watchers share a common set of properties detailed below, watcher specific p
 | announce_interval      | no       | Announce the current state of the watcher regularly, valid intervals are of the form *1s*, *1m*, *1h* |
 | properties             | yes      | Watcher specific settings                                                                             |
 
-## File watcher
+## Archive watcher
 
-The *file* watcher observes a specific file for changes and presence. Today only a basic *mtime* check is done, in time other dimensions like hashes or even *inotify* based observation will be supported.
+The *archive* watcher downloads, extracts and, optionally, integrity check and remediate `tar.gz` files.
+
+It supports verifying the contents of archives using `SHA256SUM` style files and can also detect tampering with the `SHA25SUM` file.
+
+It supports coordinating around a [Choria Governor](https://choria.io/docs/streams/governor/) to control concurrent access to the webserver that hosts the archive file.
+
+### Preparing the Archive
+
+Here we prepare an archive that will be fully verified both the archive checksum and the checksum of all files in the archive as well as the checksum of the `SHA256SUMS` file. If you do not want all the verification but just want to manage a file then simply create a normal archive.
+
+This supports GZipped Tar files only, we have a typical Choria Autonomous Agent here:
+
+```nohighlight
+metadata
+├── machine.yaml
+├── gather.sh
+└── SHA256SUMS
+```
+
+The `SHA256SUMS` file was made using `find * -type f -print0|xargs -0 sha256sum > SHA256SUMS`.
+
+We tar up this archive and again get another SHA256 for it:
+
+```nohighlight
+$ cd metadata
+$ sha256sum * > SHA256SUMS
+$ cd -
+$ tar -cvzf metadata-machine-1.0.0.tgz metadata
+$ sha256sum metadata-machine-1.0.0.tgz metadata/SHA256SUMS
+f11ea2005de97bf309bafac46e77c01925307a26675f44f388d4502d2b9d00bf  metadata-machine-1.0.0.tgz
+1e85719c6959eb0f2c8f2166e30ae952ccaef2c286f31868ea1d311d3738a339  metadata/SHA256SUMS
+```
+
+Place this file on any webserver of your choice. Note these checksums for later.
 
 ### Properties
 
-| Property             | Required | Description                                                                                                  |
-|----------------------|----------|--------------------------------------------------------------------------------------------------------------|
-| path                 | yes      | The path to the file to watch relative to the watcher manifest directory                                     |
-| gather_initial_state |          | Gathers the initial file mode, stats etc for regular announces but only perform first watch after *interval* |
-| content              |          | Place specific content into the file, supports template parsing and data lookup                              |
-| owner                |          | Who should own the file when managing content                                                                |
-| group                |          | What group should own the file when managing content                                                         |
-| mode                 |          | A file mode to apply when managing content, must be a string like `"0700"`                                   |
+| Property           | Required | Description                                                                     |
+|--------------------|----------|---------------------------------------------------------------------------------|
+| `checksum`         | no       | A sha256 hex string of the archive being downloaded                             |
+| `creates`          | yes      | The directory the tarball will extract into                                     |
+| `governor`         | no       | The name of a Choria Governor to coordinate concurrency with                    |
+| `governor_timeout` | no       | A duration for the timeout around accessing the governor, defaults to 5 minutes |
+| `username`         | no       | A username for http basic authentication                                        |
+| `password`         | no       | A password for http basic authentication                                        |
+| `source`           | yes      | The url to the archive file                                                     |
+| `target`           | yes      | The target directory the archive will be extracted into                         |
+| `timeout`          | no       | HTTP timeout duration, defaults to 5s                                           |
+| `verify`           | no       | The name of the file inside the archive to use for file checksums               |
+| `verify_checksum`  | no       | The checksum of the file specified by `verify`                                  |
 
 ### Behavior
 
-#### Change detection only
+We'll show a bigger example that reads the details of the archive to manage from a Key-Value bucket, lets create the bucket first:
 
-A file watcher will at *interval* times do an *mtime* check on the file.
+```nohighlight
+$ choria kv add METADATA --replicas 3
+```
 
-If the file is missing a *fail_transition* event fires and an announcement is made.
+Now we put the data from above into the bucket:
 
-If the file has changed since the previous run a *success_transition* event fires and an announcement is made. This means the first check would set the initial state after which changes are detected.  You could by setting *gather_initial_state* have the system gather initial file state on startup so the first regular watch would detect a change.
+```nohighlight
+$ choria kv put METADATA machine \
+'{
+  "source": "https://my.example.net/metadata/metadata-machine-1.0.0.tgz",
+  "checksum": "f11ea2005de97bf309bafac46e77c01925307a26675f44f388d4502d2b9d00bf",
+  "verify_checksum": "1e85719c6959eb0f2c8f2166e30ae952ccaef2c286f31868ea1d311d3738a339"
+}'
+```
 
-If the file has not changed nothing is published on every check, however a regular state announce can be done by setting *announce_interval*.
+The `source` is where to get the file, `checksum` is the SHA256 sum of the `metadata-machine-1.0.0.tgz` and the `verify_checksum` is the SHA256 sum of the `SHA256SUMS` file that's inside `metadata-machine-1.0.0.tgz`
 
-#### Content management
+Now we arrange for this data to be placed on each node and subsequent changes to be monitored using the KV Watcher:
 
-Since version `0.30.0` when the `content`, `owner`, `group` and `mode` values are set the content of the file will be managed and any changes will trigger change events.
+```yaml
+watchers:
+  - name: data
+    type: kv
+    interval: 55s
+    state_match: [MANAGE]
+    properties:
+      bucket: METADATA
+      key: machine
+      mode: poll
+      bucket_prefix: false
+```
 
-All these keys support templates.
+Finally, we set up our metadata manager to fetch and maintain the metadata gathering Autonomous Agent:
 
+```yaml
+watchers:
+  - name: download
+    state_match: [MANAGE]
+    type: archive
+    interval: 1m
+    properties:
+      source: '{{ lookup "data.machine.source" "" }}'
+      checksum: '{{ lookup "data.machine.checksum" "" }}'
+      verify_checksum: '{{ lookup "data.machine.verify_checksum" "" }}'
+      username: artifacts
+      password: toomanysecrets
+      target: /etc/choria/machines
+      creates: metadata
+      verify: SHA256SUMS
+```
+
+This will:
+
+Every minute
+
+* Checks that the `/etc/choria/machines/metadata` directory exist
+* Verify the checksum of `/etc/choria/machines/metadata/SHA256SUMS`
+* Verify the checksum of every file in `/etc/choria/machines/metadata` using the `SHA256SUMS` file
+* If verification failed, downloads the file:
+   * Into a temporary directory
+   * Verifies the checksum of the `tar.gz`
+   * Extract it, verifies it makes metadata
+   * Verify every file in it based on `SHA256SUMS` after first verifying `SHA256SUMS` is legit
+   * Remove the existing files in `/etc/choria/machines/metadata`
+   * Replace them with the new files
 
 ## Exec watcher
 
@@ -83,7 +172,7 @@ Generally it's best to think of data keys and values as strings, but we do suppo
 *exec* watcher.
 
 Any *exec* that runs has access to all the machine data. While we persist the data to disk between runs and restarts it's best
-to think of the data as ephemeral. It's wont be there on start and we will delete corrupt data.  Your Autonomous Agent should 
+to think of the data as ephemeral. It's wont be there on start and we will delete corrupt data.  Your Autonomous Agent should
 be able to run without data - by gathering it or creating it on demand.
 
 The `environment`, `command` and `governor` properties support looking up facts and data:
@@ -118,14 +207,131 @@ If a *governor* is configured the watcher will try to obtain a slot in the Gover
 
 To create a [Choria Concurrency Governor](../../streams/governor) must be enabled on the broker and the named Governor should have been created using `choria governor add`.
 
+## Expression watcher
+
+The `expression` watcher performs `expr-lang` expressions over data and facts. Based on the outcome of these expressions transitions can be triggered.
+
+**NOTE:** Added in version `0.29.0`
+
+### Properties
+
+| Property     | Required | Description                                                                  |
+|--------------|----------|------------------------------------------------------------------------------|
+| success_when |          | An expression that when it returns `true` will fire the `success_transition` |
+| fail_when    |          | An expression that when it returns `true` will fire the `fail_transition`    |
+
+### Behaviour
+
+Based on the `interval` the watcher will run first the `success_when` and then the `fail_when` expression.  The first to return a `true` value will trigger a transition.
+
+Each expression must be boolean in nature, for example: `data.temp != nil && data.temp < 20`. The environment the expression runs in will have `data`, `facts`, `get_fact` (using gjson query) and `identity` available to perform expressions against. As in this example it is important to guide against nil in the `data` and `facts` since those are nil at initial start of the machine.
+
+The typical use case would combine with the `metrics`, `kv` or `exec` watchers that can create data while this would look over that data and trigger changes based on values.
+
+## File watcher
+
+The *file* watcher observes a specific file for changes and presence. Today only a basic *mtime* check is done, in time other dimensions like hashes or even *inotify* based observation will be supported.
+
+### Properties
+
+| Property             | Required | Description                                                                                                  |
+|----------------------|----------|--------------------------------------------------------------------------------------------------------------|
+| path                 | yes      | The path to the file to watch relative to the watcher manifest directory                                     |
+| gather_initial_state |          | Gathers the initial file mode, stats etc for regular announces but only perform first watch after *interval* |
+| content              |          | Place specific content into the file, supports template parsing and data lookup                              |
+| owner                |          | Who should own the file when managing content                                                                |
+| group                |          | What group should own the file when managing content                                                         |
+| mode                 |          | A file mode to apply when managing content, must be a string like `"0700"`                                   |
+
+### Behavior
+
+#### Change detection only
+
+A file watcher will at *interval* times do an *mtime* check on the file.
+
+If the file is missing a *fail_transition* event fires and an announcement is made.
+
+If the file has changed since the previous run a *success_transition* event fires and an announcement is made. This means the first check would set the initial state after which changes are detected.  You could by setting *gather_initial_state* have the system gather initial file state on startup so the first regular watch would detect a change.
+
+If the file has not changed nothing is published on every check, however a regular state announce can be done by setting *announce_interval*.
+
+#### Content management
+
+Since version `0.30.0` when the `content`, `owner`, `group` and `mode` values are set the content of the file will be managed and any changes will trigger change events.
+
+All these keys support templates.
+
+## HTTP Switch
+
+The `httpswitch` works like a on-off switch exposed specifically over HTTP. It has a JSON based API as well an API specifically
+designed to work well with Home Assistant [RESTful Switch](https://www.home-assistant.io/integrations/switch.rest/).
+
+{{% notice tip %}}
+This feature is available since *Choria Server 0.30.0*
+{{% /notice %}}
+
+### Properties
+
+| Property     | Required | Description                                                                              |
+|--------------|----------|------------------------------------------------------------------------------------------|
+| on_when      |          | When the machine is in any of these states the button will be report as `on`             |
+| off_when     |          | When the machine is in any of these states the button will be report as `off`            |
+| disable_when |          | When the machine is in any of these states the button will stop functioning              |
+| annotations  |          | Additional annotations to apply to a specific check as a `map[string]string` JSON object |
+
+### Behavior
+
+The switch will listen on 2 URL paths when `plugin.choria.machine.http_port` is enabled: `/choria/machine/switch/v1/{machine}/{watcher}` and `/choria/homeassistant/switch/v1/{machine}/{watcher}`.
+
+The first will respond with a JSON document detailing the state of the switch and additional information. The second is specifically designed to be easy to integrate with Home Assistant.
+
+The following Home Assistant RESTFul switch configuration will have the switch appear in Home Assistant and allow events to be raised based on the button presses.
+
+```yaml
+switch:
+   - name: "Choria Switch"
+     platform: rest
+     device_class: switch
+     unique_id: test_choria_switch
+     resource: http://x.x.x.x:8080/choria/homeassistant/switch/v1/homeassistant_switch/switch
+```
+
+When the switch is turned on it will fire the `success_transition` event else when turned off the `fail_transition`.
+
+To turn the switch on send, using a GET request, `ON` to `/choria/homeassistant/switch/v1/{machine}/{watcher}` or `{"on": true}` to `/choria/machine/switch/v1/{machine}/{watcher}`.
+
+To turn the switch off send, using a POST request, `OFF` to `/choria/homeassistant/switch/v1/{machine}/{watcher}` or `{"on": false}` to `/choria/machine/switch/v1/{machine}/{watcher}`.
+
+Only the JSON version has a meaningful response, looks like below and we include some annotations as example:
+
+```json
+{
+   "is_on": true,
+   "is_off": false,
+   "status": "on",
+   "detail": {
+      "protocol": "io.choria.machine.watcher.httpswitch.v1.state",
+      "identity": "cli",
+      "id": "8cefd34f-cca2-4950-83d4-4536c47eb2a3",
+      "version": "0.0.1",
+      "timestamp": 1764329823,
+      "type": "httpswitch",
+      "machine": "homeassistant_switch",
+      "name": "switch",
+      "status": "on",
+      "is_on": true,
+      "annotations": {
+         "ha_id": "test_choria_switch",
+         "ha_name": "Choria Switch"
+      }
+   }
+}
+```
+
 ## Key-Value store 
 
 The *kv* watcher watches a Choria Key-Value Store key and act on changes, updating the Machine data store with values and optionally
 performing transitions on change.
-
-{{% notice tip %}}
-This feature is available since *Choria Server 0.23.0*
-{{% /notice %}}
 
 Polling the Key-Value store is less resource intensive than watching, polling can be slower though.  In general this feature
 should be used on thousands of machines maximum rather than 10s of thousands.
@@ -339,137 +545,6 @@ watchers:
 
 Checks can be stopped using `mco rpc choria_util machine_transition name=check_httpd transition=MAINTENANCE` and resumed using by passing `transition=RESUME` instead.
 
-## Expression watcher
-
-The `expression` watcher performs `expr-lang` expressions over data and facts. Based on the outcome of these expressions transitions can be triggered.
-
-**NOTE:** Added in version `0.29.0`
-
-### Properties
-
-| Property     | Required | Description                                                                  |
-|--------------|----------|------------------------------------------------------------------------------|
-| success_when |          | An expression that when it returns `true` will fire the `success_transition` |
-| fail_when    |          | An expression that when it returns `true` will fire the `fail_transition`    |
-
-### Behaviour
-
-Based on the `interval` the watcher will run first the `success_when` and then the `fail_when` expression.  The first to return a `true` value will trigger a transition.
-
-Each expression must be boolean in nature, for example: `data.temp != nil && data.temp < 20`. The environment the expression runs in will have `data`, `facts`, `get_fact` (using gjson query) and `identity` available to perform expressions against. As in this example it is important to guide against nil in the `data` and `facts` since those are nil at initial start of the machine. 
-
-The typical use case would combine with the `metrics`, `kv` or `exec` watchers that can create data while this would look over that data and trigger changes based on values.
-
-## Home Kit watcher
-
-**NOTE:** Since `0.30.0` this feature is removed as Apple has moved away from this technology
-
-The `homekit` watcher creates an Apple Home Kit Button resource that can be activated from iOS devices and Siri. When the button is pressed on a `success_transition` is fired and when off a `fail_transition`.
-
-This watcher requires write access to a `homekit` directory within the machine directory to store state.
-
-### Properties
-
-| Property      | Required | Description                                                                                                           |
-|---------------|----------|-----------------------------------------------------------------------------------------------------------------------|
-| pin           | yes      | The pin to enter when adding the button to Home App                                                                   |
-| serial_number |          | The serial number to report to Home Kit                                                                               |
-| model         |          | The model to report to Home Kit, defaults to `Autonomous Agent`                                                       |
-| setup_id      |          | A Home Kit set up id to report                                                                                        |
-| initial       |          | The initial state of the button, either `on` or `off`                                                                 |
-| on_when       |          | When the machine is in any of these states the button will be reported as `on` to Home Kit                            |
-| off_when      |          | When the machine is in any of these states the button will be reported as `off` to Home Kit                           |
-| disable_when  |          | When the machine is in any of these states the Home Kit integration will shut down and the button will be unreachable |
-
-### Behavior
-
-This creates an Apple Home Kit button reported as `Extractor`, it will be a simple on/off style button that fires `success_transition` when pressed on and `fail_transition` when pressed off.
-
-When another watcher, or external RPC event, transitions the machine to different states this button can flip to on or off dependant on the states listed in `on_when` and `off_when`.
-
-```yaml
-- name: extractor
-  type: homekit
-  state_match:
-    - unknown
-    - "on"
-    - "off"
-    - 2hours_on
-    - 2hours_off
-  success_transition: override_on
-  fail_transition: override_off
-  properties:
-    pin: "12345679"
-    on_when: [2hours_on, "on"]
-    off_when: [2hours_off, unknown, "off"]
-    disable_when: [pause]
-```
-
-## Timer watcher
-
-The `timer` watcher starts a timer when the state machine transitions into a state that it's matched on and emits a transition event when the timer end.
-
-This can be used to create systems like a maintenance window that automatically expire.
-
-### Properties
-
-| Property | Required | Description                                                                           |
-|----------|----------|---------------------------------------------------------------------------------------|
-| timer    | yes      | How long the timer should run for, triggers `fail_transition` at the end of the timer |
-| splay    | no       | When true adjusts the timer to a random period between zero and timer (since 0.24.0)  |
-
-### Behavior
-
-The timer will start whenever the machine enters a state listed in `state_match`, once the timer reach the end it will trigger `fail_transition` if set. If, while active, the machine transitions from one state in `state_match` to another also in `state_match` the timer will reset.
-
-```yaml
-- name: 2hours_off_timer
-  type: timer
-  success_transition: override_ends
-  state_match:
-  - 2hours_off
-  properties:
-    timer: 2h 
-```
-
-## Scheduler watcher
-
-The *scheduler* watcher flips between success and fail states based on a set of schedules specified in a crontab like format.  Use it to enter and exit a state on a schedule and combine it with an exec watcher to run commands on a schedule.
-
-### Properties
-
-| Property                | Required | Description                                                                                                                         |
-|-------------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------|
-| start_splay             | no       | Sleep a random period before initiating the schedule, expressed as a duration like `1m`. Should be no more than half the `duration` |
-| duration                | yes      | How long the scheduler should be in the `success` state once triggered                                                              |
-| schedules               | yes      | A list of crontab like schedules based on which the `success` transitions will fire                                                 |
-| skip_trigger_on_reenter | no       | Skips triggering `success` when changing between 2 states that are both active in the scheduler                                     | 
-
-### Behavior
-
-The schedules specified is a list of times when the scheduler will be in success transition, at the end of the trigger time + duration it will fire a fail transition. The fields are like crontab(5), supports ranges, special characters and predefined schedules like `@daily`, see [robfib/cron](https://godoc.org/github.com/robfig/cron) section *CRON Expression Format* for what we'd understand.  We do not support the seconds field.
-
-```yaml
- - name: scheduler
-   type: schedule
-   fail_transition: stop
-   success_transition: start
-   state_match: [switched_on, switched_off]
-   interval: 1h
-   properties:
-     duration: 1h
-     start_splay: 1m
-     schedules:
-       - "0 8 * * *"
-       - "0 12 * * *"
-       - "0 17 * * *"
-       - "0 20 * * SAT,SUN"
-```
-
-The scheduler above will switch on daily at 8am, 12pm and 5pm but also at 8pm on Saturdays and Sundays.  It will stay on for an hour. Before starting it will sleep a random period between 0 and 1 minute. 
-
-If the machine transitions into an eligible *state_match* while a schedule is started it will immediately fire the *success_transition*.  If Choria starts up in the middle of a scheduled period it will be ignored and the next schedule will trigger.  Overlapping schedules is supported.
-
 ## Metric watcher
 
 The *metric* watcher periodically run a command and publish metrics found in its output to Prometheus. Both a Choria specific metric format and Nagios Perfdata is supported.
@@ -486,10 +561,11 @@ The *metric* watcher periodically run a command and publish metrics found in its
 | graphite_host   | no       | Graphite host to send metrics to                                           |
 | graphite_port   | no       | Graphite port to send metrics to                                           |
 | graphite_prefix | no       | Prefix to apply to Graphite metrics                                        |
+| http            | no       | Expose metrics over the HTTP port                                          |
 
 ### Behaviour
 
-The plugin supports 2 data formats, one Choria specific one and the commonly used Nagios Perfdata format. 
+The plugin supports 2 data formats, one Choria specific one and the commonly used Nagios Perfdata format.
 
 If you're writing your own gathering scripts we suggest the Choria format.
 
@@ -555,128 +631,11 @@ OK: last run 24 minutes ago with 0 failed resources 0 failed events and currentl
 
 This will produce output as above for metrics `choria_machine_metric_watcher_puppet_time_since_last_run` and so forth.
 
-## Archive watcher
+### HTTP Access
 
-The *archive* watcher downloads, extracts and, optionally, integrity check and remediate `tar.gz` files.
+Since version `0.30.0` metrics can be exposed via HTTP when enabled in the url path `/choria/machine/metric/v1/{machine}/{watcher}` if `plugin.choria.machine.http_port` is configured.
 
-It supports verifying the contents of archives using `SHA256SUM` style files and can also detect tampering with the `SHA25SUM` file.
-
-It supports coordinating around a [Choria Governor](https://choria.io/docs/streams/governor/) to control concurrent access to the webserver that hosts the archive file.
-
-### Preparing the Archive
-
-Here we prepare an archive that will be fully verified both the archive checksum and the checksum of all files in the archive as well as the checksum of the `SHA256SUMS` file. If you do not want all the verification but just want to manage a file then simply create a normal archive. 
-
-This supports GZipped Tar files only, we have a typical Choria Autonomous Agent here:
-
-```nohighlight
-metadata
-├── machine.yaml
-├── gather.sh
-└── SHA256SUMS
-```
-
-The `SHA256SUMS` file was made using `find * -type f -print0|xargs -0 sha256sum > SHA256SUMS`.
-
-We tar up this archive and again get another SHA256 for it:
-
-```nohighlight
-$ cd metadata
-$ sha256sum * > SHA256SUMS
-$ cd -
-$ tar -cvzf metadata-machine-1.0.0.tgz metadata
-$ sha256sum metadata-machine-1.0.0.tgz metadata/SHA256SUMS
-f11ea2005de97bf309bafac46e77c01925307a26675f44f388d4502d2b9d00bf  metadata-machine-1.0.0.tgz
-1e85719c6959eb0f2c8f2166e30ae952ccaef2c286f31868ea1d311d3738a339  metadata/SHA256SUMS
-```
-
-Place this file on any webserver of your choice. Note these checksums for later.
-
-### Properties
-
-| Property           | Required | Description                                                                     |
-|--------------------|----------|---------------------------------------------------------------------------------|
-| `checksum`         | no       | A sha256 hex string of the archive being downloaded                             |
-| `creates`          | yes      | The directory the tarball will extract into                                     |
-| `governor`         | no       | The name of a Choria Governor to coordinate concurrency with                    |
-| `governor_timeout` | no       | A duration for the timeout around accessing the governor, defaults to 5 minutes |
-| `username`         | no       | A username for http basic authentication                                        |
-| `password`         | no       | A password for http basic authentication                                        |
-| `source`           | yes      | The url to the archive file                                                     |
-| `target`           | yes      | The target directory the archive will be extracted into                         |
-| `timeout`          | no       | HTTP timeout duration, defaults to 5s                                           |
-| `verify`           | no       | The name of the file inside the archive to use for file checksums               |
-| `verify_checksum`  | no       | The checksum of the file specified by `verify`                                  |
-
-### Behavior
-
-We'll show a bigger example that reads the details of the archive to manage from a Key-Value bucket, lets create the bucket first:
-
-```nohighlight
-$ choria kv add METADATA --replicas 3
-```
-
-Now we put the data from above into the bucket:
-
-```nohighlight
-$ choria kv put METADATA machine \
-'{
-  "source": "https://my.example.net/metadata/metadata-machine-1.0.0.tgz",
-  "checksum": "f11ea2005de97bf309bafac46e77c01925307a26675f44f388d4502d2b9d00bf",
-  "verify_checksum": "1e85719c6959eb0f2c8f2166e30ae952ccaef2c286f31868ea1d311d3738a339"
-}'
-```
-
-The `source` is where to get the file, `checksum` is the SHA256 sum of the `metadata-machine-1.0.0.tgz` and the `verify_checksum` is the SHA256 sum of the `SHA256SUMS` file that's inside `metadata-machine-1.0.0.tgz`
-
-Now we arrange for this data to be placed on each node and subsequent changes to be monitored using the KV Watcher:
-
-```yaml
-watchers:
-  - name: data
-    type: kv
-    interval: 55s
-    state_match: [MANAGE]
-    properties:
-      bucket: METADATA
-      key: machine
-      mode: poll
-      bucket_prefix: false
-```
-
-Finally, we set up our metadata manager to fetch and maintain the metadata gathering Autonomous Agent:
-
-```yaml
-watchers:
-  - name: download
-    state_match: [MANAGE]
-    type: archive
-    interval: 1m
-    properties:
-      source: '{{ lookup "data.machine.source" "" }}'
-      checksum: '{{ lookup "data.machine.checksum" "" }}'
-      verify_checksum: '{{ lookup "data.machine.verify_checksum" "" }}'
-      username: artifacts
-      password: toomanysecrets
-      target: /etc/choria/machines
-      creates: metadata
-      verify: SHA256SUMS
-```
-
-This will:
-
-Every minute
-
- * Checks that the `/etc/choria/machines/metadata` directory exist
- * Verify the checksum of `/etc/choria/machines/metadata/SHA256SUMS`
- * Verify the checksum of every file in `/etc/choria/machines/metadata` using the `SHA256SUMS` file
- * If verification failed, downloads the file:
-   * Into a temporary directory
-   * Verifies the checksum of the `tar.gz`
-   * Extract it, verifies it makes metadata
-   * Verify every file in it based on `SHA256SUMS` after first verifying `SHA256SUMS` is legit
-   * Remove the existing files in `/etc/choria/machines/metadata`
-   * Replace them with the new files
+The data exposed will be in the `choria` format detailed above.
 
 ## Plugins watcher
 
@@ -705,9 +664,9 @@ We'll show a complete example here including how to prepare plugins.
 
 These archives are prepared as per the instructions in the archive watcher with the following hard constraints:
 
- * The checksums file must be `SHA256SUMS` and must be present
- * The tar file must create a directory matching the name exactly, `yourmachine-1.2.3.tar.gz` must create `yourmachine`
- * Checksums of the SHA256SUMS file and the archive must be specified
+* The checksums file must be `SHA256SUMS` and must be present
+* The tar file must create a directory matching the name exactly, `yourmachine-1.2.3.tar.gz` must create `yourmachine`
+* Checksums of the SHA256SUMS file and the archive must be specified
 
 #### Configuring
 
@@ -827,3 +786,114 @@ machines_manager: github.com/choria-io/go-choria/aagent/watchers/machineswatcher
 ```
 
 Do `go generate` and recompile, this will include the watcher.
+
+## Scheduler watcher
+
+The *scheduler* watcher flips between success and fail states based on a set of schedules specified in a crontab like format.  Use it to enter and exit a state on a schedule and combine it with an exec watcher to run commands on a schedule.
+
+### Properties
+
+| Property                | Required | Description                                                                                                                         |
+|-------------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------|
+| start_splay             | no       | Sleep a random period before initiating the schedule, expressed as a duration like `1m`. Should be no more than half the `duration` |
+| duration                | yes      | How long the scheduler should be in the `success` state once triggered                                                              |
+| schedules               | yes      | A list of crontab like schedules based on which the `success` transitions will fire                                                 |
+| skip_trigger_on_reenter | no       | Skips triggering `success` when changing between 2 states that are both active in the scheduler                                     | 
+
+### Behavior
+
+The schedules specified is a list of times when the scheduler will be in success transition, at the end of the trigger time + duration it will fire a fail transition. The fields are like crontab(5), supports ranges, special characters and predefined schedules like `@daily`, see [robfib/cron](https://godoc.org/github.com/robfig/cron) section *CRON Expression Format* for what we'd understand.  We do not support the seconds field.
+
+```yaml
+ - name: scheduler
+   type: schedule
+   fail_transition: stop
+   success_transition: start
+   state_match: [switched_on, switched_off]
+   interval: 1h
+   properties:
+     duration: 1h
+     start_splay: 1m
+     schedules:
+       - "0 8 * * *"
+       - "0 12 * * *"
+       - "0 17 * * *"
+       - "0 20 * * SAT,SUN"
+```
+
+The scheduler above will switch on daily at 8am, 12pm and 5pm but also at 8pm on Saturdays and Sundays.  It will stay on for an hour. Before starting it will sleep a random period between 0 and 1 minute.
+
+If the machine transitions into an eligible *state_match* while a schedule is started it will immediately fire the *success_transition*.  If Choria starts up in the middle of a scheduled period it will be ignored and the next schedule will trigger.  Overlapping schedules is supported.
+
+## Timer watcher
+
+The `timer` watcher starts a timer when the state machine transitions into a state that it's matched on and emits a transition event when the timer end.
+
+This can be used to create systems like a maintenance window that automatically expire.
+
+### Properties
+
+| Property | Required | Description                                                                           |
+|----------|----------|---------------------------------------------------------------------------------------|
+| timer    | yes      | How long the timer should run for, triggers `fail_transition` at the end of the timer |
+| splay    | no       | When true adjusts the timer to a random period between zero and timer (since 0.24.0)  |
+
+### Behavior
+
+The timer will start whenever the machine enters a state listed in `state_match`, once the timer reach the end it will trigger `fail_transition` if set. If, while active, the machine transitions from one state in `state_match` to another also in `state_match` the timer will reset.
+
+```yaml
+- name: 2hours_off_timer
+  type: timer
+  success_transition: override_ends
+  state_match:
+  - 2hours_off
+  properties:
+    timer: 2h 
+```
+
+## Home Kit watcher
+
+**NOTE:** Since `0.30.0` this feature is removed as Apple has moved away from this technology. The `httpswitch` replaces this for integration into Home Assistant.
+
+The `homekit` watcher creates an Apple Home Kit Button resource that can be activated from iOS devices and Siri. When the button is pressed on a `success_transition` is fired and when off a `fail_transition`.
+
+This watcher requires write access to a `homekit` directory within the machine directory to store state.
+
+### Properties
+
+| Property      | Required | Description                                                                                                           |
+|---------------|----------|-----------------------------------------------------------------------------------------------------------------------|
+| pin           | yes      | The pin to enter when adding the button to Home App                                                                   |
+| serial_number |          | The serial number to report to Home Kit                                                                               |
+| model         |          | The model to report to Home Kit, defaults to `Autonomous Agent`                                                       |
+| setup_id      |          | A Home Kit set up id to report                                                                                        |
+| initial       |          | The initial state of the button, either `on` or `off`                                                                 |
+| on_when       |          | When the machine is in any of these states the button will be reported as `on` to Home Kit                            |
+| off_when      |          | When the machine is in any of these states the button will be reported as `off` to Home Kit                           |
+| disable_when  |          | When the machine is in any of these states the Home Kit integration will shut down and the button will be unreachable |
+
+### Behavior
+
+This creates an Apple Home Kit button reported as `Extractor`, it will be a simple on/off style button that fires `success_transition` when pressed on and `fail_transition` when pressed off.
+
+When another watcher, or external RPC event, transitions the machine to different states this button can flip to on or off dependant on the states listed in `on_when` and `off_when`.
+
+```yaml
+- name: extractor
+  type: homekit
+  state_match:
+    - unknown
+    - "on"
+    - "off"
+    - 2hours_on
+    - 2hours_off
+  success_transition: override_on
+  fail_transition: override_off
+  properties:
+    pin: "12345679"
+    on_when: [2hours_on, "on"]
+    off_when: [2hours_off, unknown, "off"]
+    disable_when: [pause]
+```
+
