@@ -102,6 +102,6 @@ You can use the [thias/sysctl](https://forge.puppet.com/thias/sysctl) module to 
 You can overcome this by adjusting these sysctl settings:
 
 ```yaml
-net.core.somaxconn: 4092
+net.core.somaxconn: 4096
 net.ipv4.tcp_max_syn_backlog: 8192
 ```
