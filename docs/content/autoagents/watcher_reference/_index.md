@@ -338,14 +338,15 @@ should be used on thousands of machines maximum rather than 10s of thousands.
 
 ### Properties
 
-| Property          | Required | Description                                                                                             |
-|-------------------|----------|---------------------------------------------------------------------------------------------------------|
-| bucket            | yes      | The name of the bucket to watch                                                                         |
-| key               |          | Watch a specific key in the bucket                                                                      |
-| mode              |          | Either *poll* or *watch*                                                                                |
-| bucket_prefix     |          | Store the data in the machine data store with a prefix matching the bucket name, on by default          |
-| republish_trigger |          | Trigger a KV update based on a Stream Republish                                                         |
-| hiera_config      |          | Parses the KV Value as [Tiny Hiera](https://github.com/choria-io/tinyhiera) JSON and stores the results |
+| Property          | Required | Description                                                                                    |
+|-------------------|----------|------------------------------------------------------------------------------------------------|
+| bucket            | yes      | The name of the bucket to watch                                                                |
+| key               |          | Watch a specific key in the bucket                                                             |
+| mode              |          | Either *poll* or *watch*                                                                       |
+| bucket_prefix     |          | Store the data in the machine data store with a prefix matching the bucket name, on by default |
+| republish_trigger |          | Trigger a KV update based on a Stream Republish                                                |
+| hiera_config      |          | Parses the KV Value as [Hiera](https://github.com/choria-io/ccm) JSON and stores the results   |
+| store_key         |          | Stores the data in a specific key in the machine rather than using the kv key (since 0.30.0)   |
 
 ### Behavior
 
@@ -411,14 +412,16 @@ The *nagios* watcher executes Nagios compatible plugins and emits transitions `O
 
 ### Properties
 
-| Property     | Required | Description                                                                                        |
-|--------------|----------|----------------------------------------------------------------------------------------------------|
-| builtin      | no       | Builtin check plugin, `heartbeat`, `choria_status` or `goss` are supported now                     |
-| plugin       | no       | Full path to the Nagios plugin script and it's arguments                                           |
-| timeout      |          | How long plugins can run, defaults to 10 seconds. Valid values are of the form 1s, 1m, 1h          |
-| annotations  | no       | Additional annotations to apply to a specific check as a `map[string]string` JSON object           |
-| gossfile     | no       | A check specific goss file, else the system wide one is used                                       |
-| last_message | no       | For the `choria_status` builtin check, how long ago the last RPC message should have been received |
+| Property       | Required | Description                                                                                        |
+|----------------|----------|----------------------------------------------------------------------------------------------------|
+| builtin        | no       | Builtin check plugin, `heartbeat`, `choria_status` or `goss` are supported now                     |
+| plugin         | no       | Full path to the Nagios plugin script and it's arguments                                           |
+| timeout        |          | How long plugins can run, defaults to 10 seconds. Valid values are of the form 1s, 1m, 1h          |
+| annotations    | no       | Additional annotations to apply to a specific check as a `map[string]string` JSON object           |
+| gossfile       | no       | A check specific goss file, else the system wide one is used                                       |
+| last_message   | no       | For the `choria_status` builtin check, how long ago the last RPC message should have been received |
+| pubcert_expire | no       | For the `choria_status` builtin check, how long till the certificate expires                       |
+| token_expire   | no       | For the `choria_status` builtin check, how long till the token expires                             |
 
 When setting the plugin one can load override data from a JSON file defined in `plugin.scout.overrides`:
 
@@ -877,7 +880,7 @@ This watcher requires write access to a `homekit` directory within the machine d
 
 This creates an Apple Home Kit button reported as `Extractor`, it will be a simple on/off style button that fires `success_transition` when pressed on and `fail_transition` when pressed off.
 
-When another watcher, or external RPC event, transitions the machine to different states this button can flip to on or off dependant on the states listed in `on_when` and `off_when`.
+When another watcher, or external RPC event, transitions the machine to different states this button can flip to on or off dependent on the states listed in `on_when` and `off_when`.
 
 ```yaml
 - name: extractor
