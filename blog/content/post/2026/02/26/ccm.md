@@ -128,5 +128,5 @@ The project is quite new, only a few months.  We're focussing on the core need a
 
 We have Package, File, Service, Archive, Scaffold and Exec types supporting Debian and RedHat based systems.
 
-You can get it at [choria-ccm.dev](https://choria-cm.dev/).  Thanks to LLMs I've also been able to deliver a graphic manafist editor using a modern web stack
+You can get it at [choria-cm.dev](https://choria-cm.dev/).  Thanks to LLMs I've also been able to deliver a graphic manafist editor using a modern web stack
 You can find if [CCM Studio](https://studio.choria-cm.dev/).
