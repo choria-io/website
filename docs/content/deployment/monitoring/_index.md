@@ -129,7 +129,7 @@ Other commands to try:
  * `choria broker server info broker-broker-1` shows general information about a running server
  * `choria broker server report connections` lists and summarize connections
  * `choria broker server request connz` equivalent to requesting `/varz` over HTTP, but for the whole cluster or named server, see other `request` sub commands also
- * `choria broker serer report jetstream` overview report of JetStream / Choria Streams usage
+ * `choria broker server report jetstream` overview report of JetStream / Choria Streams usage
 
 #### Broker Health Checks
 
