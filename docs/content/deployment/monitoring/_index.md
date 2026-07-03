@@ -79,6 +79,20 @@ plugin.choria.network.system.user = system
 plugin.choria.network.system.password = s3cret
 ```
 
+to configure this via Puppet:
+
+```yaml
+---
+# broker
+choria::broker::system_password: 's3cret'
+choria::broker::system_user: 'admin'
+
+# on the client
+mcollective::client_config:
+  plugin.choria.network.system.user: 'system'
+  plugin.choria.network.system.password: 's3cret'
+```
+
 The Client configuration where you will monitor from will also need these settings.
 
 #### Basic Broker and Cluster information
