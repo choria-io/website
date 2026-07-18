@@ -9,31 +9,32 @@ Today I would like to introduce an AI Harness I've been working on for the last 
 called [Fisk AI](https://choria-io.github.io/fisk-ai/).
 
 There are many fantastic, all powerful, all featureful AI Harnesses out there like Claude Code, Pi, Hermess, Codex, Open
-Code and many more. At the same time there's been a movement toward creating harnesses that solve just one problem and
+Code, and many more. At the same time there's been a movement toward creating harnesses that solve just one problem and
 do so well and safely.
 
 Fisk AI is a Harness framework that allows you to build *Specialized AI Agents* with just some YAML files.
 
 - Agentic loop in TUI and Shell form
-- Easiest possible way to create tools reusing the CLI tools you already have and, optionaly, expose those over MCP
+- Easiest possible way to create tools reusing the CLI tools you already have and, optionally, expose those over MCP
 - Built-in Memory System
-- Built in Knowledge base (RAG)
+- Built-in Knowledge base (RAG)
 
 Fisk AI can be used entirely locally on your laptop with locally hosted models or can use any AI host that supports the
 Anthropic API (most do).
 
 Data safety and tool safety is at the forefront, big harnesses have tons of capabilities and love to try and please you.
-It is not uncommon to see Claude run half page long Shell scripts, Python scripts, jq scripts or combinations of these
-in rapid succession. Mistakes are inevitble and so is non-deterministic outcomes. Claude ran Bashism on my ZSH and did
+It is not uncommon to see Claude run half-page long Shell scripts, Python scripts, jq scripts, or combinations of these
+in rapid succession. Mistakes are inevitable and so are non-deterministic outcomes. Claude ran Bashism on my ZSH and did
 `rm -rf /`by acccident.
 
 There is no reason to have this power around and a LLM that's keen to go the extra mile when you have a specific problem
-to solve, repeatedly and reliably. This is where Specialized AI comes in. Give the AI just the tools it needs, no generic
-shell access, and guidance and you get good outcomes. That's what Fisk AI is for.
+to solve, repeatedly and reliably. This is where Specialized AI comes in. Give the AI just the tools and guidance it needs, 
+no generic shell access or ability to run arbitrary code. That's what Fisk AI is for. Better, safer, and more reliable outcomes
+for tasks you wish to run regularly with LLM assistance.
 
 Down the line there is a broader goal around enterprise AI and infrastructure Ops. For now I am focussing on getting the
-libraries and behaviours right, later the libraries that built Fisk AI will become the basis for infrastructure tools ontop of the
-Choria protocol which will bring strong Identity, Authentication, Authorization and Auditing to Agent-2-Agent communications.
+libraries and behaviours right, later the libraries that built Fisk AI will become the basis for infrastructure tools onto of the
+Choria protocol which will bring strong Identity, Authentication, Authorization, and Auditing to Agent-2-Agent communications.
 
 Read the full entry for examples and more details.
 
@@ -47,7 +48,7 @@ With Fisk AI we support automatically turning any CLI tool written with the [fis
 
 Here is a tool built using [App Builder](https://choria-io.github.io/appbuilder/) that allows the agent to mark a pull request as triaged:
 
-```ignorelang
+```
 commands:
   - name: triage
     description: Marks a Pull Request as triaged
@@ -71,11 +72,11 @@ Note the various safety features here:
 
 Fisk AI turns this into a tool, with strict schema, and runs that in the agent loop. No extra services or MCP servers needed by running `fisk-ai mcp`.
 
-If you just like to make tools for other AI in this manner Fisk AI can also host those in a MCP server that you can call from Claude Code and elsewhere.
+If you just like to make tools for other AI in this manner, Fisk AI can also host those in a MCP server that you can call from Claude Code and elsewhere.
 
 You can also implement your tools using the [fisk](https://github.com/choria-io/fisk) library in Go for when you want to use library packages etc:
 
-```ignorelang
+```
 var name string
 
 func main() {
@@ -95,7 +96,7 @@ func stop(_ *fisk.ParseContext) error {
 ```
 The interesting thing here is that these tools are standalone shell tools, you can use them in your day-to-day work and also share them with the AI, they are multi modal.
 
-```ignorelang
+```
 $ abt pr triage --help
 usage: abt pr triage [<flags>]
 
@@ -139,7 +140,7 @@ See the [full project documentation](https://choria-io.github.io/fisk-ai/) for m
 
 This is the entire agent configuration file, I use `LM Studio` to run `qwen/qwen3.5-35b-a3b` and `text-embedding-embeddinggemma-300m` locally on my MacBook Pro and nothing ever leaves this laptop.
 
-```ignorelang
+```
 # agent.yaml
 harness:
   # opt-in to the knowledge system
@@ -188,7 +189,7 @@ system_prompt: |
 
 Here it is answering a question about Puppet with full citations:
 
-> What is the correct way to structure a complex module installing, configuring and starting some software?
+> What is the correct way to structure a complex module installing, configuring, and starting some software?
 
 ### Correct Module Structure for Install, Configure, and Start
 
@@ -199,7 +200,7 @@ The best practice approach for structuring a complex Puppet module that installs
 **1. Main Class (`module::init.pp`)** (#5)
 This is the entry point for your module, located in `init.pp`. It should be the only parameterized class and contain sensible defaults:
 
-```ignorelang
+```
 class chrony (
   Array[Stdlib::IP::Address] $bindaddress = [],
   Array[String] $bindcmdaddress = ['127.0.0.1', '::1'],
@@ -219,7 +220,7 @@ class chrony (
 **2. Install Class (`module::install.pp`)** (#7)
 Contains all resources related to getting the software onto the node:
 
-```ignorelang
+```
 class chrony::install {
   assert_private()
 
@@ -233,7 +234,7 @@ class chrony::install {
 **3. Config Class (`module::config.pp`)** (#8)
 Contains all resources for configuring the installed software:
 
-```ignorelang
+```
 class chrony::config {
   assert_private()
 
@@ -250,7 +251,7 @@ class chrony::config {
 **4. Service Class (`module::service.pp`)** (#9)
 Contains service resources and anything related to the running state:
 
-```ignorelang
+```
 class chrony::service {
   assert_private()
 
