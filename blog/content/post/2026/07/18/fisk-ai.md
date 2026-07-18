@@ -47,7 +47,7 @@ With Fisk AI we support automatically turning any CLI tool written with the [fis
 
 Here is a tool built using [App Builder](https://choria-io.github.io/appbuilder/) that allows the agent to mark a pull request as triaged:
 
-```yaml
+```ignorelang
 commands:
   - name: triage
     description: Marks a Pull Request as triaged
@@ -66,16 +66,16 @@ Note the various safety features here:
  - We validate that what is being given by the LLM is not going to be trying to inject shell-injection attack code since it must be an integer
  - We escape the argument when calling the `gh` utility ensuring no quoting problems (tough not needed for numbers)
  - We require the input is supplied
- - We wrap the `gh` tool, the LLM never have full access to `gh` only the key behaviors we set and it cannot act on any other repo
+ - We wrap the `gh` tool, the LLM never have full access to `gh` only the key behaviors we set and it cannot act on any other repo or pass any flags
  - We can expand this to wrap any other CLI tool from any vendor and expose just the key aspects we need the LLM to use
 
-Fisk AI turns this into a tool, with strict schema, and runs that in the agent loop. No extra services or MCP servers needed.
+Fisk AI turns this into a tool, with strict schema, and runs that in the agent loop. No extra services or MCP servers needed by running `fisk-ai mcp`.
 
 If you just like to make tools for other AI in this manner Fisk AI can also host those in a MCP server that you can call from Claude Code and elsewhere.
 
 You can also implement your tools using the [fisk](https://github.com/choria-io/fisk) library in Go for when you want to use library packages etc:
 
-```golang
+```ignorelang
 var name string
 
 func main() {
@@ -139,7 +139,7 @@ See the [full project documentation](https://choria-io.github.io/fisk-ai/) for m
 
 This is the entire agent configuration file, I use `LM Studio` to run `qwen/qwen3.5-35b-a3b` and `text-embedding-embeddinggemma-300m` locally on my MacBook Pro and nothing ever leaves this laptop.
 
-```yaml
+```ignorelang
 # agent.yaml
 harness:
   # opt-in to the knowledge system
@@ -194,7 +194,7 @@ The best practice approach for structuring a complex Puppet module that installs
 **1. Main Class (`module::init.pp`)** (#5)
 This is the entry point for your module, located in `init.pp`. It should be the only parameterized class and contain sensible defaults:
 
-```puppet
+```ignorelang
 class chrony (
   Array[Stdlib::IP::Address] $bindaddress = [],
   Array[String] $bindcmdaddress = ['127.0.0.1', '::1'],
@@ -214,7 +214,7 @@ class chrony (
 **2. Install Class (`module::install.pp`)** (#7)
 Contains all resources related to getting the software onto the node:
 
-```puppet
+```ignorelang
 class chrony::install {
   assert_private()
 
@@ -228,7 +228,7 @@ class chrony::install {
 **3. Config Class (`module::config.pp`)** (#8)
 Contains all resources for configuring the installed software:
 
-```puppet
+```ignorelang
 class chrony::config {
   assert_private()
 
@@ -245,7 +245,7 @@ class chrony::config {
 **4. Service Class (`module::service.pp`)** (#9)
 Contains service resources and anything related to the running state:
 
-```puppet
+```ignorelang
 class chrony::service {
   assert_private()
 
